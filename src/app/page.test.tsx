@@ -203,9 +203,9 @@ describe("Hero carousel", () => {
     expect([visible().length, current()]).toEqual([1, 1]);
   });
 
-  it("advances to the second slide after 7 seconds", () => {
+  it("advances to the second slide after 5 seconds", () => {
     render(<Home />);
-    act(() => vi.advanceTimersByTime(7000));
+    act(() => vi.advanceTimersByTime(5000));
     expect(current()).toBe(2);
   });
 
@@ -398,5 +398,17 @@ describe("Hero split", () => {
   it("centres the shop button with the nav links", () => {
     render(<SiteHeader />);
     expect(screen.getByRole("navigation", { name: "Main" }).parentElement).toContainElement(screen.getByRole("link", { name: "Shop the collection" }));
+  });
+});
+
+describe("Hero pace", () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it("keeps advancing while the mouse is over the hero", () => {
+    render(<Home />);
+    fireEvent.mouseEnter(screen.getByRole("region", { name: "The gift that makes her feel like the moment." }));
+    act(() => vi.advanceTimersByTime(5000));
+    expect(screen.getByRole("button", { name: "Show slide 2" })).toHaveAttribute("aria-current", "true");
   });
 });

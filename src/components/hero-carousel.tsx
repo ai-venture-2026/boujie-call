@@ -5,14 +5,13 @@ import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { heroSlides } from "@/lib/content";
 
-const INTERVAL = 7000;
+const INTERVAL = 5000;
 
 export function HeroCarousel({ children }: { children: ReactNode }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const slide = heroSlides[index];
-  const running = !paused && !hovered;
+  const running = !paused;
 
   useEffect(() => {
     if (!running || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -25,8 +24,6 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
       aria-labelledby="hero-title"
       aria-roledescription="carousel"
       className="flex flex-col md:-mt-20 md:grid md:h-svh md:min-h-[680px] md:grid-cols-[38fr_62fr]"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       <div className="relative h-[70svh] overflow-hidden md:order-2 md:h-auto">
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-40 bg-linear-to-b from-ink/50 to-transparent md:block" />
@@ -37,7 +34,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${heroSlides.length}`}
             aria-hidden={i !== index}
-            className={`absolute inset-0 transition-opacity duration-[1600ms] ease-out motion-reduce:transition-none ${i === index ? "opacity-100" : "opacity-0"}`}
+            className={`absolute inset-0 transition-opacity duration-[1200ms] ease-out motion-reduce:transition-none ${i === index ? "opacity-100" : "opacity-0"}`}
           >
             <Image
               src={s.src}
@@ -76,7 +73,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
                   <span
                     key={`${index}-${running}`}
                     aria-hidden="true"
-                    className={`absolute inset-x-1 top-1/2 h-px origin-left bg-rose ${running ? "motion-safe:animate-[progress_7s_linear]" : ""}`}
+                    className={`absolute inset-x-1 top-1/2 h-px origin-left bg-rose ${running ? "motion-safe:animate-[progress_5s_linear]" : ""}`}
                   />
                 )}
               </button>
