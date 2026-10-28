@@ -50,7 +50,7 @@ export const SITE_URL = "https://boujiecall.com";
 export type HeroSlide = { src: string; alt: string; slug: string; piece: string; colorway: string; focus: string; text: "ink" | "cream" };
 
 export const heroSlides: HeroSlide[] = [
-  { src: "/images/hero/black-slip-studio.webp", alt: "A woman laughs, turning away, in The Slip Dress in After Dark", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "After Dark", focus: "52% 30%", text: "ink" },
+  { src: "/images/hero/black-slip-studio.webp", alt: "A woman laughs, turning away, in The Slip Dress in After Dark", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "After Dark", focus: "48% 40%", text: "ink" },
   { src: "/images/hero/blue-romper-studio.webp", alt: "A woman sits on the floor in The Romper in Powder Blue", slug: "the-romper", piece: "The Romper", colorway: "Powder Blue", focus: "40% 60%", text: "ink" },
   { src: "/images/hero/pink-slip-studio.webp", alt: "A woman stands with a hand on her hip in The Slip Dress in Rose", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "Rose", focus: "50% 30%", text: "ink" },
   { src: "/images/hero/brown-romper-studio.webp", alt: "A woman sits with one knee raised in The Romper in Mocha", slug: "the-romper", piece: "The Romper", colorway: "Mocha", focus: "52% 40%", text: "ink" },

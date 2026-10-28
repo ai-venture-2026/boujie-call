@@ -24,3 +24,4 @@
 - Colour and hero: pink and dark back in rhythm (blush, warm white, ink) with deep rose accent words and pink button hover; hero split into a white text panel and photos (38 to 62); nav clear over the photo with the links and Shop the collection centred, white once scrolled.
 - Hero pace: 5 seconds per photo with a 1.2 second crossfade, and no pause on hover; the pause icon still stops it.
 - Hero photographs: four new art-directed studio photos (black slip dress, blue romper, pink slip dress, brown romper) on plain matte walls replace the earlier set.
+- Home rebuild round 1: The Romper in Mocha beside a close-up of its lace, a centred statement with a staggered strip of five photos and the three steps, the gift tiers moved off Home, and a frosted glass nav that turns dark over dark sections. The black slip hero photo is replaced with a wider framing.

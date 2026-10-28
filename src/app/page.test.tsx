@@ -20,11 +20,6 @@ describe("Home", () => {
     expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "She gets the Call", "She picks up"]);
   });
 
-  it("shows a price placeholder on every tier", () => {
-    render(<Home />);
-    expect(screen.getAllByText("Price to come")).toHaveLength(3);
-  });
-
   it("renders social channels without a URL as plain text", () => {
     render(<Home />);
     expect(screen.queryByRole("link", { name: /tiktok|instagram/i })).toBeNull();
@@ -155,24 +150,9 @@ describe("Home editorial redesign", () => {
     expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink")).not.toBeNull();
   });
 
-  it("marks missing photos as images to come", () => {
-    render(<Home />);
-    expect(screen.getAllByRole("img", { name: /image to come/ }).length).toBeGreaterThanOrEqual(1);
-  });
 });
 
 describe("Home night half", () => {
-  it("lays out the tiers as spreads in order", () => {
-    render(<Home />);
-    const names = screen.getAllByRole("article").map((a) => within(a).getByRole("heading", { level: 3 }).textContent);
-    expect(names).toEqual(["The Mini Call", "The Signature Call", "The Boujie Experience"]);
-  });
-
-  it("keeps the tier spreads on light grounds", () => {
-    render(<Home />);
-    expect(screen.getAllByRole("article").filter((a) => a.closest(".bg-ink"))).toEqual([]);
-  });
-
   it("keeps one ink section in main", () => {
     const { container } = render(<Home />);
     expect(container.querySelectorAll("main .bg-ink")).toHaveLength(1);
@@ -231,20 +211,6 @@ describe("Hero carousel", () => {
   });
 });
 
-describe("How it works spread", () => {
-  const section = () => screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
-
-  it("sits on blush", () => {
-    render(<Home />);
-    expect(section()).toHaveClass("bg-blush");
-  });
-
-  it("shows the gift being opened instead of a product photo", () => {
-    render(<Home />);
-    expect(within(section()).getByRole("img").getAttribute("aria-label")).toBe("Hands untying the ribbon on a Boujie Call gift box, image to come");
-  });
-});
-
 describe("Day to night turn", () => {
   const night = () => screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink") as HTMLElement;
 
@@ -265,16 +231,6 @@ describe("De-slop", () => {
     expect(screen.queryByText(/^‹ \d\d ›$/)).toBeNull();
   });
 
-  it("keeps the tier spreads free of decorative glyphs", () => {
-    render(<Home />);
-    const text = (a: HTMLElement) => {
-      const copy = a.cloneNode(true) as HTMLElement;
-      copy.querySelectorAll("[role=img]").forEach((img) => img.remove());
-      return copy.textContent ?? "";
-    };
-    expect(screen.getAllByRole("article").filter((a) => text(a).includes("✦"))).toEqual([]);
-  });
-
   it("drops the How it works eyebrow", () => {
     render(<Home />);
     const section = screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
@@ -284,20 +240,6 @@ describe("De-slop", () => {
   it("uses the slim pill in the mobile drawer", () => {
     const { container } = render(<SiteHeader />);
     expect(container.querySelector(".btn")).toBeNull();
-  });
-});
-
-describe("Tier list", () => {
-  const boxes = (c: HTMLElement) => c.querySelector("section#boxes") as HTMLElement;
-
-  it("shows no images", () => {
-    const { container } = render(<Home />);
-    expect(within(boxes(container)).queryAllByRole("img")).toEqual([]);
-  });
-
-  it("sits on cream", () => {
-    const { container } = render(<Home />);
-    expect(boxes(container)).toHaveClass("bg-cream");
   });
 });
 
@@ -376,7 +318,7 @@ describe("Strict pass", () => {
 describe("Colour rhythm", () => {
   it("sets the accent words in rose", () => {
     const { container } = render(<Home />);
-    const accents = [...container.querySelectorAll("main em")].filter((e) => ["receives", "brunch.", "vibe.", "drop."].includes(e.textContent ?? ""));
+    const accents = [...container.querySelectorAll("main em")].filter((e) => ["receives", "brunch.", "Call.", "drop."].includes(e.textContent ?? ""));
     expect(accents.map((e) => e.classList.contains("text-rose"))).toEqual([true, true, true, true]);
   });
 });
@@ -427,5 +369,37 @@ describe("Hero photographs", () => {
 
   it("points every hero image at a file in public", () => {
     expect(heroSlides.filter((s) => !existsSync(`public${s.src}`))).toEqual([]);
+  });
+});
+
+describe("Home rebuild round 1", () => {
+  it("keeps the gift tiers off Home", () => {
+    render(<Home />);
+    expect(screen.queryByText("The Signature Call")).toBeNull();
+  });
+
+  it("pairs The Romper in Mocha with a close-up of its lace", () => {
+    render(<Home />);
+    expect(screen.getByRole("img", { name: /close-up of the brown lace/ })).toBeInTheDocument();
+  });
+
+  it("links the detail button to The Romper", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "Discover the piece" })).toHaveAttribute("href", "/shop/the-romper");
+  });
+
+  it("runs a strip of five photos under the statement", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelectorAll("[data-strip] img")).toHaveLength(5);
+  });
+
+  it("marks the night band for the adaptive nav", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).not.toBeNull();
+  });
+
+  it("marks the footer for the adaptive nav", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("contentinfo")).toHaveAttribute("data-nav", "dark");
   });
 });

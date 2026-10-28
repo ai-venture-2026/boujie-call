@@ -4,7 +4,7 @@ import { Logo } from "./site-header";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-ink text-blush">
+    <footer data-nav="dark" className="bg-ink text-blush">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pt-24 pb-12 md:grid-cols-12 md:px-12">
         <div className="md:col-span-6">
           <Logo tone="pink" className="h-14" />

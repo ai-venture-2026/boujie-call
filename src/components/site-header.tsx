@@ -11,13 +11,24 @@ export function Logo({ tone, className }: { tone: "ink" | "pink"; className: str
   return <Image src={`/boujie-call-logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
 }
 
+const onScroll = (l: () => void) => {
+  window.addEventListener("scroll", l, { passive: true });
+  window.addEventListener("resize", l);
+  return () => {
+    window.removeEventListener("scroll", l);
+    window.removeEventListener("resize", l);
+  };
+};
+
 function useScrolled() {
+  return useSyncExternalStore(onScroll, () => window.scrollY > 8, () => false);
+}
+
+// True when a section marked data-nav="dark" sits under the header.
+function useOverDark() {
   return useSyncExternalStore(
-    (l) => {
-      window.addEventListener("scroll", l, { passive: true });
-      return () => window.removeEventListener("scroll", l);
-    },
-    () => window.scrollY > 8,
+    onScroll,
+    () => (document.elementsFromPoint?.(window.innerWidth / 2, 40) ?? []).some((el) => !el.closest("header") && el.closest("[data-nav=dark]")),
     () => false,
   );
 }
@@ -30,14 +41,16 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const current = (href: string) => (pathname === href ? "page" : undefined);
   const count = bagCount(useBag());
   const scrolled = useScrolled();
+  const dark = useOverDark();
   const clear = overlay && !scrolled;
   const onPhoto = clear ? "md:text-cream" : "";
+  const glass = dark ? "border-cream/10 bg-ink/55 text-cream backdrop-blur-md" : "border-ink/10 bg-white/70 text-ink backdrop-blur-md";
 
   return (
-    <header className={`sticky top-0 z-40 border-b-[0.5px] bg-white text-ink transition-colors duration-500 ${clear ? "border-ink/10 md:border-transparent md:bg-transparent" : "border-ink/10"}`}>
+    <header className={`sticky top-0 z-40 border-b-[0.5px] transition-colors duration-500 ${clear ? "border-ink/10 bg-white text-ink md:border-transparent md:bg-transparent" : glass}`}>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home">
-          <Logo tone="ink" className="h-10 md:h-12" />
+          <Logo tone={dark && !clear ? "pink" : "ink"} className="h-10 md:h-12" />
         </Link>
 
         <div className={`hidden items-center gap-10 md:flex ${overlay ? "md:fixed md:top-0 md:right-28 md:left-[38%] md:h-20 md:justify-center" : "md:absolute md:inset-x-0 md:top-1/2 md:mx-auto md:w-fit md:-translate-y-1/2"} ${onPhoto} transition-colors duration-500`}>

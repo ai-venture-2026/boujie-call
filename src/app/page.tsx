@@ -3,11 +3,20 @@ import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { HeroCarousel } from "@/components/hero-carousel";
-import { ImageSlot } from "@/components/image-slot";
 import { WaitlistForm } from "@/components/waitlist-form";
-import { formatPrice, socials, steps, tiers } from "@/lib/content";
+import { socials, steps } from "@/lib/content";
+import { getProduct } from "@/lib/products";
 
 const wrap = "mx-auto max-w-7xl px-6 md:px-12";
+const romper = getProduct("the-romper");
+
+const strip = [
+  { src: "/images/details/pink-slip-hem.webp", focus: "50% 50%", box: "mt-28 aspect-[4/3] w-[44vw] md:w-[20vw]" },
+  { src: "/images/hero/blue-romper-studio.webp", focus: "40% 60%", box: "aspect-[3/4] w-[36vw] md:w-[18vw]" },
+  { src: "/images/details/black-slip-lace.webp", focus: "50% 50%", box: "mt-16 aspect-square w-[30vw] md:w-[15vw]" },
+  { src: "/images/hero/pink-slip-studio.webp", focus: "50% 30%", box: "mt-6 aspect-[4/5] w-[48vw] md:w-[24vw]" },
+  { src: "/images/hero/black-slip-studio.webp", focus: "48% 40%", box: "mt-32 aspect-[4/3] w-[44vw] md:w-[20vw]" },
+];
 
 export default function Home() {
   return (
@@ -25,25 +34,45 @@ export default function Home() {
           </Link>
         </HeroCarousel>
 
-        <section id="how" className="bg-blush py-28 md:py-40">
-          <div className={`${wrap} grid gap-14 md:grid-cols-12 md:items-center md:gap-x-16`}>
-            <div className="md:col-span-5">
-              <ImageSlot alt="Hands untying the ribbon on a Boujie Call gift box" className="unveil" />
+        <section id="detail" className="grid md:min-h-[88svh] md:grid-cols-2">
+          <div className="flex flex-col items-center justify-center bg-stone px-6 py-20 md:px-12">
+            <div className="relative aspect-[3/4] w-full max-w-sm">
+              <Image src="/images/products/the-romper-mocha.webp" alt="The Romper in Mocha" fill sizes="(min-width: 768px) 30vw, 80vw" className="object-contain mix-blend-multiply" />
             </div>
-            <div className="md:col-span-6 md:col-start-7">
-              <h2 className="mt-6 max-w-md text-[clamp(2rem,3.2vw,3.25rem)] leading-[1.06] rise">
-                Someone places a call. She <em className="text-rose">receives</em> a moment.
-              </h2>
-              <ol aria-label="How it works" className="mt-14 border-t-[0.5px] border-rose/25">
-                {steps.map((step) => (
-                  <li key={step.title} className="border-b-[0.5px] border-rose/25 py-7 rise">
-                    <h3 className="text-2xl">{step.title}</h3>
-                    <p className="mt-2 max-w-md text-base leading-relaxed text-muted">{step.body}</p>
-                  </li>
-                ))}
-              </ol>
+            <div className="mt-10 w-full max-w-sm rise">
+              <p className="label">The Romper · Mocha</p>
+              <p className="mt-4 text-base leading-relaxed text-muted">{romper?.description}</p>
+              <Link href="/shop/the-romper" className="cta mt-8">
+                Discover the piece
+              </Link>
             </div>
           </div>
+          <div className="relative min-h-[70svh] md:min-h-0">
+            <Image src="/images/details/brown-romper-lace.webp" alt="A close-up of the brown lace neckline of The Romper in Mocha" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+          </div>
+        </section>
+
+        <section id="how" className="overflow-hidden bg-cream py-28 md:py-40">
+          <h2 className={`${wrap} text-center text-[clamp(2.25rem,5vw,4.75rem)] leading-[1.05] uppercase rise`}>
+            Someone places a call.
+            <br />
+            She <em className="text-rose normal-case">receives</em> a moment.
+          </h2>
+          <div data-strip className="mt-20 flex items-start justify-center gap-4 md:gap-6">
+            {strip.map((s) => (
+              <div key={s.src} className={`relative shrink-0 overflow-hidden ${s.box}`}>
+                <Image src={s.src} alt="" fill sizes="(min-width: 768px) 24vw, 48vw" style={{ objectPosition: s.focus }} className="object-cover" />
+              </div>
+            ))}
+          </div>
+          <ol aria-label="How it works" className={`${wrap} mt-24 grid gap-12 text-center md:grid-cols-3 md:gap-16`}>
+            {steps.map((step) => (
+              <li key={step.title} className="rise">
+                <h3 className="text-2xl">{step.title}</h3>
+                <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-muted">{step.body}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <section aria-label="From brunch to after dark">
@@ -52,7 +81,7 @@ export default function Home() {
               Cute enough to open at <em className="text-rose">brunch.</em>
             </h2>
           </div>
-          <div className="bg-ink py-24 text-blush md:py-32">
+          <div data-nav="dark" className="bg-ink py-24 text-blush md:py-32">
             <div className={`${wrap} grid items-center gap-12 md:grid-cols-12 md:gap-x-16`}>
               <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
                 <Image
@@ -72,26 +101,6 @@ export default function Home() {
                   The Romper · Mocha
                 </Link>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="boxes" className="bg-cream py-28 md:py-40">
-          <div className={wrap}>
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
-                Three tiers. One <em className="text-rose">vibe.</em>
-              </h2>
-              <p className="label max-w-xs text-muted rise md:text-right">A first look. Contents and prices are confirmed at launch.</p>
-            </div>
-            <div className="mt-16 grid border-t-[0.5px] border-rose/25 md:grid-cols-3 md:divide-x-[0.5px] md:divide-rose/25">
-              {tiers.map((tier) => (
-                <article key={tier.name} className="border-b-[0.5px] border-rose/25 py-10 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
-                  <h3 className="text-[clamp(1.75rem,2.6vw,2.5rem)] leading-[1.05]">{tier.name}</h3>
-                  <p className="mt-5 max-w-xs text-base leading-relaxed text-muted">{tier.contents}</p>
-                  <p className="mt-10 font-serif text-lg italic text-rose">{formatPrice(tier.priceCents)}</p>
-                </article>
-              ))}
             </div>
           </div>
         </section>
