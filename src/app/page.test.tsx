@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import Home from "./page";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { WaitlistForm } from "@/components/waitlist-form";
 
@@ -27,16 +28,62 @@ describe("Home", () => {
   });
 });
 
+const pages = ["Home", "Shop", "Send a Call", "About"];
+const linkNames = (nav: HTMLElement) => within(nav).getAllByRole("link").map((l) => l.textContent);
+
 describe("SiteHeader", () => {
-  it("labels the nav landmark Main", () => {
+  it("lists the four pages in the main nav", () => {
     render(<SiteHeader />);
-    expect(screen.getByRole("navigation", { name: "Main" })).toBeInTheDocument();
+    expect(linkNames(screen.getByRole("navigation", { name: "Main" }))).toEqual(pages);
   });
 
-  it("links the three page sections from the nav", () => {
+  it("points Join the waitlist at the Home signup", () => {
     render(<SiteHeader />);
-    const nav = screen.getByRole("navigation");
-    expect(within(nav).getAllByRole("link").map((l) => l.textContent)).toEqual(["How it works", "The boxes", "Join the list"]);
+    expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "/#waitlist");
+  });
+
+  it("shows the ink logo", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("logo-ink");
+  });
+
+  it("opens the drawer from the menu button", () => {
+    render(<SiteHeader />);
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    expect(screen.getByRole("dialog")).toHaveAttribute("open");
+  });
+
+  it("closes the drawer from the close button", () => {
+    render(<SiteHeader />);
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close menu" }));
+    expect(screen.getByRole("dialog", { hidden: true })).not.toHaveAttribute("open");
+  });
+
+  it("closes the drawer when a link is chosen", () => {
+    render(<SiteHeader />);
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("link", { name: "Shop" }));
+    expect(screen.getByRole("dialog", { hidden: true })).not.toHaveAttribute("open");
+  });
+});
+
+describe("SiteFooter", () => {
+  it("lists the four pages", () => {
+    render(<SiteFooter />);
+    expect(linkNames(screen.getByRole("navigation", { name: "Footer" }))).toEqual(pages);
+  });
+
+  it("shows the pink logo", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("logo-pink");
+  });
+});
+
+describe("Home signup", () => {
+  it("anchors the signup section as waitlist", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelector("section#waitlist")).not.toBeNull();
   });
 });
 

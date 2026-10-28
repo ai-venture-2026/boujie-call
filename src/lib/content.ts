@@ -36,3 +36,10 @@ export const socials: Social[] = [
   { label: "TikTok", url: null },
   { label: "Instagram", url: null },
 ];
+
+export const pages = [
+  { href: "/", label: "Home" },
+  { href: "/shop", label: "Shop" },
+  { href: "/send-a-call", label: "Send a Call" },
+  { href: "/about", label: "About" },
+];

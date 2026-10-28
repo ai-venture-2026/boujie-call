@@ -12,12 +12,12 @@ export default function Home() {
       <main>
         <section className={`${wrap} grid items-end gap-12 pt-12 pb-28 md:grid-cols-12 md:pt-20`}>
           <div className="md:col-span-7">
-            <h1 className="text-6xl md:text-8xl">The gift that makes her feel like the moment.</h1>
+            <h1 className="text-5xl md:text-8xl">The gift that makes her feel like the moment.</h1>
             <p className="mt-8 font-serif text-2xl italic text-muted md:text-3xl">
               Luxury nightwear gift sets. Curated. Personalized. Unforgettable.
             </p>
             <div className="mt-12 flex flex-wrap items-center gap-8">
-              <a href="#join" className="btn">
+              <a href="#waitlist" className="btn">
                 Join the waitlist
               </a>
               <a href="#how" className="link">
@@ -101,7 +101,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="join" className={`${wrap} py-32`}>
+        <section id="waitlist" className={`${wrap} py-32`}>
           <h2 className="max-w-3xl text-5xl md:text-7xl">Be first to receive a Boujie Call.</h2>
           <p className="mt-6 mb-10 text-muted">Join the list for early access.</p>
           <WaitlistForm />
