@@ -8,6 +8,7 @@
   --color-ribbon: #1a1018;
   --color-card: #fff0f5;
   --color-card-border: #f0c0d0;
+  --color-rose: #b4486f;
   --color-muted: #6b5763;
   --color-muted-dark: #b9a9b1;
 
@@ -94,8 +95,8 @@
   }
 
   .cta {
-    --cta-fill: var(--color-ink);
-    --cta-on: var(--color-cream);
+    --cta-fill: var(--color-pink);
+    --cta-on: var(--color-ink);
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -131,18 +132,6 @@
   .cta:hover::before,
   .cta:focus-visible::before {
     transform: scaleX(1);
-  }
-
-  .cta-light {
-    --cta-fill: var(--color-cream);
-    --cta-on: var(--color-ink);
-  }
-
-  @media (min-width: 768px) {
-    [data-tone="cream"] .cta {
-      --cta-fill: var(--color-cream);
-      --cta-on: var(--color-ink);
-    }
   }
 
   .vertical {

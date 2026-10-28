@@ -182,9 +182,9 @@ describe("Home night half", () => {
     expect(within(screen.getByRole("main")).getByText("Instagram, link to come").closest("a")).toBeNull();
   });
 
-  it("sets the closing section on the page base", () => {
+  it("sets the closing section on blush", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).toHaveClass("bg-cream");
+    expect(container.querySelector("section#waitlist")).toHaveClass("bg-blush");
   });
 });
 
@@ -232,9 +232,9 @@ describe("Hero carousel", () => {
 describe("How it works spread", () => {
   const section = () => screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
 
-  it("sits on cream", () => {
+  it("sits on blush", () => {
     render(<Home />);
-    expect(section()).toHaveClass("bg-cream");
+    expect(section()).toHaveClass("bg-blush");
   });
 
   it("shows the gift being opened instead of a product photo", () => {
@@ -368,5 +368,35 @@ describe("Strict pass", () => {
   it("keeps social placeholders out of the footer", () => {
     render(<SiteFooter />);
     expect(screen.queryByText(/link to come/)).toBeNull();
+  });
+});
+
+describe("Colour rhythm", () => {
+  it("sets the accent words in rose", () => {
+    const { container } = render(<Home />);
+    const accents = [...container.querySelectorAll("main em")].filter((e) => ["receives", "brunch.", "vibe.", "drop."].includes(e.textContent ?? ""));
+    expect(accents.map((e) => e.classList.contains("text-rose"))).toEqual([true, true, true, true]);
+  });
+});
+
+describe("Hero split", () => {
+  it("sets the hero text on a white panel", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { level: 1 }).closest(".bg-white")).not.toBeNull();
+  });
+
+  it("clears the header over the hero on desktop", () => {
+    render(<Home />);
+    expect(screen.getByRole("banner")).toHaveClass("md:bg-transparent");
+  });
+
+  it("keeps the header white off Home", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("banner")).not.toHaveClass("md:bg-transparent");
+  });
+
+  it("centres the shop button with the nav links", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("navigation", { name: "Main" }).parentElement).toContainElement(screen.getByRole("link", { name: "Shop the collection" }));
   });
 });

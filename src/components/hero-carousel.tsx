@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { heroSlides } from "@/lib/content";
-import { setHeroTone } from "@/lib/hero-tone";
 
 const INTERVAL = 7000;
 
@@ -13,14 +12,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
   const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const slide = heroSlides[index];
-  const onDark = slide.text === "cream";
-  const tone = onDark ? "md:text-cream" : "md:text-ink";
   const running = !paused && !hovered;
-
-  useEffect(() => {
-    setHeroTone(slide.text);
-    return () => setHeroTone("ink");
-  }, [slide.text]);
 
   useEffect(() => {
     if (!running || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -32,11 +24,12 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
     <section
       aria-labelledby="hero-title"
       aria-roledescription="carousel"
-      className="relative -mt-[72px] md:-mt-20"
+      className="flex flex-col md:-mt-20 md:grid md:h-svh md:min-h-[680px] md:grid-cols-[38fr_62fr]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="relative h-[80svh] overflow-hidden md:h-svh md:min-h-[640px]">
+      <div className="relative h-[70svh] overflow-hidden md:order-2 md:h-auto">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-40 bg-linear-to-b from-ink/50 to-transparent md:block" />
         {heroSlides.map((s, i) => (
           <div
             key={s.src}
@@ -51,56 +44,49 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
               alt={s.alt}
               fill
               priority={i === 0}
-              sizes="100vw"
+              sizes="(min-width: 768px) 62vw, 100vw"
               style={{ objectPosition: s.focus }}
               className={`object-cover transition-transform duration-[9000ms] ease-out motion-reduce:transition-none ${i === index ? "scale-100" : "scale-[1.04]"}`}
             />
           </div>
         ))}
-        <div
-          aria-hidden="true"
-          className={`pointer-events-none absolute inset-y-0 left-0 hidden w-2/3 bg-linear-to-r to-transparent transition-colors duration-[1600ms] md:block ${onDark ? "from-ink/60 via-ink/25" : "from-cream/80 via-cream/35"}`}
-        />
       </div>
 
-      <div data-tone={slide.text} className={`transition-colors duration-[1600ms] md:pointer-events-none md:absolute md:inset-0 md:flex md:items-center ${tone}`}>
-        <div className="mx-auto w-full max-w-7xl px-6 pt-10 pb-6 md:px-12 md:pt-20 md:pb-0">
-          <div className="flex max-w-xl flex-col items-start md:pointer-events-auto">{children}</div>
-        </div>
-      </div>
-
-      <div className={`mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 pb-10 transition-colors duration-[1600ms] md:absolute md:inset-x-0 md:bottom-0 md:px-12 md:pb-6 ${tone}`}>
-        <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 items-center text-[10px] hover:opacity-70">
-          {slide.piece} · {slide.colorway}
-        </Link>
-        <div className="flex items-center gap-1">
-          {heroSlides.map((s, i) => (
-            <button
-              key={s.src}
-              type="button"
-              aria-label={`Show slide ${i + 1}`}
-              aria-current={i === index}
-              onClick={() => {
-                setIndex(i);
-                setPaused(true);
-              }}
-              className="relative h-11 w-9"
-            >
-              <span aria-hidden="true" className="absolute inset-x-1 top-1/2 h-px bg-current opacity-30" />
-              {i === index && (
-                <span
-                  key={`${index}-${running}`}
-                  aria-hidden="true"
-                  className={`absolute inset-x-1 top-1/2 h-px origin-left bg-current ${running ? "motion-safe:animate-[progress_7s_linear]" : ""}`}
-                />
-              )}
+      <div className="flex flex-col justify-between bg-white px-6 pt-12 pb-8 md:order-1 md:px-12 md:pt-20 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+        <div className="flex flex-1 flex-col items-start justify-center">{children}</div>
+        <div className="mt-12 flex items-center justify-between gap-4 md:mt-0">
+          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 items-center whitespace-nowrap text-[10px] text-muted hover:text-ink">
+            {slide.piece} · {slide.colorway}
+          </Link>
+          <div className="flex items-center gap-1">
+            {heroSlides.map((s, i) => (
+              <button
+                key={s.src}
+                type="button"
+                aria-label={`Show slide ${i + 1}`}
+                aria-current={i === index}
+                onClick={() => {
+                  setIndex(i);
+                  setPaused(true);
+                }}
+                className="relative h-11 w-6"
+              >
+                <span aria-hidden="true" className="absolute inset-x-1 top-1/2 h-px bg-ink/20" />
+                {i === index && (
+                  <span
+                    key={`${index}-${running}`}
+                    aria-hidden="true"
+                    className={`absolute inset-x-1 top-1/2 h-px origin-left bg-rose ${running ? "motion-safe:animate-[progress_7s_linear]" : ""}`}
+                  />
+                )}
+              </button>
+            ))}
+            <button type="button" aria-label={paused ? "Play slideshow" : "Pause slideshow"} onClick={() => setPaused((p) => !p)} className="ml-1 grid size-11 place-items-center text-muted hover:text-ink">
+              <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                {paused ? <path d="M2 1l7 4-7 4z" /> : <path d="M2 1h2v8H2zM6 1h2v8H6z" />}
+              </svg>
             </button>
-          ))}
-          <button type="button" aria-label={paused ? "Play slideshow" : "Pause slideshow"} onClick={() => setPaused((p) => !p)} className="ml-2 grid size-11 place-items-center hover:opacity-70">
-            <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-              {paused ? <path d="M2 1l7 4-7 4z" /> : <path d="M2 1h2v8H2zM6 1h2v8H6z" />}
-            </svg>
-          </button>
+          </div>
         </div>
       </div>
     </section>

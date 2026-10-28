@@ -21,3 +21,4 @@
 - Closing: socials and the waitlist merge into one left-aligned section on blush, waitlist ask on the left, socials on the right, closing line underneath.
 - Hero polish: Shop the collection as the main call to action, one bordered rectangle button that fills on hover site-wide, larger headline and readable subtext, thin progress lines and a pause icon instead of the counter, no sparkles, and a nav that is clear over the hero and white once scrolled.
 - Strict pass: warm white #FAF8F5 page base, 16px body text, no step number labels or closing hairline, a clean cut to the night band with a readable caption, a neutral image placeholder, and one set of social links.
+- Colour and hero: pink and dark back in rhythm (blush, warm white, ink) with deep rose accent words and pink button hover; hero split into a white text panel and photos (38 to 62); nav clear over the photo with the links and Shop the collection centred, white once scrolled.

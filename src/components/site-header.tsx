@@ -3,15 +3,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { bagCount, useBag } from "@/lib/bag";
-import { useHeroTone, useScrolled } from "@/lib/hero-tone";
 import { pages } from "@/lib/content";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
   return <Image src={`/boujie-call-logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
 }
 
+function useScrolled() {
+  return useSyncExternalStore(
+    (l) => {
+      window.addEventListener("scroll", l, { passive: true });
+      return () => window.removeEventListener("scroll", l);
+    },
+    () => window.scrollY > 8,
+    () => false,
+  );
+}
+
+// overlay: Home hero, where the left 38% is a white panel and the rest is photo.
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const pathname = usePathname();
   const drawer = useRef<HTMLDialogElement>(null);
@@ -19,32 +30,34 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const current = (href: string) => (pathname === href ? "page" : undefined);
   const count = bagCount(useBag());
   const scrolled = useScrolled();
-  const heroTone = useHeroTone();
   const clear = overlay && !scrolled;
-  const onDark = clear && heroTone === "cream";
+  const onPhoto = clear ? "md:text-cream" : "";
 
   return (
-    <header
-      className={`sticky top-0 z-40 border-b-[0.5px] transition-colors duration-500 ${clear ? "border-transparent bg-transparent" : "border-ink/10 bg-white"} ${onDark ? "text-cream" : "text-ink"}`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
+    <header className={`sticky top-0 z-40 border-b-[0.5px] bg-white text-ink transition-colors duration-500 ${clear ? "border-ink/10 md:border-transparent md:bg-transparent" : "border-ink/10"}`}>
+      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home">
-          <Logo tone={onDark ? "pink" : "ink"} className="h-10 md:h-12" />
+          <Logo tone="ink" className="h-10 md:h-12" />
         </Link>
 
-        <nav aria-label="Main" className="hidden md:block">
-          <ul className="label flex gap-9">
-            {pages.map((p) => (
-              <li key={p.href}>
-                <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
-                  {p.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className={`hidden items-center gap-10 md:flex ${overlay ? "md:fixed md:top-0 md:right-28 md:left-[38%] md:h-20 md:justify-center" : "md:absolute md:inset-x-0 md:top-1/2 md:mx-auto md:w-fit md:-translate-y-1/2"} ${onPhoto} transition-colors duration-500`}>
+          <nav aria-label="Main">
+            <ul className="label flex gap-9">
+              {pages.map((p) => (
+                <li key={p.href}>
+                  <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
+                    {p.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <Link href="/shop" className="cta min-h-10 px-6">
+            Shop the collection
+          </Link>
+        </div>
 
-        <div className="flex items-center gap-5">
+        <div className={`flex items-center gap-5 transition-colors duration-500 ${onPhoto}`}>
           <Link href="/bag" aria-label={`Your bag, ${count} ${count === 1 ? "piece" : "pieces"}`} className="relative grid size-11 place-items-center">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25">
               <path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2" />
@@ -54,10 +67,6 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 {count}
               </span>
             )}
-          </Link>
-
-          <Link href="/shop" className={`cta hidden min-h-10 px-6 md:inline-flex ${onDark ? "cta-light" : ""}`}>
-            Shop the collection
           </Link>
 
           <button type="button" aria-label="Open menu" aria-haspopup="dialog" className="md:hidden" onClick={() => drawer.current?.showModal()}>
@@ -91,7 +100,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
               ))}
             </ul>
           </nav>
-          <Link href="/shop" onClick={close} className="cta cta-light mt-auto w-full">
+          <Link href="/shop" onClick={close} className="cta mt-auto w-full border-blush text-blush hover:text-ink">
             Shop the collection
           </Link>
         </div>
