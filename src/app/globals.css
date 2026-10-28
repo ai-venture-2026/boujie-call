@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #faf8f5;
+  --color-pink: #f2a7c3;
+  --color-ink: #141014;
+  --color-blush: #fde8f0;
+  --color-ribbon: #1a1018;
+  --color-card: #fff0f5;
+  --color-card-border: #f0c0d0;
+  --color-rose: #b4486f;
+  --color-rose-deep: #8b3156;
+  --color-stone: #ece8e3;
+  --color-muted: #6b5763;
+  --color-muted-dark: #b9a9b1;
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-pink);
+  }
+
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
+
+.drawer {
+  margin: 0 0 0 auto;
+  border: 0;
+}
+
+.drawer[open] {
+  animation: drawer-in 300ms ease-out;
+}
+
+.drawer::backdrop {
+  background: rgb(20 16 20 / 0.5);
+}
+
+@keyframes bag-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.bag-in {
+  animation: bag-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bag-in {
+    animation: none;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer[open] {
+    animation: none;
+  }
+}
+
+@layer components {
+  .link {
+    text-decoration: underline;
+    text-decoration-color: var(--color-pink);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    transition: text-decoration-color 200ms;
+  }
+
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .cta {
+    --cta-fill: var(--color-pink);
+    --cta-on: var(--color-ink);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 2.25rem;
+    border: 1px solid currentColor;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    transition: color 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--cta-fill);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .cta:hover,
+  .cta:focus-visible {
+    color: var(--cta-on);
+  }
+
+  .cta:hover::before,
+  .cta:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@keyframes unveil {
+  from {
+    clip-path: inset(10% 0 10% 0);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateY(32px);
+  }
+  to {
+    transform: translateY(-32px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .rise {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+
+    .unveil {
+      animation: unveil linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+
+    .drift {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta,
+  .cta::before {
+    transition: none;
+  }
+}
