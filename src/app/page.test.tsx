@@ -155,7 +155,7 @@ describe("Home editorial redesign", () => {
 
   it("marks missing photos as images to come", () => {
     render(<Home />);
-    expect(screen.getAllByRole("img", { name: /image to come/ }).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByRole("img", { name: /image to come/ }).length).toBeGreaterThanOrEqual(1);
   });
 });
 
@@ -282,5 +282,19 @@ describe("De-slop", () => {
   it("uses the slim pill in the mobile drawer", () => {
     const { container } = render(<SiteHeader />);
     expect(container.querySelector(".btn")).toBeNull();
+  });
+});
+
+describe("Tier list", () => {
+  const boxes = (c: HTMLElement) => c.querySelector("section#boxes") as HTMLElement;
+
+  it("shows no images", () => {
+    const { container } = render(<Home />);
+    expect(within(boxes(container)).queryAllByRole("img")).toEqual([]);
+  });
+
+  it("sits on cream", () => {
+    const { container } = render(<Home />);
+    expect(boxes(container)).toHaveClass("bg-cream");
   });
 });

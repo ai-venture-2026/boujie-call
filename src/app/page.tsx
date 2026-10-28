@@ -80,29 +80,24 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="boxes">
-          <div className="pt-28 md:pt-40">
-            <div className={`${wrap} relative`}>
-              <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] rise">
+        <section id="boxes" className="bg-cream py-28 md:py-40">
+          <div className={wrap}>
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
                 Three tiers. One <em>vibe.</em>
               </h2>
-              <p className="label mt-6 text-muted rise">A first look. Contents and prices are confirmed at launch.</p>
+              <p className="label max-w-xs text-muted rise md:text-right">A first look. Contents and prices are confirmed at launch.</p>
+            </div>
+            <div className="mt-16 grid border-t-[0.5px] border-ink/15 md:grid-cols-3 md:divide-x-[0.5px] md:divide-ink/15">
+              {tiers.map((tier) => (
+                <article key={tier.name} className="border-b-[0.5px] border-ink/15 py-10 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
+                  <h3 className="text-[clamp(1.75rem,2.6vw,2.5rem)] leading-[1.05]">{tier.name}</h3>
+                  <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{tier.contents}</p>
+                  <p className="mt-10 font-serif text-lg italic">{formatPrice(tier.priceCents)}</p>
+                </article>
+              ))}
             </div>
           </div>
-          {tiers.map((tier, i) => (
-            <div key={tier.name} className={["bg-cream", "bg-card", "bg-blush"][i]}>
-              <article className={`${wrap} grid items-center gap-10 py-20 md:grid-cols-12 md:gap-x-10 md:py-28`}>
-                <div className={`drift ${i % 2 ? "md:col-start-7 md:col-end-13 md:row-start-1" : "md:col-start-1 md:col-end-7"} ${i === 1 ? "md:mt-24" : ""}`}>
-                  <ImageSlot alt={tier.name} className="unveil" />
-                </div>
-                <div className={`rise ${i % 2 ? "md:col-start-2 md:col-end-6 md:row-start-1" : "md:col-start-8 md:col-end-12"}`}>
-                  <h3 className="text-[clamp(2.25rem,4vw,3.75rem)] leading-none">{tier.name}</h3>
-                  <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted">{tier.contents}</p>
-                  <p className="mt-8 font-serif text-xl italic">{formatPrice(tier.priceCents)}</p>
-                </div>
-              </article>
-            </div>
-          ))}
         </section>
 
         <section className="bg-blush py-28 md:py-40">
