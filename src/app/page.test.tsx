@@ -131,7 +131,7 @@ describe("Bag link", () => {
   it("names the live piece count", () => {
     localStorage.setItem(BAG_KEY, JSON.stringify([{ slug: "the-romper", colorway: "Rose", size: "S", qty: 2 }]));
     render(<SiteHeader />);
-    expect(screen.getByRole("link", { name: "Your bag, 2 pieces" })).toHaveAttribute("href", "/bag");
+    expect(screen.getByRole("button", { name: "Your bag, 2 pieces" })).toHaveAttribute("aria-expanded", "false");
   });
 });
 

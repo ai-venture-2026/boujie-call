@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useSyncExternalStore, type ReactNode } from "react";
-import { addToBag } from "@/lib/bag";
+import { addToBag, BAG_OPENED } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
 import { colorwaySlug, OFFER, type Colorway, type Product } from "@/lib/products";
 
@@ -49,6 +49,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
     }
     setMissing("");
     addToBag({ slug: product.slug, colorway: chosen.name, size });
+    window.dispatchEvent(new Event(BAG_OPENED));
     setAdded(`Added to your bag: ${product.name}, ${chosen.name}, ${size}.`);
   }
 

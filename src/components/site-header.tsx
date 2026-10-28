@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useSyncExternalStore } from "react";
-import { bagCount, useBag } from "@/lib/bag";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { BAG_OPENED, bagCount, useBag } from "@/lib/bag";
 import { pages } from "@/lib/content";
+import { MiniBag } from "./mini-bag";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
   return <Image src={`/boujie-call-logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
@@ -44,6 +45,51 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const dark = useOverDark();
   const clear = overlay && !scrolled;
   const onPhoto = clear ? "md:text-cream" : "";
+  const [bagOpen, setBagOpen] = useState(false);
+  const bagButton = useRef<HTMLButtonElement>(null);
+  const bagPanel = useRef<HTMLDivElement>(null);
+  const hovering = useRef(false);
+  const autoClose = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const closeLater = () => {
+    clearTimeout(autoClose.current);
+    autoClose.current = setTimeout(() => {
+      if (hovering.current) return;
+      autoClose.current = undefined;
+      setBagOpen(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    const onAdded = () => {
+      setBagOpen(true);
+      closeLater();
+    };
+    window.addEventListener(BAG_OPENED, onAdded);
+    return () => {
+      window.removeEventListener(BAG_OPENED, onAdded);
+      clearTimeout(autoClose.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!bagOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setBagOpen(false);
+      bagButton.current?.focus();
+    };
+    const onDown = (e: PointerEvent) => {
+      const target = e.target as Node;
+      if (!bagButton.current?.contains(target) && !bagPanel.current?.contains(target)) setBagOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onDown);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onDown);
+    };
+  }, [bagOpen]);
+
   const glass = dark ? "border-cream/10 bg-ink/55 text-cream backdrop-blur-md" : "border-ink/10 bg-white/70 text-ink backdrop-blur-md";
 
   return (
@@ -71,7 +117,19 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         </div>
 
         <div className={`flex items-center gap-5 transition-colors duration-500 ${onPhoto}`}>
-          <Link href="/bag" aria-label={`Your bag, ${count} ${count === 1 ? "piece" : "pieces"}`} className="relative grid size-11 place-items-center">
+          <button
+            ref={bagButton}
+            type="button"
+            aria-label={`Your bag, ${count} ${count === 1 ? "piece" : "pieces"}`}
+            aria-expanded={bagOpen}
+            aria-controls="mini-bag"
+            onClick={() => {
+              clearTimeout(autoClose.current);
+              autoClose.current = undefined;
+              setBagOpen(!bagOpen);
+            }}
+            className="relative grid size-11 place-items-center"
+          >
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25">
               <path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2" />
             </svg>
@@ -80,7 +138,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 {count}
               </span>
             )}
-          </Link>
+          </button>
 
           <button type="button" aria-label="Open menu" aria-haspopup="dialog" className="md:hidden" onClick={() => drawer.current?.showModal()}>
             <svg aria-hidden="true" width="28" height="28" viewBox="0 0 28 28" stroke="currentColor" strokeWidth="1.25">
@@ -88,6 +146,18 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             </svg>
           </button>
         </div>
+        {bagOpen && (
+          <div ref={bagPanel} className="contents">
+            <MiniBag
+              id="mini-bag"
+              onNavigate={() => setBagOpen(false)}
+              onHover={(over) => {
+                hovering.current = over;
+                if (!over && autoClose.current) closeLater();
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <dialog

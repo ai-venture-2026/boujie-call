@@ -5,6 +5,7 @@ export type BagLine = { slug: string; colorway: string; size: string; qty: numbe
 
 export const BAG_KEY = "bc-bag";
 export const MAX_QTY = 10;
+export const BAG_OPENED = "bc-bag-opened";
 
 const listeners = new Set<() => void>();
 const empty: BagLine[] = [];
