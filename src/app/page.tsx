@@ -25,25 +25,28 @@ export default function Home() {
           </a>
         </HeroCarousel>
 
-        <section id="how" className="relative overflow-hidden bg-blush py-28 md:py-40">
-          <div className={`${wrap} relative`}>
-            <Marker n={2} className="absolute top-0 right-6 hidden md:block text-muted md:right-12" />
-            <p aria-hidden="true" className="vertical absolute top-48 right-2 hidden font-serif text-8xl font-light tracking-[0.2em] text-card-border lg:block">
-              PICK UP
-            </p>
-            <h2 className="max-w-3xl text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] rise">
-              Someone places a call. She <em>receives</em> a moment.
-            </h2>
-            <ol aria-label="How it works" className="mt-20 grid gap-16 md:grid-cols-12 md:gap-x-10 lg:pr-24">
-              {steps.map((step, i) => (
-                <li key={step.title} className={["md:col-span-4", "md:col-span-4 md:mt-48", "md:col-span-3 md:col-start-10 md:mt-20"][i]}>
-                  {i === 1 && <ImageSlot src="/images/products/the-slip-dress-bloom.webp" alt="The Slip Dress in Bloom" className="mb-10 unveil" />}
-                  <span className="font-serif text-6xl font-light italic text-muted">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="mt-4 text-3xl">{step.title}</h3>
-                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">{step.body}</p>
-                </li>
-              ))}
-            </ol>
+        <section id="how" className="bg-cream py-28 md:py-40">
+          <div className={`${wrap} grid gap-14 md:grid-cols-12 md:items-center md:gap-x-16`}>
+            <div className="md:col-span-5">
+              <ImageSlot alt="Hands untying the ribbon on a Boujie Call gift box" className="unveil" />
+            </div>
+            <div className="md:col-span-6 md:col-start-7">
+              <p className="label text-muted rise">How it works</p>
+              <h2 className="mt-6 max-w-md text-[clamp(2rem,3.2vw,3.25rem)] leading-[1.06] rise">
+                Someone places a call. She <em>receives</em> a moment.
+              </h2>
+              <ol aria-label="How it works" className="mt-14 border-t-[0.5px] border-ink/15">
+                {steps.map((step, i) => (
+                  <li key={step.title} className="grid grid-cols-[3rem_1fr] gap-x-6 border-b-[0.5px] border-ink/15 py-7 rise">
+                    <span className="label pt-2 text-muted">{String(i + 1).padStart(2, "0")}</span>
+                    <div>
+                      <h3 className="text-2xl">{step.title}</h3>
+                      <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">{step.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </section>
 

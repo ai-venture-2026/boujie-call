@@ -228,3 +228,17 @@ describe("Hero carousel", () => {
     expect(counter()).toBe("01 / 04");
   });
 });
+
+describe("How it works spread", () => {
+  const section = () => screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
+
+  it("sits on cream", () => {
+    render(<Home />);
+    expect(section()).toHaveClass("bg-cream");
+  });
+
+  it("shows the gift being opened instead of a product photo", () => {
+    render(<Home />);
+    expect(within(section()).getByRole("img").getAttribute("aria-label")).toBe("Hands untying the ribbon on a Boujie Call gift box, image to come");
+  });
+});
