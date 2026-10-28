@@ -11,7 +11,7 @@ export function Logo({ tone, className }: { tone: "ink" | "pink"; className: str
   return <Image src={`/boujie-call-logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
 }
 
-export function SiteHeader() {
+export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const pathname = usePathname();
   const drawer = useRef<HTMLDialogElement>(null);
   const close = () => drawer.current?.close();
@@ -19,14 +19,14 @@ export function SiteHeader() {
   const count = bagCount(useBag());
 
   return (
-    <header className="sticky top-0 z-40 border-b-[0.5px] border-card-border bg-cream/95 backdrop-blur-sm">
+    <header className={`sticky top-0 z-40 border-b-[0.5px] border-card-border bg-cream/95 backdrop-blur-sm ${overlay ? "header-overlay" : ""}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home">
           <Logo tone="ink" className="h-10 md:h-12" />
         </Link>
 
         <nav aria-label="Main" className="hidden md:block">
-          <ul className="flex gap-10 text-sm">
+          <ul className="label flex gap-9">
             {pages.map((p) => (
               <li key={p.href}>
                 <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:text-muted aria-[current=page]:underline aria-[current=page]:decoration-pink">
@@ -49,7 +49,7 @@ export function SiteHeader() {
             )}
           </Link>
 
-          <Link href="/#waitlist" className="btn hidden px-6 py-3 text-sm md:inline-flex">
+          <Link href="/#waitlist" className="link label hidden md:inline">
             Join the waitlist
           </Link>
 

@@ -1,5 +1,7 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ImageSlot } from "@/components/image-slot";
+import { Marker } from "@/components/marker";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { formatPrice, socials, steps, tiers } from "@/lib/content";
 
@@ -8,47 +10,66 @@ const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 export default function Home() {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader overlay />
       <main>
-        <section className={`${wrap} grid items-end gap-12 pt-12 pb-28 md:grid-cols-12 md:pt-20`}>
-          <div className="md:col-span-7">
-            <h1 className="text-5xl md:text-8xl">The gift that makes her feel like the moment.</h1>
-            <p className="mt-8 font-serif text-2xl italic text-muted md:text-3xl">
-              Luxury nightwear gift sets. Curated. Personalized. Unforgettable.
-            </p>
-            <div className="mt-12 flex flex-col items-center gap-6 sm:flex-row sm:gap-8">
-              <a href="#waitlist" className="btn w-full sm:w-auto">
-                Join the waitlist
-              </a>
-              <a href="#how" className="link">
-                How it works
-              </a>
+        <section aria-labelledby="hero-title" className="relative mx-auto max-w-[96rem] px-6 pt-8 pb-24 md:px-12 md:pt-14 md:pb-36">
+          <div className="grid md:grid-cols-12">
+            <div className="relative ml-auto w-[86%] md:col-start-6 md:col-end-13 md:row-start-1 md:w-full">
+              <Marker n={1} className="absolute top-0 -left-12 hidden text-muted md:block" />
+              <ImageSlot alt="Boujie Call gift box" className="unveil md:min-h-[96vh]" />
+            </div>
+            <div className="relative z-10 -mt-24 md:col-start-1 md:col-end-10 md:row-start-1 md:mt-0 md:self-center">
+              <p className="label text-muted rise">BOUJIE CALL ✦ LUXURY NIGHTWEAR GIFTS</p>
+              <h1 id="hero-title" className="mt-6 text-[clamp(2.75rem,7.4vw,8.5rem)] md:max-w-[44rem] leading-[0.95] rise">
+                The gift that makes her <em>feel</em> like the <em>moment.</em>
+              </h1>
+              <p className="mt-8 max-w-md font-serif text-2xl italic text-muted rise">
+                Luxury nightwear gift sets. Curated. Personalized. Unforgettable.
+              </p>
+              <div className="mt-10 flex flex-col items-center gap-6 sm:flex-row sm:gap-10 rise">
+                <a href="#waitlist" className="pill w-full sm:w-auto">
+                  Join the waitlist
+                </a>
+                <a href="#how" className="link label">
+                  How it works →
+                </a>
+              </div>
             </div>
           </div>
-          <figure className="relative aspect-[4/5] overflow-hidden rounded-[16px] bg-blush md:col-span-5">
-            <figcaption className="absolute bottom-6 left-6 font-serif italic text-muted">Gift box photography to come</figcaption>
-          </figure>
         </section>
 
-        <section id="how" className={`${wrap} grid gap-12 border-t border-card-border py-28 md:grid-cols-12`}>
-          <h2 className="self-start text-5xl md:sticky md:top-12 md:col-span-5 md:text-6xl">
-            Someone places a call. She receives a moment.
-          </h2>
-          <div className="md:col-span-6 md:col-start-7">
-            <ol aria-label="How it works">
+        <section id="how" className="relative overflow-hidden bg-blush py-28 md:py-40">
+          <div className={`${wrap} relative`}>
+            <Marker n={2} className="absolute top-0 right-6 text-muted md:right-12" />
+            <p aria-hidden="true" className="vertical absolute top-48 right-2 hidden font-serif text-8xl font-light tracking-[0.2em] text-card-border lg:block">
+              PICK UP
+            </p>
+            <h2 className="max-w-3xl text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] rise">
+              Someone places a call. She <em>receives</em> a moment.
+            </h2>
+            <ol aria-label="How it works" className="mt-20 grid gap-16 md:grid-cols-12 md:gap-x-10 lg:pr-24">
               {steps.map((step, i) => (
-                <li key={step.title} className="flex gap-8 border-b border-card-border py-10 first:pt-0">
-                  <span className="font-serif text-3xl text-muted">{i + 1}</span>
-                  <div>
-                    <h3 className="text-3xl">{step.title}</h3>
-                    <p className="mt-3 max-w-md leading-relaxed text-muted">{step.body}</p>
-                  </div>
+                <li key={step.title} className={["md:col-span-4", "md:col-span-4 md:mt-48", "md:col-span-3 md:col-start-10 md:mt-20"][i]}>
+                  {i === 1 && <ImageSlot alt="A Boujie Call arriving" className="mb-10 unveil" />}
+                  <span className="font-serif text-6xl font-light italic text-muted">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-4 text-3xl">{step.title}</h3>
+                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">{step.body}</p>
                 </li>
               ))}
             </ol>
-            <p className="mt-12 font-serif text-2xl italic">
-              Cute enough to open at brunch. Irresistible enough to wear that night.
-            </p>
+          </div>
+        </section>
+
+        <section aria-label="From brunch to after dark">
+          <div className="py-28 md:py-44">
+            <h2 className={`${wrap} text-[clamp(3rem,9vw,9.5rem)] leading-[0.92] rise`}>
+              Cute enough to open at <em>brunch.</em>
+            </h2>
+          </div>
+          <div className="bg-ink py-28 text-blush nightfall md:py-44">
+            <h2 className={`${wrap} text-right text-[clamp(3rem,9vw,9.5rem)] leading-[0.92] rise`}>
+              Irresistible enough to wear <em className="text-pink">that night.</em>
+            </h2>
           </div>
         </section>
 

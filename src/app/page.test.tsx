@@ -122,3 +122,39 @@ describe("Waitlist copy", () => {
     expect(container.textContent).not.toContain("Join the list");
   });
 });
+
+describe("Home editorial redesign", () => {
+  const hero = () => screen.getByRole("region", { name: "The gift that makes her feel like the moment." });
+
+  it("labels the hero as luxury nightwear gifts", () => {
+    render(<Home />);
+    expect(within(hero()).getByText("BOUJIE CALL ✦ LUXURY NIGHTWEAR GIFTS")).toBeInTheDocument();
+  });
+
+  it("gives the hero a single waitlist link", () => {
+    render(<Home />);
+    expect(within(hero()).getAllByRole("link", { name: "Join the waitlist" })).toHaveLength(1);
+  });
+
+  it("numbers the steps 01 to 03", () => {
+    render(<Home />);
+    const list = screen.getByRole("list", { name: "How it works" });
+    expect(within(list).getAllByText(/^0[1-3]$/).map((n) => n.textContent)).toEqual(["01", "02", "03"]);
+  });
+
+  it("turns from brunch to night in two headings", () => {
+    render(<Home />);
+    const turn = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+    expect(turn).toEqual(expect.arrayContaining(["Cute enough to open at brunch.", "Irresistible enough to wear that night."]));
+  });
+
+  it("sets the night half of the turn on ink", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink")).not.toBeNull();
+  });
+
+  it("marks missing photos as images to come", () => {
+    render(<Home />);
+    expect(screen.getAllByRole("img", { name: /image to come/ }).length).toBeGreaterThanOrEqual(2);
+  });
+});

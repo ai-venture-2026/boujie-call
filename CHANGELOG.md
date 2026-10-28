@@ -10,3 +10,4 @@
 - Bag: size choice, add to your bag with inline messages when a colorway or size is missing, a saved bag validated against the product data, and a live bag count in the nav.
 - Corrections: fallback catalog now has the owner's real colorways (Rose, After Dark, Bloom print, Powder Blue, Mocha), confirmed $48 price, sizes S to XL, and the offer line. Home steps in sentence case; one "Join the waitlist" label.
 - Polish: branded 404 ("This page didn't pick up."), share image and link preview metadata, sitemap and robots on boujiecall.com, hero buttons stacked full width on phones.
+- Home redesign, round A: fashion editorial hero with overlapping headline, staggered how it works on blush with vertical "PICK UP", day to night typographic turn, refined uppercase header, scroll-driven motion that respects reduced motion.
