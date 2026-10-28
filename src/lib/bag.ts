@@ -60,6 +60,21 @@ export function addToBag(pick: Omit<BagLine, "qty">) {
 
 export const bagCount = (lines: BagLine[]) => lines.reduce((n, l) => n + l.qty, 0);
 
+const sameLine = (a: Omit<BagLine, "qty">) => (b: BagLine) => a.slug === b.slug && a.colorway === b.colorway && a.size === b.size;
+
+export function setQty(pick: Omit<BagLine, "qty">, qty: number) {
+  const next = Math.min(Math.max(Math.round(qty), 1), MAX_QTY);
+  writeBag(readBag().map((l) => (sameLine(pick)(l) ? { ...l, qty: next } : l)));
+}
+
+export function removeFromBag(pick: Omit<BagLine, "qty">) {
+  writeBag(readBag().filter((l) => !sameLine(pick)(l)));
+}
+
+export const subtotalCents = (lines: BagLine[]) => lines.reduce((sum, l) => sum + (getProduct(l.slug)?.priceCents ?? 0) * l.qty, 0);
+
+export const offerNote = (count: number) => (count === 0 ? null : count === 1 ? "Add one more piece for free shipping" : "You've unlocked free shipping");
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
   window.addEventListener("storage", listener);

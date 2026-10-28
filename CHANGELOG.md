@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Bag page at /bag: quantity, remove, an offer line that follows the piece count, subtotal and a Checkout button that says checkout opens soon. Checkout lives in src/lib/checkout.ts for the Shopify handoff.
 - Home pieces: one header row and three equal cards, unphotographed Boujie Set last. Closing headline accent in a deep rose that stays readable on the banner photo.
 - Home photos: new section two close-up, five new gift strip photos, a day and night pair with text beside the photos and one centred Shop button, a full-bleed closing waitlist banner, and the hero zoomed to trim headroom. Footer simplified to a white panel with the BC monogram. Instagram links to @boujiecall.
 - About page from the owner's copy: dark split hero, our story, three pillars, founder quote and a waitlist close. Footer rebuilt with newsletter, Shop, Company and Socials columns and a typeset wordmark. Home detail section fits one screen.
