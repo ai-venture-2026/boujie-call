@@ -15,7 +15,7 @@ describe("Home", () => {
   it("lists the three steps in order", () => {
     render(<Home />);
     const steps = within(screen.getByRole("list", { name: "How it works" })).getAllByRole("heading");
-    expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "She Gets the Call", "She Picks Up"]);
+    expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "She gets the Call", "She picks up"]);
   });
 
   it("shows a price placeholder on every tier", () => {
@@ -92,7 +92,7 @@ describe("WaitlistForm", () => {
   const submit = (email: string) => {
     render(<WaitlistForm />);
     fireEvent.change(screen.getByLabelText("Email address"), { target: { value: email } });
-    fireEvent.click(screen.getByRole("button", { name: "Join the list" }));
+    fireEvent.click(screen.getByRole("button", { name: "Join the waitlist" }));
   };
 
   it("tells a valid signup the list opens soon", () => {
@@ -110,8 +110,15 @@ describe("Bag link", () => {
   beforeEach(() => localStorage.clear());
 
   it("names the live piece count", () => {
-    localStorage.setItem(BAG_KEY, JSON.stringify([{ slug: "the-romper", colorway: "Boujie pink", size: "S", qty: 2 }]));
+    localStorage.setItem(BAG_KEY, JSON.stringify([{ slug: "the-romper", colorway: "Rose", size: "S", qty: 2 }]));
     render(<SiteHeader />);
     expect(screen.getByRole("link", { name: "Your bag, 2 pieces" })).toHaveAttribute("href", "/bag");
+  });
+});
+
+describe("Waitlist copy", () => {
+  it("never says Join the list", () => {
+    const { container } = render(<Home />);
+    expect(container.textContent).not.toContain("Join the list");
   });
 });

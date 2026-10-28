@@ -1,6 +1,6 @@
 import { addToBag, BAG_KEY, bagCount, readBag } from "./bag";
 
-const dress = { slug: "the-slip-dress", colorway: "After dark", size: "M" };
+const dress = { slug: "the-slip-dress", colorway: "After Dark", size: "M" };
 
 beforeEach(() => localStorage.clear());
 

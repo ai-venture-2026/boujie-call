@@ -8,3 +8,4 @@
 - Brand frame: transparent ink and pink logos cut from the owner's files, BC monogram favicon, sticky nav with a mobile drawer, dark footer, 48px mobile headline.
 - Shop: The Slip Dress, The Boujie Set and The Romper from one data file (src/lib/products.ts), shop grid, and product pages with a gallery that follows the chosen colorway. Prices and colorway names are placeholders.
 - Bag: size choice, add to your bag with inline messages when a colorway or size is missing, a saved bag validated against the product data, and a live bag count in the nav.
+- Corrections: fallback catalog now has the owner's real colorways (Rose, After Dark, Bloom print, Powder Blue, Mocha), confirmed $48 price, sizes S to XL, and the offer line. Home steps in sentence case; one "Join the waitlist" label.

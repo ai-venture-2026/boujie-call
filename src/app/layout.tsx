@@ -13,7 +13,7 @@ const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
   title: "Boujie Call | Luxury nightwear gift sets",
-  description: "Luxury nightwear gift sets. Curated. Personalized. Unforgettable. Join the list before launch.",
+  description: "Luxury nightwear gift sets. Curated. Personalized. Unforgettable. Join the waitlist before launch.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

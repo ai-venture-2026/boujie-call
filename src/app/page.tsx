@@ -103,7 +103,7 @@ export default function Home() {
 
         <section id="waitlist" className={`${wrap} py-32`}>
           <h2 className="max-w-3xl text-5xl md:text-7xl">Be first to receive a Boujie Call.</h2>
-          <p className="mt-6 mb-10 text-muted">Join the list for early access.</p>
+          <p className="mt-6 mb-10 text-muted">Join the waitlist for early access.</p>
           <WaitlistForm />
         </section>
       </main>

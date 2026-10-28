@@ -13,9 +13,14 @@ describe("Shop", () => {
     expect(hrefs).toEqual(products.map((p) => `/shop/${p.slug}`));
   });
 
-  it("marks every placeholder price", () => {
+  it("shows the confirmed price without a placeholder note", () => {
     render(<Shop />);
-    expect(screen.getAllByText("Placeholder price")).toHaveLength(products.length);
+    expect(screen.queryByText("Placeholder price")).toBeNull();
+  });
+
+  it("shows the offer line", () => {
+    render(<Shop />);
+    expect(screen.getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 
   it("avoids the words the owner ruled out", () => {
@@ -32,14 +37,14 @@ describe("Shop", () => {
 describe("Product page", () => {
   it("checks the colorway the visitor chooses", async () => {
     await renderProduct("the-slip-dress");
-    fireEvent.click(screen.getByRole("radio", { name: "After dark" }));
-    expect(screen.getByRole("radio", { name: "After dark" })).toBeChecked();
+    fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
+    expect(screen.getByRole("radio", { name: "After Dark" })).toBeChecked();
   });
 
   it("relabels the gallery to the chosen colorway", async () => {
     await renderProduct("the-slip-dress");
-    fireEvent.click(screen.getByRole("radio", { name: "After dark" }));
-    expect(screen.getByRole("img", { name: "The Slip Dress in After dark, front" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in After Dark, front" })).toBeInTheDocument();
   });
 
   it("starts with no colorway chosen", async () => {
@@ -64,7 +69,7 @@ describe("Add to your bag", () => {
 
   it("asks for a size when only a colorway is chosen", async () => {
     await renderProduct("the-slip-dress");
-    fireEvent.click(screen.getByRole("radio", { name: "After dark" }));
+    fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
     add();
     expect(screen.getByRole("alert")).toHaveTextContent("Choose a size first.");
   });
@@ -77,17 +82,24 @@ describe("Add to your bag", () => {
 
   it("adds the chosen piece to the bag", async () => {
     await renderProduct("the-slip-dress");
-    fireEvent.click(screen.getByRole("radio", { name: "After dark" }));
+    fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
     fireEvent.click(screen.getByRole("radio", { name: "M" }));
     add();
-    expect(readBag()).toEqual([{ slug: "the-slip-dress", colorway: "After dark", size: "M", qty: 1 }]);
+    expect(readBag()).toEqual([{ slug: "the-slip-dress", colorway: "After Dark", size: "M", qty: 1 }]);
   });
 
   it("confirms what was added", async () => {
     await renderProduct("the-slip-dress");
-    fireEvent.click(screen.getByRole("radio", { name: "After dark" }));
+    fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
     fireEvent.click(screen.getByRole("radio", { name: "M" }));
     add();
-    expect(screen.getByRole("status")).toHaveTextContent("Added to your bag: The Slip Dress, After dark, M.");
+    expect(screen.getByRole("status")).toHaveTextContent("Added to your bag: The Slip Dress, After Dark, M.");
+  });
+});
+
+describe("Product page offer", () => {
+  it("shows the offer line", async () => {
+    await renderProduct("the-romper");
+    expect(screen.getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 });

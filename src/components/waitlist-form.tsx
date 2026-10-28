@@ -27,7 +27,7 @@ export function WaitlistForm() {
         className="min-w-0 flex-1 basis-64 rounded-full border border-card-border bg-white px-6 py-4 placeholder:text-muted"
       />
       <button type="submit" className="btn grow sm:grow-0">
-        Join the list
+        Join the waitlist
       </button>
       <p role="status" className="basis-full text-sm text-muted">
         {message}

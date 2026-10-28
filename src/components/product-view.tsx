@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import { addToBag } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
-import type { Colorway, Product } from "@/lib/products";
+import { OFFER, type Colorway, type Product } from "@/lib/products";
 
 const views = ["front", "back", "detail"];
 
@@ -18,7 +18,7 @@ export function Frame({ product, colorway, view, className = "" }: { product: Pr
     <div
       role="img"
       aria-label={`${product.name} in ${colorway.name}, ${view}`}
-      style={{ backgroundColor: colorway.hex }}
+      style={{ background: colorway.swatch ?? colorway.hex }}
       className={`flex items-end rounded-[16px] border-[0.5px] border-card-border p-5 font-serif italic ${isDark(colorway.hex) ? "text-muted-dark" : "text-muted"} ${className}`}
     >
       {colorway.name}, {view}
@@ -56,7 +56,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         )}
         <div className="mt-3 grid grid-cols-3 gap-3">
           {views.map((v, i) => (
-            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="aspect-square rounded-[12px] border-[0.5px] border-card-border aria-pressed:outline-1 aria-pressed:outline-ink" style={{ backgroundColor: shown.hex }} />
+            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="aspect-square rounded-[12px] border-[0.5px] border-card-border aria-pressed:outline-1 aria-pressed:outline-ink" style={{ background: shown.swatch ?? shown.hex }} />
           ))}
         </div>
       </div>
@@ -71,7 +71,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
             {product.colorways.map((c) => (
               <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-ink has-focus-visible:outline-2">
                 <input type="radio" name="colorway" value={c.name} aria-label={c.name} className="sr-only" checked={chosen?.name === c.name} onChange={() => setChosen(c)} />
-                <span aria-hidden="true" className="size-7 rounded-full border-[0.5px] border-card-border" style={{ backgroundColor: c.hex }} />
+                <span aria-hidden="true" className="size-7 rounded-full border-[0.5px] border-card-border" style={{ background: c.swatch ?? c.hex }} />
               </label>
             ))}
           </div>
@@ -92,6 +92,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         <button type="button" onClick={add} className="btn mt-10 w-full sm:w-auto">
           Add to your bag
         </button>
+        <p className="mt-3 text-sm text-muted">{OFFER}</p>
         <p role="alert" className="mt-4 text-sm">
           {missing}
         </p>

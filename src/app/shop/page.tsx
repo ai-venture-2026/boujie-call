@@ -3,11 +3,11 @@ import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Frame, Price } from "@/components/product-view";
-import { products } from "@/lib/products";
+import { OFFER, products } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "Shop | Boujie Call",
-  description: "The Slip Dress, The Boujie Set and The Romper. Satin nightwear pieces in sizes XS to XL.",
+  description: "The Slip Dress, The Boujie Set and The Romper. Satin nightwear pieces in sizes S to XL.",
 };
 
 export default function Shop() {
@@ -22,6 +22,7 @@ export default function Shop() {
             Sending it as a gift? Place a Call
           </Link>
         </p>
+        <p className="mt-3 text-sm">{OFFER}</p>
 
         <ul className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p, i) => (
@@ -34,7 +35,7 @@ export default function Shop() {
                 <Price product={p} className="mt-2" />
                 <p className="mt-3 flex items-center gap-2 text-sm text-muted">
                   {p.colorways.map((c) => (
-                    <span key={c.name} aria-hidden="true" className="size-3.5 rounded-full border-[0.5px] border-card-border" style={{ backgroundColor: c.hex }} />
+                    <span key={c.name} aria-hidden="true" className="size-3.5 rounded-full border-[0.5px] border-card-border" style={{ background: c.swatch ?? c.hex }} />
                   ))}
                   <span className="ml-1">{p.colorways.length} colorways</span>
                 </p>

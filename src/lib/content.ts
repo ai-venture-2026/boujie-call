@@ -15,11 +15,11 @@ export const steps = [
     body: "Choose a gift tier and write her a personal message. All you need is her name and email.",
   },
   {
-    title: "She Gets the Call",
+    title: "She gets the Call",
     body: "She receives a beautiful notification with your message inside and a link to claim her gift.",
   },
   {
-    title: "She Picks Up",
+    title: "She picks up",
     body: "She chooses her size and style, and we ship it, beautifully wrapped, to her door.",
   },
 ];
