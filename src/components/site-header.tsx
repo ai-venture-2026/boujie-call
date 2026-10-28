@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import { bagCount, useBag } from "@/lib/bag";
+import { useHeroTone, useScrolled } from "@/lib/hero-tone";
 import { pages } from "@/lib/content";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
@@ -17,19 +18,25 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const close = () => drawer.current?.close();
   const current = (href: string) => (pathname === href ? "page" : undefined);
   const count = bagCount(useBag());
+  const scrolled = useScrolled();
+  const heroTone = useHeroTone();
+  const clear = overlay && !scrolled;
+  const onDark = clear && heroTone === "cream";
 
   return (
-    <header className={`sticky top-0 z-40 border-b-[0.5px] border-card-border bg-cream/95 backdrop-blur-sm ${overlay ? "header-overlay" : ""}`}>
+    <header
+      className={`sticky top-0 z-40 border-b-[0.5px] transition-colors duration-500 ${clear ? "border-transparent bg-transparent" : "border-ink/10 bg-white"} ${onDark ? "text-cream" : "text-ink"}`}
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home">
-          <Logo tone="ink" className="h-10 md:h-12" />
+          <Logo tone={onDark ? "pink" : "ink"} className="h-10 md:h-12" />
         </Link>
 
         <nav aria-label="Main" className="hidden md:block">
           <ul className="label flex gap-9">
             {pages.map((p) => (
               <li key={p.href}>
-                <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:text-muted aria-[current=page]:underline aria-[current=page]:decoration-pink">
+                <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
                   {p.label}
                 </Link>
               </li>
@@ -49,8 +56,8 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             )}
           </Link>
 
-          <Link href="/#waitlist" className="link label hidden md:inline">
-            Join the waitlist
+          <Link href="/shop" className={`cta hidden min-h-10 px-6 md:inline-flex ${onDark ? "cta-light" : ""}`}>
+            Shop the collection
           </Link>
 
           <button type="button" aria-label="Open menu" aria-haspopup="dialog" className="md:hidden" onClick={() => drawer.current?.showModal()}>
@@ -84,8 +91,8 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
               ))}
             </ul>
           </nav>
-          <Link href="/#waitlist" onClick={close} className="pill mt-auto w-full">
-            Join the waitlist
+          <Link href="/shop" onClick={close} className="cta cta-light mt-auto w-full">
+            Shop the collection
           </Link>
         </div>
       </dialog>

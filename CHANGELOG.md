@@ -19,3 +19,4 @@
 - De-slop: removed orphan section markers, the decorative ✦ above tier names and the redundant How it works label; one slim pill button style across the 404 page, mobile menu and product page.
 - Tiers: the zig-zag image spreads become a quiet three-column list on cream with hairline dividers; no images until the owner confirms what each tier ships.
 - Closing: socials and the waitlist merge into one left-aligned section on blush, waitlist ask on the left, socials on the right, closing line underneath.
+- Hero polish: Shop the collection as the main call to action, one bordered rectangle button that fills on hover site-wide, larger headline and readable subtext, thin progress lines and a pause icon instead of the counter, no sparkles, and a nav that is clear over the hero and white once scrolled.

@@ -50,8 +50,8 @@ export const SITE_URL = "https://boujiecall.com";
 export type HeroSlide = { src: string; alt: string; slug: string; piece: string; colorway: string; focus: string; text: "ink" | "cream" };
 
 export const heroSlides: HeroSlide[] = [
-  { src: "/images/hero/after-dark-slip.webp", alt: "A woman sits by a sunlit window wearing The Slip Dress in After Dark", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "After Dark", focus: "66% 50%", text: "ink" },
-  { src: "/images/hero/powder-blue-romper.webp", alt: "A woman lounges in a floral armchair wearing The Romper in Powder Blue", slug: "the-romper", piece: "The Romper", colorway: "Powder Blue", focus: "68% 50%", text: "ink" },
-  { src: "/images/hero/rose-slip.webp", alt: "A woman stands against a taupe wall wearing The Slip Dress in Rose", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "Rose", focus: "62% 50%", text: "cream" },
-  { src: "/images/hero/mocha-romper.webp", alt: "A woman leans on an antique dresser wearing The Romper in Mocha", slug: "the-romper", piece: "The Romper", colorway: "Mocha", focus: "62% 50%", text: "cream" },
+  { src: "/images/hero/after-dark-slip.webp", alt: "A woman sits by a sunlit window wearing The Slip Dress in After Dark", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "After Dark", focus: "66% 22%", text: "ink" },
+  { src: "/images/hero/powder-blue-romper.webp", alt: "A woman lounges in a floral armchair wearing The Romper in Powder Blue", slug: "the-romper", piece: "The Romper", colorway: "Powder Blue", focus: "68% 30%", text: "ink" },
+  { src: "/images/hero/rose-slip.webp", alt: "A woman stands against a taupe wall wearing The Slip Dress in Rose", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "Rose", focus: "62% 18%", text: "cream" },
+  { src: "/images/hero/mocha-romper.webp", alt: "A woman leans on an antique dresser wearing The Romper in Mocha", slug: "the-romper", piece: "The Romper", colorway: "Mocha", focus: "62% 18%", text: "cream" },
 ];

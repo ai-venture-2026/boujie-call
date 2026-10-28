@@ -26,7 +26,7 @@ export function WaitlistForm() {
         placeholder="Your email"
         className="min-w-0 flex-1 basis-64 border-0 border-b-[0.5px] border-ink/30 bg-transparent px-0 py-3 text-ink placeholder:text-muted focus:border-ink"
       />
-      <button type="submit" className="pill grow sm:grow-0">
+      <button type="submit" className="cta grow sm:grow-0">
         Join the waitlist
       </button>
       <p role="status" className="basis-full text-sm text-muted">

@@ -9,7 +9,7 @@ export default function NotFound() {
       <main className="mx-auto max-w-7xl px-6 pt-24 pb-32 md:px-12 md:pt-36">
         <h1 className="max-w-3xl text-5xl md:text-7xl">This page didn&apos;t pick up.</h1>
         <p className="mt-6 font-serif text-2xl italic text-muted">It may have moved, or it was never here.</p>
-        <Link href="/" className="pill mt-12">
+        <Link href="/" className="cta mt-12">
           Back to home
         </Link>
       </main>

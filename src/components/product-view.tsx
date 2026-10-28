@@ -93,7 +93,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
             ))}
           </div>
         </fieldset>
-        <button type="button" onClick={add} className="pill mt-10 w-full sm:w-auto">
+        <button type="button" onClick={add} className="cta mt-10 w-full sm:w-auto">
           Add to your bag
         </button>
         <p className="mt-3 text-sm text-muted">{OFFER}</p>

@@ -93,24 +93,56 @@
     text-transform: uppercase;
   }
 
-  .pill {
+  .cta {
+    --cta-fill: var(--color-ink);
+    --cta-on: var(--color-cream);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 44px;
-    padding: 0 1.75rem;
-    border-radius: 9999px;
-    background: var(--color-pink);
-    color: var(--color-ink);
-    font-size: 12px;
+    min-height: 48px;
+    padding: 0 2.25rem;
+    border: 1px solid currentColor;
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    transition: background-color 300ms;
+    transition: color 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  .pill:hover {
-    background: var(--color-blush);
+  .cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--cta-fill);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .cta:hover,
+  .cta:focus-visible {
+    color: var(--cta-on);
+  }
+
+  .cta:hover::before,
+  .cta:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .cta-light {
+    --cta-fill: var(--color-cream);
+    --cta-on: var(--color-ink);
+  }
+
+  @media (min-width: 768px) {
+    [data-tone="cream"] .cta {
+      --cta-fill: var(--color-cream);
+      --cta-on: var(--color-ink);
+    }
   }
 
   .vertical {
@@ -129,13 +161,6 @@
 @keyframes unveil {
   from {
     clip-path: inset(10% 0 10% 0);
-  }
-}
-
-@keyframes header-solid {
-  from {
-    background-color: transparent;
-    border-color: transparent;
   }
 }
 
@@ -179,11 +204,18 @@
       animation-timeline: view();
       animation-range: cover 0% cover 100%;
     }
+  }
+}
 
-    .header-overlay {
-      animation: header-solid linear both;
-      animation-timeline: scroll();
-      animation-range: 0 120px;
-    }
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta,
+  .cta::before {
+    transition: none;
   }
 }

@@ -38,9 +38,9 @@ describe("SiteHeader", () => {
     expect(linkNames(screen.getByRole("navigation", { name: "Main" }))).toEqual(pages);
   });
 
-  it("points Join the waitlist at the Home signup", () => {
+  it("points Shop the collection at the shop", () => {
     render(<SiteHeader />);
-    expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "/#waitlist");
+    expect(screen.getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
   });
 
   it("shows the ink logo", () => {
@@ -128,12 +128,12 @@ describe("Home editorial redesign", () => {
 
   it("labels the hero as luxury nightwear gifts", () => {
     render(<Home />);
-    expect(within(hero()).getByText("BOUJIE CALL ✦ LUXURY NIGHTWEAR GIFTS")).toBeInTheDocument();
+    expect(within(hero()).getByText("LUXURY NIGHTWEAR GIFTS")).toBeInTheDocument();
   });
 
-  it("gives the hero a single waitlist link", () => {
+  it("gives the hero a single shop link", () => {
     render(<Home />);
-    expect(within(hero()).getAllByRole("link", { name: "Join the waitlist" })).toHaveLength(1);
+    expect(within(hero()).getAllByRole("link", { name: "Shop the collection" }).map((l) => l.getAttribute("href"))).toEqual(["/shop"]);
   });
 
   it("numbers the steps 01 to 03", () => {
@@ -189,7 +189,7 @@ describe("Home night half", () => {
 });
 
 describe("Hero carousel", () => {
-  const counter = () => screen.getByText(/^0\d \/ 04$/).textContent;
+  const current = () => screen.getAllByRole("button", { name: /^Show slide/ }).findIndex((b) => b.getAttribute("aria-current") === "true") + 1;
   const visible = () => screen.getAllByRole("group", { hidden: true }).filter((g) => g.getAttribute("aria-hidden") !== "true");
 
   beforeEach(() => vi.useFakeTimers());
@@ -200,20 +200,20 @@ describe("Hero carousel", () => {
 
   it("starts on the first of four slides", () => {
     render(<Home />);
-    expect([visible().length, counter()]).toEqual([1, "01 / 04"]);
+    expect([visible().length, current()]).toEqual([1, 1]);
   });
 
   it("advances to the second slide after 7 seconds", () => {
     render(<Home />);
     act(() => vi.advanceTimersByTime(7000));
-    expect(counter()).toBe("02 / 04");
+    expect(current()).toBe(2);
   });
 
   it("stays put once paused", () => {
     render(<Home />);
-    fireEvent.click(screen.getByRole("button", { name: "Pause" }));
+    fireEvent.click(screen.getByRole("button", { name: "Pause slideshow" }));
     act(() => vi.advanceTimersByTime(20000));
-    expect(counter()).toBe("01 / 04");
+    expect(current()).toBe(1);
   });
 
   it("links the caption to the piece she wears", () => {
@@ -225,7 +225,7 @@ describe("Hero carousel", () => {
     vi.stubGlobal("matchMedia", (q: string) => ({ matches: q.includes("reduce"), addEventListener() {}, removeEventListener() {} }));
     render(<Home />);
     act(() => vi.advanceTimersByTime(20000));
-    expect(counter()).toBe("01 / 04");
+    expect(current()).toBe(1);
   });
 });
 
@@ -315,5 +315,35 @@ describe("Closing section", () => {
   it("is not a centered stack", () => {
     const { container } = render(<Home />);
     expect(close(container).querySelector(".text-center")).toBeNull();
+  });
+});
+
+describe("Hero polish", () => {
+  const hero = () => screen.getByRole("region", { name: "The gift that makes her feel like the moment." });
+
+  it("shows no counter text", () => {
+    render(<Home />);
+    expect(within(hero()).queryByText(/\d\d \/ \d\d|Pause/)).toBeNull();
+  });
+
+  it("jumps to a slide from its control", () => {
+    render(<Home />);
+    fireEvent.click(screen.getByRole("button", { name: "Show slide 3" }));
+    expect(screen.getAllByRole("group", { hidden: true })[2]).toHaveAttribute("aria-hidden", "false");
+  });
+
+  it("keeps sparkles out of the hero text", () => {
+    render(<Home />);
+    expect(hero().textContent).not.toContain("✦");
+  });
+
+  it("styles the hero CTA as a button", () => {
+    render(<Home />);
+    expect(within(hero()).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta");
+  });
+
+  it("leaves nothing after the CTA label", () => {
+    render(<Home />);
+    expect(within(hero()).getByRole("link", { name: "Shop the collection" }).children).toHaveLength(0);
   });
 });

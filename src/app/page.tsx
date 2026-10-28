@@ -15,15 +15,14 @@ export default function Home() {
       <SiteHeader overlay />
       <main>
         <HeroCarousel>
-          <p className="label">BOUJIE CALL ✦ LUXURY NIGHTWEAR GIFTS</p>
-          <h1 id="hero-title" className="mt-6 max-w-[15ch] text-[clamp(2.25rem,3.6vw,3.75rem)] leading-[1.04]">
+          <p className="label">LUXURY NIGHTWEAR GIFTS</p>
+          <h1 id="hero-title" className="mt-6 max-w-[14ch] text-[clamp(2.75rem,5.2vw,5.75rem)] leading-[1.02]">
             The gift that makes her <em>feel</em> like the <em>moment.</em>
           </h1>
-          <p className="mt-5 max-w-xs text-sm leading-relaxed">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
-          <a href="#waitlist" className="label group mt-10 inline-flex min-h-11 items-center gap-4 self-start">
-            Join the waitlist
-            <span aria-hidden="true" className="h-px w-14 bg-current transition-all duration-500 group-hover:w-24" />
-          </a>
+          <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
+          <Link href="/shop" className="cta mt-10">
+            Shop the collection
+          </Link>
         </HeroCarousel>
 
         <section id="how" className="bg-cream py-28 md:py-40">

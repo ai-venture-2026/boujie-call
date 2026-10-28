@@ -118,8 +118,8 @@ describe("Product photos", () => {
 });
 
 describe("Product button", () => {
-  it("uses the slim pill for add to your bag", async () => {
+  it("uses the cta button for add to your bag", async () => {
     await renderProduct("the-romper");
-    expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("pill");
+    expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("cta");
   });
 });
