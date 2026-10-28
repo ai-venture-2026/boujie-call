@@ -467,6 +467,17 @@ describe("Home rebuild round 2", () => {
   it("links each piece in the pieces grid", () => {
     render(<Home />);
     const grid = screen.getByRole("region", { name: "The pieces" });
-    expect(within(grid).getAllByRole("link").map((l) => l.getAttribute("href"))).toEqual(["/shop/the-slip-dress", "/shop/the-boujie-set", "/shop/the-romper", "/shop"]);
+    expect(within(grid).getAllByRole("link").map((l) => l.getAttribute("href"))).toEqual(["/shop", "/shop/the-slip-dress", "/shop/the-romper", "/shop/the-boujie-set"]);
+  });
+
+  it("lists the pieces as three equal cards with the unphotographed one last", () => {
+    render(<Home />);
+    const cards = within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("heading");
+    expect(cards.map((c) => c.textContent)).toEqual(["The Slip Dress", "The Romper", "The Boujie Set"]);
+  });
+
+  it("accents the closing headline in deep rose", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelector("section#waitlist h2 em")).toHaveClass("text-rose-deep");
   });
 });

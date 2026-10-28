@@ -6,7 +6,7 @@ import { HeroCarousel } from "@/components/hero-carousel";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
-import { getProduct, products, type Product } from "@/lib/products";
+import { getProduct, type Product } from "@/lib/products";
 
 const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 const romper = getProduct("the-romper");
@@ -19,19 +19,19 @@ const strip = [
   { src: "/images/strip/mist.webp", box: "mt-32 aspect-[4/3] w-[44vw] md:w-[20vw]" },
 ];
 
-function PieceCard({ product, large = false }: { product: Product; large?: boolean }) {
+function PieceCard({ product }: { product: Product }) {
   const photo = product.colorways[0].images[0];
   return (
-    <Link href={`/shop/${product.slug}`} className="group block rise">
-      <div className={`relative overflow-hidden bg-stone ${large ? "aspect-[4/5]" : "aspect-[3/4]"}`}>
+    <Link href={`/shop/${product.slug}`} className="group block">
+      <div className="relative aspect-[4/5] overflow-hidden bg-stone">
         {photo ? (
-          <Image src={photo} alt="" fill sizes={large ? "(min-width: 768px) 45vw, 100vw" : "(min-width: 768px) 22vw, 50vw"} className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
+          <Image src={photo} alt="" fill sizes="(min-width: 640px) 30vw, 100vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
         ) : (
           <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
         )}
       </div>
-      <h3 className={`mt-5 ${large ? "text-3xl" : "text-2xl"}`}>{product.name}</h3>
-      <div className="mt-2 flex items-baseline gap-4">
+      <h3 className="mt-5 text-2xl">{product.name}</h3>
+      <div className="mt-1 flex items-baseline justify-between gap-4">
         <Price product={product} />
         <span className="label text-[10px] text-muted">{product.colorways.length} colorways</span>
       </div>
@@ -124,23 +124,29 @@ export default function Home() {
           </div>
         </section>
 
-        <section aria-labelledby="pieces-title" className="bg-cream py-28 md:py-40">
-          <div className={`${wrap} grid gap-x-8 gap-y-12 md:grid-cols-12`}>
-            <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise md:col-span-6 md:col-start-7 md:row-start-1">
-              The <em className="text-rose">pieces</em>
-            </h2>
-            <div className="md:col-span-6 md:col-start-1 md:row-span-3 md:row-start-1">
-              <PieceCard product={products[0]} large />
-            </div>
-            <div className="grid gap-8 sm:grid-cols-2 md:col-span-6 md:col-start-7 md:row-start-2">
-              <PieceCard product={products[1]} />
-              <PieceCard product={products[2]} />
-            </div>
-            <div className="md:col-span-6 md:col-start-7 md:row-start-3">
-              <Link href="/shop" className="cta">
+        <section aria-labelledby="pieces-title" className="bg-cream py-20 md:py-24">
+          <div className={wrap}>
+            <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+              <div className="rise">
+                <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
+                  The <em className="text-rose">pieces</em>
+                </h2>
+                <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">Satin and lace, made to be gifted. Sizes S to XL.</p>
+              </div>
+              <Link href="/shop" className="cta self-start md:self-auto">
                 View all pieces
               </Link>
             </div>
+            <ul aria-label="Pieces" className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-3">
+              {["the-slip-dress", "the-romper", "the-boujie-set"].map((slug) => {
+                const product = getProduct(slug);
+                return product && (
+                  <li key={slug} className="rise">
+                    <PieceCard product={product} />
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </section>
 
@@ -151,7 +157,7 @@ export default function Home() {
           <div className={`${wrap} relative py-16 md:flex md:h-[64svh] md:max-h-[720px] md:min-h-[540px] md:items-center md:py-0`}>
             <div className="max-w-lg md:max-w-[min(30rem,42%)] rise">
               <h2 className="text-[clamp(2.5rem,4.4vw,4.5rem)] leading-[1.02] text-ink">
-                Be first to receive a Boujie <em>Call.</em>
+                Be first to receive a Boujie <em className="text-rose-deep">Call.</em>
               </h2>
               <p className="mt-5 font-serif text-xl text-ink/80 italic md:text-2xl">The call is coming. Are you going to pick up?</p>
               <p className="mt-6 mb-4 max-w-sm text-base leading-relaxed text-ink/75">Join the waitlist for early access and the launch date.</p>
