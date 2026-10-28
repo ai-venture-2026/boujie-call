@@ -5,7 +5,8 @@ import { SiteHeader } from "@/components/site-header";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { socials, steps } from "@/lib/content";
-import { getProduct } from "@/lib/products";
+import { Price } from "@/components/product-view";
+import { getProduct, products, type Product } from "@/lib/products";
 
 const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 const romper = getProduct("the-romper");
@@ -17,6 +18,26 @@ const strip = [
   { src: "/images/hero/pink-slip-studio.webp", focus: "50% 30%", box: "mt-6 aspect-[4/5] w-[48vw] md:w-[24vw]" },
   { src: "/images/hero/black-slip-studio.webp", focus: "48% 40%", box: "mt-32 aspect-[4/3] w-[44vw] md:w-[20vw]" },
 ];
+
+function PieceCard({ product, large = false }: { product: Product; large?: boolean }) {
+  const photo = product.colorways[0].images[0];
+  return (
+    <Link href={`/shop/${product.slug}`} className="group block rise">
+      <div className={`relative overflow-hidden bg-stone ${large ? "aspect-[4/5]" : "aspect-[3/4]"}`}>
+        {photo ? (
+          <Image src={photo} alt="" fill sizes={large ? "(min-width: 768px) 45vw, 100vw" : "(min-width: 768px) 22vw, 50vw"} className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
+        ) : (
+          <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
+        )}
+      </div>
+      <h3 className={`mt-5 ${large ? "text-3xl" : "text-2xl"}`}>{product.name}</h3>
+      <div className="mt-2 flex items-baseline gap-4">
+        <Price product={product} />
+        <span className="label text-[10px] text-muted">{product.colorways.length} colorways</span>
+      </div>
+    </Link>
+  );
+}
 
 export default function Home() {
   return (
@@ -75,32 +96,49 @@ export default function Home() {
           </ol>
         </section>
 
-        <section aria-label="From brunch to after dark">
-          <div className="py-24 md:py-32">
-            <h2 className={`${wrap} text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise`}>
+        <section aria-label="From brunch to after dark" className="grid md:h-[92svh] md:min-h-[640px] md:grid-cols-2">
+          <div className="relative flex flex-col md:items-center md:justify-end md:flex-row">
+            <div className="relative h-[70svh] w-full md:absolute md:inset-0 md:h-auto">
+              <Image src="/images/hero/pink-slip-studio.webp" alt="A woman in The Slip Dress in Rose, in daylight" fill sizes="(min-width: 768px) 50vw, 100vw" style={{ objectPosition: "50% 22%" }} className="object-cover" />
+            </div>
+            <h2 className="relative self-end p-8 text-right md:max-w-[11ch] md:self-auto text-[clamp(2.25rem,3.8vw,3.75rem)] leading-[1.04] md:p-10 rise">
               Cute enough to open at <em className="text-rose">brunch.</em>
             </h2>
           </div>
-          <div data-nav="dark" className="bg-ink py-24 text-blush md:py-32">
-            <div className={`${wrap} grid items-center gap-12 md:grid-cols-12 md:gap-x-16`}>
-              <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
-                <Image
-                  src="/images/hero/mocha-romper.webp"
-                  alt="A woman in The Romper in Mocha leans on a dresser in evening light"
-                  fill
-                  sizes="(min-width: 768px) 40vw, 100vw"
-                  style={{ objectPosition: "64% 40%" }}
-                  className="object-cover unveil"
-                />
-              </div>
-              <div className="md:col-span-6 md:col-start-7">
-                <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
-                  Irresistible enough to wear <em className="text-pink">that night.</em>
-                </h2>
-                <Link href="/shop/the-romper" className="label mt-10 inline-flex min-h-11 items-center text-xs text-muted-dark hover:text-blush">
-                  The Romper · Mocha
-                </Link>
-              </div>
+          <div data-nav="dark" className="relative flex flex-col bg-ink text-cream md:flex-row md:items-center">
+            <div className="relative h-[70svh] w-full md:absolute md:inset-0 md:h-auto">
+              <Image src="/images/hero/mocha-romper.webp" alt="A woman in The Romper in Mocha leans on a dresser in evening light" fill sizes="(min-width: 768px) 50vw, 100vw" style={{ objectPosition: "64% 40%" }} className="object-cover" />
+            </div>
+            <div className="relative p-8 md:p-10 rise">
+              <h2 className="text-[clamp(2.25rem,3.8vw,3.75rem)] md:max-w-[12ch] leading-[1.04]">
+                Irresistible enough to wear <em className="text-pink">that night.</em>
+              </h2>
+              <Link href="/shop" className="cta mt-10">
+                Shop the collection
+              </Link>
+              <Link href="/shop/the-romper" className="label mt-6 flex min-h-11 items-center text-xs text-cream/80 hover:text-cream">
+                The Romper · Mocha
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="pieces-title" className="bg-cream py-28 md:py-40">
+          <div className={`${wrap} grid gap-x-8 gap-y-12 md:grid-cols-12`}>
+            <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise md:col-span-6 md:col-start-7 md:row-start-1">
+              The <em className="text-rose">pieces</em>
+            </h2>
+            <div className="md:col-span-6 md:col-start-1 md:row-span-3 md:row-start-1">
+              <PieceCard product={products[0]} large />
+            </div>
+            <div className="grid gap-8 sm:grid-cols-2 md:col-span-6 md:col-start-7 md:row-start-2">
+              <PieceCard product={products[1]} />
+              <PieceCard product={products[2]} />
+            </div>
+            <div className="md:col-span-6 md:col-start-7 md:row-start-3">
+              <Link href="/shop" className="cta">
+                View all pieces
+              </Link>
             </div>
           </div>
         </section>

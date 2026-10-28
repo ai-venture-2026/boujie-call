@@ -25,3 +25,4 @@
 - Hero pace: 5 seconds per photo with a 1.2 second crossfade, and no pause on hover; the pause icon still stops it.
 - Hero photographs: four new art-directed studio photos (black slip dress, blue romper, pink slip dress, brown romper) on plain matte walls replace the earlier set.
 - Home rebuild round 1: The Romper in Mocha beside a close-up of its lace, a centred statement with a staggered strip of five photos and the three steps, the gift tiers moved off Home, and a frosted glass nav that turns dark over dark sections. The black slip hero photo is replaced with a wider framing.
+- Home rebuild round 2: brunch to after dark as two photos meeting at the seam with the lines reading across it, and an editorial grid of the three pieces with View all pieces.

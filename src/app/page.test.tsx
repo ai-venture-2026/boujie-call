@@ -403,3 +403,24 @@ describe("Home rebuild round 1", () => {
     expect(screen.getByRole("contentinfo")).toHaveAttribute("data-nav", "dark");
   });
 });
+
+describe("Home rebuild round 2", () => {
+  const pair = () => screen.getByRole("region", { name: "From brunch to after dark" });
+
+  it("pairs a day photo with the evening photo", () => {
+    render(<Home />);
+    expect(within(pair()).getAllByRole("img")).toHaveLength(2);
+  });
+
+  it("puts one shop button in the night half", () => {
+    render(<Home />);
+    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
+    expect(within(night).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
+  });
+
+  it("links each piece in the pieces grid", () => {
+    render(<Home />);
+    const grid = screen.getByRole("region", { name: "The pieces" });
+    expect(within(grid).getAllByRole("link").map((l) => l.getAttribute("href"))).toEqual(["/shop/the-slip-dress", "/shop/the-boujie-set", "/shop/the-romper", "/shop"]);
+  });
+});
