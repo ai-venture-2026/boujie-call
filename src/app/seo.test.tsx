@@ -25,6 +25,7 @@ describe("sitemap", () => {
       "https://boujiecall.com/",
       "https://boujiecall.com/shop",
       "https://boujiecall.com/send-a-call",
+      "https://boujiecall.com/about",
       "https://boujiecall.com/shop/the-slip-dress",
       "https://boujiecall.com/shop/the-boujie-set",
       "https://boujiecall.com/shop/the-romper",

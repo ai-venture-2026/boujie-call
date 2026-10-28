@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- About page from the owner's copy: dark split hero, our story, three pillars, founder quote and a waitlist close. Footer rebuilt with newsletter, Shop, Company and Socials columns and a typeset wordmark. Home detail section fits one screen.
 - Toolchain: Next.js 16, React 19, Tailwind 4, ESLint, Vitest.
 - Design system: brand colors, Cormorant Garamond and DM Sans, pink pill buttons with dark text.
 - Home: pre-launch waitlist page with how it works, gift tiers preview, social follow and email signup. Prices, social links and the email service are placeholders.

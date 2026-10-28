@@ -72,9 +72,26 @@ describe("SiteFooter", () => {
     expect(linkNames(screen.getByRole("navigation", { name: "Footer" }))).toEqual(pages);
   });
 
-  it("shows the pink logo", () => {
+  it("spells out the wordmark in type", () => {
+    const { container } = render(<SiteFooter />);
+    expect(container.querySelector("[data-wordmark]")).toHaveTextContent("Boujie Call");
+  });
+
+  it("links the pieces from the Shop column", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("logo-pink");
+    expect(linkNames(screen.getByRole("navigation", { name: "Shop" }))).toEqual(["The Slip Dress", "The Boujie Set", "The Romper", "All pieces"]);
+  });
+
+  it("offers a newsletter email field", () => {
+    render(<SiteFooter />);
+    expect(within(screen.getByRole("contentinfo")).getByLabelText("Email address")).toHaveAttribute("type", "email");
+  });
+
+
+  it("gives each waitlist field its own id", () => {
+    render(<><WaitlistForm /><WaitlistForm /></>);
+    const [a, b] = screen.getAllByLabelText("Email address");
+    expect(a.id).not.toBe(b.id);
   });
 });
 

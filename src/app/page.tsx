@@ -55,12 +55,12 @@ export default function Home() {
           </Link>
         </HeroCarousel>
 
-        <section id="detail" className="grid md:min-h-[88svh] md:grid-cols-2">
-          <div className="flex flex-col items-center justify-center bg-stone px-6 py-20 md:px-12">
-            <div className="relative aspect-[3/4] w-full max-w-sm">
+        <section id="detail" className="grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-2">
+          <div className="flex flex-col items-center justify-center bg-stone px-6 py-20 md:px-12 md:py-12">
+            <div className="relative aspect-[3/4] w-full max-w-sm md:aspect-auto md:min-h-0 md:flex-1">
               <Image src="/images/products/the-romper-mocha.webp" alt="The Romper in Mocha" fill sizes="(min-width: 768px) 30vw, 80vw" className="object-contain mix-blend-multiply" />
             </div>
-            <div className="mt-10 w-full max-w-sm rise">
+            <div className="mt-8 w-full max-w-sm rise">
               <p className="label">The Romper · Mocha</p>
               <p className="mt-4 text-base leading-relaxed text-muted">{romper?.description}</p>
               <Link href="/shop/the-romper" className="cta mt-8">

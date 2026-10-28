@@ -93,7 +93,7 @@ describe("Add to your bag", () => {
     fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
     fireEvent.click(screen.getByRole("radio", { name: "M" }));
     add();
-    expect(screen.getByRole("status")).toHaveTextContent("Added to your bag: The Slip Dress, After Dark, M.");
+    expect(within(screen.getByRole("main")).getByRole("status")).toHaveTextContent("Added to your bag: The Slip Dress, After Dark, M.");
   });
 });
 
