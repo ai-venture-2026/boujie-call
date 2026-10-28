@@ -19,7 +19,7 @@ export function Frame({ product, colorway, view, className = "" }: { product: Pr
       role="img"
       aria-label={`${product.name} in ${colorway.name}, ${view}`}
       style={{ background: colorway.swatch ?? colorway.hex }}
-      className={`flex items-end rounded-[16px] border-[0.5px] border-card-border p-5 font-serif italic ${isDark(colorway.hex) ? "text-muted-dark" : "text-muted"} ${className}`}
+      className={`flex items-end border-[0.5px] border-card-border p-5 font-serif italic ${isDark(colorway.hex) ? "text-muted-dark" : "text-muted"} ${className}`}
     >
       {colorway.name}, {view}
     </div>
@@ -57,7 +57,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
     <div className="grid gap-10 md:grid-cols-2 md:gap-16">
       <div>
         {photo ? (
-          <div className="overflow-hidden rounded-[16px] bg-blush">
+          <div className="overflow-hidden bg-stone">
             <Image src={photo} alt={`${product.name} in ${shown.name}, ${views[view]}`} width={900} height={1200} priority className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
           </div>
         ) : (
@@ -65,7 +65,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         )}
         <div className="mt-3 grid grid-cols-3 gap-3">
           {views.map((v, i) => (
-            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden rounded-[12px] border-[0.5px] border-card-border bg-blush aria-pressed:outline-1 aria-pressed:outline-ink" style={shown.images[i] ? undefined : { background: shown.swatch ?? shown.hex }}>
+            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden bg-stone aria-pressed:outline-1 aria-pressed:outline-ink" style={shown.images[i] ? undefined : { background: shown.swatch ?? shown.hex }}>
               {shown.images[i] && <Image src={shown.images[i]} alt="" fill sizes="120px" className="object-cover mix-blend-multiply" />}
             </button>
           ))}
@@ -80,9 +80,9 @@ export function ProductView({ product, intro, details }: { product: Product; int
           </legend>
           <div className="mt-4 flex flex-wrap gap-2">
             {product.colorways.map((c) => (
-              <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-ink has-focus-visible:outline-2">
+              <label key={c.name} className="grid size-11 cursor-pointer place-items-center has-checked:ring-1 has-checked:ring-ink has-focus-visible:outline-2">
                 <input type="radio" name="colorway" value={c.name} aria-label={c.name} className="sr-only" checked={chosen?.name === c.name} onChange={() => setChosen(c)} />
-                <span aria-hidden="true" className="size-7 rounded-full border-[0.5px] border-card-border" style={{ background: c.swatch ?? c.hex }} />
+                <span aria-hidden="true" className="size-7 border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
               </label>
             ))}
           </div>
@@ -93,7 +93,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           </legend>
           <div className="mt-4 flex flex-wrap gap-2">
             {product.sizes.map((s) => (
-              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center rounded-full border-[0.5px] border-card-border px-4 text-sm has-checked:border-ink has-checked:bg-ink has-checked:text-blush has-focus-visible:outline-2">
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center border-[0.5px] border-ink/25 px-4 text-sm transition-colors hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-cream has-focus-visible:outline-2">
                 <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>

@@ -167,3 +167,16 @@ describe("Colorway from the link", () => {
     expect(screen.getByRole("radio", { name: "After Dark" })).toBeChecked();
   });
 });
+
+describe("Product page shapes", () => {
+  it("keeps every shape on the product page square", async () => {
+    const { container } = await renderProduct("the-slip-dress");
+    expect(container.querySelector("main [class*='rounded']")).toBeNull();
+  });
+
+  it("sets the product photo on stone", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("bg-stone");
+  });
+});

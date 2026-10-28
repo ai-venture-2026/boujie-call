@@ -9,4 +9,3 @@ Categories: cleanup (mechanical, safe to batch), pattern (a wrong shape new code
 copy; fix it before it spreads), soon (costs someone time while it exists), accepted
 (evaluated and staying as is).
 - [soon] Privacy and Terms pages are missing; the footer leaves them out until they exist, and they are needed before the waitlist collects emails (src/components/site-footer.tsx) :: logged 2026-10-28, cycle 20261028-478322
-- [pattern] Product page still uses round size pills and a 16px rounded photo frame, unlike the square system everywhere else (src/components/product-view.tsx) :: logged 2026-10-28, cycle 20261028-2cbbba

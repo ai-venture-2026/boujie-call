@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Product page: square size and colour choices, square photo frame and thumbnails on stone, matching the rest of the site.
 - Mini bag: the bag icon opens a dropdown (full width on phones) with up to three pieces, the offer line, subtotal, View bag and Checkout; it opens for 3 seconds after a piece is added and stays open while hovered.
 - Bag page at /bag: quantity, remove, an offer line that follows the piece count, subtotal and a Checkout button that says checkout opens soon. Checkout lives in src/lib/checkout.ts for the Shopify handoff.
 - Home pieces: one header row and three equal cards, unphotographed Boujie Set last. Closing headline accent in a deep rose that stays readable on the banner photo.
