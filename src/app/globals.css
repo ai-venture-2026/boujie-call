@@ -72,22 +72,6 @@
 }
 
 @layer components {
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9999px;
-    padding: 0.95rem 2rem;
-    background: var(--color-pink);
-    color: var(--color-ink);
-    font-weight: 500;
-    transition: background-color 200ms;
-  }
-
-  .btn:hover {
-    background: var(--color-blush);
-  }
-
   .link {
     text-decoration: underline;
     text-decoration-color: var(--color-pink);

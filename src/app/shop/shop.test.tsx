@@ -116,3 +116,10 @@ describe("Product photos", () => {
     expect(container.querySelector("main img")).toBeNull();
   });
 });
+
+describe("Product button", () => {
+  it("uses the slim pill for add to your bag", async () => {
+    await renderProduct("the-romper");
+    expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("pill");
+  });
+});

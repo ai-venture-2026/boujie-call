@@ -84,7 +84,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
               ))}
             </ul>
           </nav>
-          <Link href="/#waitlist" onClick={close} className="btn mt-auto w-full">
+          <Link href="/#waitlist" onClick={close} className="pill mt-auto w-full">
             Join the waitlist
           </Link>
         </div>

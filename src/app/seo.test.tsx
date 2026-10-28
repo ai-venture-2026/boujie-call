@@ -47,3 +47,10 @@ describe("share metadata", () => {
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
   });
 });
+
+describe("404 button", () => {
+  it("uses the slim pill", () => {
+    const { container } = render(<NotFound />);
+    expect(container.querySelector(".btn")).toBeNull();
+  });
+});

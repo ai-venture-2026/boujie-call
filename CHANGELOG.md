@@ -16,3 +16,4 @@
 - Hero: silent luxury carousel of four on-model photos (The Slip Dress in After Dark and Rose, The Romper in Powder Blue and Mocha) with slow crossfades, quiet type that switches ink or cream per photo, a caption linking each piece, and a pause control. Off under reduced motion.
 - How it works: quiet two-column spread on cream with a still-life image slot for the gift being opened and the three steps as a hairline numbered list; the blush block, staggered numerals, vertical type and packshot are gone.
 - The turn: calmer split with the brunch line on cream and the night line on ink beside the evening photograph of The Romper in Mocha, with a caption link; the packshot is gone.
+- De-slop: removed orphan section markers, the decorative ✦ above tier names and the redundant How it works label; one slim pill button style across the 404 page, mobile menu and product page.

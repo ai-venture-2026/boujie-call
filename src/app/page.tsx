@@ -4,7 +4,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { ImageSlot } from "@/components/image-slot";
-import { Marker } from "@/components/marker";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { formatPrice, socials, steps, tiers } from "@/lib/content";
 
@@ -33,7 +32,6 @@ export default function Home() {
               <ImageSlot alt="Hands untying the ribbon on a Boujie Call gift box" className="unveil" />
             </div>
             <div className="md:col-span-6 md:col-start-7">
-              <p className="label text-muted rise">How it works</p>
               <h2 className="mt-6 max-w-md text-[clamp(2rem,3.2vw,3.25rem)] leading-[1.06] rise">
                 Someone places a call. She <em>receives</em> a moment.
               </h2>
@@ -85,7 +83,6 @@ export default function Home() {
         <section id="boxes">
           <div className="pt-28 md:pt-40">
             <div className={`${wrap} relative`}>
-              <Marker n={3} className="absolute top-0 right-6 hidden md:block text-muted md:right-12" />
               <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] rise">
                 Three tiers. One <em>vibe.</em>
               </h2>
@@ -99,10 +96,7 @@ export default function Home() {
                   <ImageSlot alt={tier.name} className="unveil" />
                 </div>
                 <div className={`rise ${i % 2 ? "md:col-start-2 md:col-end-6 md:row-start-1" : "md:col-start-8 md:col-end-12"}`}>
-                  <span aria-hidden="true" className="text-pink">
-                    ✦
-                  </span>
-                  <h3 className="mt-4 text-[clamp(2.25rem,4vw,3.75rem)] leading-none">{tier.name}</h3>
+                  <h3 className="text-[clamp(2.25rem,4vw,3.75rem)] leading-none">{tier.name}</h3>
                   <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted">{tier.contents}</p>
                   <p className="mt-8 font-serif text-xl italic">{formatPrice(tier.priceCents)}</p>
                 </div>
@@ -113,7 +107,6 @@ export default function Home() {
 
         <section className="bg-blush py-28 md:py-40">
           <div className={`${wrap} relative grid gap-14 md:grid-cols-12`}>
-            <Marker n={4} className="absolute top-0 right-6 hidden md:block text-muted md:right-12" />
             <div className="md:col-span-7 rise">
               <h2 className="text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98]">
                 Catch us before we <em>drop.</em>

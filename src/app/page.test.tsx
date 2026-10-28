@@ -256,3 +256,31 @@ describe("Day to night turn", () => {
     expect(within(night()).getByRole("link", { name: "The Romper · Mocha" })).toHaveAttribute("href", "/shop/the-romper");
   });
 });
+
+describe("De-slop", () => {
+  it("renders no section markers", () => {
+    render(<Home />);
+    expect(screen.queryByText(/^‹ \d\d ›$/)).toBeNull();
+  });
+
+  it("keeps the tier spreads free of decorative glyphs", () => {
+    render(<Home />);
+    const text = (a: HTMLElement) => {
+      const copy = a.cloneNode(true) as HTMLElement;
+      copy.querySelectorAll("[role=img]").forEach((img) => img.remove());
+      return copy.textContent ?? "";
+    };
+    expect(screen.getAllByRole("article").filter((a) => text(a).includes("✦"))).toEqual([]);
+  });
+
+  it("drops the How it works eyebrow", () => {
+    render(<Home />);
+    const section = screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
+    expect(within(section).queryByText("How it works", { selector: "p" })).toBeNull();
+  });
+
+  it("uses the slim pill in the mobile drawer", () => {
+    const { container } = render(<SiteHeader />);
+    expect(container.querySelector(".btn")).toBeNull();
+  });
+});
