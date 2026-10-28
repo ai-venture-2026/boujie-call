@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { HeroCarousel } from "@/components/hero-carousel";
@@ -51,17 +53,31 @@ export default function Home() {
         </section>
 
         <section aria-label="From brunch to after dark">
-          <div className="py-28 md:py-44">
-            <h2 className={`${wrap} text-[clamp(3rem,9vw,9.5rem)] leading-[0.92] rise`}>
+          <div className="py-24 md:py-32">
+            <h2 className={`${wrap} text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise`}>
               Cute enough to open at <em>brunch.</em>
             </h2>
           </div>
-          <div className="bg-ink py-28 text-blush nightfall md:py-44">
-            <div className={`${wrap} grid items-end gap-12 md:grid-cols-12`}>
-              <ImageSlot src="/images/products/the-romper-after-dark.webp" alt="The Romper in After Dark" ground="cream" className="drift w-3/4 max-w-sm md:col-span-4 md:w-full" />
-              <h2 className="text-right text-[clamp(3rem,9vw,9.5rem)] leading-[0.92] rise md:col-span-8">
-                Irresistible enough to wear <em className="text-pink">that night.</em>
-              </h2>
+          <div className="bg-ink py-24 text-blush nightfall md:py-32">
+            <div className={`${wrap} grid items-center gap-12 md:grid-cols-12 md:gap-x-16`}>
+              <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
+                <Image
+                  src="/images/hero/mocha-romper.webp"
+                  alt="A woman in The Romper in Mocha leans on a dresser in evening light"
+                  fill
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  style={{ objectPosition: "64% 40%" }}
+                  className="object-cover unveil"
+                />
+              </div>
+              <div className="md:col-span-6 md:col-start-7">
+                <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
+                  Irresistible enough to wear <em className="text-pink">that night.</em>
+                </h2>
+                <Link href="/shop/the-romper" className="label mt-10 inline-flex min-h-11 items-center text-[10px] text-muted-dark hover:text-blush">
+                  The Romper · Mocha
+                </Link>
+              </div>
             </div>
           </div>
         </section>

@@ -242,3 +242,17 @@ describe("How it works spread", () => {
     expect(within(section()).getByRole("img").getAttribute("aria-label")).toBe("Hands untying the ribbon on a Boujie Call gift box, image to come");
   });
 });
+
+describe("Day to night turn", () => {
+  const night = () => screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink") as HTMLElement;
+
+  it("shows the evening photograph instead of a packshot", () => {
+    render(<Home />);
+    expect(within(night()).getByRole("img").getAttribute("src")).toContain("mocha-romper");
+  });
+
+  it("links the caption to The Romper", () => {
+    render(<Home />);
+    expect(within(night()).getByRole("link", { name: "The Romper · Mocha" })).toHaveAttribute("href", "/shop/the-romper");
+  });
+});
