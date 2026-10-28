@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
+import { bagCount, useBag } from "@/lib/bag";
 import { pages } from "@/lib/content";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
@@ -15,6 +16,7 @@ export function SiteHeader() {
   const drawer = useRef<HTMLDialogElement>(null);
   const close = () => drawer.current?.close();
   const current = (href: string) => (pathname === href ? "page" : undefined);
+  const count = bagCount(useBag());
 
   return (
     <header className="sticky top-0 z-40 border-b-[0.5px] border-card-border bg-cream/95 backdrop-blur-sm">
@@ -35,15 +37,28 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <Link href="/#waitlist" className="btn hidden px-6 py-3 text-sm md:inline-flex">
-          Join the waitlist
-        </Link>
+        <div className="flex items-center gap-5">
+          <Link href="/bag" aria-label={`Your bag, ${count} ${count === 1 ? "piece" : "pieces"}`} className="relative grid size-11 place-items-center">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25">
+              <path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            {count > 0 && (
+              <span aria-hidden="true" className="absolute top-0.5 right-0 grid size-5 place-items-center rounded-full bg-pink text-[11px] font-medium text-ink">
+                {count}
+              </span>
+            )}
+          </Link>
 
-        <button type="button" aria-label="Open menu" aria-haspopup="dialog" className="md:hidden" onClick={() => drawer.current?.showModal()}>
-          <svg aria-hidden="true" width="28" height="28" viewBox="0 0 28 28" stroke="currentColor" strokeWidth="1.25">
-            <path d="M4 10h20M4 18h20" />
-          </svg>
-        </button>
+          <Link href="/#waitlist" className="btn hidden px-6 py-3 text-sm md:inline-flex">
+            Join the waitlist
+          </Link>
+
+          <button type="button" aria-label="Open menu" aria-haspopup="dialog" className="md:hidden" onClick={() => drawer.current?.showModal()}>
+            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 28 28" stroke="currentColor" strokeWidth="1.25">
+              <path d="M4 10h20M4 18h20" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <dialog

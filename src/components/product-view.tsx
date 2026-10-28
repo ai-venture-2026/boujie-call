@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, type ReactNode } from "react";
+import { addToBag } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
 import type { Colorway, Product } from "@/lib/products";
 
@@ -30,6 +31,20 @@ export function ProductView({ product, intro, details }: { product: Product; int
   const [view, setView] = useState(0);
   const shown = chosen ?? product.colorways[0];
   const photo = shown.images[view];
+  const [size, setSize] = useState<string | null>(null);
+  const [missing, setMissing] = useState("");
+  const [added, setAdded] = useState("");
+
+  function add() {
+    setAdded("");
+    if (!chosen || !size) {
+      setMissing(!chosen && !size ? "Choose a colorway and a size first." : !chosen ? "Choose a colorway first." : "Choose a size first.");
+      return;
+    }
+    setMissing("");
+    addToBag({ slug: product.slug, colorway: chosen.name, size });
+    setAdded(`Added to your bag: ${product.name}, ${chosen.name}, ${size}.`);
+  }
 
   return (
     <div className="grid gap-10 md:grid-cols-2 md:gap-16">
@@ -61,6 +76,28 @@ export function ProductView({ product, intro, details }: { product: Product; int
             ))}
           </div>
         </fieldset>
+        <fieldset className="mt-8">
+          <legend className="text-sm">
+            Size: <span className="text-muted">{size ?? "choose one"}</span>
+          </legend>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {product.sizes.map((s) => (
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center rounded-full border-[0.5px] border-card-border px-4 text-sm has-checked:border-ink has-checked:bg-ink has-checked:text-blush has-focus-visible:outline-2">
+                <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
+                {s}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <button type="button" onClick={add} className="btn mt-10 w-full sm:w-auto">
+          Add to your bag
+        </button>
+        <p role="alert" className="mt-4 text-sm">
+          {missing}
+        </p>
+        <p role="status" className="text-sm text-muted">
+          {added}
+        </p>
         {details}
       </div>
     </div>

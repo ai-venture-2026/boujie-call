@@ -3,6 +3,7 @@ import Home from "./page";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { BAG_KEY } from "@/lib/bag";
 
 describe("Home", () => {
   it("has one h1 with the brand promise", () => {
@@ -102,5 +103,15 @@ describe("WaitlistForm", () => {
   it("shows no status for an invalid email", () => {
     submit("not-an-email");
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  });
+});
+
+describe("Bag link", () => {
+  beforeEach(() => localStorage.clear());
+
+  it("names the live piece count", () => {
+    localStorage.setItem(BAG_KEY, JSON.stringify([{ slug: "the-romper", colorway: "Boujie pink", size: "S", qty: 2 }]));
+    render(<SiteHeader />);
+    expect(screen.getByRole("link", { name: "Your bag, 2 pieces" })).toHaveAttribute("href", "/bag");
   });
 });

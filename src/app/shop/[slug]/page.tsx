@@ -40,8 +40,6 @@ export default async function ProductPage({ params }: Props) {
             }
             details={
               <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-sm">
-                <dt>Sizes</dt>
-                <dd className="text-muted">{product.sizes.join(", ")}</dd>
                 <dt>Fabric</dt>
                 <dd className="text-muted">{product.fabric}</dd>
                 <dt>Care</dt>
