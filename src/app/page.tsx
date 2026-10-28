@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { HeroCarousel } from "@/components/hero-carousel";
 import { ImageSlot } from "@/components/image-slot";
 import { Marker } from "@/components/marker";
 import { WaitlistForm } from "@/components/waitlist-form";
@@ -12,31 +13,17 @@ export default function Home() {
     <>
       <SiteHeader overlay />
       <main>
-        <section aria-labelledby="hero-title" className="relative mx-auto max-w-[96rem] px-6 pt-8 pb-24 md:px-12 md:pt-14 md:pb-36">
-          <div className="grid md:grid-cols-12">
-            <div className="drift relative ml-auto w-[86%] md:col-start-6 md:col-end-13 md:row-start-1 md:w-full">
-              <Marker n={1} className="absolute top-0 -left-12 hidden text-muted md:block" />
-              <ImageSlot src="/images/products/the-slip-dress-rose.webp" alt="The Slip Dress in Rose" className="unveil md:min-h-[96vh]" />
-            </div>
-            <div className="relative z-10 -mt-24 md:col-start-1 md:col-end-10 md:row-start-1 md:mt-0 md:self-center">
-              <p className="label text-muted rise">BOUJIE CALL ✦ LUXURY NIGHTWEAR GIFTS</p>
-              <h1 id="hero-title" className="mt-6 text-[clamp(2.75rem,7.4vw,8.5rem)] md:max-w-[44rem] leading-[0.95] rise">
-                The gift that makes her <em>feel</em> like the <em>moment.</em>
-              </h1>
-              <p className="mt-8 max-w-md font-serif text-2xl italic text-muted rise">
-                Luxury nightwear gift sets. Curated. Personalized. Unforgettable.
-              </p>
-              <div className="mt-10 flex flex-col items-center gap-6 sm:flex-row sm:gap-10 rise">
-                <a href="#waitlist" className="pill w-full sm:w-auto">
-                  Join the waitlist
-                </a>
-                <a href="#how" className="link label">
-                  How it works →
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HeroCarousel>
+          <p className="label">BOUJIE CALL ✦ LUXURY NIGHTWEAR GIFTS</p>
+          <h1 id="hero-title" className="mt-6 max-w-[15ch] text-[clamp(2.25rem,3.6vw,3.75rem)] leading-[1.04]">
+            The gift that makes her <em>feel</em> like the <em>moment.</em>
+          </h1>
+          <p className="mt-5 max-w-xs text-sm leading-relaxed">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
+          <a href="#waitlist" className="label group mt-10 inline-flex min-h-11 items-center gap-4 self-start">
+            Join the waitlist
+            <span aria-hidden="true" className="h-px w-14 bg-current transition-all duration-500 group-hover:w-24" />
+          </a>
+        </HeroCarousel>
 
         <section id="how" className="relative overflow-hidden bg-blush py-28 md:py-40">
           <div className={`${wrap} relative`}>

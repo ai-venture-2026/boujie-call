@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Home from "./page";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -176,10 +176,6 @@ describe("Home night half", () => {
     expect(container.querySelectorAll("main .bg-ink")).toHaveLength(1);
   });
 
-  it("shows the Rose slip dress in the hero", () => {
-    render(<Home />);
-    expect(within(screen.getByRole("region", { name: "The gift that makes her feel like the moment." })).getByRole("img", { name: "The Slip Dress in Rose" }).tagName).toBe("IMG");
-  });
 
   it("keeps an unconfirmed social as plain text", () => {
     render(<Home />);
@@ -189,5 +185,46 @@ describe("Home night half", () => {
   it("sets the waitlist on cream", () => {
     const { container } = render(<Home />);
     expect(container.querySelector("section#waitlist")).toHaveClass("bg-cream");
+  });
+});
+
+describe("Hero carousel", () => {
+  const counter = () => screen.getByText(/^0\d \/ 04$/).textContent;
+  const visible = () => screen.getAllByRole("group", { hidden: true }).filter((g) => g.getAttribute("aria-hidden") !== "true");
+
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it("starts on the first of four slides", () => {
+    render(<Home />);
+    expect([visible().length, counter()]).toEqual([1, "01 / 04"]);
+  });
+
+  it("advances to the second slide after 7 seconds", () => {
+    render(<Home />);
+    act(() => vi.advanceTimersByTime(7000));
+    expect(counter()).toBe("02 / 04");
+  });
+
+  it("stays put once paused", () => {
+    render(<Home />);
+    fireEvent.click(screen.getByRole("button", { name: "Pause" }));
+    act(() => vi.advanceTimersByTime(20000));
+    expect(counter()).toBe("01 / 04");
+  });
+
+  it("links the caption to the piece she wears", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "The Slip Dress · After Dark" })).toHaveAttribute("href", "/shop/the-slip-dress");
+  });
+
+  it("does not advance under reduced motion", () => {
+    vi.stubGlobal("matchMedia", (q: string) => ({ matches: q.includes("reduce"), addEventListener() {}, removeEventListener() {} }));
+    render(<Home />);
+    act(() => vi.advanceTimersByTime(20000));
+    expect(counter()).toBe("01 / 04");
   });
 });
