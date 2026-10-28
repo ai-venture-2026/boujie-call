@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #fff8fb;
+  --color-cream: #faf8f5;
   --color-pink: #f2a7c3;
   --color-ink: #141014;
   --color-blush: #fde8f0;
@@ -173,12 +173,6 @@
   }
 }
 
-@keyframes nightfall {
-  from {
-    background-color: var(--color-cream);
-  }
-}
-
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .rise {
@@ -189,12 +183,6 @@
 
     .unveil {
       animation: unveil linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 40%;
-    }
-
-    .nightfall {
-      animation: nightfall linear both;
       animation-timeline: view();
       animation-range: entry 0% cover 40%;
     }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pages, socials } from "@/lib/content";
+import { pages } from "@/lib/content";
 import { Logo } from "./site-header";
 
 export function SiteFooter() {
@@ -21,19 +21,6 @@ export function SiteFooter() {
             ))}
           </ul>
         </nav>
-        <ul className="label flex flex-col gap-4 text-muted-dark md:col-span-3">
-          {socials.map((s) => (
-            <li key={s.label}>
-              {s.url ? (
-                <a href={s.url} className="text-blush hover:text-pink">
-                  {s.label}
-                </a>
-              ) : (
-                `${s.label}, link to come`
-              )}
-            </li>
-          ))}
-        </ul>
         <p className="label border-t-[0.5px] border-muted-dark/30 pt-8 text-[10px] text-muted-dark md:col-span-12">
           © 2026 Boujie Call. BoujieCall.com
         </p>

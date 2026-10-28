@@ -136,10 +136,10 @@ describe("Home editorial redesign", () => {
     expect(within(hero()).getAllByRole("link", { name: "Shop the collection" }).map((l) => l.getAttribute("href"))).toEqual(["/shop"]);
   });
 
-  it("numbers the steps 01 to 03", () => {
+  it("shows the steps without number labels", () => {
     render(<Home />);
     const list = screen.getByRole("list", { name: "How it works" });
-    expect(within(list).getAllByText(/^0[1-3]$/).map((n) => n.textContent)).toEqual(["01", "02", "03"]);
+    expect(within(list).queryAllByText(/^0[1-3]$/)).toEqual([]);
   });
 
   it("turns from brunch to night in two headings", () => {
@@ -182,9 +182,9 @@ describe("Home night half", () => {
     expect(within(screen.getByRole("main")).getByText("Instagram, link to come").closest("a")).toBeNull();
   });
 
-  it("sets the closing section on blush", () => {
+  it("sets the closing section on the page base", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).toHaveClass("bg-blush");
+    expect(container.querySelector("section#waitlist")).toHaveClass("bg-cream");
   });
 });
 
@@ -345,5 +345,28 @@ describe("Hero polish", () => {
   it("leaves nothing after the CTA label", () => {
     render(<Home />);
     expect(within(hero()).getByRole("link", { name: "Shop the collection" }).children).toHaveLength(0);
+  });
+});
+
+describe("Strict pass", () => {
+  it("sets step body text at 16px", () => {
+    render(<Home />);
+    const list = screen.getByRole("list", { name: "How it works" });
+    expect(within(list).getByText(/Choose a gift tier/)).toHaveClass("text-base");
+  });
+
+  it("cuts to ink without a scroll fade", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink")).not.toHaveClass("nightfall");
+  });
+
+  it("drops the line above the closing line", () => {
+    render(<Home />);
+    expect(screen.getByText("The call is coming. Are you going to pick up?")).not.toHaveClass("border-t-[0.5px]");
+  });
+
+  it("keeps social placeholders out of the footer", () => {
+    render(<SiteFooter />);
+    expect(screen.queryByText(/link to come/)).toBeNull();
   });
 });

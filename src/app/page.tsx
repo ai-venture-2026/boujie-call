@@ -35,13 +35,10 @@ export default function Home() {
                 Someone places a call. She <em>receives</em> a moment.
               </h2>
               <ol aria-label="How it works" className="mt-14 border-t-[0.5px] border-ink/15">
-                {steps.map((step, i) => (
-                  <li key={step.title} className="grid grid-cols-[3rem_1fr] gap-x-6 border-b-[0.5px] border-ink/15 py-7 rise">
-                    <span className="label pt-2 text-muted">{String(i + 1).padStart(2, "0")}</span>
-                    <div>
-                      <h3 className="text-2xl">{step.title}</h3>
-                      <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">{step.body}</p>
-                    </div>
+                {steps.map((step) => (
+                  <li key={step.title} className="border-b-[0.5px] border-ink/15 py-7 rise">
+                    <h3 className="text-2xl">{step.title}</h3>
+                    <p className="mt-2 max-w-md text-base leading-relaxed text-muted">{step.body}</p>
                   </li>
                 ))}
               </ol>
@@ -55,7 +52,7 @@ export default function Home() {
               Cute enough to open at <em>brunch.</em>
             </h2>
           </div>
-          <div className="bg-ink py-24 text-blush nightfall md:py-32">
+          <div className="bg-ink py-24 text-blush md:py-32">
             <div className={`${wrap} grid items-center gap-12 md:grid-cols-12 md:gap-x-16`}>
               <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
                 <Image
@@ -71,7 +68,7 @@ export default function Home() {
                 <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
                   Irresistible enough to wear <em className="text-pink">that night.</em>
                 </h2>
-                <Link href="/shop/the-romper" className="label mt-10 inline-flex min-h-11 items-center text-[10px] text-muted-dark hover:text-blush">
+                <Link href="/shop/the-romper" className="label mt-10 inline-flex min-h-11 items-center text-xs text-muted-dark hover:text-blush">
                   The Romper · Mocha
                 </Link>
               </div>
@@ -91,7 +88,7 @@ export default function Home() {
               {tiers.map((tier) => (
                 <article key={tier.name} className="border-b-[0.5px] border-ink/15 py-10 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
                   <h3 className="text-[clamp(1.75rem,2.6vw,2.5rem)] leading-[1.05]">{tier.name}</h3>
-                  <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{tier.contents}</p>
+                  <p className="mt-5 max-w-xs text-base leading-relaxed text-muted">{tier.contents}</p>
                   <p className="mt-10 font-serif text-lg italic">{formatPrice(tier.priceCents)}</p>
                 </article>
               ))}
@@ -99,7 +96,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="waitlist" className="bg-blush py-28 md:py-40">
+        <section id="waitlist" className="bg-cream py-28 md:py-40">
           <div className={`${wrap} grid gap-20 md:grid-cols-12 md:gap-x-16`}>
             <div className="md:col-span-7 rise">
               <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
@@ -112,7 +109,7 @@ export default function Home() {
               <h2 className="text-[clamp(1.5rem,2.2vw,2rem)] leading-[1.1]">
                 Catch us before we <em>drop.</em>
               </h2>
-              <p className="mt-4 text-sm leading-relaxed text-muted">Follow for behind-the-scenes, unboxings, and the launch date.</p>
+              <p className="mt-4 text-base leading-relaxed text-muted">Follow for behind-the-scenes, unboxings, and the launch date.</p>
               <ul className="mt-8 flex flex-col gap-5">
                 {socials.map((s) => (
                   <li key={s.label} className="label flex items-center gap-4 border-b-[0.5px] border-ink/15 pb-4 text-muted">
@@ -130,7 +127,7 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <p className="border-t-[0.5px] border-ink/15 pt-10 font-serif text-2xl italic md:col-span-12 md:text-3xl rise">
+            <p className="font-serif text-2xl italic md:col-span-12 md:mt-6 md:text-3xl rise">
               The call is coming. Are you going to pick up?
             </p>
           </div>
