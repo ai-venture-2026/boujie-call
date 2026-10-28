@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fff8fb;
+  --color-pink: #f2a7c3;
+  --color-ink: #141014;
+  --color-blush: #fde8f0;
+  --color-ribbon: #1a1018;
+  --color-card: #fff0f5;
+  --color-card-border: #f0c0d0;
+  --color-muted: #6b5763;
+  --color-muted-dark: #b9a9b1;
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-pink);
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    padding: 0.95rem 2rem;
+    background: var(--color-pink);
+    color: var(--color-ink);
+    font-weight: 500;
+    transition: background-color 200ms;
+  }
+
+  .btn:hover {
+    background: var(--color-blush);
+  }
+
+  .link {
+    text-decoration: underline;
+    text-decoration-color: var(--color-pink);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    transition: text-decoration-color 200ms;
+  }
+
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
