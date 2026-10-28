@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- One closing banner on Home, Send a Call and About, each with its own photo: blue romper on blush, mocha romper on ink, rose dress on blush.
 - Waitlist email field: visible Email address label, boxed 48px field with name@email.com as the example, joined to the button on wider screens.
 - Nav links and Shop button sit in the same place on every page. Send a Call and About close with a headline, action and framed photo (ink and blush). New photos for the About hero, Our story and the Send a Call hero.
 - Product page: square size and colour choices, square photo frame and thumbnails on stone, matching the rest of the site.

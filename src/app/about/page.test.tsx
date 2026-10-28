@@ -34,10 +34,10 @@ describe("About", () => {
     expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-blush");
   });
 
-  it("pairs the closing section with the ribbon photo", () => {
+  it("closes on the rose dress banner", () => {
     render(<About />);
     const close = screen.getByRole("link", { name: "Join the waitlist" }).closest("section") as HTMLElement;
-    expect(within(close).getByRole("img").getAttribute("src")).toContain("ribbon");
+    expect(within(close).getByRole("img").getAttribute("src")).toContain("rose-dress-banner");
   });
 
   it("shows the blue romper photo in the hero", () => {

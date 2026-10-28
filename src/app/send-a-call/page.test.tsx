@@ -49,9 +49,9 @@ describe("Send a Call close", () => {
     expect(close(container)).toHaveClass("bg-ink");
   });
 
-  it("pairs the closing section with the unboxing photo", () => {
+  it("closes on the mocha romper banner", () => {
     const { container } = render(<SendACall />);
-    expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("unboxing");
+    expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("mocha-romper-banner");
   });
 
   it("keeps the waitlist form in the closing section", () => {

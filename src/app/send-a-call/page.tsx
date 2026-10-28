@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ClosingCall } from "@/components/closing-call";
+import { ClosingBanner } from "@/components/closing-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { WaitlistForm } from "@/components/waitlist-form";
@@ -91,11 +91,12 @@ export default function SendACall() {
           </div>
         </section>
 
-        <ClosingCall
+        <ClosingBanner
           id="waitlist"
           tone="ink"
-          photo="/images/strip/unboxing.webp"
-          alt="A woman laughs as she lifts the lid of her Boujie Call box"
+          photo="/images/close/mocha-romper-banner.webp"
+          alt="A woman in The Romper in Mocha smiles down at a black gift box tied in pink ribbon"
+          focus="78% 20%"
           title={
             <>
               The call is coming. Are you going to <em className="text-pink">pick up?</em>
@@ -104,7 +105,7 @@ export default function SendACall() {
           line="Be first when Send a Call opens."
         >
           <WaitlistForm tone="dark" />
-        </ClosingCall>
+        </ClosingBanner>
       </main>
       <SiteFooter />
     </>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ClosingCall } from "@/components/closing-call";
+import { ClosingBanner } from "@/components/closing-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -75,13 +75,14 @@ export default function About() {
           </figure>
         </section>
 
-        <ClosingCall
-          tone="blush"
-          photo="/images/strip/ribbon.webp"
-          alt="Hands tie a pink satin ribbon around a black Boujie Call box"
+        <ClosingBanner
+          tone="light"
+          photo="/images/close/rose-dress-banner.webp"
+          alt="A woman in a rose satin dress rests her hand on a gift box beside her"
+          focus="76% 20%"
           title={
             <>
-              Ready to place your first Boujie <em className="text-rose">Call?</em>
+              Ready to place your first Boujie <em className="text-rose-deep">Call?</em>
             </>
           }
           line="Join the waitlist and be first when it opens."
@@ -89,7 +90,7 @@ export default function About() {
           <Link href="/send-a-call#waitlist" className="cta">
             Join the waitlist
           </Link>
-        </ClosingCall>
+        </ClosingBanner>
       </main>
       <SiteFooter />
     </>

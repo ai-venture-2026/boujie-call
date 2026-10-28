@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ClosingBanner } from "@/components/closing-banner";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { steps } from "@/lib/content";
@@ -150,21 +151,22 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="waitlist" className="relative bg-blush">
-          <div className="relative h-[52svh] md:absolute md:inset-0 md:h-auto">
-            <Image src="/images/close/blue-romper-banner.webp" alt="A woman in The Romper in Powder Blue sits on a stone block" fill sizes="100vw" style={{ objectPosition: "80% 0%" }} className="object-cover" />
-          </div>
-          <div className={`${wrap} relative py-16 md:flex md:h-[64svh] md:max-h-[720px] md:min-h-[540px] md:items-center md:py-0`}>
-            <div className="max-w-lg md:max-w-[min(30rem,42%)] rise">
-              <h2 className="text-[clamp(2.5rem,4.4vw,4.5rem)] leading-[1.02] text-ink">
-                Be first to receive a Boujie <em className="text-rose-deep">Call.</em>
-              </h2>
-              <p className="mt-5 font-serif text-xl text-ink/80 italic md:text-2xl">The call is coming. Are you going to pick up?</p>
-              <p className="mt-6 mb-4 max-w-sm text-base leading-relaxed text-ink/75">Join the waitlist for early access and the launch date.</p>
-              <WaitlistForm />
-            </div>
-          </div>
-        </section>
+        <ClosingBanner
+          id="waitlist"
+          tone="light"
+          photo="/images/close/blue-romper-banner.webp"
+          alt="A woman in The Romper in Powder Blue sits on a stone block"
+          focus="80% 0%"
+          title={
+            <>
+              Be first to receive a Boujie <em className="text-rose-deep">Call.</em>
+            </>
+          }
+          line="The call is coming. Are you going to pick up?"
+          body="Join the waitlist for early access and the launch date."
+        >
+          <WaitlistForm />
+        </ClosingBanner>
       </main>
       <SiteFooter />
     </>
