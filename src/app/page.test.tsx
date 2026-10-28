@@ -108,6 +108,21 @@ describe("Home signup", () => {
 });
 
 describe("WaitlistForm", () => {
+  it("shows the email label to everyone", () => {
+    render(<WaitlistForm />);
+    expect(screen.getByText("Email address")).not.toHaveClass("sr-only");
+  });
+
+  it("gives the field an example address", () => {
+    render(<WaitlistForm />);
+    expect(screen.getByLabelText("Email address")).toHaveAttribute("placeholder", "name@email.com");
+  });
+
+  it("draws the field as a full box", () => {
+    render(<WaitlistForm />);
+    expect(screen.getByLabelText("Email address")).toHaveClass("border");
+  });
+
   const submit = (email: string) => {
     render(<WaitlistForm />);
     fireEvent.change(screen.getByLabelText("Email address"), { target: { value: email } });
