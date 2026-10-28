@@ -38,9 +38,11 @@ const bloom: Colorway = {
   images: [],
 };
 
+export const colorwaySlug = (name: string) => name.toLowerCase().replaceAll(" ", "-");
+
 // Photos live in public/images/products as <slug>-<colorway>.webp.
 const photographed = (slug: string, colorways: Colorway[]): Colorway[] =>
-  colorways.map((c) => ({ ...c, images: [`/images/products/${slug}-${c.name.toLowerCase().replaceAll(" ", "-")}.webp`] }));
+  colorways.map((c) => ({ ...c, images: [`/images/products/${slug}-${colorwaySlug(c.name)}.webp`] }));
 
 export const products: Product[] = [
   {

@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { addToBag } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
-import { OFFER, type Colorway, type Product } from "@/lib/products";
+import { colorwaySlug, OFFER, type Colorway, type Product } from "@/lib/products";
 
 const views = ["front", "back", "detail"];
 
@@ -27,7 +27,13 @@ export function Frame({ product, colorway, view, className = "" }: { product: Pr
 }
 
 export function ProductView({ product, intro, details }: { product: Product; intro: ReactNode; details: ReactNode }) {
-  const [chosen, setChosen] = useState<Colorway | null>(null);
+  const fromUrl = useSyncExternalStore(
+    () => () => {},
+    () => new URLSearchParams(window.location.search).get("colorway"),
+    () => null,
+  );
+  const [picked, setChosen] = useState<Colorway | null>(null);
+  const chosen = picked ?? product.colorways.find((c) => colorwaySlug(c.name) === fromUrl) ?? null;
   const [view, setView] = useState(0);
   const shown = chosen ?? product.colorways[0];
   const photo = shown.images[view];

@@ -1,16 +1,16 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import Shop from "./page";
 import ProductPage from "./[slug]/page";
-import { products } from "@/lib/products";
+import { colorwaySlug, products } from "@/lib/products";
 import { readBag } from "@/lib/bag";
 
 const renderProduct = async (slug: string) => render(await ProductPage({ params: Promise.resolve({ slug }) }));
 
 describe("Shop", () => {
-  it("links each piece to its page", () => {
+  it("links every colorway card to its product page", () => {
     render(<Shop />);
-    const hrefs = products.map((p) => screen.getByRole("link", { name: new RegExp(p.name) }).getAttribute("href"));
-    expect(hrefs).toEqual(products.map((p) => `/shop/${p.slug}`));
+    const hrefs = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("link").map((l) => l.getAttribute("href"));
+    expect(hrefs).toEqual(products.flatMap((p) => p.colorways.map((c) => `/shop/${p.slug}?colorway=${colorwaySlug(c.name)}`)));
   });
 
   it("shows the confirmed price without a placeholder note", () => {
@@ -121,5 +121,49 @@ describe("Product button", () => {
   it("uses the cta button for add to your bag", async () => {
     await renderProduct("the-romper");
     expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("cta");
+  });
+});
+
+describe("Shop collection", () => {
+  const cards = () => within(screen.getByRole("list", { name: "Collection" })).queryAllByRole("listitem");
+  const press = (name: string) => fireEvent.click(screen.getAllByRole("button", { name })[0]);
+
+  it("titles the page The collection", () => {
+    render(<Shop />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("The collection");
+  });
+
+  it("shows one card per colorway", () => {
+    render(<Shop />);
+    expect(cards()).toHaveLength(10);
+  });
+
+  it("narrows to one piece from the sidebar", () => {
+    render(<Shop />);
+    press("The Romper");
+    expect(cards()).toHaveLength(4);
+  });
+
+  it("narrows to one colour", () => {
+    render(<Shop />);
+    press("After Dark");
+    expect(cards().every((c) => c.textContent?.includes("After Dark"))).toBe(true);
+  });
+
+  it("offers a reset when nothing matches", () => {
+    render(<Shop />);
+    press("The Boujie Set");
+    press("Bloom");
+    expect(screen.getByRole("button", { name: "Show all pieces" })).toBeInTheDocument();
+  });
+});
+
+describe("Colorway from the link", () => {
+  afterEach(() => window.history.pushState({}, "", "/"));
+
+  it("opens the product page with the linked colorway checked", async () => {
+    window.history.pushState({}, "", "/shop/the-slip-dress?colorway=after-dark");
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("radio", { name: "After Dark" })).toBeChecked();
   });
 });
