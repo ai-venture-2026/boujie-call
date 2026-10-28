@@ -22,7 +22,12 @@ describe("Home", () => {
 
   it("renders social channels without a URL as plain text", () => {
     render(<Home />);
-    expect(screen.queryByRole("link", { name: /tiktok|instagram/i })).toBeNull();
+    expect(screen.queryByRole("link", { name: /tiktok/i })).toBeNull();
+  });
+
+  it("links Instagram to the owner's account", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall/");
   });
 });
 
@@ -72,9 +77,9 @@ describe("SiteFooter", () => {
     expect(linkNames(screen.getByRole("navigation", { name: "Footer" }))).toEqual(pages);
   });
 
-  it("spells out the wordmark in type", () => {
-    const { container } = render(<SiteFooter />);
-    expect(container.querySelector("[data-wordmark]")).toHaveTextContent("Boujie Call");
+  it("signs off with the BC monogram", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("monogram");
   });
 
   it("links the pieces from the Shop column", () => {
@@ -82,9 +87,9 @@ describe("SiteFooter", () => {
     expect(linkNames(screen.getByRole("navigation", { name: "Shop" }))).toEqual(["The Slip Dress", "The Boujie Set", "The Romper", "All pieces"]);
   });
 
-  it("offers a newsletter email field", () => {
+  it("keeps the footer free of forms", () => {
     render(<SiteFooter />);
-    expect(within(screen.getByRole("contentinfo")).getByLabelText("Email address")).toHaveAttribute("type", "email");
+    expect(within(screen.getByRole("contentinfo")).queryByRole("textbox")).toBeNull();
   });
 
 
@@ -176,11 +181,6 @@ describe("Home night half", () => {
   });
 
 
-  it("keeps an unconfirmed social as plain text", () => {
-    render(<Home />);
-    expect(within(screen.getByRole("main")).getByText("Instagram, link to come").closest("a")).toBeNull();
-  });
-
   it("sets the closing section on blush", () => {
     const { container } = render(<Home />);
     expect(container.querySelector("section#waitlist")).toHaveClass("bg-blush");
@@ -217,7 +217,7 @@ describe("Hero carousel", () => {
 
   it("links the caption to the piece she wears", () => {
     render(<Home />);
-    expect(screen.getByRole("link", { name: "The Slip Dress · After Dark" })).toHaveAttribute("href", "/shop/the-slip-dress");
+    expect(screen.getAllByRole("link", { name: "The Slip Dress · After Dark" })[0]).toHaveAttribute("href", "/shop/the-slip-dress");
   });
 
   it("does not advance under reduced motion", () => {
@@ -231,14 +231,22 @@ describe("Hero carousel", () => {
 describe("Day to night turn", () => {
   const night = () => screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink") as HTMLElement;
 
-  it("shows the evening photograph instead of a packshot", () => {
+  it("shows the After Dark night photograph", () => {
     render(<Home />);
-    expect(within(night()).getByRole("img").getAttribute("src")).toContain("mocha-romper");
+    expect(within(night()).getByRole("img").getAttribute("src")).toContain("night-after-dark");
   });
 
-  it("links the caption to The Romper", () => {
+  it("links the night caption to The Slip Dress in After Dark", () => {
     render(<Home />);
-    expect(within(night()).getByRole("link", { name: "The Romper · Mocha" })).toHaveAttribute("href", "/shop/the-romper");
+    expect(within(night()).getByRole("link", { name: "The Slip Dress · After Dark" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
+  });
+
+  it("keeps each heading outside its photo frame", () => {
+    render(<Home />);
+    const pair = screen.getByRole("region", { name: "From brunch to after dark" });
+    const headings = within(pair).getAllByRole("heading");
+    const frames = within(pair).getAllByRole("img").map((img) => img.parentElement as HTMLElement);
+    expect(frames.some((f) => headings.some((h) => f.contains(h)))).toBe(false);
   });
 });
 
@@ -263,9 +271,19 @@ describe("De-slop", () => {
 describe("Closing section", () => {
   const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
 
-  it("holds the socials", () => {
+  it("sets the banner photo in the closing section", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByRole("heading", { name: "Catch us before we drop." })).toBeInTheDocument();
+    expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("blue-romper-banner");
+  });
+
+  it("offers the waitlist form in the closing section", () => {
+    const { container } = render(<Home />);
+    expect(within(close(container)).getByLabelText("Email address")).toHaveAttribute("type", "email");
+  });
+
+  it("sets the closing words in ink over the photo", () => {
+    const { container } = render(<Home />);
+    expect(close(container).querySelector(".text-rose, .text-pink")).toBeNull();
   });
 
   it("ends on the closing line", () => {
@@ -335,8 +353,8 @@ describe("Strict pass", () => {
 describe("Colour rhythm", () => {
   it("sets the accent words in rose", () => {
     const { container } = render(<Home />);
-    const accents = [...container.querySelectorAll("main em")].filter((e) => ["receives", "brunch.", "Call.", "drop."].includes(e.textContent ?? ""));
-    expect(accents.map((e) => e.classList.contains("text-rose"))).toEqual([true, true, true, true]);
+    const accents = [...container.querySelectorAll("main em")].filter((e) => ["receives", "brunch."].includes(e.textContent ?? ""));
+    expect(accents.map((e) => e.classList.contains("text-rose"))).toEqual([true, true]);
   });
 });
 
@@ -405,6 +423,17 @@ describe("Home rebuild round 1", () => {
     expect(screen.getByRole("link", { name: "Discover the piece" })).toHaveAttribute("href", "/shop/the-romper");
   });
 
+  it("keeps hero photos out of the strip", () => {
+    const { container } = render(<Home />);
+    const srcs = [...container.querySelectorAll("[data-strip] img")].map((i) => decodeURIComponent(i.getAttribute("src") ?? ""));
+    expect(srcs.filter((s) => s.includes("/images/hero/"))).toEqual([]);
+  });
+
+  it("shows the new close-up in section two", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelector("#detail img[alt*='hip']")?.getAttribute("src")).toContain("brown-romper-hip");
+  });
+
   it("runs a strip of five photos under the statement", () => {
     const { container } = render(<Home />);
     expect(container.querySelectorAll("[data-strip] img")).toHaveLength(5);
@@ -415,9 +444,9 @@ describe("Home rebuild round 1", () => {
     expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).not.toBeNull();
   });
 
-  it("marks the footer for the adaptive nav", () => {
+  it("keeps the nav light over the white footer", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("contentinfo")).toHaveAttribute("data-nav", "dark");
+    expect(screen.getByRole("contentinfo").closest("[data-nav=dark]")).toBeNull();
   });
 });
 

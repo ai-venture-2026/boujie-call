@@ -34,7 +34,7 @@ export const tiers: Tier[] = [
 // URLs stay null until the client confirms the handles.
 export const socials: Social[] = [
   { label: "TikTok", url: null },
-  { label: "Instagram", url: null },
+  { label: "Instagram", url: "https://www.instagram.com/boujiecall/" },
 ];
 
 export const pages = [

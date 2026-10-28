@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Home photos: new section two close-up, five new gift strip photos, a day and night pair with text beside the photos and one centred Shop button, a full-bleed closing waitlist banner, and the hero zoomed to trim headroom. Footer simplified to a white panel with the BC monogram. Instagram links to @boujiecall.
 - About page from the owner's copy: dark split hero, our story, three pillars, founder quote and a waitlist close. Footer rebuilt with newsletter, Shop, Company and Socials columns and a typeset wordmark. Home detail section fits one screen.
 - Toolchain: Next.js 16, React 19, Tailwind 4, ESLint, Vitest.
 - Design system: brand colors, Cormorant Garamond and DM Sans, pink pill buttons with dark text.
