@@ -1,9 +1,11 @@
+import { existsSync } from "node:fs";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Home from "./page";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { BAG_KEY } from "@/lib/bag";
+import { heroSlides } from "@/lib/content";
 
 describe("Home", () => {
   it("has one h1 with the brand promise", () => {
@@ -410,5 +412,20 @@ describe("Hero pace", () => {
     fireEvent.mouseEnter(screen.getByRole("region", { name: "The gift that makes her feel like the moment." }));
     act(() => vi.advanceTimersByTime(5000));
     expect(screen.getByRole("button", { name: "Show slide 2" })).toHaveAttribute("aria-current", "true");
+  });
+});
+
+describe("Hero photographs", () => {
+  it("runs the four new studio photographs in casting order", () => {
+    expect(heroSlides.map((s) => `${s.piece} · ${s.colorway} · ${s.src}`)).toEqual([
+      "The Slip Dress · After Dark · /images/hero/black-slip-studio.webp",
+      "The Romper · Powder Blue · /images/hero/blue-romper-studio.webp",
+      "The Slip Dress · Rose · /images/hero/pink-slip-studio.webp",
+      "The Romper · Mocha · /images/hero/brown-romper-studio.webp",
+    ]);
+  });
+
+  it("points every hero image at a file in public", () => {
+    expect(heroSlides.filter((s) => !existsSync(`public${s.src}`))).toEqual([]);
   });
 });

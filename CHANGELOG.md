@@ -23,3 +23,4 @@
 - Strict pass: warm white #FAF8F5 page base, 16px body text, no step number labels or closing hairline, a clean cut to the night band with a readable caption, a neutral image placeholder, and one set of social links.
 - Colour and hero: pink and dark back in rhythm (blush, warm white, ink) with deep rose accent words and pink button hover; hero split into a white text panel and photos (38 to 62); nav clear over the photo with the links and Shop the collection centred, white once scrolled.
 - Hero pace: 5 seconds per photo with a 1.2 second crossfade, and no pause on hover; the pause icon still stops it.
+- Hero photographs: four new art-directed studio photos (black slip dress, blue romper, pink slip dress, brown romper) on plain matte walls replace the earlier set.
