@@ -182,9 +182,9 @@ describe("Home night half", () => {
     expect(within(screen.getByRole("main")).getByText("Instagram, link to come").closest("a")).toBeNull();
   });
 
-  it("sets the waitlist on cream", () => {
+  it("sets the closing section on blush", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).toHaveClass("bg-cream");
+    expect(container.querySelector("section#waitlist")).toHaveClass("bg-blush");
   });
 });
 
@@ -296,5 +296,24 @@ describe("Tier list", () => {
   it("sits on cream", () => {
     const { container } = render(<Home />);
     expect(boxes(container)).toHaveClass("bg-cream");
+  });
+});
+
+describe("Closing section", () => {
+  const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
+
+  it("holds the socials", () => {
+    const { container } = render(<Home />);
+    expect(within(close(container)).getByRole("heading", { name: "Catch us before we drop." })).toBeInTheDocument();
+  });
+
+  it("ends on the closing line", () => {
+    const { container } = render(<Home />);
+    expect(within(close(container)).getByText("The call is coming. Are you going to pick up?")).toBeInTheDocument();
+  });
+
+  it("is not a centered stack", () => {
+    const { container } = render(<Home />);
+    expect(close(container).querySelector(".text-center")).toBeNull();
   });
 });

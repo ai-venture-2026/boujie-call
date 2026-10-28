@@ -8,7 +8,7 @@ export function WaitlistForm() {
 
   return (
     <form
-      className="mx-auto flex max-w-xl flex-wrap items-end gap-6 text-left"
+      className="flex max-w-xl flex-wrap items-end gap-6"
       onSubmit={(e) => {
         e.preventDefault();
         setMessage("The list opens soon. We have not saved your email yet, so check back at launch.");

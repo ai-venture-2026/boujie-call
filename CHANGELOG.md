@@ -18,3 +18,4 @@
 - The turn: calmer split with the brunch line on cream and the night line on ink beside the evening photograph of The Romper in Mocha, with a caption link; the packshot is gone.
 - De-slop: removed orphan section markers, the decorative ✦ above tier names and the redundant How it works label; one slim pill button style across the 404 page, mobile menu and product page.
 - Tiers: the zig-zag image spreads become a quiet three-column list on cream with hairline dividers; no images until the owner confirms what each tier ships.
+- Closing: socials and the waitlist merge into one left-aligned section on blush, waitlist ask on the left, socials on the right, closing line underneath.

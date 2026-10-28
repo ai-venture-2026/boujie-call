@@ -100,41 +100,40 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="bg-blush py-28 md:py-40">
-          <div className={`${wrap} relative grid gap-14 md:grid-cols-12`}>
+        <section id="waitlist" className="bg-blush py-28 md:py-40">
+          <div className={`${wrap} grid gap-20 md:grid-cols-12 md:gap-x-16`}>
             <div className="md:col-span-7 rise">
-              <h2 className="text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98]">
+              <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
+                Be first to receive a Boujie <em>Call.</em>
+              </h2>
+              <p className="label mt-6 mb-12 text-muted">Join the waitlist for early access.</p>
+              <WaitlistForm />
+            </div>
+            <div className="md:col-span-4 md:col-start-9 md:self-end rise">
+              <h2 className="text-[clamp(1.5rem,2.2vw,2rem)] leading-[1.1]">
                 Catch us before we <em>drop.</em>
               </h2>
-              <p className="mt-6 max-w-md text-sm leading-relaxed text-muted">Follow for behind-the-scenes, unboxings, and the launch date.</p>
+              <p className="mt-4 text-sm leading-relaxed text-muted">Follow for behind-the-scenes, unboxings, and the launch date.</p>
+              <ul className="mt-8 flex flex-col gap-5">
+                {socials.map((s) => (
+                  <li key={s.label} className="label flex items-center gap-4 border-b-[0.5px] border-ink/15 pb-4 text-muted">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1">
+                      {s.label === "Instagram" ? <><rect x="2" y="2" width="12" height="12" rx="3.5" /><circle cx="8" cy="8" r="2.75" /></> : <path d="M9.5 2v8.25a2.25 2.25 0 1 1-2.25-2.25M9.5 2c.3 1.8 1.6 3 3.5 3.1" />}
+                    </svg>
+                    {s.url ? (
+                      <a href={s.url} className="text-ink hover:text-muted">
+                        Follow on {s.label}
+                      </a>
+                    ) : (
+                      `${s.label}, link to come`
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="flex flex-col gap-6 self-end md:col-span-4 md:col-start-9 rise">
-              {socials.map((s) => (
-                <li key={s.label} className="label flex items-center gap-4 border-b-[0.5px] border-ink/15 pb-4 text-muted">
-                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1">
-                    {s.label === "Instagram" ? <><rect x="2" y="2" width="12" height="12" rx="3.5" /><circle cx="8" cy="8" r="2.75" /></> : <path d="M9.5 2v8.25a2.25 2.25 0 1 1-2.25-2.25M9.5 2c.3 1.8 1.6 3 3.5 3.1" />}
-                  </svg>
-                  {s.url ? (
-                    <a href={s.url} className="text-ink hover:text-muted">
-                      Follow on {s.label}
-                    </a>
-                  ) : (
-                    `${s.label}, link to come`
-                  )}
-                </li>
-              ))}
-            </ul>
-            <p className="font-serif text-2xl italic md:col-span-12 md:mt-10 md:text-3xl rise">The call is coming. Are you going to pick up?</p>
-          </div>
-        </section>
-
-        <section id="waitlist" className="bg-cream py-32 md:py-44">
-          <div className={`${wrap} max-w-4xl! text-center`}>
-            <h2 className="text-[clamp(2.5rem,5.5vw,5rem)] leading-[1.02] rise">
-              Be first to receive a Boujie <em>Call.</em>
-            </h2>
-            <p className="label mt-6 mb-14 text-muted rise">Join the waitlist for early access.</p>
-            <WaitlistForm />
+            <p className="border-t-[0.5px] border-ink/15 pt-10 font-serif text-2xl italic md:col-span-12 md:text-3xl rise">
+              The call is coming. Are you going to pick up?
+            </p>
           </div>
         </section>
       </main>
