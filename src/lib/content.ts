@@ -12,11 +12,11 @@ export function formatPrice(cents: number | null): string {
 export const steps = [
   {
     title: "Place the Call",
-    body: "Choose a gift tier and write her a personal message. All you need is her name and email.",
+    body: "Choose a gift tier and write her a personal message. All you need is her first name and number.",
   },
   {
     title: "She gets the Call",
-    body: "She receives a beautiful notification with your message inside and a link to claim her gift.",
+    body: "She gets a text with your message inside and a link to claim her gift.",
   },
   {
     title: "She picks up",
@@ -54,4 +54,20 @@ export const heroSlides: HeroSlide[] = [
   { src: "/images/hero/blue-romper-studio.webp", alt: "A woman sits on the floor in The Romper in Powder Blue", slug: "the-romper", piece: "The Romper", colorway: "Powder Blue", focus: "40% 60%", text: "ink" },
   { src: "/images/hero/pink-slip-studio.webp", alt: "A woman stands with a hand on her hip in The Slip Dress in Rose", slug: "the-slip-dress", piece: "The Slip Dress", colorway: "Rose", focus: "50% 30%", text: "ink" },
   { src: "/images/hero/brown-romper-studio.webp", alt: "A woman sits with one knee raised in The Romper in Mocha", slug: "the-romper", piece: "The Romper", colorway: "Mocha", focus: "52% 40%", text: "ink" },
+];
+
+// Send a Call page. From the owner's prompts; prices and add-ons stay out until confirmed.
+export const callSteps = [
+  { title: "You choose her tier", body: "Pick the gift tier that feels like her." },
+  { title: "You write her message", body: "A personal note printed on her call card inside the box." },
+  { title: "She gets the Call", body: "She gets a text with your note and a link to claim her gift." },
+  { title: "She picks up", body: "She clicks her claim link, chooses her size and style, and we ship to her door." },
+];
+
+export const boxContents = [
+  { name: "Satin sleep set", note: "The hero piece. Soft, cute, and completely her." },
+  { name: "Forever rose", note: "A preserved rose with a Boujie Calling branded tag." },
+  { name: "Body mist", note: "A mini fragrance spray that smells like the brand." },
+  { name: "Her call card", note: "Your personal message, printed beautifully inside." },
+  { name: "Luxury box", note: "A blush pink rigid box with black satin ribbon and a BC wax seal." },
 ];

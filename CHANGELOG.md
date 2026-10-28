@@ -27,3 +27,4 @@
 - Home rebuild round 1: The Romper in Mocha beside a close-up of its lace, a centred statement with a staggered strip of five photos and the three steps, the gift tiers moved off Home, and a frosted glass nav that turns dark over dark sections. The black slip hero photo is replaced with a wider framing.
 - Home rebuild round 2: brunch to after dark as two photos meeting at the seam with the lines reading across it, and an editorial grid of the three pieces with View all pieces.
 - Shop page: banner with THE COLLECTION beside the lace close-up, a sidebar of pieces, a colour filter, two featured model-photo cards and a grid with one card per colorway; each card opens its product page with that colorway selected.
+- Send a Call page: split hero, the four steps of a Call, what is inside every box, the three gift tiers with prices to come, and a waitlist close. The Call is now described as a text message on Home and Send a Call.
