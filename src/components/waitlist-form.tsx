@@ -8,7 +8,7 @@ export function WaitlistForm() {
 
   return (
     <form
-      className="flex max-w-xl flex-wrap gap-3"
+      className="mx-auto flex max-w-xl flex-wrap items-end gap-6 text-left"
       onSubmit={(e) => {
         e.preventDefault();
         setMessage("The list opens soon. We have not saved your email yet, so check back at launch.");
@@ -24,12 +24,12 @@ export function WaitlistForm() {
         required
         autoComplete="email"
         placeholder="Your email"
-        className="min-w-0 flex-1 basis-64 rounded-full border border-card-border bg-white px-6 py-4 placeholder:text-muted"
+        className="min-w-0 flex-1 basis-64 border-0 border-b-[0.5px] border-blush/50 bg-transparent px-0 py-3 text-blush placeholder:text-muted-dark focus:border-pink focus-visible:outline-pink"
       />
-      <button type="submit" className="btn grow sm:grow-0">
+      <button type="submit" className="pill grow focus-visible:outline-pink sm:grow-0">
         Join the waitlist
       </button>
-      <p role="status" className="basis-full text-sm text-muted">
+      <p role="status" className="basis-full text-sm text-muted-dark">
         {message}
       </p>
     </form>

@@ -158,3 +158,26 @@ describe("Home editorial redesign", () => {
     expect(screen.getAllByRole("img", { name: /image to come/ }).length).toBeGreaterThanOrEqual(2);
   });
 });
+
+describe("Home night half", () => {
+  it("lays out the tiers as spreads in order", () => {
+    render(<Home />);
+    const names = screen.getAllByRole("article").map((a) => within(a).getByRole("heading", { level: 3 }).textContent);
+    expect(names).toEqual(["The Mini Call", "The Signature Call", "The Boujie Experience"]);
+  });
+
+  it("sets The Boujie Experience in the deepest night", () => {
+    render(<Home />);
+    expect(screen.getAllByRole("article")[2].closest(".bg-ink")).not.toBeNull();
+  });
+
+  it("keeps an unconfirmed social as plain text", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("main")).getByText("Instagram, link to come").closest("a")).toBeNull();
+  });
+
+  it("sets the waitlist on ribbon", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelector("section#waitlist")).toHaveClass("bg-ribbon");
+  });
+});

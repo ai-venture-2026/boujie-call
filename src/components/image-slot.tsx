@@ -11,7 +11,7 @@ export function ImageSlot({ src, alt, ratio = "portrait", tone = "day", classNam
       </div>
     );
   }
-  const ground = tone === "day" ? "from-blush to-card text-muted" : "from-ribbon to-ink text-muted-dark";
+  const ground = tone === "day" ? "from-blush to-card text-muted" : "from-[#3a2430] to-ribbon text-muted-dark";
   return (
     <div role="img" aria-label={`${alt}, image to come`} className={`relative grid place-items-center overflow-hidden bg-linear-to-br ${ground} ${crop} ${className}`}>
       <span aria-hidden="true" className="font-serif text-4xl opacity-40">

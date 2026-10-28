@@ -14,7 +14,7 @@ export default function Home() {
       <main>
         <section aria-labelledby="hero-title" className="relative mx-auto max-w-[96rem] px-6 pt-8 pb-24 md:px-12 md:pt-14 md:pb-36">
           <div className="grid md:grid-cols-12">
-            <div className="relative ml-auto w-[86%] md:col-start-6 md:col-end-13 md:row-start-1 md:w-full">
+            <div className="drift relative ml-auto w-[86%] md:col-start-6 md:col-end-13 md:row-start-1 md:w-full">
               <Marker n={1} className="absolute top-0 -left-12 hidden text-muted md:block" />
               <ImageSlot alt="Boujie Call gift box" className="unveil md:min-h-[96vh]" />
             </div>
@@ -40,7 +40,7 @@ export default function Home() {
 
         <section id="how" className="relative overflow-hidden bg-blush py-28 md:py-40">
           <div className={`${wrap} relative`}>
-            <Marker n={2} className="absolute top-0 right-6 text-muted md:right-12" />
+            <Marker n={2} className="absolute top-0 right-6 hidden md:block text-muted md:right-12" />
             <p aria-hidden="true" className="vertical absolute top-48 right-2 hidden font-serif text-8xl font-light tracking-[0.2em] text-card-border lg:block">
               PICK UP
             </p>
@@ -73,59 +73,72 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="boxes" className="bg-blush py-28">
-          <div className={wrap}>
-            <h2 className="text-5xl md:text-6xl">Three tiers. One vibe.</h2>
-            <p className="mt-4 text-muted">A first look. Contents and prices are confirmed at launch.</p>
-            <div className="mt-16 grid gap-6 md:grid-cols-3 md:items-start">
-              {tiers.map((tier, i) => {
-                const featured = i === 1;
-                return (
-                  <article
-                    key={tier.name}
-                    className={`rounded-[16px] border-[0.5px] p-10 ${featured ? "border-ink bg-ink text-blush md:py-14" : "border-card-border bg-card md:mt-12"}`}
-                  >
-                    <h3 className="text-3xl">{tier.name}</h3>
-                    <p className={`mt-4 leading-relaxed ${featured ? "text-muted-dark" : "text-muted"}`}>{tier.contents}</p>
-                    <p className="mt-10 font-serif text-xl">{formatPrice(tier.priceCents)}</p>
-                  </article>
-                );
-              })}
+        <section id="boxes" className="text-blush">
+          <div className="bg-[#2a1a24] pt-28 md:pt-40">
+            <div className={`${wrap} relative`}>
+              <Marker n={3} className="absolute top-0 right-6 hidden md:block text-muted-dark md:right-12" />
+              <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] rise">
+                Three tiers. One <em className="text-pink">vibe.</em>
+              </h2>
+              <p className="label mt-6 text-muted-dark rise">A first look. Contents and prices are confirmed at launch.</p>
             </div>
           </div>
+          {tiers.map((tier, i) => (
+            <div key={tier.name} className={["bg-[#2a1a24]", "bg-ribbon", "bg-ink"][i]}>
+              <article className={`${wrap} grid items-center gap-10 py-20 md:grid-cols-12 md:gap-x-10 md:py-28`}>
+                <div className={`drift ${i % 2 ? "md:col-start-7 md:col-end-13 md:row-start-1" : "md:col-start-1 md:col-end-7"} ${i === 1 ? "md:mt-24" : ""}`}>
+                  <ImageSlot alt={tier.name} tone="night" className="unveil" />
+                </div>
+                <div className={`rise ${i % 2 ? "md:col-start-2 md:col-end-6 md:row-start-1" : "md:col-start-8 md:col-end-12"}`}>
+                  <span aria-hidden="true" className="text-pink">
+                    ✦
+                  </span>
+                  <h3 className="mt-4 text-[clamp(2.25rem,4vw,3.75rem)] leading-none">{tier.name}</h3>
+                  <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-dark">{tier.contents}</p>
+                  <p className="mt-8 font-serif text-xl italic">{formatPrice(tier.priceCents)}</p>
+                </div>
+              </article>
+            </div>
+          ))}
         </section>
 
-        <section className="bg-ink py-28 text-blush">
-          <div className={`${wrap} grid gap-12 md:grid-cols-2 md:items-end`}>
-            <div>
-              <h2 className="text-5xl md:text-7xl">Catch us before we drop.</h2>
-              <p className="mt-6 max-w-md leading-relaxed text-muted-dark">
-                Follow for behind-the-scenes, unboxings, and the launch date.
-              </p>
+        <section className="bg-ink py-28 text-blush md:py-40">
+          <div className={`${wrap} relative grid gap-14 md:grid-cols-12`}>
+            <Marker n={4} className="absolute top-0 right-6 hidden md:block text-muted-dark md:right-12" />
+            <div className="md:col-span-7 rise">
+              <h2 className="text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98]">
+                Catch us before we <em className="text-pink">drop.</em>
+              </h2>
+              <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-dark">Follow for behind-the-scenes, unboxings, and the launch date.</p>
             </div>
-            <ul className="flex flex-wrap gap-4 md:justify-end">
+            <ul className="flex flex-col gap-6 self-end md:col-span-4 md:col-start-9 rise">
               {socials.map((s) => (
-                <li key={s.label}>
+                <li key={s.label} className="label flex items-center gap-4 border-b-[0.5px] border-blush/25 pb-4 text-muted-dark">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1">
+                    {s.label === "Instagram" ? <><rect x="2" y="2" width="12" height="12" rx="3.5" /><circle cx="8" cy="8" r="2.75" /></> : <path d="M9.5 2v8.25a2.25 2.25 0 1 1-2.25-2.25M9.5 2c.3 1.8 1.6 3 3.5 3.1" />}
+                  </svg>
                   {s.url ? (
-                    <a href={s.url} className="inline-block rounded-full border border-blush px-8 py-4 hover:bg-blush hover:text-ink">
+                    <a href={s.url} className="text-blush hover:text-pink">
                       Follow on {s.label}
                     </a>
                   ) : (
-                    <span className="inline-block rounded-full border border-muted-dark/40 px-8 py-4 text-muted-dark">
-                      {s.label}, link to come
-                    </span>
+                    `${s.label}, link to come`
                   )}
                 </li>
               ))}
             </ul>
-            <p className="font-serif text-2xl italic text-pink md:col-span-2">The call is coming. Are you going to pick up?</p>
+            <p className="font-serif text-2xl italic text-pink md:col-span-12 md:mt-10 md:text-3xl rise">The call is coming. Are you going to pick up?</p>
           </div>
         </section>
 
-        <section id="waitlist" className={`${wrap} py-32`}>
-          <h2 className="max-w-3xl text-5xl md:text-7xl">Be first to receive a Boujie Call.</h2>
-          <p className="mt-6 mb-10 text-muted">Join the waitlist for early access.</p>
-          <WaitlistForm />
+        <section id="waitlist" className="bg-ribbon py-32 text-blush md:py-44">
+          <div className={`${wrap} max-w-4xl! text-center`}>
+            <h2 className="text-[clamp(2.5rem,5.5vw,5rem)] leading-[1.02] rise">
+              Be first to receive a Boujie <em className="text-pink">Call.</em>
+            </h2>
+            <p className="label mt-6 mb-14 text-muted-dark rise">Join the waitlist for early access.</p>
+            <WaitlistForm />
+          </div>
         </section>
       </main>
       <SiteFooter />
