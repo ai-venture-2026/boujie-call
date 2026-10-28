@@ -481,3 +481,12 @@ describe("Home rebuild round 2", () => {
     expect(container.querySelector("section#waitlist h2 em")).toHaveClass("text-rose-deep");
   });
 });
+
+describe("Nav position", () => {
+  it("places the nav links where Home places them on every page", () => {
+    const { container: home } = render(<SiteHeader overlay />);
+    const { container: other } = render(<SiteHeader />);
+    const group = (c: HTMLElement) => c.querySelector("nav[aria-label=Main]")?.parentElement?.className.replace(/md:text-cream/, "").trim();
+    expect(group(other)).toBe(group(home));
+  });
+});

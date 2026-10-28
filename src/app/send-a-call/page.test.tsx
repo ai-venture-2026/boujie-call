@@ -8,6 +8,12 @@ describe("Send a Call page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Place your Boujie Call.");
   });
 
+  it("shows the rose slip photo in the hero", () => {
+    render(<SendACall />);
+    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(hero).getByRole("img").getAttribute("src")).toContain("hero-rose-slip");
+  });
+
   it("points its button at the waitlist form", () => {
     render(<SendACall />);
     expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "#waitlist");
@@ -32,6 +38,25 @@ describe("Send a Call page", () => {
   it("describes the Call as a text message", () => {
     const { container } = render(<SendACall />);
     expect(container.textContent).toMatch(/gets a text/);
+  });
+});
+
+describe("Send a Call close", () => {
+  const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
+
+  it("sets the closing section on ink", () => {
+    const { container } = render(<SendACall />);
+    expect(close(container)).toHaveClass("bg-ink");
+  });
+
+  it("pairs the closing section with the unboxing photo", () => {
+    const { container } = render(<SendACall />);
+    expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("unboxing");
+  });
+
+  it("keeps the waitlist form in the closing section", () => {
+    const { container } = render(<SendACall />);
+    expect(within(close(container)).getByLabelText("Email address")).toHaveAttribute("type", "email");
   });
 });
 

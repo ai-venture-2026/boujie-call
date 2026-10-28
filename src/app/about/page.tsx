@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ClosingCall } from "@/components/closing-call";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -24,7 +25,7 @@ export default function About() {
       <main>
         <section data-nav="dark" className="flex flex-col bg-ink text-cream md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
           <div className="relative h-[60svh] md:order-2 md:h-auto">
-            <Image src="/images/hero/pink-slip-studio.webp" alt="A woman in The Slip Dress in Rose" fill priority sizes="(min-width: 768px) 62vw, 100vw" style={{ objectPosition: "50% 30%" }} className="object-cover" />
+            <Image src="/images/about/hero-blue-romper.webp" alt="A woman in The Romper in Powder Blue relaxes in a floral armchair with a book" fill priority sizes="(min-width: 768px) 62vw, 100vw" style={{ objectPosition: "66% 35%" }} className="object-cover" />
           </div>
           <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
             <p className="label text-muted-dark">About</p>
@@ -50,7 +51,7 @@ export default function About() {
             </div>
           </div>
           <div className="relative min-h-[60svh]">
-            <Image src="/images/details/black-slip-lace.webp" alt="A close-up of the black lace neckline of The Slip Dress in After Dark" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+            <Image src="/images/about/story-after-dark.webp" alt="A woman in black sits on a wooden floor by a sunlit window, looking out" fill sizes="(min-width: 768px) 50vw, 100vw" style={{ objectPosition: "72% 40%" }} className="object-cover" />
           </div>
         </section>
 
@@ -74,16 +75,21 @@ export default function About() {
           </figure>
         </section>
 
-        <section className="bg-pink py-24 md:py-32">
-          <div className={`${wrap} flex flex-col items-start gap-10 md:flex-row md:items-end md:justify-between`}>
-            <h2 className="max-w-2xl text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
-              Ready to place your first Boujie <em>Call?</em>
-            </h2>
-            <Link href="/send-a-call#waitlist" className="cta shrink-0 [--cta-fill:var(--color-ink)] [--cta-on:var(--color-cream)]">
-              Join the waitlist
-            </Link>
-          </div>
-        </section>
+        <ClosingCall
+          tone="blush"
+          photo="/images/strip/ribbon.webp"
+          alt="Hands tie a pink satin ribbon around a black Boujie Call box"
+          title={
+            <>
+              Ready to place your first Boujie <em className="text-rose">Call?</em>
+            </>
+          }
+          line="Join the waitlist and be first when it opens."
+        >
+          <Link href="/send-a-call#waitlist" className="cta">
+            Join the waitlist
+          </Link>
+        </ClosingCall>
       </main>
       <SiteFooter />
     </>

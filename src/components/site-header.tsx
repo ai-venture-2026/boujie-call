@@ -99,7 +99,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           <Logo tone={dark && !clear ? "pink" : "ink"} className="h-10 md:h-12" />
         </Link>
 
-        <div className={`hidden items-center gap-10 md:flex ${overlay ? "md:fixed md:top-0 md:right-28 md:left-[38%] md:h-20 md:justify-center" : "md:absolute md:inset-x-0 md:top-1/2 md:mx-auto md:w-fit md:-translate-y-1/2"} ${onPhoto} transition-colors duration-500`}>
+        <div className={`hidden items-center gap-10 md:flex md:fixed md:top-0 md:right-28 md:left-[38%] md:h-20 md:justify-center ${onPhoto} transition-colors duration-500`}>
           <nav aria-label="Main">
             <ul className="label flex gap-9">
               {pages.map((p) => (

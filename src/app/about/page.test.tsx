@@ -29,6 +29,29 @@ describe("About", () => {
     expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "/send-a-call#waitlist");
   });
 
+  it("sets the closing section on blush", () => {
+    render(<About />);
+    expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-blush");
+  });
+
+  it("pairs the closing section with the ribbon photo", () => {
+    render(<About />);
+    const close = screen.getByRole("link", { name: "Join the waitlist" }).closest("section") as HTMLElement;
+    expect(within(close).getByRole("img").getAttribute("src")).toContain("ribbon");
+  });
+
+  it("shows the blue romper photo in the hero", () => {
+    render(<About />);
+    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(hero).getByRole("img").getAttribute("src")).toContain("hero-blue-romper");
+  });
+
+  it("shows the After Dark portrait beside our story", () => {
+    render(<About />);
+    const story = screen.getByRole("heading", { name: "It started with a feeling." }).closest("section") as HTMLElement;
+    expect(within(story).getByRole("img").getAttribute("src")).toContain("story-after-dark");
+  });
+
   it("marks the hero for the adaptive nav", () => {
     render(<About />);
     expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveAttribute("data-nav", "dark");

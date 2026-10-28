@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { ClosingCall } from "@/components/closing-call";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { WaitlistForm } from "@/components/waitlist-form";
@@ -19,7 +20,7 @@ export default function SendACall() {
       <main>
         <section className="flex flex-col md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
           <div className="relative h-[60svh] md:order-2 md:h-auto">
-            <Image src="/images/hero/brown-romper-studio.webp" alt="A woman sits with one knee raised in The Romper in Mocha" fill priority sizes="(min-width: 768px) 62vw, 100vw" style={{ objectPosition: "52% 40%" }} className="object-cover" />
+            <Image src="/images/send-a-call/hero-rose-slip.webp" alt="A woman in a pale pink slip with lace trim leans on a taupe wall, arms raised" fill priority sizes="(min-width: 768px) 62vw, 100vw" style={{ objectPosition: "70% 25%" }} className="object-cover" />
           </div>
           <div className="flex flex-col items-start justify-center bg-white px-6 py-14 md:order-1 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
             <p className="label">Send a Call</p>
@@ -90,17 +91,20 @@ export default function SendACall() {
           </div>
         </section>
 
-        <section id="waitlist" className="bg-blush py-28 md:py-40">
-          <div className={`${wrap} grid gap-12 md:grid-cols-12`}>
-            <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise md:col-span-6">
-              The call is coming. Are you going to <em className="text-rose">pick up?</em>
-            </h2>
-            <div className="md:col-span-5 md:col-start-8 md:self-end">
-              <p className="label mb-10 text-muted">Be first when Send a Call opens.</p>
-              <WaitlistForm />
-            </div>
-          </div>
-        </section>
+        <ClosingCall
+          id="waitlist"
+          tone="ink"
+          photo="/images/strip/unboxing.webp"
+          alt="A woman laughs as she lifts the lid of her Boujie Call box"
+          title={
+            <>
+              The call is coming. Are you going to <em className="text-pink">pick up?</em>
+            </>
+          }
+          line="Be first when Send a Call opens."
+        >
+          <WaitlistForm tone="dark" />
+        </ClosingCall>
       </main>
       <SiteFooter />
     </>

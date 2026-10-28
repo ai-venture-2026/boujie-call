@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Nav links and Shop button sit in the same place on every page. Send a Call and About close with a headline, action and framed photo (ink and blush). New photos for the About hero, Our story and the Send a Call hero.
 - Product page: square size and colour choices, square photo frame and thumbnails on stone, matching the rest of the site.
 - Mini bag: the bag icon opens a dropdown (full width on phones) with up to three pieces, the offer line, subtotal, View bag and Checkout; it opens for 3 seconds after a piece is added and stays open while hovered.
 - Bag page at /bag: quantity, remove, an offer line that follows the piece count, subtotal and a Checkout button that says checkout opens soon. Checkout lives in src/lib/checkout.ts for the Shopify handoff.
