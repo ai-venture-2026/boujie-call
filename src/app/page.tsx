@@ -16,8 +16,8 @@ export default function Home() {
             <p className="mt-8 font-serif text-2xl italic text-muted md:text-3xl">
               Luxury nightwear gift sets. Curated. Personalized. Unforgettable.
             </p>
-            <div className="mt-12 flex flex-wrap items-center gap-8">
-              <a href="#waitlist" className="btn">
+            <div className="mt-12 flex flex-col items-center gap-6 sm:flex-row sm:gap-8">
+              <a href="#waitlist" className="btn w-full sm:w-auto">
                 Join the waitlist
               </a>
               <a href="#how" className="link">

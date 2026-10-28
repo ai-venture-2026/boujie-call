@@ -43,3 +43,5 @@ export const pages = [
   { href: "/send-a-call", label: "Send a Call" },
   { href: "/about", label: "About" },
 ];
+
+export const SITE_URL = "https://boujiecall.com";
