@@ -50,13 +50,17 @@ export function ProductView({ product, intro, details }: { product: Product; int
     <div className="grid gap-10 md:grid-cols-2 md:gap-16">
       <div>
         {photo ? (
-          <Image src={photo} alt={`${product.name} in ${shown.name}, ${views[view]}`} width={900} height={1200} className="aspect-[3/4] w-full rounded-[16px] object-cover" />
+          <div className="overflow-hidden rounded-[16px] bg-blush">
+            <Image src={photo} alt={`${product.name} in ${shown.name}, ${views[view]}`} width={900} height={1200} priority className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
+          </div>
         ) : (
           <Frame product={product} colorway={shown} view={views[view]} className="aspect-[3/4]" />
         )}
         <div className="mt-3 grid grid-cols-3 gap-3">
           {views.map((v, i) => (
-            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="aspect-square rounded-[12px] border-[0.5px] border-card-border aria-pressed:outline-1 aria-pressed:outline-ink" style={{ background: shown.swatch ?? shown.hex }} />
+            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden rounded-[12px] border-[0.5px] border-card-border bg-blush aria-pressed:outline-1 aria-pressed:outline-ink" style={shown.images[i] ? undefined : { background: shown.swatch ?? shown.hex }}>
+              {shown.images[i] && <Image src={shown.images[i]} alt="" fill sizes="120px" className="object-cover mix-blend-multiply" />}
+            </button>
           ))}
         </div>
       </div>

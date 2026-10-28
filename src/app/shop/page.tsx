@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { Frame, Price } from "@/components/product-view";
+import { ImageSlot } from "@/components/image-slot";
+import { Price } from "@/components/product-view";
 import { OFFER, products } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -28,8 +30,12 @@ export default function Shop() {
           {products.map((p, i) => (
             <li key={p.slug} className={i === 1 ? "lg:mt-16" : ""}>
               <Link href={`/shop/${p.slug}`} className="group block">
-                <div aria-hidden="true" className="overflow-hidden rounded-[16px]">
-                  <Frame product={p} colorway={p.colorways[0]} view="front" className="aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.02]" />
+                <div aria-hidden="true" className="overflow-hidden rounded-[16px] bg-blush">
+                  {p.colorways[0].images[0] ? (
+                    <Image src={p.colorways[0].images[0]} alt="" width={900} height={1200} className="aspect-[3/4] w-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.02]" />
+                  ) : (
+                    <ImageSlot alt={p.name} className="aspect-[3/4]!" />
+                  )}
                 </div>
                 <h2 className="mt-5 text-3xl">{p.name}</h2>
                 <Price product={p} className="mt-2" />

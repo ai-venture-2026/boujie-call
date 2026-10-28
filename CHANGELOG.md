@@ -12,3 +12,4 @@
 - Polish: branded 404 ("This page didn't pick up."), share image and link preview metadata, sitemap and robots on boujiecall.com, hero buttons stacked full width on phones.
 - Home redesign, round A: fashion editorial hero with overlapping headline, staggered how it works on blush with vertical "PICK UP", day to night typographic turn, refined uppercase header, scroll-driven motion that respects reduced motion.
 - Home redesign, round B: tiers as night lookbook spreads darkening to ink, refined social links with icons, underline waitlist form on ribbon, letterspaced footer, parallax drift on hero and tier images.
+- Photos: the owner's seven product photos on Home (Rose slip hero, Bloom slip step, After Dark romper night print), shop cards and product galleries, blended into the blush ground. Home's lower half returns to light grounds to match the reference boards; the turn is the single night moment.

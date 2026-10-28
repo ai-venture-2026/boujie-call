@@ -103,3 +103,16 @@ describe("Product page offer", () => {
     expect(screen.getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 });
+
+describe("Product photos", () => {
+  it("shows the photo of the chosen colorway", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).tagName).toBe("IMG");
+  });
+
+  it("keeps placeholders for The Boujie Set", async () => {
+    const { container } = await renderProduct("the-boujie-set");
+    expect(container.querySelector("main img")).toBeNull();
+  });
+});

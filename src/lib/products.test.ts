@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { getProduct, products } from "./products";
 
 const colorways = (slug: string) => getProduct(slug)?.colorways.map((c) => c.name);
@@ -30,5 +31,20 @@ describe("products", () => {
 
   it("returns undefined for an unknown slug", () => {
     expect(getProduct("nope")).toBeUndefined();
+  });
+});
+
+describe("product photos", () => {
+  it("points every photo path at a file in public", () => {
+    const paths = products.flatMap((p) => p.colorways.flatMap((c) => c.images));
+    expect(paths.filter((p) => !existsSync(`public${p}`))).toEqual([]);
+  });
+
+  it("gives The Slip Dress in Rose its photo", () => {
+    expect(getProduct("the-slip-dress")?.colorways.find((c) => c.name === "Rose")?.images).toEqual(["/images/products/the-slip-dress-rose.webp"]);
+  });
+
+  it("leaves The Boujie Set without photos", () => {
+    expect(getProduct("the-boujie-set")?.colorways.flatMap((c) => c.images)).toEqual([]);
   });
 });

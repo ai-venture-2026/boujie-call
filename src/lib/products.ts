@@ -38,6 +38,10 @@ const bloom: Colorway = {
   images: [],
 };
 
+// Photos live in public/images/products as <slug>-<colorway>.webp.
+const photographed = (slug: string, colorways: Colorway[]): Colorway[] =>
+  colorways.map((c) => ({ ...c, images: [`/images/products/${slug}-${c.name.toLowerCase().replaceAll(" ", "-")}.webp`] }));
+
 export const products: Product[] = [
   {
     slug: "the-slip-dress",
@@ -47,7 +51,7 @@ export const products: Product[] = [
     description: "The one she reaches for when the night is hers. A soft, fluid slip that skims and moves with her.",
     fabric: "Satin with lace trim.",
     care: "Hand wash cold, lay flat to dry.",
-    colorways: [rose, afterDark, bloom],
+    colorways: photographed("the-slip-dress", [rose, afterDark, bloom]),
     sizes,
   },
   {
@@ -69,7 +73,7 @@ export const products: Product[] = [
     description: "One piece, zero effort. Soft, flirty, and made to be lived in.",
     fabric: "Stretch satin with lace trim.",
     care: "Hand wash cold, lay flat to dry.",
-    colorways: [powderBlue, mocha, afterDark, rose],
+    colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose]),
     sizes,
   },
 ];

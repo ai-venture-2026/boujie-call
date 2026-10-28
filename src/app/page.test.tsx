@@ -166,9 +166,19 @@ describe("Home night half", () => {
     expect(names).toEqual(["The Mini Call", "The Signature Call", "The Boujie Experience"]);
   });
 
-  it("sets The Boujie Experience in the deepest night", () => {
+  it("keeps the tier spreads on light grounds", () => {
     render(<Home />);
-    expect(screen.getAllByRole("article")[2].closest(".bg-ink")).not.toBeNull();
+    expect(screen.getAllByRole("article").filter((a) => a.closest(".bg-ink"))).toEqual([]);
+  });
+
+  it("keeps one ink section in main", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelectorAll("main .bg-ink")).toHaveLength(1);
+  });
+
+  it("shows the Rose slip dress in the hero", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("region", { name: "The gift that makes her feel like the moment." })).getByRole("img", { name: "The Slip Dress in Rose" }).tagName).toBe("IMG");
   });
 
   it("keeps an unconfirmed social as plain text", () => {
@@ -176,8 +186,8 @@ describe("Home night half", () => {
     expect(within(screen.getByRole("main")).getByText("Instagram, link to come").closest("a")).toBeNull();
   });
 
-  it("sets the waitlist on ribbon", () => {
+  it("sets the waitlist on cream", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).toHaveClass("bg-ribbon");
+    expect(container.querySelector("section#waitlist")).toHaveClass("bg-cream");
   });
 });
