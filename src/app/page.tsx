@@ -45,7 +45,7 @@ function Panel({ colorway, name, photo, alt, ground, line, dark = false, childre
   return (
     <Link
       href={`/shop/the-slip-dress?colorway=${colorway}`}
-      aria-label={`Shop the Slip Dress in ${name}`}
+      aria-labelledby={`panel-${colorway}-title panel-${colorway}-shop`}
       data-nav={dark ? "dark" : undefined}
       className={`group flex flex-col border-[0.5px] focus-visible:outline-ink ${ground}`}
     >
@@ -53,9 +53,9 @@ function Panel({ colorway, name, photo, alt, ground, line, dark = false, childre
         <Image src={photo} alt={alt} fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover transition-transform duration-400 ease-out motion-safe:group-hover:scale-[1.02]" />
       </div>
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center md:px-10 md:py-10">
-        <h2 className="max-w-[10em] text-[34px] leading-[1.04] font-medium md:text-[clamp(1.375rem,calc(2.8vw+2px),2.875rem)] rise">{children}</h2>
+        <h2 id={`panel-${colorway}-title`} className="max-w-[10em] text-[34px] leading-[1.04] font-medium md:text-[clamp(1.375rem,calc(2.8vw+2px),2.875rem)] rise">{children}</h2>
         <span className={`label mt-2 flex min-h-11 items-center md:mt-3 ${line}`}>
-          <span className="underline decoration-pink decoration-1 underline-offset-6 transition-colors md:decoration-transparent md:group-hover:decoration-pink">
+          <span id={`panel-${colorway}-shop`} className="underline decoration-pink decoration-1 underline-offset-6 transition-colors md:decoration-transparent md:group-hover:decoration-pink">
             Shop the Slip Dress in {name} <span aria-hidden="true">→</span>
           </span>
         </span>

@@ -324,7 +324,7 @@ describe("Day to night turn", () => {
 
   it("links the night caption to The Slip Dress in After Dark", () => {
     render(<Home />);
-    expect(screen.getByRole("link", { name: "Shop the Slip Dress in After Dark" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
+    expect(screen.getByRole("link", { name: /Shop the Slip Dress in After Dark/ })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
   });
 
   it("keeps each heading outside its photo frame", () => {
@@ -452,7 +452,7 @@ describe("Strict pass", () => {
 });
 
 describe("Clickable diptych", () => {
-  const panel = (name: string) => screen.getByRole("link", { name });
+  const panel = (name: string) => screen.getByRole("link", { name: new RegExp(name) });
 
   it("links the whole brunch panel to the Slip Dress in Rose", () => {
     render(<Home />);
@@ -462,6 +462,11 @@ describe("Clickable diptych", () => {
   it("puts the brunch photo inside its panel link", () => {
     render(<Home />);
     expect(within(panel("Shop the Slip Dress in Rose")).getByRole("img")).toBeInTheDocument();
+  });
+
+  it("names the brunch panel by its headline and Shop line", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "Cute enough to open at brunch. Shop the Slip Dress in Rose" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=rose");
   });
 
   it("puts the brunch headline inside its panel link", () => {
