@@ -38,7 +38,7 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
             <thead>
               <tr className="border-b-[0.5px] border-ink/15">
                 {["Size", ...columns].map((c) => (
-                  <th key={c} scope="col" className="label pb-3 font-normal text-muted">
+                  <th key={c} scope="col" className="label pb-3 text-muted">
                     {c}
                   </th>
                 ))}

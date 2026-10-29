@@ -26,6 +26,8 @@
     padding-right: env(safe-area-inset-right);
     background: var(--color-cream);
     color: var(--color-ink);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
