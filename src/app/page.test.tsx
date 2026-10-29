@@ -20,14 +20,24 @@ describe("Home", () => {
     expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "She gets the Call", "She picks up"]);
   });
 
-  it("renders social channels without a URL as plain text", () => {
-    render(<Home />);
-    expect(screen.queryByRole("link", { name: /tiktok/i })).toBeNull();
+  it("links TikTok to the placeholder handle", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "TikTok" })).toHaveAttribute("href", "https://www.tiktok.com/@boujiecall");
   });
 
-  it("links Instagram to the owner's account", () => {
+  it("links Instagram to the placeholder handle", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall/");
+    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall");
+  });
+
+  it("keeps Discover the piece outlined", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "Discover the piece" })).not.toHaveClass("cta-primary");
+  });
+
+  it("keeps View all pieces outlined", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "View all pieces" })).not.toHaveClass("cta-primary");
   });
 });
 
@@ -35,6 +45,16 @@ const pages = ["Home", "Shop", "Send a Call", "About"];
 const linkNames = (nav: HTMLElement) => within(nav).getAllByRole("link").map((l) => l.textContent);
 
 describe("SiteHeader", () => {
+  it("gives the menu button a 44px target", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveClass("size-11");
+  });
+
+  it("gives the logo link a 44px target", () => {
+    render(<SiteHeader />);
+    expect(screen.getAllByRole("link", { name: "Boujie Call home" })[0]).toHaveClass("min-h-11");
+  });
+
   it("lists the four pages in the main nav", () => {
     render(<SiteHeader />);
     expect(linkNames(screen.getByRole("navigation", { name: "Main" }))).toEqual(pages);
@@ -87,6 +107,37 @@ describe("SiteFooter", () => {
     expect(linkNames(screen.getByRole("navigation", { name: "Shop" }))).toEqual(["The Slip Dress", "The Boujie Set", "The Romper", "All pieces"]);
   });
 
+  it("signs off with the brand line", () => {
+    render(<SiteFooter />);
+    expect(screen.getByText("Luxury nightwear gifts.")).toHaveClass("font-serif", "italic");
+  });
+
+  it("puts the monogram first for screen readers", () => {
+    render(<SiteFooter />);
+    const monogram = screen.getByRole("img", { name: "Boujie Call" });
+    expect(monogram.compareDocumentPosition(screen.getByRole("navigation", { name: "Shop" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("gives footer links a 44px target on phones", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "Home" })).toHaveClass("max-md:min-h-11");
+  });
+
+  it("sets footer links at 16px on phones", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "Home" })).toHaveClass("max-md:text-base");
+  });
+
+  it("hides the handles under the monogram on phones", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "TikTok @boujiecall" }).closest("ul")).toHaveClass("max-md:hidden");
+  });
+
+  it("shows the social handles under the monogram", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "TikTok @boujiecall" })).toHaveAttribute("href", "https://www.tiktok.com/@boujiecall");
+  });
+
   it("keeps the footer free of forms", () => {
     render(<SiteFooter />);
     expect(within(screen.getByRole("contentinfo")).queryByRole("textbox")).toBeNull();
@@ -101,9 +152,19 @@ describe("SiteFooter", () => {
 });
 
 describe("Home signup", () => {
-  it("anchors the signup section as waitlist", () => {
+  it("leaves the waitlist off Home", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).not.toBeNull();
+    expect(container.querySelector("section#waitlist")).toBeNull();
+  });
+
+  it("keeps email fields off Home", () => {
+    render(<Home />);
+    expect(screen.queryByLabelText("Email address")).toBeNull();
+  });
+
+  it("keeps the ruled out words off Home", () => {
+    const { container } = render(<Home />);
+    expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 });
 
@@ -116,6 +177,11 @@ describe("WaitlistForm", () => {
   it("gives the field an example address", () => {
     render(<WaitlistForm />);
     expect(screen.getByLabelText("Email address")).toHaveAttribute("placeholder", "name@email.com");
+  });
+
+  it("fills the submit in pink", () => {
+    render(<WaitlistForm />);
+    expect(screen.getByRole("button", { name: "Join the waitlist" })).toHaveClass("cta-primary");
   });
 
   it("draws the field as a full box", () => {
@@ -198,7 +264,7 @@ describe("Home night half", () => {
 
   it("sets the closing section on blush", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).toHaveClass("bg-blush");
+    expect(container.querySelector("section#closing")).toHaveClass("bg-blush");
   });
 });
 
@@ -284,16 +350,26 @@ describe("De-slop", () => {
 });
 
 describe("Closing section", () => {
-  const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
+  const close = (c: HTMLElement) => c.querySelector("section#closing") as HTMLElement;
 
   it("sets the banner photo in the closing section", () => {
     const { container } = render(<Home />);
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("blue-romper-banner");
   });
 
-  it("offers the waitlist form in the closing section", () => {
+  it("offers a pink Shop the collection pill in the closing section", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByLabelText("Email address")).toHaveAttribute("type", "email");
+    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta-primary");
+  });
+
+  it("sends the closing pill to the shop", () => {
+    const { container } = render(<Home />);
+    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
+  });
+
+  it("keeps the closing headline", () => {
+    const { container } = render(<Home />);
+    expect(within(close(container)).getByRole("heading", { level: 2 })).toHaveTextContent("Be first to receive a Boujie Call.");
   });
 
   it("sets the closing words in ink over the photo", () => {
@@ -303,7 +379,7 @@ describe("Closing section", () => {
 
   it("ends on the closing line", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByText("The call is coming. Are you going to pick up?")).toBeInTheDocument();
+    expect(within(close(container)).getByText("The pieces are here. Find the one that feels like her.")).toBeInTheDocument();
   });
 
   it("is not a centered stack", () => {
@@ -336,6 +412,11 @@ describe("Hero polish", () => {
     expect(within(hero()).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta");
   });
 
+  it("fills the hero CTA in pink", () => {
+    render(<Home />);
+    expect(within(hero()).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta-primary");
+  });
+
   it("leaves nothing after the CTA label", () => {
     render(<Home />);
     expect(within(hero()).getByRole("link", { name: "Shop the collection" }).children).toHaveLength(0);
@@ -356,7 +437,7 @@ describe("Strict pass", () => {
 
   it("drops the line above the closing line", () => {
     render(<Home />);
-    expect(screen.getByText("The call is coming. Are you going to pick up?")).not.toHaveClass("border-t-[0.5px]");
+    expect(screen.getByText("The pieces are here. Find the one that feels like her.")).not.toHaveClass("border-t-[0.5px]");
   });
 
   it("keeps social placeholders out of the footer", () => {
@@ -468,6 +549,46 @@ describe("Home rebuild round 1", () => {
 describe("Home rebuild round 2", () => {
   const pair = () => screen.getByRole("region", { name: "From brunch to after dark" });
 
+  it("anchors the shop pill to the night half on phones", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).toHaveClass("max-md:relative");
+  });
+
+  it("keeps each piece name on one line", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Boujie Set" })).toHaveClass("truncate");
+  });
+
+  it("centers a single last piece card on phones", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("listitem").at(-1)).toHaveClass("max-sm:last:odd:justify-self-center");
+  });
+
+  it("stacks the day pair on phones", () => {
+    render(<Home />);
+    expect(pair().className.split(" ")).not.toContain("grid-cols-2");
+  });
+
+  it("keeps the pair side by side on desktop", () => {
+    render(<Home />);
+    expect(pair()).toHaveClass("md:grid-cols-2");
+  });
+
+  it("sets the brunch half on cream on phones", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." }).parentElement).toHaveClass("bg-cream", "md:bg-white");
+  });
+
+  it("keeps the moment heading in sentence case on phones", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ }).className.split(" ")).not.toContain("uppercase");
+  });
+
+  it("sets the moment heading in capitals on desktop", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ })).toHaveClass("md:uppercase");
+  });
+
   it("pairs a day photo with the evening photo", () => {
     render(<Home />);
     expect(within(pair()).getAllByRole("img")).toHaveLength(2);
@@ -493,7 +614,7 @@ describe("Home rebuild round 2", () => {
 
   it("accents the closing headline in deep rose", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist h2 em")).toHaveClass("text-rose-deep");
+    expect(container.querySelector("section#closing h2 em")).toHaveClass("text-rose-deep");
   });
 });
 
@@ -549,7 +670,7 @@ describe("Phone menu", () => {
   });
 
   it("links Instagram from the menu", () => {
-    expect(within(open()).getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall/");
+    expect(within(open()).getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall");
   });
 });
 
@@ -563,7 +684,7 @@ describe("Sharp photos on phones", () => {
 
   it("asks for a closing banner as wide as it is drawn", () => {
     const { container } = render(<Home />);
-    expect(sizesOf(container.querySelector("section#waitlist img"))).toContain("270vw");
+    expect(sizesOf(container.querySelector("section#closing img"))).toContain("270vw");
   });
 
   it("asks for the section two close-up as wide as it is drawn", () => {

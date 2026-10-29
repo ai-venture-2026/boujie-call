@@ -9,10 +9,10 @@ function Column({ title, name = title, links }: { title: string; name?: string; 
   return (
     <nav aria-label={name}>
       <p className="label text-[10px] text-muted">{title}</p>
-      <ul className="mt-4 flex flex-col gap-2 text-sm">
+      <ul className="mt-4 flex flex-col gap-2 text-sm max-md:gap-0">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="text-ink/80 transition-colors hover:text-rose">
+            <Link href={l.href} className="text-ink/80 transition-colors hover:text-rose max-md:flex max-md:min-h-11 max-md:items-center max-md:text-base">
               {l.label}
             </Link>
           </li>
@@ -25,23 +25,39 @@ function Column({ title, name = title, links }: { title: string; name?: string; 
 export function SiteFooter() {
   return (
     <footer className="bg-white">
-      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 pt-12 pb-8 md:flex-row-reverse md:items-end md:justify-between md:px-12 md:pt-14 md:pb-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 pt-12 pb-8 md:flex-row md:items-end md:justify-between md:px-12 md:pt-14 md:pb-10">
+        <div className="flex flex-col items-start gap-5">
+          <Image src="/boujie-call-monogram-ink.png" alt="Boujie Call" width={439} height={430} className="h-24 w-auto md:h-36" />
+          <p className="font-serif text-xl italic">Luxury nightwear gifts.</p>
+          <ul className="flex flex-col gap-1 text-sm text-muted max-md:hidden">
+            {socials.map((s) => (
+              <li key={s.label}>
+                <a href={s.url} className="hover:text-rose">
+                  {s.label} {s.handle}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="flex flex-col gap-10">
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:gap-14">
             <Column title="Shop" links={shop} />
             <Column title="Company" name="Footer" links={pages} />
             <div>
               <p className="label text-[10px] text-muted">Socials</p>
-              <ul className="mt-4 flex flex-col gap-2 text-sm text-muted">
+              <ul className="mt-4 flex flex-col gap-2 text-sm max-md:gap-0">
                 {socials.map((s) => (
-                  <li key={s.label}>{s.url ? <a href={s.url} className="text-ink/80 hover:text-rose">{s.label}</a> : s.label}</li>
+                  <li key={s.label}>
+                    <a href={s.url} className="text-ink/80 hover:text-rose max-md:flex max-md:min-h-11 max-md:items-center max-md:text-base">
+                      {s.label}
+                    </a>
+                  </li>
                 ))}
               </ul>
             </div>
           </div>
           <p className="label text-[10px] text-muted">© 2026 Boujie Call</p>
         </div>
-        <Image src="/boujie-call-monogram-ink.png" alt="Boujie Call" width={439} height={430} className="h-24 w-auto self-start md:h-36 md:self-auto" />
       </div>
     </footer>
   );

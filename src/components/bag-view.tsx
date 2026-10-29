@@ -23,7 +23,7 @@ export function BagView() {
     return (
       <div className="flex flex-col items-start gap-8 py-10">
         <p className="font-serif text-3xl">Your bag is empty</p>
-        <Link href="/shop" className="cta">
+        <Link href="/shop" className="cta cta-primary">
           Shop the collection
         </Link>
       </div>
@@ -83,7 +83,7 @@ export function BagView() {
         </div>
         {count >= 2 && <p className="mt-2 text-sm text-ink">Any 2 for $85 applied at checkout</p>}
         <p className="mt-2 text-sm text-muted">Shipping and taxes calculated at checkout</p>
-        <button type="button" onClick={checkout} className="cta mt-8 w-full border-pink bg-pink text-ink [--cta-fill:var(--color-ink)] [--cta-on:var(--color-cream)]">
+        <button type="button" onClick={checkout} className="cta cta-primary mt-8 w-full">
           Checkout
         </button>
         <p role="status" className="mt-4 text-sm text-ink">
