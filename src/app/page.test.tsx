@@ -464,7 +464,7 @@ describe("Clickable diptych", () => {
     expect(within(panel("Shop the Slip Dress in Rose")).getByRole("img")).toBeInTheDocument();
   });
 
-  it("names the brunch panel by its headline and Shop line", () => {
+  it("names the brunch panel from its visible text", () => {
     render(<Home />);
     expect(screen.getByRole("link", { name: "Cute enough to open at brunch. Shop the Slip Dress in Rose" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=rose");
   });
