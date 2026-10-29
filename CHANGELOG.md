@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Product page gallery: main photo with three thumbnails (front, back, detail) on desktop and a swipeable carousel with dots on phones. Views without a photo read Image to come. Choosing a colorway returns to its front photo.
+- Size guide link beside the size choice opens a chart with S to XL rows and bust, waist, hip columns, marked as a placeholder until the owner sends measurements.
 - Shop and waitlist no longer mixed: Home closes with a pink Shop the collection pill instead of the email form; Send a Call and About frame the waitlist as "Be first when Send a Call opens."
 - Send a Call tiers show prices: The Mini Call $40, The Signature Call $55 (tagged Most popular), The Boujie Experience $75. Note shortened to "Contents confirmed at launch."
 - Brand pink returns: every button is a pill. Main actions (Shop the collection in heroes, Add to your bag, Checkout, waitlist submit) are filled Boujie Pink; the rest are outlined in soft pink. Round swatches with a pink ring and blush size pills when chosen.

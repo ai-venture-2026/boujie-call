@@ -212,10 +212,87 @@ describe("Product page shapes", () => {
 });
 
 describe("Product gallery thumbnails", () => {
-  it("hides the thumbnail row when a colorway has one photo", async () => {
+  const slide = (name: string) => screen.getByRole("img", { name }).parentElement;
+
+  it("shows three thumbnails when a colorway has one photo", async () => {
     await renderProduct("the-slip-dress");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
-    expect(screen.queryByRole("button", { name: /^Show / })).toBeNull();
+    expect(screen.getAllByRole("button", { name: /^Show / })).toHaveLength(3);
+  });
+
+  it("marks a view without a photo as image to come", async () => {
+    await renderProduct("the-slip-dress");
+    expect(within(screen.getByRole("button", { name: "Show back" })).getByText("Image to come")).toBeInTheDocument();
+  });
+
+  it("shows the chosen thumbnail as the main slide", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("button", { name: "Show back" }));
+    expect(slide("The Slip Dress in Rose, back")).not.toHaveClass("md:hidden");
+  });
+
+  it("hides the other slides on desktop", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("button", { name: "Show back" }));
+    expect(slide("The Slip Dress in Rose, front")).toHaveClass("md:hidden");
+  });
+
+  it("shows the chosen colorway's photo as the main image", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in After Dark, front" }).getAttribute("src")).toContain("the-slip-dress-after-dark");
+  });
+
+  it("returns to the front view when the colorway changes", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("button", { name: "Show back" }));
+    fireEvent.click(screen.getByRole("radio", { name: "After Dark" }));
+    expect(slide("The Slip Dress in After Dark, front")).not.toHaveClass("md:hidden");
+  });
+
+  it("lets phones swipe between views", async () => {
+    await renderProduct("the-slip-dress");
+    expect(slide("The Slip Dress in Rose, front")?.parentElement).toHaveClass("snap-x");
+  });
+
+  it("shows one dot per view on phones", async () => {
+    const { container } = await renderProduct("the-slip-dress");
+    expect(container.querySelectorAll("[data-dot]")).toHaveLength(3);
+  });
+});
+
+describe("Size guide", () => {
+  const open = () => fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
+
+  it("opens the size guide", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(screen.getByRole("dialog", { name: "Size guide" })).toBeInTheDocument();
+  });
+
+  it("marks the chart as a placeholder", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(screen.getByText("Placeholder. Measurements to come from Boujie Call.")).toBeInTheDocument();
+  });
+
+  it("heads the chart with bust, waist, hip", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Size", "Bust", "Waist", "Hip"]);
+  });
+
+  it("lists a row per size", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(screen.getAllByRole("rowheader").map((h) => h.textContent)).toEqual(["S", "M", "L", "XL"]);
+  });
+
+  it("closes from the close button", async () => {
+    await renderProduct("the-romper");
+    open();
+    fireEvent.click(screen.getByRole("button", { name: "Close size guide" }));
+    expect(screen.queryByRole("dialog", { name: "Size guide" })).toBeNull();
   });
 });
 
