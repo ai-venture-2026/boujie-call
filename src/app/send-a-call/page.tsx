@@ -18,7 +18,7 @@ export default function SendACall() {
     <>
       <SiteHeader />
       <main>
-        <section data-nav="dark" className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
+        <section data-nav="dark" className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
           <div className="relative h-[60svh] min-h-[420px] md:order-2 md:h-auto md:min-h-0">
             <Image src="/images/send-a-call/hero-rose-slip.webp" alt="A woman in a pale pink slip with lace trim leans on a taupe wall, arms raised" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "70% 25%" }} className="object-cover" />
           </div>
@@ -58,7 +58,7 @@ export default function SendACall() {
           </div>
           <div className="bg-blush px-6 py-14 md:px-16 md:py-28">
             <h2 className="text-[clamp(2.25rem,3.8vw,3.75rem)] leading-[1.04] rise">
-              Inside every Boujie <em className="text-rose">Call</em>
+              Inside every Boujie <em className="text-rose-deep">Call</em>
             </h2>
             <ul aria-label="Inside every Boujie Call" className="mt-12 border-t-[0.5px] border-ink/15">
               {boxContents.map((item) => (

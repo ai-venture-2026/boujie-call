@@ -136,6 +136,7 @@
     padding: 0 2.25rem;
     border: 0.5px solid var(--color-ink);
     border-radius: 9999px;
+    outline-color: var(--color-ink);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.22em;
@@ -172,11 +173,12 @@
     color: var(--color-ink);
   }
 
-  [data-nav="dark"] .cta:not(.cta-primary) {
+  [data-nav="dark"] .cta:not(.cta-primary, dialog *, #mini-bag *) {
     border-color: var(--color-blush);
+    outline-color: var(--color-blush);
   }
 
-  [data-nav="dark"] .cta-primary:not(dialog *) {
+  [data-nav="dark"] .cta-primary:not(dialog *, #mini-bag *) {
     --cta-fill: var(--color-cream);
     --cta-on: var(--color-ink);
     outline-color: var(--color-cream);

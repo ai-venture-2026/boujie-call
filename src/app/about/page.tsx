@@ -23,7 +23,7 @@ export default function About() {
     <>
       <SiteHeader />
       <main>
-        <section data-nav="dark" className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
+        <section data-nav="dark" className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
           <div className="relative h-[60svh] min-h-[420px] md:order-2 md:h-auto md:min-h-0">
             <Image src="/images/about/hero-blue-romper.webp" alt="A woman in The Romper in Powder Blue relaxes in a floral armchair with a book" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "66% 35%" }} className="object-cover" />
           </div>

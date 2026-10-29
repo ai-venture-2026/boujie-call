@@ -24,7 +24,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
       aria-labelledby="hero-title"
       aria-roledescription="carousel"
       data-nav="dark"
-      className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]"
+      className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]"
     >
       <div className="relative h-[60svh] min-h-[420px] overflow-hidden md:order-2 md:h-auto md:min-h-0">
         {heroSlides.map((s, i) => (
