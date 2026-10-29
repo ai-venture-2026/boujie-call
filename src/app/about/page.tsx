@@ -55,7 +55,7 @@ export default function About() {
           </div>
         </section>
 
-        <section className="bg-blush py-19 md:py-48">
+        <section className="bg-blush py-19 md:py-section-lg">
           <ul aria-label="What we stand for" className={`${wrap} grid border-t-[0.5px] border-card-border md:grid-cols-3 md:divide-x-[0.5px] md:divide-card-border`}>
             {pillars.map((p) => (
               <li key={p.title} className="border-b-[0.5px] border-card-border py-10 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
@@ -66,7 +66,7 @@ export default function About() {
           </ul>
         </section>
 
-        <section data-nav="dark" className="bg-ribbon py-19 text-blush md:py-48">
+        <section data-nav="dark" className="bg-ribbon py-19 text-blush md:py-section-lg">
           <figure className={`${wrap} max-w-4xl text-center`}>
             <blockquote className="font-serif text-[clamp(1.75rem,3.2vw,3rem)] leading-[1.2] italic rise">
               &ldquo;I wanted to send something that felt truly special, not just flowers, not just a gift card. Something she would actually remember.&rdquo;

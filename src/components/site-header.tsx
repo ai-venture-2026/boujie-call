@@ -19,6 +19,11 @@ export function SiteHeader() {
   const drawer = useRef<HTMLDialogElement>(null);
   const close = () => drawer.current?.close();
   const current = (href: string) => (pathname === href ? "page" : undefined);
+  // A link to the page already open scrolls back to its top instead of doing nothing.
+  const toTop = (href: string) => {
+    if (pathname !== href) return;
+    window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  };
   const count = bagCount(useBag());
   const [bagOpen, setBagOpen] = useState(false);
   const bagButton = useRef<HTMLButtonElement>(null);
@@ -69,7 +74,7 @@ export function SiteHeader() {
     <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ribbon text-blush">
       <p className="label bg-dusty px-6 py-2 text-center leading-4 tracking-[0.12em] text-ribbon">{OFFER}</p>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
-        <Link href="/" aria-label="Boujie Call home" className="flex min-h-11 items-center">
+        <Link href="/" aria-label="Boujie Call home" onClick={() => toTop("/")} className="flex min-h-11 items-center">
           <Logo tone="pink" className="h-10 md:h-12" />
         </Link>
 
@@ -78,7 +83,7 @@ export function SiteHeader() {
             <ul className="label flex gap-6 whitespace-nowrap xl:gap-9">
               {pages.map((p) => (
                 <li key={p.href}>
-                  <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
+                  <Link href={p.href} aria-current={current(p.href)} onClick={() => toTop(p.href)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
                     {p.label}
                   </Link>
                 </li>
@@ -142,7 +147,14 @@ export function SiteHeader() {
       >
         <div className="flex h-full flex-col overflow-y-auto">
           <div className="flex items-center justify-between border-b-[0.5px] border-ink/10 px-6 py-4">
-            <Link href="/" aria-label="Boujie Call home" onClick={close}>
+            <Link
+                href="/"
+                aria-label="Boujie Call home"
+                onClick={() => {
+                  close();
+                  toTop("/");
+                }}
+              >
               <Logo tone="ink" className="h-10" />
             </Link>
             <button type="button" aria-label="Close menu" className="grid size-11 place-items-center" onClick={close}>
@@ -155,7 +167,14 @@ export function SiteHeader() {
             <ul>
               {pages.map((p) => (
                 <li key={p.href} className="border-b-[0.5px] border-ink/10">
-                  <Link href={p.href} aria-current={current(p.href)} onClick={close} className="flex min-h-16 items-center justify-between font-serif text-3xl aria-[current=page]:text-rose aria-[current=page]:italic">
+                  <Link
+                    href={p.href}
+                    aria-current={current(p.href)}
+                    onClick={() => {
+                      close();
+                      toTop(p.href);
+                    }}
+                    className="flex min-h-16 items-center justify-between font-serif text-3xl aria-[current=page]:text-rose aria-[current=page]:italic">
                     {p.label}
                     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1">
                       <path d="M3 9h12M10 4l5 5-5 5" />

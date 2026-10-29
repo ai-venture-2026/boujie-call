@@ -34,7 +34,7 @@ export default function SendACall() {
           </div>
         </section>
 
-        <section className="bg-cream py-19 md:py-48">
+        <section className="bg-cream py-19 md:py-section-lg">
           <div className={wrap}>
             <h2 className="max-w-2xl text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
               Four steps. One <em className="text-rose">unforgettable</em> moment.
@@ -71,7 +71,7 @@ export default function SendACall() {
           </div>
         </section>
 
-        <section className="bg-cream py-19 md:py-48">
+        <section className="bg-cream py-19 md:py-section-lg">
           <div className={wrap}>
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">

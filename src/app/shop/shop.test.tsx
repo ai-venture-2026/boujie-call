@@ -34,6 +34,44 @@ describe("Shop", () => {
   });
 });
 
+describe("Product page on laptops", () => {
+  it("sizes the product title fluidly", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-[clamp(36px,3.2vw,52px)]");
+  });
+
+  it("caps the image column so the photo fits the viewport", async () => {
+    const { container } = await renderProduct("the-slip-dress");
+    expect(container.querySelector("main .grid")).toHaveClass("lg:grid-cols-[min(calc((100svh-14rem)*0.75),calc(50%-2rem))_1fr]");
+  });
+
+  it("keeps the main photo at 3:4", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" })).toHaveClass("aspect-[3/4]");
+  });
+
+  it("keeps the info column in view on desktop", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("md:sticky", "md:top-32", "md:self-start");
+  });
+
+  it("narrows the image column below lg", async () => {
+    const { container } = await renderProduct("the-slip-dress");
+    expect(container.querySelector("main .grid")).toHaveClass("md:grid-cols-[min(calc((100svh-14rem)*0.75),45%)_1fr]");
+  });
+
+  it("tightens the gap above the button on short laptop screens", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("short:mt-5");
+  });
+
+  it("sets size pills 40px tall from md", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("radio", { name: "M" }).parentElement).toHaveClass("md:h-10", "md:min-w-12");
+  });
+});
+
 describe("Product typography", () => {
   it("sets the product price in DM Sans 500", async () => {
     await renderProduct("the-slip-dress");

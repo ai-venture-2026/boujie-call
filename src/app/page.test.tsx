@@ -778,19 +778,19 @@ describe("Home on phones", () => {
     expect(frames.every((f) => f?.classList.contains("border-card-border"))).toBe(true);
   });
 
-  it("spaces the gift section 120px on desktop", () => {
+  it("spaces the gift section with the fluid section token", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("py-18", "md:py-30");
+    expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("py-18", "md:py-section");
   });
 
-  it("spaces the pair 120px on desktop", () => {
+  it("spaces the pair with the fluid section token", () => {
     render(<Home />);
-    expect(screen.getByRole("region", { name: "From brunch to after dark" })).toHaveClass("py-18", "md:py-30");
+    expect(screen.getByRole("region", { name: "From brunch to after dark" })).toHaveClass("py-18", "md:py-section");
   });
 
   it("drops the pieces top padding after the pair", () => {
     render(<Home />);
-    expect(screen.getByRole("region", { name: /pieces/i })).toHaveClass("pb-18", "md:pb-30");
+    expect(screen.getByRole("region", { name: /pieces/i })).toHaveClass("pb-18", "md:pb-section");
   });
 
   it("lays the gift strip in two columns", () => {

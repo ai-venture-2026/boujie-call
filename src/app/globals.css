@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant short (@media (width >= 48rem) and (height < 44rem));
+
 @theme {
   --color-cream: #fff8fb;
   --color-white: #fff8fb;
@@ -14,6 +16,8 @@
   --color-rose-deep: #8b3156;
   --color-stone: #f9eef2;
   --color-muted: #575051;
+  --spacing-section: clamp(4.5rem, 8.33vw, 7.5rem);
+  --spacing-section-lg: clamp(6rem, 13.33vw, 12rem);
   --color-muted-dark: #b9a9b1;
 
   --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
@@ -34,7 +38,7 @@
 
   @media (width >= 48rem) {
     :root {
-      --text-base: 1.0625rem;
+      --text-base: clamp(1rem, 1.18vw, 1.0625rem);
     }
   }
 
@@ -143,7 +147,7 @@
 
   @media (width >= 48rem) {
     .label {
-      font-size: 13px;
+      font-size: clamp(12px, 0.9vw, 13px);
     }
   }
 
@@ -170,7 +174,7 @@
 
   @media (width >= 48rem) {
     .cta {
-      font-size: 13px;
+      font-size: clamp(12px, 0.9vw, 13px);
     }
   }
 

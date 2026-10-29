@@ -52,7 +52,7 @@ function Panel({ colorway, name, photo, alt, ground, line, dark = false, childre
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image src={photo} alt={alt} fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover transition-transform duration-400 ease-out motion-safe:group-hover:scale-[1.02]" />
       </div>
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center md:px-10 md:py-10">
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center md:px-4 md:py-10 lg:px-10">
         <h2 id={`panel-${colorway}-title`} className="max-w-[10em] text-[34px] leading-[1.04] font-medium md:text-[clamp(1.375rem,calc(2.8vw+2px),2.875rem)] rise">{children}</h2>
         <span className={`label mt-2 flex min-h-11 items-center md:mt-3 ${line}`}>
           <span id={`panel-${colorway}-shop`} className="underline decoration-pink decoration-1 underline-offset-6 transition-colors md:decoration-transparent md:group-hover:decoration-pink">
@@ -98,7 +98,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how" data-nav="dark" className="overflow-hidden bg-ribbon py-18 text-blush md:py-30">
+        <section id="how" data-nav="dark" className="overflow-hidden bg-ribbon py-18 text-blush md:py-section">
           <h2 className={`${wrap} text-center text-[2rem] leading-[1.05] md:text-[clamp(2.25rem,5vw,4.75rem)] md:uppercase rise`}>
             Someone places a call.
             <br />
@@ -121,7 +121,7 @@ export default function Home() {
           </ol>
         </section>
 
-        <section aria-label="From brunch to after dark" className="mx-auto grid max-w-7xl gap-3 px-6 py-18 md:grid-cols-2 md:gap-4 md:px-12 md:py-30">
+        <section aria-label="From brunch to after dark" className="mx-auto grid max-w-7xl gap-3 px-6 py-18 md:grid-cols-2 md:gap-4 md:px-12 md:py-section">
           <Panel colorway="rose" name="Rose" photo="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" ground="border-card-border bg-cream" line="text-muted">
             Cute enough to open at <em className="text-rose">brunch.</em>
           </Panel>
@@ -130,7 +130,7 @@ export default function Home() {
           </Panel>
         </section>
 
-        <section aria-labelledby="pieces-title" className="bg-cream pb-18 md:pb-30">
+        <section aria-labelledby="pieces-title" className="bg-cream pb-18 md:pb-section">
           <div className={wrap}>
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8">
               <div className="rise">

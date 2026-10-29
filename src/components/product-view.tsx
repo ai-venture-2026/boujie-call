@@ -64,7 +64,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
   }
 
   return (
-    <div className="grid gap-10 md:grid-cols-2 md:gap-16">
+    <div className="grid gap-10 md:grid-cols-[min(calc((100svh-14rem)*0.75),45%)_1fr] lg:grid-cols-[min(calc((100svh-14rem)*0.75),calc(50%-2rem))_1fr] lg:gap-16">
       <div>
         {/* Phones swipe the track; from md only the active slide shows and the thumbnails pick it. */}
         <div
@@ -111,13 +111,13 @@ export function ProductView({ product, intro, details }: { product: Product; int
         </div>
       </div>
 
-      <div>
+      <div className="md:sticky md:top-32 md:self-start">
         {intro}
-        <fieldset ref={colorways} className="mt-10 scroll-mt-28">
+        <fieldset ref={colorways} className="mt-7 scroll-mt-28 short:mt-5">
           <legend className="text-base">
             Colorway: <span className="text-muted">{chosen ? chosen.name : "choose one"}</span>
           </legend>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             {product.colorways.map((c) => (
               <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
                 <input type="radio" name="colorway" value={c.name} aria-label={c.name} className="sr-only" checked={chosen?.name === c.name} onChange={() => {
@@ -125,26 +125,26 @@ export function ProductView({ product, intro, details }: { product: Product; int
                     setView(0);
                     if (track.current) track.current.scrollLeft = 0;
                   }} />
-                <span aria-hidden="true" className="size-7 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
+                <span aria-hidden="true" className="size-8 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
               </label>
             ))}
           </div>
         </fieldset>
-        <fieldset ref={sizes} className="mt-8 scroll-mt-28">
+        <fieldset ref={sizes} className="mt-6 scroll-mt-28 short:mt-4">
           <legend className="float-left py-2.5 text-base">
             Size: <span className="text-muted">{size ?? "choose one"}</span>
           </legend>
           <SizeGuide sizes={product.sizes} />
-          <div className="clear-both mt-4 flex flex-wrap gap-2 pt-px">
+          <div className="clear-both mt-3 flex flex-wrap gap-2 pt-px">
             {product.sizes.map((s) => (
-              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer md:h-10 md:min-w-12 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
                 <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>
             ))}
           </div>
         </fieldset>
-        <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-10 w-full sm:w-auto">
+        <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-7 w-full sm:w-auto short:mt-5">
           Add to your bag
         </button>
         <p className="mt-3 text-base text-muted">{OFFER}</p>
