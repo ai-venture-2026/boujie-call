@@ -32,8 +32,8 @@ function PieceCard({ product }: { product: Product }) {
         )}
       </div>
       <h3 className="mt-3 truncate text-xl font-medium md:mt-5 md:text-[26px]">{product.name}</h3>
-      <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
-        <Price product={product} />
+      <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-4">
+        <Price product={product} compact />
         <span className="label text-muted">{product.colorways.length} colorways</span>
       </div>
     </Link>

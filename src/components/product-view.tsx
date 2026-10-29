@@ -176,10 +176,10 @@ export function ProductView({ product, intro, details }: { product: Product; int
   );
 }
 
-export function Price({ product, className = "" }: { product: Product; className?: string }) {
+export function Price({ product, compact = false, className = "" }: { product: Product; compact?: boolean; className?: string }) {
   return (
     <p className={`flex items-baseline gap-3 ${className}`}>
-      <span className="font-sans text-xl font-medium">{formatPrice(product.priceCents)}</span>
+      <span className={`font-sans font-medium ${compact ? "text-base" : "text-xl"}`}>{formatPrice(product.priceCents)}</span>
       {product.placeholderPrice && <span className="text-[13px] text-muted">Placeholder price</span>}
     </p>
   );

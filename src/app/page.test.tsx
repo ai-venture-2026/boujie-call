@@ -501,6 +501,19 @@ describe("Clickable diptych", () => {
   });
 });
 
+describe("Piece cards on phones", () => {
+  it("stacks the colorway count under the price below sm", () => {
+    render(<Home />);
+    const count = within(screen.getByRole("list", { name: "Pieces" })).getAllByText("3 colorways")[0];
+    expect(count.parentElement).toHaveClass("flex-col", "sm:flex-row");
+  });
+
+  it("sets the card price at body size", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByText("$48.00")[0]).toHaveClass("text-base");
+  });
+});
+
 describe("Typography", () => {
   it("lets every Home label take the shared label size", () => {
     const { container } = render(<Home />);
