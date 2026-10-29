@@ -48,6 +48,10 @@ describe("share metadata", () => {
     const png = readFileSync("src/app/opengraph-image.png");
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
   });
+
+  it("describes the share image for screen readers", () => {
+    expect(readFileSync("src/app/opengraph-image.alt.txt", "utf8")).toMatch(/gift box/);
+  });
 });
 
 describe("404 button", () => {
