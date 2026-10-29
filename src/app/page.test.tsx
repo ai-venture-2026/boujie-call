@@ -574,9 +574,9 @@ describe("Home rebuild round 2", () => {
     expect(pair()).toHaveClass("max-w-7xl", "px-6", "md:px-12", "gap-3", "md:gap-4");
   });
 
-  it("frames each photo at 4:5 across its panel", () => {
+  it("frames each photo at 4:3 across its panel", () => {
     render(<Home />);
-    expect(within(pair()).getAllByRole("img").map((img) => img.parentElement?.classList.contains("aspect-[4/5]"))).toEqual([true, true]);
+    expect(within(pair()).getAllByRole("img").map((img) => img.parentElement?.classList.contains("aspect-[4/3]"))).toEqual([true, true]);
   });
 
   it("keeps each piece name on one line", () => {

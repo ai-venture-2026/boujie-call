@@ -25,7 +25,7 @@ function PieceCard({ product }: { product: Product }) {
     <Link href={`/shop/${product.slug}`} className="group block">
       <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
         {photo ? (
-          <Image src={photo} alt="" fill sizes="(min-width: 640px) 30vw, 100vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
+          <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
         ) : (
           <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
         )}
@@ -98,8 +98,8 @@ export default function Home() {
 
         <section aria-label="From brunch to after dark" className="mx-auto grid max-w-7xl gap-3 px-6 py-18 md:grid-cols-2 md:gap-4 md:px-12 md:py-30">
           <div className="flex flex-col border-[0.5px] border-card-border bg-cream">
-            <div className="relative aspect-[4/5]">
-              <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
+            <div className="relative aspect-[4/3]">
+              <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover" />
             </div>
             <div className="flex flex-1 flex-col items-center px-6 pt-8 pb-6 text-center md:px-10 md:pt-10 md:pb-8">
               <h2 className="text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
@@ -111,8 +111,8 @@ export default function Home() {
             </div>
           </div>
           <div data-nav="dark" className="flex flex-col border-[0.5px] border-ribbon bg-ribbon text-blush">
-            <div className="relative aspect-[4/5]">
-              <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
+            <div className="relative aspect-[4/3]">
+              <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover" />
             </div>
             <div className="flex flex-1 flex-col items-center px-6 pt-8 pb-6 text-center md:px-10 md:pt-10 md:pb-8">
               <h2 className="text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
