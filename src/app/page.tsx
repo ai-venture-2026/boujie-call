@@ -23,7 +23,7 @@ function PieceCard({ product }: { product: Product }) {
   const photo = product.colorways[0].images[0];
   return (
     <Link href={`/shop/${product.slug}`} className="group block">
-      <div className={`relative aspect-[4/5] overflow-hidden bg-stone ${photo ? "contact" : ""}`}>
+      <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
         {photo ? (
           <Image src={photo} alt="" fill sizes="(min-width: 640px) 30vw, 100vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
         ) : (
@@ -73,7 +73,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how" data-nav="dark" className="overflow-hidden bg-ribbon py-24 text-blush md:py-48">
+        <section id="how" data-nav="dark" className="overflow-hidden bg-ribbon py-18 text-blush md:py-30">
           <h2 className={`${wrap} text-center text-[2rem] leading-[1.05] md:text-[clamp(2.25rem,5vw,4.75rem)] md:uppercase rise`}>
             Someone places a call.
             <br />
@@ -96,37 +96,43 @@ export default function Home() {
           </ol>
         </section>
 
-        <section aria-label="From brunch to after dark" className="relative grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-2">
-          <div className="flex flex-col items-center bg-cream px-6 pt-12 pb-12 text-center md:justify-center md:bg-white md:px-6 md:pt-0 md:pb-24">
-            <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
-              <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
+        <section aria-label="From brunch to after dark" className="mx-auto grid max-w-7xl gap-3 px-6 py-18 md:grid-cols-2 md:gap-4 md:px-12 md:py-30">
+          <div className="flex flex-col border-[0.5px] border-card-border bg-cream">
+            <div className="relative aspect-[4/5]">
+              <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
             </div>
-            <h2 className="mt-5 text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
-              Cute enough to open at <em className="text-rose">brunch.</em>
-            </h2>
-            <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-muted hover:text-ink">
-              The Slip Dress · Rose
-            </Link>
+            <div className="flex flex-1 flex-col items-center px-6 pt-8 pb-6 text-center md:px-10 md:pt-10 md:pb-8">
+              <h2 className="text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
+                Cute enough to open at <em className="text-rose">brunch.</em>
+              </h2>
+              <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-muted hover:text-ink">
+                The Slip Dress · Rose
+              </Link>
+            </div>
           </div>
-          <div data-nav="dark" className="flex flex-col items-center bg-ribbon px-6 max-md:relative pt-12 pb-28 text-center text-blush md:justify-center md:px-6 md:pt-0 md:pb-24">
-            <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
-              <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
+          <div data-nav="dark" className="flex flex-col border-[0.5px] border-ribbon bg-ribbon text-blush">
+            <div className="relative aspect-[4/5]">
+              <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
             </div>
-            <h2 className="mt-5 text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
-              Irresistible enough to wear <em className="text-pink">that night.</em>
-            </h2>
-            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-blush/80 hover:text-blush">
-              The Slip Dress · After Dark
-            </Link>
-            <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-ribbon md:bottom-14">
+            <div className="flex flex-1 flex-col items-center px-6 pt-8 pb-6 text-center md:px-10 md:pt-10 md:pb-8">
+              <h2 className="text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
+                Irresistible enough to wear <em className="text-pink">that night.</em>
+              </h2>
+              <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-blush/80 hover:text-blush">
+                The Slip Dress · After Dark
+              </Link>
+            </div>
+          </div>
+          <div className="mt-9 text-center md:col-span-2 md:mt-12">
+            <Link href="/shop" className="cta">
               Shop the collection
             </Link>
           </div>
         </section>
 
-        <section aria-labelledby="pieces-title" className="bg-cream py-19 md:py-28">
+        <section aria-labelledby="pieces-title" className="bg-cream pb-18 md:pb-30">
           <div className={wrap}>
-            <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
               <div className="rise">
                 <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
                   The <em className="text-rose">pieces</em>

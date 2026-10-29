@@ -563,9 +563,20 @@ describe("Home rebuild round 1", () => {
 describe("Home rebuild round 2", () => {
   const pair = () => screen.getByRole("region", { name: "From brunch to after dark" });
 
-  it("anchors the shop pill to the night half on phones", () => {
+  it("keeps the shop button out of the night panel", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).toHaveClass("max-md:relative");
+    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
+    expect(within(night).queryByRole("link", { name: "Shop the collection" })).toBeNull();
+  });
+
+  it("sets the pair inside the page container", () => {
+    render(<Home />);
+    expect(pair()).toHaveClass("max-w-7xl", "px-6", "md:px-12", "gap-3", "md:gap-4");
+  });
+
+  it("frames each photo at 4:5 across its panel", () => {
+    render(<Home />);
+    expect(within(pair()).getAllByRole("img").map((img) => img.parentElement?.classList.contains("aspect-[4/5]"))).toEqual([true, true]);
   });
 
   it("keeps each piece name on one line", () => {
@@ -588,9 +599,9 @@ describe("Home rebuild round 2", () => {
     expect(pair()).toHaveClass("md:grid-cols-2");
   });
 
-  it("sets the brunch half on cream on phones", () => {
+  it("frames the brunch panel with a hairline", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." }).parentElement).toHaveClass("bg-cream", "md:bg-white");
+    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." }).closest(".bg-cream")).toHaveClass("border-card-border");
   });
 
   it("keeps the moment heading in sentence case on phones", () => {
@@ -608,10 +619,9 @@ describe("Home rebuild round 2", () => {
     expect(within(pair()).getAllByRole("img")).toHaveLength(2);
   });
 
-  it("puts one shop button in the night half", () => {
+  it("puts one shop button below the pair", () => {
     render(<Home />);
-    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
-    expect(within(night).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
+    expect(within(pair()).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
   });
 
   it("links each piece in the pieces grid", () => {
@@ -665,10 +675,36 @@ describe("Home on phones", () => {
     expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).not.toHaveClass("max-md:absolute");
   });
 
-  it("keeps the seam button on one line", () => {
+  it("spans the shop button row across both panels", () => {
     render(<Home />);
-    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
-    expect(within(night).getByRole("link", { name: "Shop the collection" })).toHaveClass("whitespace-nowrap");
+    const pair = screen.getByRole("region", { name: "From brunch to after dark" });
+    expect(within(pair).getByRole("link", { name: "Shop the collection" }).parentElement).toHaveClass("md:col-span-2", "text-center");
+  });
+
+  it("centers View all pieces on the heading row", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "View all pieces" }).parentElement).toHaveClass("md:items-center", "md:justify-between");
+  });
+
+  it("frames every piece card with a hairline", () => {
+    render(<Home />);
+    const frames = within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("link").map((a) => a.firstElementChild);
+    expect(frames.every((f) => f?.classList.contains("border-card-border"))).toBe(true);
+  });
+
+  it("spaces the gift section 120px on desktop", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("py-18", "md:py-30");
+  });
+
+  it("spaces the pair 120px on desktop", () => {
+    render(<Home />);
+    expect(screen.getByRole("region", { name: "From brunch to after dark" })).toHaveClass("py-18", "md:py-30");
+  });
+
+  it("drops the pieces top padding after the pair", () => {
+    render(<Home />);
+    expect(screen.getByRole("region", { name: /pieces/i })).toHaveClass("pb-18", "md:pb-30");
   });
 
   it("lays the gift strip in two columns", () => {
