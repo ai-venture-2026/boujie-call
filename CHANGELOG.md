@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Phones: a quick add bar on product pages (name, price, pink Add to your bag) appears once the main button scrolls away, sits above the iPhone home bar, and sends you back to the selectors when a color or size is missing.
+- Phones: card names hold one line, a lone last card centers, every tap target is at least 44px tall and readable text at least 16px (audited at 375px; no page scrolls sideways). The footer reads monogram first for screen readers.
+- Phones: Home's brunch and night halves stack (brunch on cream, night on ink with the Shop button at its foot); the how-it-works heading drops to sentence case at 2rem; Send a Call steps sit in one column; the footer opens with the BC monogram and ends with the copyright.
+- Shop header (all widths): only the tagline and the offer line remain; the gift link moves below the grid as "Sending it as a gift? Place a Call".
+- Product page gallery: main photo with three thumbnails (front, back, detail) on desktop and a swipeable carousel with dots on phones. Views without a photo read Image to come. Choosing a colorway returns to its front photo.
+- Size guide link beside the size choice opens a chart with S to XL rows and bust, waist, hip columns, marked as a placeholder until the owner sends measurements.
+- Shop and waitlist no longer mixed: Home closes with a pink Shop the collection pill instead of the email form; Send a Call and About frame the waitlist as "Be first when Send a Call opens."
+- Send a Call tiers show prices: The Mini Call $40, The Signature Call $55 (tagged Most popular), The Boujie Experience $75. Note shortened to "Contents confirmed at launch."
+- Brand pink returns: every button is a pill. Main actions (Shop the collection in heroes, Add to your bag, Checkout, waitlist submit) are filled Boujie Pink; the rest are outlined in soft pink. Round swatches with a pink ring and blush size pills when chosen.
+- Shop: "All colors" in US spelling, the duplicate All pieces label removed, one sideways scrolling chip row for filters on phones, card names on their own line.
+- Footer: "Luxury nightwear gifts." and the @boujiecall handles under the monogram. TikTok and Instagram link to placeholder handles to confirm with the owner.
 - Share image, sitemap and robots follow the deployed address (Vercel's production host) instead of a hard-coded boujiecall.com, so link previews work on vercel.app.
 - Sharper photos on phones: image size hints match how large the cropped photos are drawn, and six photos are re-exported at full resolution. Hero photos were stretched 3x on a 3x phone; now about 1.4x, banners and section photos 1x or less.
 - Link preview: the gift box photo with the Boujie Call logo, 1200x630, with alt text.

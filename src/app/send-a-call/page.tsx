@@ -28,7 +28,7 @@ export default function SendACall() {
               Place your Boujie <em className="text-rose max-md:text-pink">Call.</em>
             </h1>
             <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">The gift experience that lets you say everything without saying a word.</p>
-            <a href="#waitlist" className="cta mt-8 md:mt-10">
+            <a href="#waitlist" className="cta cta-primary mt-8 md:mt-10">
               Join the waitlist
             </a>
           </div>
@@ -39,7 +39,7 @@ export default function SendACall() {
             <h2 className="max-w-2xl text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
               Four steps. One <em className="text-rose">unforgettable</em> moment.
             </h2>
-            <ol aria-label="How a Call works" className="mt-10 grid grid-cols-2 gap-x-4 border-t-[0.5px] border-rose/25 md:mt-16 md:grid-cols-4 md:gap-x-0 md:divide-x-[0.5px] md:divide-rose/25">
+            <ol aria-label="How a Call works" className="mt-10 grid grid-cols-1 gap-x-4 border-t-[0.5px] border-rose/25 md:mt-16 md:grid-cols-4 md:gap-x-0 md:divide-x-[0.5px] md:divide-rose/25">
               {callSteps.map((step, i) => (
                 <li key={step.title} className="border-b-[0.5px] border-rose/25 py-6 rise md:border-b-0 md:px-8 md:py-10 md:first:pl-0 md:last:pr-0">
                   <span className="label text-rose">{String(i + 1).padStart(2, "0")}</span>
@@ -77,11 +77,12 @@ export default function SendACall() {
               <h2 className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
                 Three tiers. One <em className="text-rose">vibe.</em>
               </h2>
-              <p className="label max-w-xs text-muted md:text-right">A first look. Contents and prices are confirmed at launch.</p>
+              <p className="label max-w-xs text-muted md:text-right">Contents confirmed at launch.</p>
             </div>
             <div className="mt-10 grid border-t-[0.5px] border-rose/25 md:mt-16 md:grid-cols-3 md:divide-x-[0.5px] md:divide-rose/25">
               {tiers.map((tier) => (
-                <article key={tier.name} className="border-b-[0.5px] border-rose/25 py-6 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
+                <article key={tier.name} className="relative border-b-[0.5px] border-rose/25 py-6 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
+                  {tier.popular && <p className="label mb-3 inline-block md:absolute md:top-5 md:mb-0 rounded-full bg-blush px-3 py-1 text-[10px] text-rose-deep">Most popular</p>}
                   <h3 className="text-[clamp(1.75rem,2.6vw,2.5rem)] leading-[1.05]">{tier.name}</h3>
                   <p className="mt-3 max-w-xs text-base leading-relaxed text-muted md:mt-5">{tier.contents}</p>
                   <p className="mt-4 font-serif text-lg text-rose italic md:mt-10">{formatPrice(tier.priceCents)}</p>
@@ -103,6 +104,7 @@ export default function SendACall() {
             </>
           }
           line="Be first when Send a Call opens."
+          body="Join the waitlist and we will tell you the day you can send your first Call."
         >
           <WaitlistForm tone="dark" />
         </ClosingBanner>

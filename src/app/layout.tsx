@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { SITE_URL } from "@/lib/content";
 import "./globals.css";
@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "Boujie Call | Luxury nightwear gift sets",
   description: "Luxury nightwear gift sets. Curated. Personalized. Unforgettable. Join the waitlist before launch.",
 };
+
+// cover lets the phone quick add bar read the home bar inset.
+export const viewport: Viewport = { viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -29,7 +29,7 @@ export function WaitlistForm({ tone = "light" }: { tone?: "light" | "dark" }) {
           placeholder="name@email.com"
           className={`h-12 w-full min-w-0 border px-4 sm:flex-1 text-base ${dark ? "border-cream/40 bg-cream/5 text-cream placeholder:text-cream/45 focus:border-cream focus-visible:outline-cream" : "border-ink/40 bg-white/80 text-ink placeholder:text-ink/45 focus:border-ink"}`}
         />
-        <button type="submit" className="cta shrink-0">
+        <button type="submit" className="cta cta-primary shrink-0">
           Join the waitlist
         </button>
       </div>

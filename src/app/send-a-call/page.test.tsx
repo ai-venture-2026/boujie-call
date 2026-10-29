@@ -30,9 +30,29 @@ describe("Send a Call page", () => {
     expect(within(screen.getByRole("list", { name: "Inside every Boujie Call" })).getAllByRole("listitem")).toHaveLength(5);
   });
 
-  it("shows the three tiers with prices to come", () => {
+  it("shows the three tier prices", () => {
     render(<SendACall />);
-    expect(screen.getAllByText("Price to come")).toHaveLength(3);
+    expect(["$40.00", "$55.00", "$75.00"].map((p) => screen.queryByText(p) !== null)).toEqual([true, true, true]);
+  });
+
+  it("drops Price to come", () => {
+    render(<SendACall />);
+    expect(screen.queryByText("Price to come")).toBeNull();
+  });
+
+  it("tags only The Signature Call as most popular", () => {
+    render(<SendACall />);
+    expect(screen.getAllByText("Most popular").map((t) => t.closest("article")?.querySelector("h3")?.textContent)).toEqual(["The Signature Call"]);
+  });
+
+  it("shortens the tier note", () => {
+    render(<SendACall />);
+    expect(screen.getByText("Contents confirmed at launch.")).toBeInTheDocument();
+  });
+
+  it("keeps the ruled out words off Send a Call", () => {
+    const { container } = render(<SendACall />);
+    expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 
   it("describes the Call as a text message", () => {
@@ -47,9 +67,9 @@ describe("Send a Call on phones", () => {
     expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute");
   });
 
-  it("lays the four steps in two columns", () => {
+  it("lays the four steps in one column on phones", () => {
     render(<SendACall />);
-    expect(screen.getByRole("list", { name: "How a Call works" })).toHaveClass("grid-cols-2");
+    expect(screen.getByRole("list", { name: "How a Call works" })).toHaveClass("grid-cols-1");
   });
 });
 
@@ -64,6 +84,11 @@ describe("Send a Call close", () => {
   it("closes on the mocha romper banner", () => {
     const { container } = render(<SendACall />);
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("mocha-romper-banner");
+  });
+
+  it("frames the waitlist around Send a Call opening", () => {
+    const { container } = render(<SendACall />);
+    expect(within(close(container)).getByText("Be first when Send a Call opens.")).toBeInTheDocument();
   });
 
   it("keeps the waitlist form in the closing section", () => {

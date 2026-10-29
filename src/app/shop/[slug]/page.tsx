@@ -25,11 +25,11 @@ export default async function ProductPage({ params }: Props) {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-6 pt-10 pb-28 md:px-12 md:pt-16">
-        <Link href="/shop" className="group inline-flex min-h-11 items-center gap-3 text-sm">
+        <Link href="/shop" className="cta group gap-3 px-6">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1" className="transition-transform group-hover:-translate-x-1">
             <path d="M15 9H3M8 4L3 9l5 5" />
           </svg>
-          <span className="link">Back to the shop</span>
+          Back to the shop
         </Link>
         <div className="mt-8">
           <ProductView
@@ -42,7 +42,7 @@ export default async function ProductPage({ params }: Props) {
               </>
             }
             details={
-              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-sm">
+              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base md:text-sm">
                 <dt>Fabric</dt>
                 <dd className="text-muted">{product.fabric}</dd>
                 <dt>Care</dt>

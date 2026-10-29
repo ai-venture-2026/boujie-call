@@ -71,6 +71,12 @@ describe("Bag page", () => {
     expect(await screen.findByText(/Checkout opens soon\./)).toHaveAttribute("role", "status");
   });
 
+  it("fills checkout in pink", () => {
+    fill([slip]);
+    render(<BagPage />);
+    expect(screen.getByRole("button", { name: "Checkout" })).toHaveClass("cta-primary");
+  });
+
   it("keeps the bag after checkout is pressed", () => {
     fill([slip]);
     render(<BagPage />);

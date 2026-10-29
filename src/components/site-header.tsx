@@ -96,7 +96,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   return (
     <header className={`sticky top-0 z-40 border-b-[0.5px] transition-colors duration-500 ${clear ? "border-ink/10 bg-white text-ink md:border-transparent md:bg-transparent" : glass}`}>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
-        <Link href="/" aria-label="Boujie Call home">
+        <Link href="/" aria-label="Boujie Call home" className="flex min-h-11 items-center">
           <Logo tone={dark && !clear ? "pink" : "ink"} className="h-10 md:h-12" />
         </Link>
 
@@ -141,7 +141,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             )}
           </button>
 
-          <button type="button" aria-label="Open menu" aria-haspopup="dialog" className="md:hidden" onClick={() => drawer.current?.showModal()}>
+          <button type="button" aria-label="Open menu" aria-haspopup="dialog" className="grid size-11 place-items-center md:hidden" onClick={() => drawer.current?.showModal()}>
             <svg aria-hidden="true" width="28" height="28" viewBox="0 0 28 28" stroke="currentColor" strokeWidth="1.25">
               <path d="M4 10h20M4 18h20" />
             </svg>
@@ -196,21 +196,17 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             <Image src="/images/hero/black-slip-studio.webp" alt="" fill sizes="100vw" style={{ objectPosition: "48% 30%" }} className="object-cover" />
             <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
-          <div className="mt-auto px-6 pt-8 pb-8">
+          <div className="mt-auto px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))]">
             <p className="label text-[10px] text-muted">{OFFER}</p>
-            <Link href="/shop" onClick={close} className="cta mt-4 w-full border-ink bg-ink text-cream">
+            <Link href="/shop" onClick={close} className="cta cta-primary mt-4 w-full">
               Shop the collection
             </Link>
             <ul className="label mt-5 flex gap-6 text-[10px] text-muted">
               {socials.map((s) => (
                 <li key={s.label}>
-                  {s.url ? (
-                    <a href={s.url} className="text-ink">
-                      {s.label}
-                    </a>
-                  ) : (
-                    s.label
-                  )}
+                  <a href={s.url} className="text-ink">
+                    {s.label}
+                  </a>
                 </li>
               ))}
             </ul>

@@ -82,7 +82,7 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
             <Link href="/bag" onClick={onNavigate} className="cta px-4">
               View bag
             </Link>
-            <button type="button" onClick={checkout} className="cta border-pink bg-pink px-4 text-ink [--cta-fill:var(--color-ink)] [--cta-on:var(--color-cream)]">
+            <button type="button" onClick={checkout} className="cta cta-primary px-4">
               Checkout
             </button>
           </div>

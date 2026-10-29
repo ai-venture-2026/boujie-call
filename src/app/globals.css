@@ -20,6 +20,8 @@
 
 @layer base {
   body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     background: var(--color-cream);
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -46,6 +48,12 @@
 
   html:has(dialog[open]) {
     overflow: hidden;
+  }
+
+  @media (width < 48rem) {
+    body:has([data-quick-add]) {
+      padding-bottom: calc(5.5rem + max(0.75rem, env(safe-area-inset-bottom)));
+    }
   }
 }
 
@@ -125,7 +133,8 @@
     justify-content: center;
     min-height: 48px;
     padding: 0 2.25rem;
-    border: 1px solid currentColor;
+    border: 0.5px solid var(--color-card-border);
+    border-radius: 9999px;
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.22em;
@@ -152,6 +161,20 @@
   .cta:hover::before,
   .cta:focus-visible::before {
     transform: scaleX(1);
+  }
+
+  .cta-primary {
+    --cta-fill: var(--color-ink);
+    --cta-on: var(--color-cream);
+    border-color: var(--color-pink);
+    background: var(--color-pink);
+    color: var(--color-ink);
+  }
+
+  [data-nav="dark"] .cta-primary {
+    --cta-fill: var(--color-cream);
+    --cta-on: var(--color-ink);
+    outline-color: var(--color-cream);
   }
 
   .vertical {
