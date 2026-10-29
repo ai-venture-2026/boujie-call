@@ -51,7 +51,7 @@ export default function Home() {
             The gift that makes her <em>feel</em> like the <em>moment.</em>
           </h1>
           <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
-          <Link href="/shop" className="cta mt-10">
+          <Link href="/shop" className="cta cta-primary mt-10">
             Shop the collection
           </Link>
         </HeroCarousel>
@@ -119,7 +119,7 @@ export default function Home() {
             <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[9px] md:mt-3 md:text-xs text-cream/80 hover:text-cream">
               The Slip Dress · After Dark
             </Link>
-            <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap md:bottom-12 border-pink bg-pink text-ink [--cta-fill:var(--color-cream)] md:bottom-14">
+            <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap md:bottom-14 cta-primary">
               Shop the collection
             </Link>
           </div>

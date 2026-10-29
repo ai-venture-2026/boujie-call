@@ -198,19 +198,15 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           </Link>
           <div className="mt-auto px-6 pt-8 pb-8">
             <p className="label text-[10px] text-muted">{OFFER}</p>
-            <Link href="/shop" onClick={close} className="cta mt-4 w-full border-ink bg-ink text-cream">
+            <Link href="/shop" onClick={close} className="cta cta-primary mt-4 w-full">
               Shop the collection
             </Link>
             <ul className="label mt-5 flex gap-6 text-[10px] text-muted">
               {socials.map((s) => (
                 <li key={s.label}>
-                  {s.url ? (
-                    <a href={s.url} className="text-ink">
-                      {s.label}
-                    </a>
-                  ) : (
-                    s.label
-                  )}
+                  <a href={s.url} className="text-ink">
+                    {s.label}
+                  </a>
                 </li>
               ))}
             </ul>

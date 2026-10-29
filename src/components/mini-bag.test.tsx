@@ -58,6 +58,18 @@ describe("Mini bag", () => {
     expect(within(panel() as HTMLElement).getByRole("link", { name: "View bag" })).toHaveAttribute("href", "/bag");
   });
 
+  it("fills Checkout in pink", () => {
+    fill([slip]);
+    render(<SiteHeader />);
+    fireEvent.click(icon());
+    expect(within(panel() as HTMLElement).getByRole("button", { name: "Checkout" })).toHaveClass("cta-primary");
+  });
+
+  it("keeps the header Shop the collection outlined", () => {
+    const { container } = render(<SiteHeader />);
+    expect(container.querySelector("a.cta[href='/shop']")).not.toHaveClass("cta-primary");
+  });
+
   it("answers Checkout with a note instead of a payment", async () => {
     fill([slip]);
     render(<SiteHeader />);

@@ -82,9 +82,9 @@ export function ProductView({ product, intro, details }: { product: Product; int
           </legend>
           <div className="mt-4 flex flex-wrap gap-2">
             {product.colorways.map((c) => (
-              <label key={c.name} className="grid size-11 cursor-pointer place-items-center has-checked:ring-1 has-checked:ring-ink has-focus-visible:outline-2">
+              <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
                 <input type="radio" name="colorway" value={c.name} aria-label={c.name} className="sr-only" checked={chosen?.name === c.name} onChange={() => setChosen(c)} />
-                <span aria-hidden="true" className="size-7 border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
+                <span aria-hidden="true" className="size-7 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
               </label>
             ))}
           </div>
@@ -95,14 +95,14 @@ export function ProductView({ product, intro, details }: { product: Product; int
           </legend>
           <div className="mt-4 flex flex-wrap gap-2">
             {product.sizes.map((s) => (
-              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center border-[0.5px] border-ink/25 px-4 text-sm transition-colors hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-cream has-focus-visible:outline-2">
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-sm transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
                 <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>
             ))}
           </div>
         </fieldset>
-        <button type="button" onClick={add} className="cta mt-10 w-full sm:w-auto">
+        <button type="button" onClick={add} className="cta cta-primary mt-10 w-full sm:w-auto">
           Add to your bag
         </button>
         <p className="mt-3 text-sm text-muted">{OFFER}</p>

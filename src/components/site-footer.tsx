@@ -32,16 +32,32 @@ export function SiteFooter() {
             <Column title="Company" name="Footer" links={pages} />
             <div>
               <p className="label text-[10px] text-muted">Socials</p>
-              <ul className="mt-4 flex flex-col gap-2 text-sm text-muted">
+              <ul className="mt-4 flex flex-col gap-2 text-sm">
                 {socials.map((s) => (
-                  <li key={s.label}>{s.url ? <a href={s.url} className="text-ink/80 hover:text-rose">{s.label}</a> : s.label}</li>
+                  <li key={s.label}>
+                    <a href={s.url} className="text-ink/80 hover:text-rose">
+                      {s.label}
+                    </a>
+                  </li>
                 ))}
               </ul>
             </div>
           </div>
           <p className="label text-[10px] text-muted">© 2026 Boujie Call</p>
         </div>
-        <Image src="/boujie-call-monogram-ink.png" alt="Boujie Call" width={439} height={430} className="h-24 w-auto self-start md:h-36 md:self-auto" />
+        <div className="flex flex-col items-start gap-5">
+          <Image src="/boujie-call-monogram-ink.png" alt="Boujie Call" width={439} height={430} className="h-24 w-auto md:h-36" />
+          <p className="font-serif text-xl italic">Luxury nightwear gifts.</p>
+          <ul className="flex flex-col gap-1 text-sm text-muted">
+            {socials.map((s) => (
+              <li key={s.label}>
+                <a href={s.url} className="hover:text-rose">
+                  {s.label} {s.handle}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );

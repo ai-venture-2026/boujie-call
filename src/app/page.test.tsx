@@ -20,14 +20,24 @@ describe("Home", () => {
     expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "She gets the Call", "She picks up"]);
   });
 
-  it("renders social channels without a URL as plain text", () => {
-    render(<Home />);
-    expect(screen.queryByRole("link", { name: /tiktok/i })).toBeNull();
+  it("links TikTok to the placeholder handle", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "TikTok" })).toHaveAttribute("href", "https://www.tiktok.com/@boujiecall");
   });
 
-  it("links Instagram to the owner's account", () => {
+  it("links Instagram to the placeholder handle", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall/");
+    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall");
+  });
+
+  it("keeps Discover the piece outlined", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "Discover the piece" })).not.toHaveClass("cta-primary");
+  });
+
+  it("keeps View all pieces outlined", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "View all pieces" })).not.toHaveClass("cta-primary");
   });
 });
 
@@ -87,6 +97,16 @@ describe("SiteFooter", () => {
     expect(linkNames(screen.getByRole("navigation", { name: "Shop" }))).toEqual(["The Slip Dress", "The Boujie Set", "The Romper", "All pieces"]);
   });
 
+  it("signs off with the brand line", () => {
+    render(<SiteFooter />);
+    expect(screen.getByText("Luxury nightwear gifts.")).toHaveClass("font-serif", "italic");
+  });
+
+  it("shows the social handles under the monogram", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "TikTok @boujiecall" })).toHaveAttribute("href", "https://www.tiktok.com/@boujiecall");
+  });
+
   it("keeps the footer free of forms", () => {
     render(<SiteFooter />);
     expect(within(screen.getByRole("contentinfo")).queryByRole("textbox")).toBeNull();
@@ -116,6 +136,11 @@ describe("WaitlistForm", () => {
   it("gives the field an example address", () => {
     render(<WaitlistForm />);
     expect(screen.getByLabelText("Email address")).toHaveAttribute("placeholder", "name@email.com");
+  });
+
+  it("fills the submit in pink", () => {
+    render(<WaitlistForm />);
+    expect(screen.getByRole("button", { name: "Join the waitlist" })).toHaveClass("cta-primary");
   });
 
   it("draws the field as a full box", () => {
@@ -336,6 +361,11 @@ describe("Hero polish", () => {
     expect(within(hero()).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta");
   });
 
+  it("fills the hero CTA in pink", () => {
+    render(<Home />);
+    expect(within(hero()).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta-primary");
+  });
+
   it("leaves nothing after the CTA label", () => {
     render(<Home />);
     expect(within(hero()).getByRole("link", { name: "Shop the collection" }).children).toHaveLength(0);
@@ -549,7 +579,7 @@ describe("Phone menu", () => {
   });
 
   it("links Instagram from the menu", () => {
-    expect(within(open()).getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall/");
+    expect(within(open()).getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall");
   });
 });
 

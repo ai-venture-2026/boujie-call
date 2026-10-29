@@ -1,5 +1,5 @@
 export type Tier = { name: string; priceCents: number | null; contents: string };
-export type Social = { label: string; url: string | null };
+export type Social = { label: string; handle: string; url: string };
 
 const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 
@@ -31,10 +31,10 @@ export const tiers: Tier[] = [
   { name: "The Boujie Experience", priceCents: null, contents: "Everything in the Signature, plus a silk mask, mini candle and premium box." },
 ];
 
-// URLs stay null until the client confirms the handles.
+// Placeholder handles: confirm both with the owner before launch.
 export const socials: Social[] = [
-  { label: "TikTok", url: null },
-  { label: "Instagram", url: "https://www.instagram.com/boujiecall/" },
+  { label: "TikTok", handle: "@boujiecall", url: "https://www.tiktok.com/@boujiecall" },
+  { label: "Instagram", handle: "@boujiecall", url: "https://www.instagram.com/boujiecall" },
 ];
 
 export const pages = [

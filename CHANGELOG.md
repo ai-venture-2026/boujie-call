@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Brand pink returns: every button is a pill. Main actions (Shop the collection in heroes, Add to your bag, Checkout, waitlist submit) are filled Boujie Pink; the rest are outlined in soft pink. Round swatches with a pink ring and blush size pills when chosen.
+- Shop: "All colors" in US spelling, the duplicate All pieces label removed, one sideways scrolling chip row for filters on phones, card names on their own line.
+- Footer: "Luxury nightwear gifts." and the @boujiecall handles under the monogram. TikTok and Instagram link to placeholder handles to confirm with the owner.
 - Share image, sitemap and robots follow the deployed address (Vercel's production host) instead of a hard-coded boujiecall.com, so link previews work on vercel.app.
 - Sharper photos on phones: image size hints match how large the cropped photos are drawn, and six photos are re-exported at full resolution. Hero photos were stretched 3x on a 3x phone; now about 1.4x, banners and section photos 1x or less.
 - Link preview: the gift box photo with the Boujie Call logo, 1200x630, with alt text.
