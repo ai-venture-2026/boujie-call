@@ -25,8 +25,11 @@ export default async function ProductPage({ params }: Props) {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-6 pt-10 pb-28 md:px-12 md:pt-16">
-        <Link href="/shop" className="link text-sm">
-          Back to the shop
+        <Link href="/shop" className="group inline-flex min-h-11 items-center gap-3 text-sm">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1" className="transition-transform group-hover:-translate-x-1">
+            <path d="M15 9H3M8 4L3 9l5 5" />
+          </svg>
+          <span className="link">Back to the shop</span>
         </Link>
         <div className="mt-8">
           <ProductView

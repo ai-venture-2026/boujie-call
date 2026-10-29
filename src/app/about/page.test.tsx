@@ -52,6 +52,11 @@ describe("About", () => {
     expect(within(story).getByRole("img").getAttribute("src")).toContain("story-after-dark");
   });
 
+  it("sets the hero words over the photo on phones", () => {
+    render(<About />);
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute");
+  });
+
   it("marks the hero for the adaptive nav", () => {
     render(<About />);
     expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveAttribute("data-nav", "dark");

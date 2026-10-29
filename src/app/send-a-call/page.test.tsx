@@ -41,6 +41,18 @@ describe("Send a Call page", () => {
   });
 });
 
+describe("Send a Call on phones", () => {
+  it("sets the hero words over the photo", () => {
+    render(<SendACall />);
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute");
+  });
+
+  it("lays the four steps in two columns", () => {
+    render(<SendACall />);
+    expect(screen.getByRole("list", { name: "How a Call works" })).toHaveClass("grid-cols-2");
+  });
+});
+
 describe("Send a Call close", () => {
   const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
 

@@ -20,7 +20,7 @@ describe("Shop", () => {
 
   it("shows the offer line", () => {
     render(<Shop />);
-    expect(screen.getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
+    expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 
   it("avoids the words the owner ruled out", () => {
@@ -100,7 +100,7 @@ describe("Add to your bag", () => {
 describe("Product page offer", () => {
   it("shows the offer line", async () => {
     await renderProduct("the-romper");
-    expect(screen.getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
+    expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 });
 
@@ -198,5 +198,12 @@ describe("Shop on phones", () => {
   it("wraps the piece filters instead of scrolling them", () => {
     render(<Shop />);
     expect(screen.getByRole("navigation", { name: "Pieces" })).toHaveClass("flex-wrap");
+  });
+});
+
+describe("Back to the shop", () => {
+  it("shows a back arrow beside the link", async () => {
+    await renderProduct("the-romper");
+    expect(screen.getByRole("link", { name: "Back to the shop" }).querySelector("svg")).not.toBeNull();
   });
 });

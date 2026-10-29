@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { BAG_OPENED, bagCount, useBag } from "@/lib/bag";
-import { pages } from "@/lib/content";
+import { pages, socials } from "@/lib/content";
+import { OFFER } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
@@ -163,29 +164,57 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       <dialog
         ref={drawer}
         aria-label="Menu"
-        className="drawer ml-auto h-dvh max-h-none w-[85vw] max-w-sm bg-ink p-8 text-blush"
+        className="drawer m-0 h-dvh max-h-none w-full max-w-none bg-cream p-0 text-ink"
         onClick={(e) => e.target === drawer.current && close()}
       >
-        <div className="flex h-full flex-col">
-          <button type="button" aria-label="Close menu" className="self-end text-blush" onClick={close}>
-            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 28 28" stroke="currentColor" strokeWidth="1.25">
-              <path d="M7 7l14 14M21 7L7 21" />
-            </svg>
-          </button>
-          <nav aria-label="Menu" className="mt-12">
-            <ul className="flex flex-col gap-6 font-serif text-4xl">
+        <div className="flex h-full flex-col overflow-y-auto">
+          <div className="flex items-center justify-between border-b-[0.5px] border-ink/10 px-6 py-4">
+            <Link href="/" aria-label="Boujie Call home" onClick={close}>
+              <Logo tone="ink" className="h-10" />
+            </Link>
+            <button type="button" aria-label="Close menu" className="grid size-11 place-items-center" onClick={close}>
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 28 28" stroke="currentColor" strokeWidth="1.25">
+                <path d="M7 7l14 14M21 7L7 21" />
+              </svg>
+            </button>
+          </div>
+          <nav aria-label="Menu" className="px-6">
+            <ul>
               {pages.map((p) => (
-                <li key={p.href}>
-                  <Link href={p.href} aria-current={current(p.href)} onClick={close} className="hover:text-pink aria-[current=page]:text-pink">
+                <li key={p.href} className="border-b-[0.5px] border-ink/10">
+                  <Link href={p.href} aria-current={current(p.href)} onClick={close} className="flex min-h-16 items-center justify-between font-serif text-3xl aria-[current=page]:text-rose aria-[current=page]:italic">
                     {p.label}
+                    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1">
+                      <path d="M3 9h12M10 4l5 5-5 5" />
+                    </svg>
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
-          <Link href="/shop" onClick={close} className="cta mt-auto w-full border-blush text-blush hover:text-ink">
-            Shop the collection
+          <Link href="/shop" onClick={close} className="relative mx-6 mt-8 block aspect-[16/10] shrink-0 overflow-hidden">
+            <Image src="/images/hero/black-slip-studio.webp" alt="" fill sizes="100vw" style={{ objectPosition: "48% 30%" }} className="object-cover" />
+            <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
+          <div className="mt-auto px-6 pt-8 pb-8">
+            <p className="label text-[10px] text-muted">{OFFER}</p>
+            <Link href="/shop" onClick={close} className="cta mt-4 w-full border-ink bg-ink text-cream">
+              Shop the collection
+            </Link>
+            <ul className="label mt-5 flex gap-6 text-[10px] text-muted">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  {s.url ? (
+                    <a href={s.url} className="text-ink">
+                      {s.label}
+                    </a>
+                  ) : (
+                    s.label
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </dialog>
     </header>

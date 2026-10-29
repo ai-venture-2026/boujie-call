@@ -528,3 +528,27 @@ describe("Home on phones", () => {
     expect(container.querySelector("[data-strip]")).toHaveClass("grid-cols-2");
   });
 });
+
+describe("Phone menu", () => {
+  const open = () => {
+    render(<SiteHeader />);
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    return screen.getByRole("dialog");
+  };
+
+  it("opens as a full-screen cream panel", () => {
+    expect(open()).toHaveClass("bg-cream", "w-full");
+  });
+
+  it("shows the collection photo as a way into the shop", () => {
+    expect(within(open()).getByRole("link", { name: "The collection" })).toHaveAttribute("href", "/shop");
+  });
+
+  it("carries the offer line", () => {
+    expect(within(open()).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
+  });
+
+  it("links Instagram from the menu", () => {
+    expect(within(open()).getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall/");
+  });
+});
