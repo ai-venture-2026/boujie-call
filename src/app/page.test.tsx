@@ -121,9 +121,19 @@ describe("SiteFooter", () => {
 });
 
 describe("Home signup", () => {
-  it("anchors the signup section as waitlist", () => {
+  it("leaves the waitlist off Home", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).not.toBeNull();
+    expect(container.querySelector("section#waitlist")).toBeNull();
+  });
+
+  it("keeps email fields off Home", () => {
+    render(<Home />);
+    expect(screen.queryByLabelText("Email address")).toBeNull();
+  });
+
+  it("keeps the ruled out words off Home", () => {
+    const { container } = render(<Home />);
+    expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 });
 
@@ -223,7 +233,7 @@ describe("Home night half", () => {
 
   it("sets the closing section on blush", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist")).toHaveClass("bg-blush");
+    expect(container.querySelector("section#closing")).toHaveClass("bg-blush");
   });
 });
 
@@ -309,16 +319,26 @@ describe("De-slop", () => {
 });
 
 describe("Closing section", () => {
-  const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
+  const close = (c: HTMLElement) => c.querySelector("section#closing") as HTMLElement;
 
   it("sets the banner photo in the closing section", () => {
     const { container } = render(<Home />);
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("blue-romper-banner");
   });
 
-  it("offers the waitlist form in the closing section", () => {
+  it("offers a pink Shop the collection pill in the closing section", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByLabelText("Email address")).toHaveAttribute("type", "email");
+    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta-primary");
+  });
+
+  it("sends the closing pill to the shop", () => {
+    const { container } = render(<Home />);
+    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
+  });
+
+  it("keeps the closing headline", () => {
+    const { container } = render(<Home />);
+    expect(within(close(container)).getByRole("heading", { level: 2 })).toHaveTextContent("Be first to receive a Boujie Call.");
   });
 
   it("sets the closing words in ink over the photo", () => {
@@ -328,7 +348,7 @@ describe("Closing section", () => {
 
   it("ends on the closing line", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByText("The call is coming. Are you going to pick up?")).toBeInTheDocument();
+    expect(within(close(container)).getByText("The pieces are here. Find the one that feels like her.")).toBeInTheDocument();
   });
 
   it("is not a centered stack", () => {
@@ -386,7 +406,7 @@ describe("Strict pass", () => {
 
   it("drops the line above the closing line", () => {
     render(<Home />);
-    expect(screen.getByText("The call is coming. Are you going to pick up?")).not.toHaveClass("border-t-[0.5px]");
+    expect(screen.getByText("The pieces are here. Find the one that feels like her.")).not.toHaveClass("border-t-[0.5px]");
   });
 
   it("keeps social placeholders out of the footer", () => {
@@ -523,7 +543,7 @@ describe("Home rebuild round 2", () => {
 
   it("accents the closing headline in deep rose", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#waitlist h2 em")).toHaveClass("text-rose-deep");
+    expect(container.querySelector("section#closing h2 em")).toHaveClass("text-rose-deep");
   });
 });
 
@@ -593,7 +613,7 @@ describe("Sharp photos on phones", () => {
 
   it("asks for a closing banner as wide as it is drawn", () => {
     const { container } = render(<Home />);
-    expect(sizesOf(container.querySelector("section#waitlist img"))).toContain("270vw");
+    expect(sizesOf(container.querySelector("section#closing img"))).toContain("270vw");
   });
 
   it("asks for the section two close-up as wide as it is drawn", () => {

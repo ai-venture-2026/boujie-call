@@ -29,6 +29,21 @@ describe("About", () => {
     expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "/send-a-call#waitlist");
   });
 
+  it("frames the waitlist around Send a Call opening", () => {
+    render(<About />);
+    expect(screen.getByText("Be first when Send a Call opens.")).toBeInTheDocument();
+  });
+
+  it("fills the closing button in pink", () => {
+    render(<About />);
+    expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveClass("cta-primary");
+  });
+
+  it("keeps the ruled out words off About", () => {
+    const { container } = render(<About />);
+    expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
+  });
+
   it("sets the closing section on blush", () => {
     render(<About />);
     expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-blush");

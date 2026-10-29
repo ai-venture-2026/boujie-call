@@ -1,4 +1,4 @@
-export type Tier = { name: string; priceCents: number | null; contents: string };
+export type Tier = { name: string; priceCents: number | null; contents: string; popular?: boolean };
 export type Social = { label: string; handle: string; url: string };
 
 const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
@@ -24,11 +24,11 @@ export const steps = [
   },
 ];
 
-// Prices stay null until the client confirms them.
+// Prices from the 2026-10-29 design brief.
 export const tiers: Tier[] = [
-  { name: "The Mini Call", priceCents: null, contents: "Satin sleep set, body mist, message card, luxury box." },
-  { name: "The Signature Call", priceCents: null, contents: "Everything in the Mini, plus a forever rose and black satin ribbon." },
-  { name: "The Boujie Experience", priceCents: null, contents: "Everything in the Signature, plus a silk mask, mini candle and premium box." },
+  { name: "The Mini Call", priceCents: 4000, contents: "Satin sleep set, body mist, message card, luxury box." },
+  { name: "The Signature Call", priceCents: 5500, contents: "Everything in the Mini, plus a forever rose and black satin ribbon.", popular: true },
+  { name: "The Boujie Experience", priceCents: 7500, contents: "Everything in the Signature, plus a silk mask, mini candle and premium box." },
 ];
 
 // Placeholder handles: confirm both with the owner before launch.
@@ -63,7 +63,7 @@ export const heroSlides: HeroSlide[] = [
   { src: "/images/hero/brown-romper-studio.webp", alt: "A woman sits with one knee raised in The Romper in Mocha", slug: "the-romper", piece: "The Romper", colorway: "Mocha", focus: "52% 40%", text: "ink" },
 ];
 
-// Send a Call page. From the owner's prompts; prices and add-ons stay out until confirmed.
+// Send a Call page. From the owner's prompts; add-ons stay out until confirmed.
 export const callSteps = [
   { title: "You choose her tier", body: "Pick the gift tier that feels like her." },
   { title: "You write her message", body: "A personal note printed on her call card inside the box." },

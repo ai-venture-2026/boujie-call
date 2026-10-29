@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Shop and waitlist no longer mixed: Home closes with a pink Shop the collection pill instead of the email form; Send a Call and About frame the waitlist as "Be first when Send a Call opens."
+- Send a Call tiers show prices: The Mini Call $40, The Signature Call $55 (tagged Most popular), The Boujie Experience $75. Note shortened to "Contents confirmed at launch."
 - Brand pink returns: every button is a pill. Main actions (Shop the collection in heroes, Add to your bag, Checkout, waitlist submit) are filled Boujie Pink; the rest are outlined in soft pink. Round swatches with a pink ring and blush size pills when chosen.
 - Shop: "All colors" in US spelling, the duplicate All pieces label removed, one sideways scrolling chip row for filters on phones, card names on their own line.
 - Footer: "Luxury nightwear gifts." and the @boujiecall handles under the monogram. TikTok and Instagram link to placeholder handles to confirm with the owner.

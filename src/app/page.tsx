@@ -4,7 +4,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ClosingBanner } from "@/components/closing-banner";
 import { HeroCarousel } from "@/components/hero-carousel";
-import { WaitlistForm } from "@/components/waitlist-form";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
 import { getProduct, type Product } from "@/lib/products";
@@ -152,7 +151,7 @@ export default function Home() {
         </section>
 
         <ClosingBanner
-          id="waitlist"
+          id="closing"
           tone="light"
           photo="/images/close/blue-romper-banner.webp"
           alt="A woman in The Romper in Powder Blue sits on a stone block"
@@ -162,10 +161,11 @@ export default function Home() {
               Be first to receive a Boujie <em className="text-rose-deep">Call.</em>
             </>
           }
-          line="The call is coming. Are you going to pick up?"
-          body="Join the waitlist for early access and the launch date."
+          line="The pieces are here. Find the one that feels like her."
         >
-          <WaitlistForm />
+          <Link href="/shop" className="cta cta-primary">
+            Shop the collection
+          </Link>
         </ClosingBanner>
       </main>
       <SiteFooter />

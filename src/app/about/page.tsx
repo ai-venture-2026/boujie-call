@@ -85,9 +85,9 @@ export default function About() {
               Ready to place your first Boujie <em className="text-rose-deep">Call?</em>
             </>
           }
-          line="Join the waitlist and be first when it opens."
+          line="Be first when Send a Call opens."
         >
-          <Link href="/send-a-call#waitlist" className="cta">
+          <Link href="/send-a-call#waitlist" className="cta cta-primary">
             Join the waitlist
           </Link>
         </ClosingBanner>
