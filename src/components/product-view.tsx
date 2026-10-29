@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { addToBag, BAG_OPENED } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
 import { colorwaySlug, OFFER, type Colorway, type Product } from "@/lib/products";
@@ -27,15 +27,28 @@ export function ProductView({ product, intro, details }: { product: Product; int
   const chosen = picked ?? product.colorways.find((c) => colorwaySlug(c.name) === fromUrl) ?? null;
   const [view, setView] = useState(0);
   const track = useRef<HTMLDivElement>(null);
+  const mainAdd = useRef<HTMLButtonElement>(null);
+  const colorways = useRef<HTMLFieldSetElement>(null);
+  const [quickAdd, setQuickAdd] = useState(false);
+
+  // The phone quick add bar shows once the main button has scrolled up out of view.
+  useEffect(() => {
+    if (!("IntersectionObserver" in window) || !mainAdd.current) return;
+    // The tall bottom margin counts anything below the screen as in view, so a fast scroll past the button still flips the bar.
+    const io = new IntersectionObserver(([e]) => setQuickAdd(!e.isIntersecting && e.boundingClientRect.top < 0), { rootMargin: "0px 0px 10000% 0px" });
+    io.observe(mainAdd.current);
+    return () => io.disconnect();
+  }, []);
   const shown = chosen ?? product.colorways[0];
   const [size, setSize] = useState<string | null>(null);
   const [missing, setMissing] = useState("");
   const [added, setAdded] = useState("");
 
-  function add() {
+  function add(fromBar = false) {
     setAdded("");
     if (!chosen || !size) {
       setMissing(!chosen && !size ? "Choose a colorway and a size first." : !chosen ? "Choose a colorway first." : "Choose a size first.");
+      if (fromBar) colorways.current?.scrollIntoView({ behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
       return;
     }
     setMissing("");
@@ -77,7 +90,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
                 setView(i);
                 if (track.current) track.current.scrollLeft = i * track.current.clientWidth;
               }}
-              className="grid size-8 place-items-center"
+              className="grid size-11 place-items-center"
             >
               <span data-dot className={`size-1.5 rounded-full ${i === view ? "bg-ink" : "bg-ink/20"}`} />
             </button>
@@ -94,8 +107,8 @@ export function ProductView({ product, intro, details }: { product: Product; int
 
       <div>
         {intro}
-        <fieldset className="mt-10">
-          <legend className="text-sm">
+        <fieldset ref={colorways} className="mt-10 scroll-mt-28">
+          <legend className="text-base md:text-sm">
             Colorway: <span className="text-muted">{chosen ? chosen.name : "choose one"}</span>
           </legend>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -112,23 +125,23 @@ export function ProductView({ product, intro, details }: { product: Product; int
           </div>
         </fieldset>
         <fieldset className="mt-8">
-          <legend className="float-left text-sm">
+          <legend className="float-left py-2.5 text-base md:text-sm">
             Size: <span className="text-muted">{size ?? "choose one"}</span>
           </legend>
           <SizeGuide sizes={product.sizes} />
           <div className="clear-both mt-4 flex flex-wrap gap-2 pt-px">
             {product.sizes.map((s) => (
-              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-sm transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors md:text-sm hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
                 <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>
             ))}
           </div>
         </fieldset>
-        <button type="button" onClick={add} className="cta cta-primary mt-10 w-full sm:w-auto">
+        <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-10 w-full sm:w-auto">
           Add to your bag
         </button>
-        <p className="mt-3 text-sm text-muted">{OFFER}</p>
+        <p className="mt-3 text-base text-muted md:text-sm">{OFFER}</p>
         <p role="alert" className="mt-4 text-sm">
           {missing}
         </p>
@@ -137,6 +150,22 @@ export function ProductView({ product, intro, details }: { product: Product; int
         </p>
         {details}
       </div>
+      {quickAdd && (
+        <div
+          role="region"
+          aria-label="Quick add"
+          data-quick-add
+          className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t-[0.5px] border-ink/10 bg-white/95 px-6 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden"
+        >
+          <div className="min-w-0">
+            <p className="truncate font-serif text-xl">{product.name}</p>
+            <p className="text-base text-muted">{formatPrice(product.priceCents)}</p>
+          </div>
+          <button type="button" onClick={() => add(true)} className="cta cta-primary shrink-0 px-6">
+            Add to your bag
+          </button>
+        </div>
+      )}
     </div>
   );
 }

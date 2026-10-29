@@ -45,6 +45,16 @@ const pages = ["Home", "Shop", "Send a Call", "About"];
 const linkNames = (nav: HTMLElement) => within(nav).getAllByRole("link").map((l) => l.textContent);
 
 describe("SiteHeader", () => {
+  it("gives the menu button a 44px target", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveClass("size-11");
+  });
+
+  it("gives the logo link a 44px target", () => {
+    render(<SiteHeader />);
+    expect(screen.getAllByRole("link", { name: "Boujie Call home" })[0]).toHaveClass("min-h-11");
+  });
+
   it("lists the four pages in the main nav", () => {
     render(<SiteHeader />);
     expect(linkNames(screen.getByRole("navigation", { name: "Main" }))).toEqual(pages);
@@ -102,9 +112,20 @@ describe("SiteFooter", () => {
     expect(screen.getByText("Luxury nightwear gifts.")).toHaveClass("font-serif", "italic");
   });
 
-  it("puts the monogram first on phones", () => {
+  it("puts the monogram first for screen readers", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("img", { name: "Boujie Call" }).parentElement?.parentElement).toHaveClass("flex-col-reverse");
+    const monogram = screen.getByRole("img", { name: "Boujie Call" });
+    expect(monogram.compareDocumentPosition(screen.getByRole("navigation", { name: "Shop" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("gives footer links a 44px target on phones", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "Home" })).toHaveClass("max-md:min-h-11");
+  });
+
+  it("sets footer links at 16px on phones", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "Home" })).toHaveClass("max-md:text-base");
   });
 
   it("hides the handles under the monogram on phones", () => {
@@ -527,6 +548,21 @@ describe("Home rebuild round 1", () => {
 
 describe("Home rebuild round 2", () => {
   const pair = () => screen.getByRole("region", { name: "From brunch to after dark" });
+
+  it("anchors the shop pill to the night half on phones", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).toHaveClass("max-md:relative");
+  });
+
+  it("keeps each piece name on one line", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Boujie Set" })).toHaveClass("truncate");
+  });
+
+  it("centers a single last piece card on phones", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("listitem").at(-1)).toHaveClass("max-sm:last:odd:justify-self-center");
+  });
 
   it("stacks the day pair on phones", () => {
     render(<Home />);

@@ -42,7 +42,7 @@ export default async function ProductPage({ params }: Props) {
               </>
             }
             details={
-              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-sm">
+              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base md:text-sm">
                 <dt>Fabric</dt>
                 <dd className="text-muted">{product.fabric}</dd>
                 <dt>Care</dt>

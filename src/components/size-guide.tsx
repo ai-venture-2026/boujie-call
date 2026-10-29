@@ -12,7 +12,7 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
 
   return (
     <>
-      <button type="button" onClick={() => dialog.current?.showModal()} className="link ml-4 py-0.5 text-sm">
+      <button type="button" onClick={() => dialog.current?.showModal()} className="link ml-4 inline-flex min-h-11 items-center text-base md:text-sm">
         Size guide
       </button>
       <dialog

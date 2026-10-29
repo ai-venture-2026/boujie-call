@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Shop from "./page";
 import ProductPage from "./[slug]/page";
 import { colorwaySlug, products } from "@/lib/products";
@@ -366,5 +366,128 @@ describe("Back to the shop", () => {
   it("draws the back link as an outlined pill", async () => {
     await renderProduct("the-romper");
     expect(screen.getByRole("link", { name: "Back to the shop" }).className.split(" ")).toEqual(expect.arrayContaining(["cta"]));
+  });
+});
+
+describe("Quick add bar on phones", () => {
+  let fire: (visible: boolean) => void = () => {};
+  const bar = () => screen.queryByRole("region", { name: "Quick add" });
+  const tap = () => fireEvent.click(within(bar() as HTMLElement).getByRole("button", { name: "Add to your bag" }));
+  const leave = () => act(() => fire(false));
+
+  beforeEach(() => {
+    localStorage.clear();
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        constructor(cb: (entries: { isIntersecting: boolean; boundingClientRect: { top: number } }[]) => void) {
+          fire = (visible) => cb([{ isIntersecting: visible, boundingClientRect: { top: visible ? 100 : -100 } }]);
+        }
+        observe() {}
+        disconnect() {}
+      },
+    );
+    Element.prototype.scrollIntoView = vi.fn();
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("stays hidden while the main button shows", async () => {
+    await renderProduct("the-romper");
+    act(() => fire(true));
+    expect(bar()).toBeNull();
+  });
+
+  it("appears once the main button leaves the screen", async () => {
+    await renderProduct("the-romper");
+    leave();
+    expect(bar()).not.toBeNull();
+  });
+
+  it("names the piece", async () => {
+    await renderProduct("the-romper");
+    leave();
+    expect(within(bar() as HTMLElement).getByText("The Romper")).toBeInTheDocument();
+  });
+
+  it("shows the price", async () => {
+    await renderProduct("the-romper");
+    leave();
+    expect(within(bar() as HTMLElement).getByText("$48.00")).toBeInTheDocument();
+  });
+
+  it("fills its button in pink", async () => {
+    await renderProduct("the-romper");
+    leave();
+    expect(within(bar() as HTMLElement).getByRole("button", { name: "Add to your bag" })).toHaveClass("cta-primary");
+  });
+
+  it("asks for a colorway with a size when neither is chosen", async () => {
+    await renderProduct("the-romper");
+    leave();
+    tap();
+    expect(within(screen.getByRole("main")).getByRole("alert")).toHaveTextContent("Choose a colorway and a size first.");
+  });
+
+  it("scrolls back to the selectors when a choice is missing", async () => {
+    await renderProduct("the-romper");
+    leave();
+    tap();
+    expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+  });
+
+  it("adds the chosen piece to the bag", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("radio", { name: "Mocha" }));
+    fireEvent.click(screen.getByRole("radio", { name: "M" }));
+    leave();
+    tap();
+    expect(readBag()).toEqual([{ slug: "the-romper", colorway: "Mocha", size: "M", qty: 1 }]);
+  });
+
+  it("pads the bar for the iPhone home bar", async () => {
+    await renderProduct("the-romper");
+    leave();
+    expect((bar() as HTMLElement).className).toContain("safe-area-inset-bottom");
+  });
+});
+
+describe("Phone targets on product pages", () => {
+  it("gives the gallery dots a 44px target", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("button", { name: "Photo 1 of 3" })).toHaveClass("size-11");
+  });
+
+  it("gives Size guide a 44px target", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("button", { name: "Size guide" })).toHaveClass("min-h-11");
+  });
+
+  it("sets Fabric with Care at 16px on phones", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByText("Fabric").closest("dl")).toHaveClass("text-base");
+  });
+
+  it("sets the offer sentence at 16px on phones", async () => {
+    await renderProduct("the-slip-dress");
+    expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toHaveClass("text-base");
+  });
+});
+
+describe("Shop cards on phones", () => {
+  const items = () => within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem");
+
+  it("keeps each card name on one line", () => {
+    render(<Shop />);
+    expect(within(items()[0]).getByText("The Slip Dress")).toHaveClass("truncate");
+  });
+
+  it("sets the card price at 16px", () => {
+    render(<Shop />);
+    expect(within(items()[0]).getByText("$48.00")).toHaveClass("text-base");
+  });
+
+  it("centers a single last card", () => {
+    render(<Shop />);
+    expect(items().at(-1)).toHaveClass("max-md:last:odd:justify-self-center");
   });
 });

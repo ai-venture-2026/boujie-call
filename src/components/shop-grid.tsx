@@ -78,7 +78,7 @@ export function ShopGrid() {
 
         <ul aria-label="Collection" className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3">
           {shown.map(({ product, colorway }) => (
-            <li key={`${product.slug}-${colorway.name}`}>
+            <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
               <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
                 <div className="relative aspect-[3/4] overflow-hidden bg-stone">
                   {colorway.images[0] ? (
@@ -87,10 +87,10 @@ export function ShopGrid() {
                     <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
                   )}
                 </div>
-                <span className="label mt-4 block text-[10px]">{product.name}</span>
+                <span className="label mt-4 block truncate text-[10px]">{product.name}</span>
                 <span className="mt-1 flex items-baseline justify-between gap-4">
                   <span className="label text-[10px] text-muted">{colorway.name}</span>
-                  <span className="text-sm">{formatPrice(product.priceCents)}</span>
+                  <span className="text-base md:text-sm">{formatPrice(product.priceCents)}</span>
                 </span>
               </Link>
             </li>

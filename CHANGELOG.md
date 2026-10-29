@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Phones: a quick add bar on product pages (name, price, pink Add to your bag) appears once the main button scrolls away, sits above the iPhone home bar, and sends you back to the selectors when a color or size is missing.
+- Phones: card names hold one line, a lone last card centers, every tap target is at least 44px tall and readable text at least 16px (audited at 375px; no page scrolls sideways). The footer reads monogram first for screen readers.
 - Phones: Home's brunch and night halves stack (brunch on cream, night on ink with the Shop button at its foot); the how-it-works heading drops to sentence case at 2rem; Send a Call steps sit in one column; the footer opens with the BC monogram and ends with the copyright.
 - Shop header (all widths): only the tagline and the offer line remain; the gift link moves below the grid as "Sending it as a gift? Place a Call".
 - Product page gallery: main photo with three thumbnails (front, back, detail) on desktop and a swipeable carousel with dots on phones. Views without a photo read Image to come. Choosing a colorway returns to its front photo.

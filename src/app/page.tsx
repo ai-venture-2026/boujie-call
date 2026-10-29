@@ -30,7 +30,7 @@ function PieceCard({ product }: { product: Product }) {
           <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
         )}
       </div>
-      <h3 className="mt-3 text-lg md:mt-5 md:text-2xl">{product.name}</h3>
+      <h3 className="mt-3 truncate text-lg md:mt-5 md:text-2xl">{product.name}</h3>
       <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
         <Price product={product} />
         <span className="label text-[10px] text-muted">{product.colorways.length} colorways</span>
@@ -108,7 +108,7 @@ export default function Home() {
               The Slip Dress · Rose
             </Link>
           </div>
-          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 pt-12 pb-28 text-center text-cream md:justify-center md:px-6 md:pt-0 md:pb-24">
+          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 max-md:relative pt-12 pb-28 text-center text-cream md:justify-center md:px-6 md:pt-0 md:pb-24">
             <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
               <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
             </div>
@@ -141,7 +141,7 @@ export default function Home() {
               {["the-slip-dress", "the-romper", "the-boujie-set"].map((slug) => {
                 const product = getProduct(slug);
                 return product && (
-                  <li key={slug} className="rise">
+                  <li key={slug} className="rise max-sm:last:odd:col-span-2 max-sm:last:odd:w-[calc(50%-0.375rem)] max-sm:last:odd:justify-self-center">
                     <PieceCard product={product} />
                   </li>
                 );

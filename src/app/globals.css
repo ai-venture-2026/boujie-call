@@ -47,6 +47,12 @@
   html:has(dialog[open]) {
     overflow: hidden;
   }
+
+  @media (width < 48rem) {
+    body:has([data-quick-add]) {
+      padding-bottom: 6rem;
+    }
+  }
 }
 
 .drawer {
