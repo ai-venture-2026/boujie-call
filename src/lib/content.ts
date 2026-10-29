@@ -44,7 +44,14 @@ export const pages = [
   { href: "/about", label: "About" },
 ];
 
-export const SITE_URL = "https://boujiecall.com";
+// Vercel sets VERCEL_PROJECT_PRODUCTION_URL to the project's production host, so share images and the sitemap follow the deployed address.
+export function siteUrl(env: Record<string, string | undefined>): string {
+  if (env.NEXT_PUBLIC_SITE_URL) return env.NEXT_PUBLIC_SITE_URL;
+  if (env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  return "https://boujiecall.com";
+}
+
+export const SITE_URL = siteUrl(process.env);
 
 // Home hero photos. "text" is the type colour that reads on the photo's empty left side.
 export type HeroSlide = { src: string; alt: string; slug: string; piece: string; colorway: string; focus: string; text: "ink" | "cream" };

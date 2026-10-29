@@ -41,7 +41,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
               alt={s.alt}
               fill
               priority={i === 0}
-              sizes="(min-width: 768px) 62vw, 100vw"
+              sizes="(min-width: 768px) 62vw, 150vh"
               style={{ objectPosition: s.focus }}
               className={`object-cover transition-transform duration-[9000ms] ease-out motion-reduce:transition-none ${i === index ? "scale-100" : "scale-[1.04]"}`}
             />
