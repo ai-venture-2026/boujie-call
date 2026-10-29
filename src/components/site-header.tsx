@@ -196,7 +196,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             <Image src="/images/hero/black-slip-studio.webp" alt="" fill sizes="100vw" style={{ objectPosition: "48% 30%" }} className="object-cover" />
             <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
-          <div className="mt-auto px-6 pt-8 pb-8">
+          <div className="mt-auto px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))]">
             <p className="label text-[10px] text-muted">{OFFER}</p>
             <Link href="/shop" onClick={close} className="cta cta-primary mt-4 w-full">
               Shop the collection

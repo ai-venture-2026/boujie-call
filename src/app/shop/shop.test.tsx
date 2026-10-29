@@ -435,6 +435,21 @@ describe("Quick add bar on phones", () => {
     expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
   });
 
+  it("moves focus to the colorways when a colorway is missing", async () => {
+    await renderProduct("the-romper");
+    leave();
+    tap();
+    expect(document.activeElement).toBe(screen.getByRole("radio", { name: "Powder Blue" }));
+  });
+
+  it("moves focus to the sizes when only the size is missing", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("radio", { name: "Mocha" }));
+    leave();
+    tap();
+    expect(document.activeElement).toBe(screen.getByRole("radio", { name: "S" }));
+  });
+
   it("adds the chosen piece to the bag", async () => {
     await renderProduct("the-romper");
     fireEvent.click(screen.getByRole("radio", { name: "Mocha" }));
@@ -465,6 +480,11 @@ describe("Phone targets on product pages", () => {
   it("sets Fabric with Care at 16px on phones", async () => {
     await renderProduct("the-slip-dress");
     expect(screen.getByText("Fabric").closest("dl")).toHaveClass("text-base");
+  });
+
+  it("sets the missing choice note at 16px on phones", async () => {
+    await renderProduct("the-slip-dress");
+    expect(within(screen.getByRole("main")).getByRole("alert")).toHaveClass("text-base");
   });
 
   it("sets the offer sentence at 16px on phones", async () => {

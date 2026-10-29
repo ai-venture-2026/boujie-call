@@ -29,6 +29,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
   const track = useRef<HTMLDivElement>(null);
   const mainAdd = useRef<HTMLButtonElement>(null);
   const colorways = useRef<HTMLFieldSetElement>(null);
+  const sizes = useRef<HTMLFieldSetElement>(null);
   const [quickAdd, setQuickAdd] = useState(false);
 
   // The phone quick add bar shows once the main button has scrolled up out of view.
@@ -48,7 +49,12 @@ export function ProductView({ product, intro, details }: { product: Product; int
     setAdded("");
     if (!chosen || !size) {
       setMissing(!chosen && !size ? "Choose a colorway and a size first." : !chosen ? "Choose a colorway first." : "Choose a size first.");
-      if (fromBar) colorways.current?.scrollIntoView({ behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      // The bar unmounts once the selectors are back on screen, so focus moves to the first missing choice.
+      const target = (chosen ? sizes : colorways).current;
+      if (fromBar && target) {
+        target.scrollIntoView({ behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+        target.querySelector("input")?.focus({ preventScroll: true });
+      }
       return;
     }
     setMissing("");
@@ -124,7 +130,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
             ))}
           </div>
         </fieldset>
-        <fieldset className="mt-8">
+        <fieldset ref={sizes} className="mt-8 scroll-mt-28">
           <legend className="float-left py-2.5 text-base md:text-sm">
             Size: <span className="text-muted">{size ?? "choose one"}</span>
           </legend>
@@ -142,10 +148,10 @@ export function ProductView({ product, intro, details }: { product: Product; int
           Add to your bag
         </button>
         <p className="mt-3 text-base text-muted md:text-sm">{OFFER}</p>
-        <p role="alert" className="mt-4 text-sm">
+        <p role="alert" className="mt-4 text-base md:text-sm">
           {missing}
         </p>
-        <p role="status" className="text-sm text-muted">
+        <p role="status" className="text-base text-muted md:text-sm">
           {added}
         </p>
         {details}

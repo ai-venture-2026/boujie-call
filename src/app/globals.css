@@ -20,6 +20,8 @@
 
 @layer base {
   body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     background: var(--color-cream);
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -50,7 +52,7 @@
 
   @media (width < 48rem) {
     body:has([data-quick-add]) {
-      padding-bottom: 6rem;
+      padding-bottom: calc(5.5rem + max(0.75rem, env(safe-area-inset-bottom)));
     }
   }
 }
