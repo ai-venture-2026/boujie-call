@@ -7,8 +7,8 @@ const shop = [...products.map((p) => ({ href: `/shop/${p.slug}`, label: p.name }
 function Column({ title, name = title, links }: { title: string; name?: string; links: { href: string; label: string }[] }) {
   return (
     <nav aria-label={name}>
-      <p className="label text-[10px] text-blush/75">{title}</p>
-      <ul className="mt-4 flex flex-col gap-2 text-sm max-md:gap-0">
+      <p className="label text-blush/75">{title}</p>
+      <ul className="mt-4 flex flex-col gap-2 text-[15px] max-md:gap-0">
         {links.map((l) => (
           <li key={l.href}>
             <Link href={l.href} className="transition-colors hover:text-pink max-md:flex max-md:min-h-11 max-md:items-center max-md:text-base">
@@ -28,7 +28,7 @@ export function SiteFooter() {
         <div className="flex flex-col items-start gap-5">
           <span role="img" aria-label="Boujie Call" className="block aspect-[439/430] h-24 bg-pink [mask:url(/boujie-call-monogram-ink.png)_center/contain_no-repeat] md:h-36" />
           <p className="font-serif text-xl italic">Luxury nightwear gifts.</p>
-          <ul className="flex flex-col gap-1 text-sm text-blush/75 max-md:hidden">
+          <ul className="flex flex-col gap-1 text-[15px] text-blush/75 max-md:hidden">
             {socials.map((s) => (
               <li key={s.label}>
                 <a href={s.url} className="hover:text-pink">
@@ -43,8 +43,8 @@ export function SiteFooter() {
             <Column title="Shop" links={shop} />
             <Column title="Company" name="Footer" links={pages} />
             <div>
-              <p className="label text-[10px] text-blush/75">Socials</p>
-              <ul className="mt-4 flex flex-col gap-2 text-sm max-md:gap-0">
+              <p className="label text-blush/75">Socials</p>
+              <ul className="mt-4 flex flex-col gap-2 text-[15px] max-md:gap-0">
                 {socials.map((s) => (
                   <li key={s.label}>
                     <a href={s.url} className="hover:text-pink max-md:flex max-md:min-h-11 max-md:items-center max-md:text-base">
@@ -55,7 +55,7 @@ export function SiteFooter() {
               </ul>
             </div>
           </div>
-          <p className="label text-[10px] text-blush/75">© 2026 Boujie Call</p>
+          <p className="label text-blush/75">© 2026 Boujie Call</p>
         </div>
       </div>
     </footer>

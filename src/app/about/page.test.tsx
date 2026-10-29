@@ -13,6 +13,11 @@ describe("About", () => {
     expect(pillars.map((p) => p.textContent)).toEqual(["Luxe without pretense", "Made for the moment", "For her, by her"]);
   });
 
+  it("sets the founder quote at Cormorant 400", () => {
+    const { container } = render(<About />);
+    expect(container.querySelector("blockquote")).not.toHaveClass("font-light");
+  });
+
   it("attributes the founder quote", () => {
     render(<About />);
     expect(screen.getByText("Founder, Boujie Call").closest("figure")?.querySelector("blockquote")).toHaveTextContent("Something she would actually remember.");

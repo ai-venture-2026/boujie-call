@@ -23,7 +23,7 @@ export default function Shop() {
           <div className="flex flex-col items-center justify-center px-6 py-14 text-center">
             <h1 className="text-[clamp(2.25rem,5vw,4.5rem)] leading-none tracking-[0.3em] uppercase">The collection</h1>
             <p className="mt-6 font-serif text-xl italic md:text-2xl">Treat yourself. Or let someone treat you.</p>
-            <p className="label mt-3 text-[10px]">{OFFER}</p>
+            <p className="label mt-3">{OFFER}</p>
           </div>
         </section>
         <ShopGrid />

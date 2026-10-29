@@ -27,13 +27,13 @@ function PieceCard({ product }: { product: Product }) {
         {photo ? (
           <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
         ) : (
-          <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
+          <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
         )}
       </div>
-      <h3 className="mt-3 truncate text-lg md:mt-5 md:text-2xl">{product.name}</h3>
+      <h3 className="mt-3 truncate text-xl font-medium md:mt-5 md:text-[26px]">{product.name}</h3>
       <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
         <Price product={product} />
-        <span className="label text-[10px] text-muted">{product.colorways.length} colorways</span>
+        <span className="label text-muted">{product.colorways.length} colorways</span>
       </div>
     </Link>
   );
@@ -89,7 +89,7 @@ export default function Home() {
           <ol aria-label="How it works" className={`${wrap} mt-16 grid gap-10 md:mt-24 text-center md:grid-cols-3 md:gap-16`}>
             {steps.map((step) => (
               <li key={step.title} className="rise">
-                <h3 className="text-2xl">{step.title}</h3>
+                <h3 className="text-[26px] font-medium">{step.title}</h3>
                 <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-blush/80">{step.body}</p>
               </li>
             ))}
@@ -102,10 +102,10 @@ export default function Home() {
               <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover" />
             </div>
             <div className="flex flex-1 flex-col items-center px-6 pt-8 pb-6 text-center md:px-10 md:pt-10 md:pb-8">
-              <h2 className="text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
+              <h2 className="text-[34px] leading-[1.04] font-medium md:text-[clamp(1.375rem,calc(2.8vw+2px),2.875rem)] rise">
                 Cute enough to open at <em className="text-rose">brunch.</em>
               </h2>
-              <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-muted hover:text-ink">
+              <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center md:mt-3 text-muted hover:text-ink">
                 The Slip Dress · Rose
               </Link>
             </div>
@@ -115,10 +115,10 @@ export default function Home() {
               <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover" />
             </div>
             <div className="flex flex-1 flex-col items-center px-6 pt-8 pb-6 text-center md:px-10 md:pt-10 md:pb-8">
-              <h2 className="text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
+              <h2 className="text-[34px] leading-[1.04] font-medium md:text-[clamp(1.375rem,calc(2.8vw+2px),2.875rem)] rise">
                 Irresistible enough to wear <em className="text-pink">that night.</em>
               </h2>
-              <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-blush/80 hover:text-blush">
+              <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center md:mt-3 text-blush/80 hover:text-blush">
                 The Slip Dress · After Dark
               </Link>
             </div>

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Dark pink version, typography: labels and buttons 13px (12px on phones) at weight 500 with tighter tracking; body text 17px on desktop with darker muted text (#575051); Cormorant headings at 400, smaller Cormorant names and titles at 500; prices in DM Sans 500; darker placeholders. Header nav, the Send a Call hero, the waitlist form and shop cards adjust spacing at tablet and phone widths so nothing wraps.
 - Dark pink version, Home: the Shop button under the brunch and night pair is gone, so the pair flows into The pieces at the standard spacing; View all pieces is a quiet underlined text link with an arrow; no two Home calls to action with the same destination sit within one screen.
 - Dark pink version, Home layout: the brunch and night pair is a contained diptych of equal panels (4:3 photos, text below) with Shop the collection centered beneath it; View all pieces sits on the heading row; piece cards get #f0c0d0 frames; padded Home sections sit 120px apart on desktop and 72px on phones.
 - Dark pink version, softer pass: a neutral soft black #1c1b1b for large dark areas and text (no purple undertone), Dusty Rose #ecb8c2, the header logo tinted Boujie Pink, Dusty Rose for the offer bar and the one filled pill per view, outlined header Shop button, dark gift section on Home, paler product frames with a soft contact shadow, about 20 percent more space between sections, #f0c0d0 hairlines.

@@ -68,7 +68,7 @@ export default function About() {
 
         <section data-nav="dark" className="bg-ribbon py-19 text-blush md:py-48">
           <figure className={`${wrap} max-w-4xl text-center`}>
-            <blockquote className="font-serif text-[clamp(1.75rem,3.2vw,3rem)] leading-[1.2] font-light italic rise">
+            <blockquote className="font-serif text-[clamp(1.75rem,3.2vw,3rem)] leading-[1.2] italic rise">
               &ldquo;I wanted to send something that felt truly special, not just flowers, not just a gift card. Something she would actually remember.&rdquo;
             </blockquote>
             <figcaption className="label mt-10 text-pink">Founder, Boujie Call</figcaption>

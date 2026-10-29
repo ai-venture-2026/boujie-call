@@ -12,7 +12,7 @@ const views = ["front", "back", "detail"];
 function ToCome({ label }: { label?: string }) {
   return (
     <div role={label ? "img" : undefined} aria-label={label} className="absolute inset-0">
-      <span className={`label absolute text-muted ${label ? "right-4 bottom-4 text-[10px]" : "right-2 bottom-2 text-[8px] tracking-[0.12em]"}`}>Image to come</span>
+      <span className={`label absolute text-muted ${label ? "right-4 bottom-4" : "right-2 bottom-2 whitespace-nowrap text-[10px] tracking-[0.1em]"}`}>Image to come</span>
     </div>
   );
 }
@@ -114,7 +114,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
       <div>
         {intro}
         <fieldset ref={colorways} className="mt-10 scroll-mt-28">
-          <legend className="text-base md:text-sm">
+          <legend className="text-base">
             Colorway: <span className="text-muted">{chosen ? chosen.name : "choose one"}</span>
           </legend>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -131,7 +131,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           </div>
         </fieldset>
         <fieldset ref={sizes} className="mt-8 scroll-mt-28">
-          <legend className="float-left py-2.5 text-base md:text-sm">
+          <legend className="float-left py-2.5 text-base">
             Size: <span className="text-muted">{size ?? "choose one"}</span>
           </legend>
           <SizeGuide sizes={product.sizes} />
@@ -147,11 +147,11 @@ export function ProductView({ product, intro, details }: { product: Product; int
         <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-10 w-full sm:w-auto">
           Add to your bag
         </button>
-        <p className="mt-3 text-base text-muted md:text-sm">{OFFER}</p>
-        <p role="alert" className="mt-4 text-base md:text-sm">
+        <p className="mt-3 text-base text-muted">{OFFER}</p>
+        <p role="alert" className="mt-4 text-base">
           {missing}
         </p>
-        <p role="status" className="text-base text-muted md:text-sm">
+        <p role="status" className="text-base text-muted">
           {added}
         </p>
         {details}
@@ -165,7 +165,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         >
           <div className="min-w-0">
             <p className="truncate font-serif text-xl">{product.name}</p>
-            <p className="text-base text-muted">{formatPrice(product.priceCents)}</p>
+            <p className="text-[17px] font-medium text-muted">{formatPrice(product.priceCents)}</p>
           </div>
           <button type="button" onClick={() => add(true)} className="cta cta-primary shrink-0 px-6">
             Add to your bag
@@ -179,8 +179,8 @@ export function ProductView({ product, intro, details }: { product: Product; int
 export function Price({ product, className = "" }: { product: Product; className?: string }) {
   return (
     <p className={`flex items-baseline gap-3 ${className}`}>
-      <span className="font-serif text-2xl">{formatPrice(product.priceCents)}</span>
-      {product.placeholderPrice && <span className="text-xs text-muted">Placeholder price</span>}
+      <span className="font-sans text-xl font-medium">{formatPrice(product.priceCents)}</span>
+      {product.placeholderPrice && <span className="text-[13px] text-muted">Placeholder price</span>}
     </p>
   );
 }

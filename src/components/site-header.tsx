@@ -67,15 +67,15 @@ export function SiteHeader() {
 
   return (
     <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ribbon text-blush">
-      <p className="label bg-dusty px-6 py-2 text-center text-[10px] leading-4 tracking-[0.12em] text-ribbon">{OFFER}</p>
+      <p className="label bg-dusty px-6 py-2 text-center leading-4 tracking-[0.12em] text-ribbon">{OFFER}</p>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home" className="flex min-h-11 items-center">
           <Logo tone="pink" className="h-10 md:h-12" />
         </Link>
 
-        <div className="hidden items-center gap-10 md:absolute md:inset-y-0 md:right-28 md:left-[38%] md:flex md:justify-center">
+        <div className="hidden items-center gap-6 md:absolute md:inset-y-0 md:right-28 md:left-56 md:flex md:justify-center xl:left-[38%] xl:gap-10">
           <nav aria-label="Main">
-            <ul className="label flex gap-9">
+            <ul className="label flex gap-6 whitespace-nowrap xl:gap-9">
               {pages.map((p) => (
                 <li key={p.href}>
                   <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
@@ -85,7 +85,7 @@ export function SiteHeader() {
               ))}
             </ul>
           </nav>
-          <Link href="/shop" className="cta min-h-10 px-6">
+          <Link href="/shop" className="cta min-h-10 px-6 whitespace-nowrap max-lg:hidden">
             Shop the collection
           </Link>
         </div>
@@ -170,11 +170,11 @@ export function SiteHeader() {
             <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
           <div className="mt-auto px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))]">
-            <p className="label text-[10px] text-muted">{OFFER}</p>
+            <p className="label text-muted">{OFFER}</p>
             <Link href="/shop" onClick={close} className="cta cta-primary mt-4 w-full">
               Shop the collection
             </Link>
-            <ul className="label mt-5 flex gap-6 text-[10px] text-muted">
+            <ul className="label mt-5 flex gap-6 text-muted">
               {socials.map((s) => (
                 <li key={s.label}>
                   <a href={s.url} className="text-ink">

@@ -52,7 +52,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
       <div data-hero-words className="flex flex-col justify-between bg-ribbon px-6 pt-10 pb-4 md:order-1 md:px-12 md:pt-12 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
         <div className="flex flex-1 flex-col items-start justify-center">{children}</div>
         <div className="mt-6 flex items-center justify-between gap-4 md:mt-0">
-          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-[10px] text-blush/75 hover:text-blush md:whitespace-nowrap">
+          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-blush/75 hover:text-blush md:whitespace-nowrap">
             {slide.piece} · {slide.colorway}
           </Link>
           <div className="flex items-center gap-1">

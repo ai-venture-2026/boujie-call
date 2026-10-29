@@ -33,7 +33,7 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
     >
       <div className="flex items-baseline justify-between">
         <p className="font-serif text-2xl">Your bag</p>
-        <p className="label text-[10px] text-muted">
+        <p className="label text-muted">
           {count} {count === 1 ? "piece" : "pieces"}
         </p>
       </div>
@@ -60,24 +60,24 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
                   <div className="flex flex-1 items-start justify-between gap-3">
                     <div>
                       <p className="font-serif text-lg leading-tight">{product.name}</p>
-                      <p className="label mt-1 text-[10px] text-muted">
+                      <p className="label mt-1 text-muted">
                         {line.colorway}, {line.size}
                         {line.qty > 1 && `, ${line.qty} pieces`}
                       </p>
                     </div>
-                    <span className="text-sm">{formatPrice(product.priceCents)}</span>
+                    <span className="text-[15px] font-medium">{formatPrice(product.priceCents)}</span>
                   </div>
                 </li>
               );
             })}
           </ul>
-          {rest > 0 && <p className="mt-3 text-sm text-muted">+ {rest} more</p>}
+          {rest > 0 && <p className="mt-3 text-[15px] text-muted">+ {rest} more</p>}
           <p className="mt-5 font-serif text-lg italic">{offerNote(count)}</p>
           <div className="mt-4 flex items-baseline justify-between">
-            <span className="label text-[10px]">Subtotal</span>
-            <span className="font-serif text-xl">{formatPrice(subtotalCents(lines))}</span>
+            <span className="label">Subtotal</span>
+            <span className="font-sans text-[17px] font-medium">{formatPrice(subtotalCents(lines))}</span>
           </div>
-          {count >= 2 && <p className="mt-1 text-xs text-muted">Any 2 for $85 applied at checkout</p>}
+          {count >= 2 && <p className="mt-1 text-[13px] text-muted">Any 2 for $85 applied at checkout</p>}
           <div className="mt-6 grid grid-cols-2 gap-3">
             <Link href="/bag" onClick={onNavigate} className="cta px-4">
               View bag
@@ -86,7 +86,7 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
               Checkout
             </button>
           </div>
-          <p role="status" className="mt-3 text-sm">
+          <p role="status" className="mt-3 text-[15px]">
             {note}
           </p>
         </>

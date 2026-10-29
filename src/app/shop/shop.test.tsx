@@ -34,6 +34,18 @@ describe("Shop", () => {
   });
 });
 
+describe("Product typography", () => {
+  it("sets the product price in DM Sans 500", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getAllByText("$48.00")[0]).toHaveClass("font-sans", "font-medium");
+  });
+
+  it("reads the offer line at body size on desktop", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.").at(-1)).not.toHaveClass("md:text-sm");
+  });
+});
+
 describe("Product page", () => {
   it("checks the colorway the visitor chooses", async () => {
     await renderProduct("the-slip-dress");
@@ -512,9 +524,9 @@ describe("Shop cards on phones", () => {
     expect(within(items()[0]).getByText("The Slip Dress")).toHaveClass("truncate");
   });
 
-  it("sets the card price at 16px", () => {
+  it("sets the card price at 17px", () => {
     render(<Shop />);
-    expect(within(items()[0]).getByText("$48.00")).toHaveClass("text-base");
+    expect(within(items()[0]).getByText("$48.00")).toHaveClass("text-[17px]");
   });
 
   it("centers a single last card", () => {

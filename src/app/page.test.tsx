@@ -451,6 +451,38 @@ describe("Strict pass", () => {
   });
 });
 
+describe("Typography", () => {
+  it("lets every Home label take the shared label size", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelectorAll('[class*="text-[10px]"], [class*="md:text-xs"]')).toHaveLength(0);
+  });
+
+  it("sets piece names in Cormorant 500", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Slip Dress" })).toHaveClass("font-medium");
+  });
+
+  it("sets step titles in Cormorant 500", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Place the Call" })).toHaveClass("font-medium");
+  });
+
+  it("sets the panel headlines in Cormorant 500", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." })).toHaveClass("font-medium");
+  });
+
+  it("sets Home prices in DM Sans 500", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByText("$48.00")[0]).toHaveClass("font-sans", "font-medium");
+  });
+
+  it("darkens the light waitlist placeholder", () => {
+    render(<WaitlistForm />);
+    expect(screen.getByLabelText("Email address")).toHaveClass("placeholder:text-ink/65");
+  });
+});
+
 describe("Colour rhythm", () => {
   it("sets the dark section accent in pink", () => {
     render(<Home />);
