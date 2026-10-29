@@ -324,7 +324,7 @@ describe("Day to night turn", () => {
 
   it("links the night caption to The Slip Dress in After Dark", () => {
     render(<Home />);
-    expect(within(night()).getByRole("link", { name: "The Slip Dress · After Dark" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
+    expect(screen.getByRole("link", { name: "Shop the Slip Dress in After Dark" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
   });
 
   it("keeps each heading outside its photo frame", () => {
@@ -448,6 +448,51 @@ describe("Strict pass", () => {
   it("keeps social placeholders out of the footer", () => {
     render(<SiteFooter />);
     expect(screen.queryByText(/link to come/)).toBeNull();
+  });
+});
+
+describe("Clickable diptych", () => {
+  const panel = (name: string) => screen.getByRole("link", { name });
+
+  it("links the whole brunch panel to the Slip Dress in Rose", () => {
+    render(<Home />);
+    expect(panel("Shop the Slip Dress in Rose")).toHaveAttribute("href", "/shop/the-slip-dress?colorway=rose");
+  });
+
+  it("puts the brunch photo inside its panel link", () => {
+    render(<Home />);
+    expect(within(panel("Shop the Slip Dress in Rose")).getByRole("img")).toBeInTheDocument();
+  });
+
+  it("puts the brunch headline inside its panel link", () => {
+    render(<Home />);
+    expect(within(panel("Shop the Slip Dress in Rose")).getByRole("heading")).toBeInTheDocument();
+  });
+
+  it("shows the Shop line with an arrow", () => {
+    render(<Home />);
+    expect(panel("Shop the Slip Dress in After Dark")).toHaveTextContent("Shop the Slip Dress in After Dark →");
+  });
+
+  it("underlines the Shop line on hover from md", () => {
+    render(<Home />);
+    expect(screen.getByText("Shop the Slip Dress in Rose")).toHaveClass("md:decoration-transparent", "md:group-hover:decoration-pink");
+  });
+
+  it("scales the photo gently on hover", () => {
+    render(<Home />);
+    const img = within(panel("Shop the Slip Dress in Rose")).getByRole("img");
+    expect(img).toHaveClass("motion-safe:group-hover:scale-[1.02]", "duration-400");
+  });
+
+  it("gives the night panel an ink focus ring", () => {
+    render(<Home />);
+    expect(panel("Shop the Slip Dress in After Dark")).toHaveClass("focus-visible:outline-ink");
+  });
+
+  it("centers each text block under its photo", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).parentElement).toHaveClass("flex-1", "justify-center");
   });
 });
 

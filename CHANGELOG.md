@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Dark pink version, Home: each brunch and night panel opens The Slip Dress with its colorway selected; Shop the Slip Dress in Rose and in After Dark lines with a pink underline on hover (always on phones); the photo scales gently on hover unless reduced motion is set; both headlines wrap to two lines so the Shop lines sit level.
 - Dark pink version, typography: labels and buttons 13px (12px on phones) at weight 500 with tighter tracking; body text 17px on desktop with darker muted text (#575051); Cormorant headings at 400, smaller Cormorant names and titles at 500; prices in DM Sans 500; darker placeholders. Header nav, the Send a Call hero, the waitlist form and shop cards adjust spacing at tablet and phone widths so nothing wraps.
 - Dark pink version, Home: the Shop button under the brunch and night pair is gone, so the pair flows into The pieces at the standard spacing; View all pieces is a quiet underlined text link with an arrow; no two Home calls to action with the same destination sit within one screen.
 - Dark pink version, Home layout: the brunch and night pair is a contained diptych of equal panels (4:3 photos, text below) with Shop the collection centered beneath it; View all pieces sits on the heading row; piece cards get #f0c0d0 frames; padded Home sections sit 120px apart on desktop and 72px on phones.
