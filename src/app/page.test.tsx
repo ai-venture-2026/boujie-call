@@ -552,3 +552,22 @@ describe("Phone menu", () => {
     expect(within(open()).getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall/");
   });
 });
+
+describe("Sharp photos on phones", () => {
+  const sizesOf = (img: Element | null) => img?.getAttribute("sizes") ?? "";
+
+  it("asks for a hero photo as wide as it is drawn", () => {
+    render(<Home />);
+    expect(sizesOf(screen.getAllByRole("img", { name: /The Slip Dress|The Romper/ })[0])).toContain("150vh");
+  });
+
+  it("asks for a closing banner as wide as it is drawn", () => {
+    const { container } = render(<Home />);
+    expect(sizesOf(container.querySelector("section#waitlist img"))).toContain("270vw");
+  });
+
+  it("asks for the section two close-up as wide as it is drawn", () => {
+    const { container } = render(<Home />);
+    expect(sizesOf(container.querySelector("#detail img[alt*='hip']"))).toContain("190vw");
+  });
+});

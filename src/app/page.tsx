@@ -70,7 +70,7 @@ export default function Home() {
             </div>
           </div>
           <div className="relative aspect-[4/5] max-md:order-1 md:aspect-auto">
-            <Image src="/images/details/brown-romper-hip.webp" alt="A close-up of the brown lace hem of The Romper in Mocha at the hip" fill sizes="(min-width: 768px) 50vw, 100vw" style={{ objectPosition: "42% 40%" }} className="object-cover" />
+            <Image src="/images/details/brown-romper-hip.webp" alt="A close-up of the brown lace hem of The Romper in Mocha at the hip" fill sizes="(min-width: 768px) 50vw, 190vw" style={{ objectPosition: "42% 40%" }} className="object-cover" />
           </div>
         </section>
 
@@ -83,7 +83,7 @@ export default function Home() {
           <div data-strip className="mt-14 grid grid-cols-2 gap-3 px-6 md:mt-20 md:flex md:items-start md:justify-center md:gap-6 md:px-0">
             {strip.map((s) => (
               <div key={s.src} className={`relative aspect-[4/5] shrink-0 overflow-hidden ${s.box}`}>
-                <Image src={s.src} alt="" fill sizes="(min-width: 768px) 24vw, 48vw" className="object-cover" />
+                <Image src={s.src} alt="" fill sizes="(min-width: 768px) 24vw, 90vw" className="object-cover" />
               </div>
             ))}
           </div>
