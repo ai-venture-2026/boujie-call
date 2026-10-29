@@ -15,3 +15,4 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [soon] next dev re-adds a Next.js agent block with em dashes to AGENTS.md on every start; decide whether to commit it or turn it off (AGENTS.md) :: logged 2026-10-29, cycle 20261029-abd860
 - [soon] Quick add bar on phones does not show the chosen colorway and size; add a short line so people can confirm before tapping (src/components/product-view.tsx) :: logged 2026-10-29, cycle 20261029-b9e136
 - [cleanup] A lone last Shop card left aligns at 768px to 1023px where the grid is still two columns (src/components/shop-grid.tsx) :: logged 2026-10-29, cycle 20261029-b9e136
+- [soon] Landscape on notched iPhones: body side inset padding leaves cream strips beside full bleed sections and offsets the centered nav; move the inset onto inner wrappers (src/app/globals.css) :: logged 2026-10-29, cycle 20261029-b9e136
