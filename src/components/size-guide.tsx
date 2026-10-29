@@ -34,6 +34,7 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
           </div>
           <p className="mt-3 text-sm text-muted">Placeholder. Measurements to come from Boujie Call.</p>
           <table className="mt-8 w-full text-left text-sm">
+            <caption className="sr-only">Measurements by size, placeholder</caption>
             <thead>
               <tr className="border-b-[0.5px] border-ink/15">
                 {["Size", ...columns].map((c) => (

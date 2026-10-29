@@ -259,6 +259,17 @@ describe("Product gallery thumbnails", () => {
     const { container } = await renderProduct("the-slip-dress");
     expect(container.querySelectorAll("[data-dot]")).toHaveLength(3);
   });
+
+  it("lets keyboard users pick a photo from the dots", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("button", { name: "Photo 2 of 3" }));
+    expect(slide("The Slip Dress in Rose, back")).not.toHaveClass("md:hidden");
+  });
+
+  it("marks the visible photo on the dots", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("button", { name: "Photo 1 of 3" })).toHaveAttribute("aria-current", "true");
+  });
 });
 
 describe("Size guide", () => {
@@ -286,6 +297,12 @@ describe("Size guide", () => {
     await renderProduct("the-romper");
     open();
     expect(screen.getAllByRole("rowheader").map((h) => h.textContent)).toEqual(["S", "M", "L", "XL"]);
+  });
+
+  it("names the size table", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(screen.getByRole("table", { name: "Measurements by size, placeholder" })).toBeInTheDocument();
   });
 
   it("closes from the close button", async () => {

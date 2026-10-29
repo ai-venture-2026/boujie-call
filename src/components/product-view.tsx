@@ -12,7 +12,7 @@ const views = ["front", "back", "detail"];
 function ToCome({ label }: { label?: string }) {
   return (
     <div role={label ? "img" : undefined} aria-label={label} className="absolute inset-0">
-      <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
+      <span className={`label absolute text-muted ${label ? "right-4 bottom-4 text-[10px]" : "right-2 bottom-2 text-[8px] tracking-[0.12em]"}`}>Image to come</span>
     </div>
   );
 }
@@ -50,22 +50,37 @@ export function ProductView({ product, intro, details }: { product: Product; int
         {/* Phones swipe the track; from md only the active slide shows and the thumbnails pick it. */}
         <div
           ref={track}
-          onScroll={(e) => setView(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
+          onScroll={(e) => {
+            const { scrollLeft, clientWidth } = e.currentTarget;
+            if (clientWidth > 0) setView(Math.min(views.length - 1, Math.max(0, Math.round(scrollLeft / clientWidth))));
+          }}
           className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] md:overflow-visible"
         >
           {views.map((v, i) => (
             <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${i === view ? "" : "md:hidden"}`}>
               {shown.images[i] ? (
-                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
+                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 50vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
               ) : (
                 <ToCome label={`${product.name} in ${shown.name}, ${v}`} />
               )}
             </div>
           ))}
         </div>
-        <div aria-hidden="true" className="mt-4 flex justify-center gap-2 md:hidden">
+        <div className="mt-1 flex justify-center md:hidden">
           {views.map((v, i) => (
-            <span key={v} data-dot className={`size-1.5 rounded-full ${i === view ? "bg-ink" : "bg-ink/20"}`} />
+            <button
+              key={v}
+              type="button"
+              aria-label={`Photo ${i + 1} of ${views.length}`}
+              aria-current={i === view}
+              onClick={() => {
+                setView(i);
+                if (track.current) track.current.scrollLeft = i * track.current.clientWidth;
+              }}
+              className="grid size-8 place-items-center"
+            >
+              <span data-dot className={`size-1.5 rounded-full ${i === view ? "bg-ink" : "bg-ink/20"}`} />
+            </button>
           ))}
         </div>
         <div className="mt-3 grid grid-cols-3 gap-3 max-md:hidden">
