@@ -73,9 +73,9 @@ describe("About", () => {
     expect(within(story).getByRole("img").getAttribute("src")).toContain("story-after-dark");
   });
 
-  it("sets the hero words below the photo on phones", () => {
+  it("sets the hero words over the photo on phones", () => {
     render(<About />);
-    expect(screen.getByRole("heading", { level: 1 }).parentElement).not.toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute", "max-md:from-ribbon/90");
   });
 
   it("marks the hero for the adaptive nav", () => {

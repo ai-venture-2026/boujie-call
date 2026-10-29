@@ -19,10 +19,10 @@ export default function SendACall() {
       <SiteHeader />
       <main>
         <section data-nav="dark" className="relative flex flex-col bg-ribbon text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-2 lg:grid-cols-[38fr_62fr]">
-          <div className="relative h-[60svh] min-h-[420px] md:order-2 md:h-auto md:min-h-0">
+          <div className="relative h-[calc(100svh-6.75rem)] min-h-[560px] md:order-2 md:h-auto md:min-h-0">
             <Image src="/images/send-a-call/hero-rose-slip.webp" alt="A woman in a pale pink slip with lace trim leans on a taupe wall, arms raised" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "70% 25%" }} className="object-cover" />
           </div>
-          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-10 max-md:bg-linear-to-t max-md:from-ribbon/90 max-md:via-ribbon/75 max-md:via-20% max-md:to-transparent max-md:pt-40 max-md:pb-10 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
             <p className="label">Send a Call</p>
             <h1 className="mt-6 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02]">
               Place your Boujie <em className="text-pink">Call.</em>

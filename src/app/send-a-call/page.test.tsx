@@ -62,9 +62,9 @@ describe("Send a Call page", () => {
 });
 
 describe("Send a Call on phones", () => {
-  it("sets the hero words below the photo", () => {
+  it("sets the hero words over the photo", () => {
     render(<SendACall />);
-    expect(screen.getByRole("heading", { level: 1 }).parentElement).not.toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute", "max-md:from-ribbon/90");
   });
 
   it("lays the four steps in one column on phones", () => {

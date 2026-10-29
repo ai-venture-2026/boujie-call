@@ -558,7 +558,7 @@ describe("Colour rhythm", () => {
 describe("Hero split", () => {
   it("sets the hero text on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("bg-ribbon");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("md:bg-ribbon");
   });
 
   it("sets the header on ink", () => {
@@ -757,9 +757,9 @@ describe("Home on phones", () => {
     expect(screen.getByRole("list", { name: "Pieces" })).toHaveClass("grid-cols-2");
   });
 
-  it("sets the hero words below the photo", () => {
+  it("sets the hero words over the photo", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).not.toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute", "max-md:from-ribbon/90");
   });
 
   it("left-aligns View all pieces under the subtitle on phones", () => {

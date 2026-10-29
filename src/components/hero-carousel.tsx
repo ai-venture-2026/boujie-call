@@ -26,7 +26,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
       data-nav="dark"
       className="relative flex flex-col bg-ribbon text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]"
     >
-      <div className="relative h-[60svh] min-h-[420px] overflow-hidden md:order-2 md:h-auto md:min-h-0">
+      <div className="relative h-[calc(100svh-6.75rem)] min-h-[560px] overflow-hidden md:order-2 md:h-auto md:min-h-0">
         {heroSlides.map((s, i) => (
           <div
             key={s.src}
@@ -49,7 +49,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
         ))}
       </div>
 
-      <div data-hero-words className="flex flex-col justify-between bg-ribbon px-6 pt-10 pb-4 md:order-1 md:px-12 md:pt-12 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+      <div data-hero-words className="flex flex-col justify-between px-6 pt-10 pb-4 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-20 max-md:bg-linear-to-t max-md:from-ribbon/90 max-md:via-ribbon/75 max-md:via-20% max-md:to-transparent max-md:pt-40 md:order-1 md:bg-ribbon md:px-12 md:pt-12 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
         <div className="flex flex-1 flex-col items-start justify-center">{children}</div>
         <div className="mt-6 flex items-center justify-between gap-4 md:mt-0">
           <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-blush/75 hover:text-blush md:whitespace-nowrap">
