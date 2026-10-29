@@ -230,6 +230,11 @@ describe("Shop on phones", () => {
     expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("max-md:overflow-x-auto");
   });
 
+  it("leaves room for the focus ring inside the filter row", () => {
+    render(<Shop />);
+    expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("max-md:py-1.5");
+  });
+
   it("keeps the color filters in the piece filter row", () => {
     render(<Shop />);
     expect(screen.getByRole("group", { name: "Color" }).parentElement).toBe(screen.getByRole("navigation", { name: "Pieces" }).parentElement);

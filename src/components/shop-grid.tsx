@@ -34,7 +34,7 @@ export function ShopGrid() {
 
   return (
     <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-[12rem_1fr] md:gap-x-16 md:gap-y-0 md:px-12 md:py-24">
-      <div className="-mx-6 flex gap-2 px-6 [scrollbar-width:none] max-md:overflow-x-auto md:contents">
+      <div className="-mx-6 flex gap-2 px-6 [scrollbar-width:none] max-md:overflow-x-auto max-md:py-1.5 md:contents">
       <nav aria-label="Pieces" className="flex shrink-0 gap-2 md:row-span-2 md:flex-col md:gap-1">
         <Toggle on={!piece} onClick={() => setPiece(null)}>
           All pieces

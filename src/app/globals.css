@@ -163,6 +163,12 @@
     color: var(--color-ink);
   }
 
+  [data-nav="dark"] .cta-primary {
+    --cta-fill: var(--color-cream);
+    --cta-on: var(--color-ink);
+    outline-color: var(--color-cream);
+  }
+
   .vertical {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
