@@ -33,7 +33,7 @@ export function ShopGrid() {
   };
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-[12rem_1fr] md:gap-x-16 md:gap-y-0 md:px-12 md:py-24">
+    <div className="mx-auto grid max-w-7xl gap-10 px-6 py-19 md:grid-cols-[12rem_1fr] md:gap-x-16 md:gap-y-0 md:px-12 md:py-28">
       <div className="-mx-6 flex gap-2 px-6 [scrollbar-width:none] max-md:overflow-x-auto max-md:py-1.5 md:contents">
       <nav aria-label="Pieces" className="flex shrink-0 gap-2 md:row-span-2 md:flex-col md:gap-1">
         <Toggle on={!piece} onClick={() => setPiece(null)}>
@@ -80,7 +80,7 @@ export function ShopGrid() {
           {shown.map(({ product, colorway }) => (
             <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
               <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
-                <div className="relative aspect-[3/4] overflow-hidden bg-stone">
+                <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images[0] ? "contact" : ""}`}>
                   {colorway.images[0] ? (
                     <Image src={colorway.images[0]} alt="" fill sizes="(min-width: 1024px) 22vw, 45vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
                   ) : (

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Dark pink version, softer pass: Black Ribbon for large dark areas, Dusty Rose for the offer bar and the one filled pill per view, outlined header Shop button, dark gift section on Home, paler product frames with a soft contact shadow, about 20 percent more space between sections, #f0c0d0 hairlines.
 - Dark pink version (darkpink-version preview only): After Dark header with the pink logo and a Boujie Pink offer bar above it; dark heroes on Home, Shop, Send a Call and About, with phone hero words below the photo; Cream Lace light sections and soft pink image frames; dark footer with a pink monogram; secondary buttons outlined After Dark on light and Blush Silk on dark.
 - Phones: a quick add bar on product pages (name, price, pink Add to your bag) appears once the main button scrolls away, sits above the iPhone home bar, and sends you back to the selectors when a color or size is missing.
 - Phones: card names hold one line, a lone last card centers, every tap target is at least 44px tall and readable text at least 16px (audited at 375px; no page scrolls sideways). The footer reads monogram first for screen readers.

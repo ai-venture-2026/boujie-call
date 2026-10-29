@@ -65,9 +65,9 @@ describe("Mini bag", () => {
     expect(within(panel() as HTMLElement).getByRole("button", { name: "Checkout" })).toHaveClass("cta-primary");
   });
 
-  it("fills the header Shop the collection pink", () => {
+  it("outlines the header Shop the collection", () => {
     const { container } = render(<SiteHeader />);
-    expect(container.querySelector("a.cta[href='/shop']")).toHaveClass("cta-primary");
+    expect(container.querySelector("a.cta[href='/shop']")).not.toHaveClass("cta-primary");
   });
 
   it("answers Checkout with a note instead of a payment", async () => {

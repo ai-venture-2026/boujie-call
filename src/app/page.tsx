@@ -23,7 +23,7 @@ function PieceCard({ product }: { product: Product }) {
   const photo = product.colorways[0].images[0];
   return (
     <Link href={`/shop/${product.slug}`} className="group block">
-      <div className="relative aspect-[4/5] overflow-hidden bg-stone">
+      <div className={`relative aspect-[4/5] overflow-hidden bg-stone ${photo ? "contact" : ""}`}>
         {photo ? (
           <Image src={photo} alt="" fill sizes="(min-width: 640px) 30vw, 100vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
         ) : (
@@ -73,11 +73,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how" className="overflow-hidden bg-cream py-20 md:py-40">
+        <section id="how" data-nav="dark" className="overflow-hidden bg-ribbon py-24 text-blush md:py-48">
           <h2 className={`${wrap} text-center text-[2rem] leading-[1.05] md:text-[clamp(2.25rem,5vw,4.75rem)] md:uppercase rise`}>
             Someone places a call.
             <br />
-            She <em className="text-rose normal-case">receives</em> a moment.
+            She <em className="text-pink normal-case">receives</em> a moment.
           </h2>
           <div data-strip className="mt-14 grid grid-cols-2 gap-3 px-6 md:mt-20 md:flex md:items-start md:justify-center md:gap-6 md:px-0">
             {strip.map((s) => (
@@ -90,7 +90,7 @@ export default function Home() {
             {steps.map((step) => (
               <li key={step.title} className="rise">
                 <h3 className="text-2xl">{step.title}</h3>
-                <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-muted">{step.body}</p>
+                <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-blush/80">{step.body}</p>
               </li>
             ))}
           </ol>
@@ -108,7 +108,7 @@ export default function Home() {
               The Slip Dress · Rose
             </Link>
           </div>
-          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 max-md:relative pt-12 pb-28 text-center text-blush md:justify-center md:px-6 md:pt-0 md:pb-24">
+          <div data-nav="dark" className="flex flex-col items-center bg-ribbon px-6 max-md:relative pt-12 pb-28 text-center text-blush md:justify-center md:px-6 md:pt-0 md:pb-24">
             <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
               <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
             </div>
@@ -118,13 +118,13 @@ export default function Home() {
             <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-blush/80 hover:text-blush">
               The Slip Dress · After Dark
             </Link>
-            <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap md:bottom-14 cta-primary">
+            <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-ribbon md:bottom-14">
               Shop the collection
             </Link>
           </div>
         </section>
 
-        <section aria-labelledby="pieces-title" className="bg-cream py-16 md:py-24">
+        <section aria-labelledby="pieces-title" className="bg-cream py-19 md:py-28">
           <div className={wrap}>
             <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
               <div className="rise">
@@ -163,7 +163,7 @@ export default function Home() {
           }
           line="The pieces are here. Find the one that feels like her."
         >
-          <Link href="/shop" className="cta cta-primary">
+          <Link href="/shop" className="cta">
             Shop the collection
           </Link>
         </ClosingBanner>

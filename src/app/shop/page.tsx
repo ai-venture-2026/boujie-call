@@ -16,7 +16,7 @@ export default function Shop() {
     <>
       <SiteHeader />
       <main>
-        <section data-nav="dark" className="grid bg-ink text-blush md:h-[60svh] md:min-h-[460px] md:grid-cols-[38fr_62fr]">
+        <section data-nav="dark" className="grid bg-ribbon text-blush md:h-[60svh] md:min-h-[460px] md:grid-cols-[38fr_62fr]">
           <div className="relative h-[42svh] md:h-auto">
             <Image src="/images/details/brown-romper-lace.webp" alt="A close-up of the brown lace neckline of The Romper in Mocha" fill priority sizes="(min-width: 768px) 38vw, 100vw" className="object-cover" />
           </div>

@@ -78,7 +78,7 @@ describe("Send a Call close", () => {
 
   it("sets the hero on ink", () => {
     render(<SendACall />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ink");
+    expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ribbon");
   });
 
   it("sets the box contents on blush", () => {
@@ -88,7 +88,7 @@ describe("Send a Call close", () => {
 
   it("sets the closing section on ink", () => {
     const { container } = render(<SendACall />);
-    expect(close(container)).toHaveClass("bg-ink");
+    expect(close(container)).toHaveClass("bg-ribbon");
   });
 
   it("closes on the mocha romper banner", () => {

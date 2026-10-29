@@ -166,7 +166,7 @@ describe("Shop collection", () => {
 
   it("sets the collection header on ink", () => {
     render(<Shop />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ink");
+    expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ribbon");
   });
 
   it("titles the page The collection", () => {
@@ -229,6 +229,12 @@ describe("Product page shapes", () => {
     await renderProduct("the-slip-dress");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("bg-stone");
+  });
+
+  it("grounds the product photo with a contact shadow", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("contact");
   });
 });
 

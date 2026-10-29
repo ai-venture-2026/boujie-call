@@ -65,8 +65,8 @@ export function SiteHeader() {
   }, [bagOpen]);
 
   return (
-    <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ink text-blush">
-      <p className="label bg-pink px-6 py-2 text-center text-[10px] text-ink">{OFFER}</p>
+    <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ribbon text-blush">
+      <p className="label bg-dusty px-6 py-2 text-center text-[10px] leading-4 tracking-[0.12em] text-ribbon">{OFFER}</p>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home" className="flex min-h-11 items-center">
           <Logo tone="pink" className="h-10 md:h-12" />
@@ -84,7 +84,7 @@ export function SiteHeader() {
               ))}
             </ul>
           </nav>
-          <Link href="/shop" className="cta cta-primary min-h-10 px-6">
+          <Link href="/shop" className="cta min-h-10 px-6">
             Shop the collection
           </Link>
         </div>

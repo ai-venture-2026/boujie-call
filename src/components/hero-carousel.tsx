@@ -24,7 +24,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
       aria-labelledby="hero-title"
       aria-roledescription="carousel"
       data-nav="dark"
-      className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]"
+      className="relative flex flex-col bg-ribbon text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]"
     >
       <div className="relative h-[60svh] min-h-[420px] overflow-hidden md:order-2 md:h-auto md:min-h-0">
         {heroSlides.map((s, i) => (
@@ -49,10 +49,10 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
         ))}
       </div>
 
-      <div data-hero-words className="flex flex-col justify-between bg-ink px-6 pt-10 pb-4 md:order-1 md:px-12 md:pt-12 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+      <div data-hero-words className="flex flex-col justify-between bg-ribbon px-6 pt-10 pb-4 md:order-1 md:px-12 md:pt-12 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
         <div className="flex flex-1 flex-col items-start justify-center">{children}</div>
         <div className="mt-6 flex items-center justify-between gap-4 md:mt-0">
-          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-[10px] text-muted-dark hover:text-blush md:whitespace-nowrap">
+          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-[10px] text-blush/75 hover:text-blush md:whitespace-nowrap">
             {slide.piece} · {slide.colorway}
           </Link>
           <div className="flex items-center gap-1">
@@ -78,7 +78,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
                 )}
               </button>
             ))}
-            <button type="button" aria-label={paused ? "Play slideshow" : "Pause slideshow"} onClick={() => setPaused((p) => !p)} className="ml-1 grid size-11 place-items-center text-muted-dark hover:text-blush">
+            <button type="button" aria-label={paused ? "Play slideshow" : "Pause slideshow"} onClick={() => setPaused((p) => !p)} className="ml-1 grid size-11 place-items-center text-blush/75 hover:text-blush">
               <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
                 {paused ? <path d="M2 1l7 4-7 4z" /> : <path d="M2 1h2v8H2zM6 1h2v8H6z" />}
               </svg>

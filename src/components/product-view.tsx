@@ -76,7 +76,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] md:overflow-visible"
         >
           {views.map((v, i) => (
-            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${i === view ? "" : "md:hidden"}`}>
+            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images[i] ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
               {shown.images[i] ? (
                 <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 50vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
               ) : (

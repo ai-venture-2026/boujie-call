@@ -250,7 +250,7 @@ describe("Home editorial redesign", () => {
 
   it("sets the night half of the turn on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink")).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ribbon")).not.toBeNull();
   });
 
 });
@@ -258,7 +258,7 @@ describe("Home editorial redesign", () => {
 describe("Home night half", () => {
   it("sets the hero on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-nav=dark]")).toHaveClass("bg-ink");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-nav=dark]")).toHaveClass("bg-ribbon");
   });
 
 
@@ -310,7 +310,7 @@ describe("Hero carousel", () => {
 });
 
 describe("Day to night turn", () => {
-  const night = () => screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink") as HTMLElement;
+  const night = () => screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ribbon") as HTMLElement;
 
   it("shows the After Dark night photograph", () => {
     render(<Home />);
@@ -357,9 +357,9 @@ describe("Closing section", () => {
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("blue-romper-banner");
   });
 
-  it("offers a pink Shop the collection pill in the closing section", () => {
+  it("offers an outlined Shop the collection pill in the closing section", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta-primary");
+    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).not.toHaveClass("cta-primary");
   });
 
   it("sends the closing pill to the shop", () => {
@@ -432,7 +432,7 @@ describe("Strict pass", () => {
 
   it("cuts to ink without a scroll fade", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink")).not.toHaveClass("nightfall");
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ribbon")).not.toHaveClass("nightfall");
   });
 
   it("drops the line above the closing line", () => {
@@ -447,22 +447,36 @@ describe("Strict pass", () => {
 });
 
 describe("Colour rhythm", () => {
-  it("sets the accent words in rose", () => {
+  it("sets the dark section accent in pink", () => {
+    render(<Home />);
+    expect(screen.getByText("receives")).toHaveClass("text-pink");
+  });
+
+  it("sets the light section accent in rose", () => {
+    render(<Home />);
+    expect(screen.getByText("brunch.")).toHaveClass("text-rose");
+  });
+
+  it("sets the gift section on Black Ribbon", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("bg-ribbon");
+  });
+
+  it("fills only the hero pill on Home", () => {
     const { container } = render(<Home />);
-    const accents = [...container.querySelectorAll("main em")].filter((e) => ["receives", "brunch."].includes(e.textContent ?? ""));
-    expect(accents.map((e) => e.classList.contains("text-rose"))).toEqual([true, true]);
+    expect(container.querySelectorAll("main .cta-primary")).toHaveLength(1);
   });
 });
 
 describe("Hero split", () => {
   it("sets the hero text on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("bg-ink");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("bg-ribbon");
   });
 
   it("sets the header on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("banner")).toHaveClass("bg-ink");
+    expect(screen.getByRole("banner")).toHaveClass("bg-ribbon");
   });
 
   it("keeps the header white off Home", () => {
@@ -629,9 +643,9 @@ describe("Nav position", () => {
     expect(screen.getByRole("banner").firstElementChild).toHaveTextContent("Free shipping on 2 or more. Any 2 for $85.");
   });
 
-  it("sets the offer bar on pink", () => {
+  it("sets the offer bar on Dusty Rose", () => {
     render(<SiteHeader />);
-    expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.")[0]).toHaveClass("bg-pink", "text-ink");
+    expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.")[0]).toHaveClass("bg-dusty", "text-ribbon", "tracking-[0.12em]");
   });
 
   it("tints the footer monogram pink", () => {

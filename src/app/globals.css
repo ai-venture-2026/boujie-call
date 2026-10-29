@@ -4,6 +4,7 @@
   --color-cream: #fff8fb;
   --color-white: #fff8fb;
   --color-pink: #f2a7c3;
+  --color-dusty: #e6b8c8;
   --color-ink: #141014;
   --color-blush: #fde8f0;
   --color-ribbon: #1a1018;
@@ -11,7 +12,7 @@
   --color-card-border: #f0c0d0;
   --color-rose: #b4486f;
   --color-rose-deep: #8b3156;
-  --color-stone: #fbe1eb;
+  --color-stone: #f9eef2;
   --color-muted: #6b5763;
   --color-muted-dark: #b9a9b1;
 
@@ -134,9 +135,9 @@
     justify-content: center;
     min-height: 48px;
     padding: 0 2.25rem;
-    border: 0.5px solid var(--color-ink);
+    border: 0.5px solid var(--color-ribbon);
     border-radius: 9999px;
-    outline-color: var(--color-ink);
+    outline-color: var(--color-ribbon);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.22em;
@@ -166,11 +167,11 @@
   }
 
   .cta-primary {
-    --cta-fill: var(--color-ink);
+    --cta-fill: var(--color-ribbon);
     --cta-on: var(--color-cream);
-    border-color: var(--color-pink);
-    background: var(--color-pink);
-    color: var(--color-ink);
+    border-color: var(--color-dusty);
+    background: var(--color-dusty);
+    color: var(--color-ribbon);
   }
 
   [data-nav="dark"] .cta:not(.cta-primary, dialog *, #mini-bag *) {
@@ -182,6 +183,22 @@
     --cta-fill: var(--color-cream);
     --cta-on: var(--color-ink);
     outline-color: var(--color-cream);
+  }
+
+  .contact {
+    isolation: isolate;
+  }
+
+  .contact::after {
+    content: "";
+    position: absolute;
+    inset: auto 22% 3%;
+    z-index: -1;
+    height: 5%;
+    border-radius: 50%;
+    background: var(--color-ribbon);
+    opacity: 0.08;
+    filter: blur(10px);
   }
 
   .vertical {
