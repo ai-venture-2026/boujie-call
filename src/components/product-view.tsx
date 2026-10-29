@@ -64,7 +64,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
   }
 
   return (
-    <div className="grid gap-10 md:grid-cols-[min(calc((100svh-14rem)*0.75),45%)_1fr] lg:grid-cols-[min(calc((100svh-14rem)*0.75),calc(50%-2rem))_1fr] lg:gap-16">
+    <div className="grid gap-10 md:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),45%)_1fr] lg:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),calc(50%-2rem))_1fr] lg:gap-16">
       <div>
         {/* Phones swipe the track; from md only the active slide shows and the thumbnails pick it. */}
         <div
@@ -78,7 +78,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           {views.map((v, i) => (
             <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images[i] ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
               {shown.images[i] ? (
-                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 50vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
+                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
               ) : (
                 <ToCome label={`${product.name} in ${shown.name}, ${v}`} />
               )}
@@ -137,7 +137,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           <SizeGuide sizes={product.sizes} />
           <div className="clear-both mt-3 flex flex-wrap gap-2 pt-px">
             {product.sizes.map((s) => (
-              <label key={s} className="grid h-11 min-w-14 cursor-pointer md:h-10 md:min-w-12 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer md:min-w-12 md:pointer-fine:h-10 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
                 <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>

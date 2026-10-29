@@ -42,7 +42,7 @@ describe("Product page on laptops", () => {
 
   it("caps the image column so the photo fits the viewport", async () => {
     const { container } = await renderProduct("the-slip-dress");
-    expect(container.querySelector("main .grid")).toHaveClass("lg:grid-cols-[min(calc((100svh-14rem)*0.75),calc(50%-2rem))_1fr]");
+    expect(container.querySelector("main .grid")).toHaveClass("lg:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),calc(50%-2rem))_1fr]");
   });
 
   it("keeps the main photo at 3:4", async () => {
@@ -58,7 +58,7 @@ describe("Product page on laptops", () => {
 
   it("narrows the image column below lg", async () => {
     const { container } = await renderProduct("the-slip-dress");
-    expect(container.querySelector("main .grid")).toHaveClass("md:grid-cols-[min(calc((100svh-14rem)*0.75),45%)_1fr]");
+    expect(container.querySelector("main .grid")).toHaveClass("md:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),45%)_1fr]");
   });
 
   it("tightens the gap above the button on short laptop screens", async () => {
@@ -66,9 +66,9 @@ describe("Product page on laptops", () => {
     expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("short:mt-5");
   });
 
-  it("sets size pills 40px tall from md", async () => {
+  it("sets size pills 40px tall for mouse users from md", async () => {
     await renderProduct("the-slip-dress");
-    expect(screen.getByRole("radio", { name: "M" }).parentElement).toHaveClass("md:h-10", "md:min-w-12");
+    expect(screen.getByRole("radio", { name: "M" }).parentElement).toHaveClass("md:pointer-fine:h-10", "md:min-w-12");
   });
 });
 
