@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Sharper photos on phones: image size hints match how large the cropped photos are drawn, and six photos are re-exported at full resolution. Hero photos were stretched 3x on a 3x phone; now about 1.4x, banners and section photos 1x or less.
 - Link preview: the gift box photo with the Boujie Call logo, 1200x630, with alt text.
 - Phones, round 2: full-screen heroes with the words on the photo on Send a Call and About, steps two per row, tighter spacing; a full-screen cream menu with page rows, a collection photo, the offer and a solid Shop button; a back arrow on Back to the shop.
 - Phones, round 1: full-screen Home hero with the words on the photo, two-column gift strip, day and night pair and pieces, the Romper no longer shown twice, Shop filters that wrap, and product galleries without empty colour squares. Home is 30% shorter on a phone; desktop unchanged.
