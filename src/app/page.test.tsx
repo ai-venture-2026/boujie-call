@@ -772,7 +772,7 @@ describe("Home on phones", () => {
 
   it("sets the hero words over the photo", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute", "max-md:from-ribbon/90");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute", "max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)]");
   });
 
   it("left-aligns View all pieces under the subtitle on phones", () => {

@@ -73,9 +73,14 @@ describe("About", () => {
     expect(within(story).getByRole("img").getAttribute("src")).toContain("story-after-dark");
   });
 
+  it("sets the About eyebrow in full Blush Silk on phones", () => {
+    render(<About />);
+    expect(screen.getByText("About", { selector: "p" })).toHaveClass("max-md:text-blush");
+  });
+
   it("sets the hero words over the photo on phones", () => {
     render(<About />);
-    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute", "max-md:from-ribbon/90");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute", "max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)]");
   });
 
   it("marks the hero for the adaptive nav", () => {
