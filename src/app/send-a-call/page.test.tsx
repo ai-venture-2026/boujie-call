@@ -67,9 +67,9 @@ describe("Send a Call on phones", () => {
     expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute");
   });
 
-  it("lays the four steps in two columns", () => {
+  it("lays the four steps in one column on phones", () => {
     render(<SendACall />);
-    expect(screen.getByRole("list", { name: "How a Call works" })).toHaveClass("grid-cols-2");
+    expect(screen.getByRole("list", { name: "How a Call works" })).toHaveClass("grid-cols-1");
   });
 });
 

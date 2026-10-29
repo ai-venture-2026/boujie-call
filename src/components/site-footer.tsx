@@ -25,7 +25,7 @@ function Column({ title, name = title, links }: { title: string; name?: string; 
 export function SiteFooter() {
   return (
     <footer className="bg-white">
-      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 pt-12 pb-8 md:flex-row-reverse md:items-end md:justify-between md:px-12 md:pt-14 md:pb-10">
+      <div className="mx-auto flex max-w-7xl flex-col-reverse gap-16 px-6 pt-12 pb-8 md:flex-row-reverse md:items-end md:justify-between md:px-12 md:pt-14 md:pb-10">
         <div className="flex flex-col gap-10">
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:gap-14">
             <Column title="Shop" links={shop} />
@@ -48,7 +48,7 @@ export function SiteFooter() {
         <div className="flex flex-col items-start gap-5">
           <Image src="/boujie-call-monogram-ink.png" alt="Boujie Call" width={439} height={430} className="h-24 w-auto md:h-36" />
           <p className="font-serif text-xl italic">Luxury nightwear gifts.</p>
-          <ul className="flex flex-col gap-1 text-sm text-muted">
+          <ul className="flex flex-col gap-1 text-sm text-muted max-md:hidden">
             {socials.map((s) => (
               <li key={s.label}>
                 <a href={s.url} className="hover:text-rose">

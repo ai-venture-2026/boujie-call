@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Phones: Home's brunch and night halves stack (brunch on cream, night on ink with the Shop button at its foot); the how-it-works heading drops to sentence case at 2rem; Send a Call steps sit in one column; the footer opens with the BC monogram and ends with the copyright.
+- Shop header (all widths): only the tagline and the offer line remain; the gift link moves below the grid as "Sending it as a gift? Place a Call".
 - Product page gallery: main photo with three thumbnails (front, back, detail) on desktop and a swipeable carousel with dots on phones. Views without a photo read Image to come. Choosing a colorway returns to its front photo.
 - Size guide link beside the size choice opens a chart with S to XL rows and bust, waist, hip columns, marked as a placeholder until the owner sends measurements.
 - Shop and waitlist no longer mixed: Home closes with a pink Shop the collection pill instead of the email form; Send a Call and About frame the waitlist as "Be first when Send a Call opens."

@@ -74,7 +74,7 @@ export default function Home() {
         </section>
 
         <section id="how" className="overflow-hidden bg-cream py-20 md:py-40">
-          <h2 className={`${wrap} text-center text-[clamp(2.25rem,5vw,4.75rem)] leading-[1.05] uppercase rise`}>
+          <h2 className={`${wrap} text-center text-[2rem] leading-[1.05] md:text-[clamp(2.25rem,5vw,4.75rem)] md:uppercase rise`}>
             Someone places a call.
             <br />
             She <em className="text-rose normal-case">receives</em> a moment.
@@ -96,26 +96,26 @@ export default function Home() {
           </ol>
         </section>
 
-        <section aria-label="From brunch to after dark" className="relative grid grid-cols-2 md:h-[calc(100svh-5rem)] md:min-h-[600px]">
-          <div className="flex flex-col items-center bg-white px-3 pt-10 pb-28 text-center md:justify-center md:px-6 md:pt-0 md:pb-24">
+        <section aria-label="From brunch to after dark" className="relative grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-2">
+          <div className="flex flex-col items-center bg-cream px-6 pt-12 pb-12 text-center md:justify-center md:bg-white md:px-6 md:pt-0 md:pb-24">
             <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
               <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
             </div>
-            <h2 className="mt-5 text-[clamp(1.25rem,2.8vw,2.75rem)] leading-[1.04] rise">
+            <h2 className="mt-5 text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
               Cute enough to open at <em className="text-rose">brunch.</em>
             </h2>
-            <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center text-[9px] md:mt-3 md:text-xs text-muted hover:text-ink">
+            <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-muted hover:text-ink">
               The Slip Dress · Rose
             </Link>
           </div>
-          <div data-nav="dark" className="flex flex-col items-center bg-ink px-3 pt-10 pb-28 text-center text-cream md:justify-center md:px-6 md:pt-0 md:pb-24">
+          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 pt-12 pb-28 text-center text-cream md:justify-center md:px-6 md:pt-0 md:pb-24">
             <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
               <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
             </div>
-            <h2 className="mt-5 text-[clamp(1.25rem,2.8vw,2.75rem)] leading-[1.04] rise">
+            <h2 className="mt-5 text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
               Irresistible enough to wear <em className="text-pink">that night.</em>
             </h2>
-            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[9px] md:mt-3 md:text-xs text-cream/80 hover:text-cream">
+            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-cream/80 hover:text-cream">
               The Slip Dress · After Dark
             </Link>
             <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap md:bottom-14 cta-primary">

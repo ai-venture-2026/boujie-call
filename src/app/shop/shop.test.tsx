@@ -148,6 +148,22 @@ describe("Shop collection", () => {
   const cards = () => within(screen.getByRole("list", { name: "Collection" })).queryAllByRole("listitem");
   const press = (name: string) => fireEvent.click(screen.getAllByRole("button", { name })[0]);
 
+  it("drops the every piece line from the header", () => {
+    render(<Shop />);
+    expect(screen.queryByText(/Every piece is a moment/)).toBeNull();
+  });
+
+  it("keeps the gift link out of the header", () => {
+    render(<Shop />);
+    const header = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(header).queryByRole("link", { name: /Place a Call/ })).toBeNull();
+  });
+
+  it("offers the gift link below the grid", () => {
+    render(<Shop />);
+    expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveAttribute("href", "/send-a-call");
+  });
+
   it("titles the page The collection", () => {
     render(<Shop />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("The collection");

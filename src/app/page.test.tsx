@@ -102,6 +102,16 @@ describe("SiteFooter", () => {
     expect(screen.getByText("Luxury nightwear gifts.")).toHaveClass("font-serif", "italic");
   });
 
+  it("puts the monogram first on phones", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("img", { name: "Boujie Call" }).parentElement?.parentElement).toHaveClass("flex-col-reverse");
+  });
+
+  it("hides the handles under the monogram on phones", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "TikTok @boujiecall" }).closest("ul")).toHaveClass("max-md:hidden");
+  });
+
   it("shows the social handles under the monogram", () => {
     render(<SiteFooter />);
     expect(screen.getByRole("link", { name: "TikTok @boujiecall" })).toHaveAttribute("href", "https://www.tiktok.com/@boujiecall");
@@ -517,6 +527,31 @@ describe("Home rebuild round 1", () => {
 
 describe("Home rebuild round 2", () => {
   const pair = () => screen.getByRole("region", { name: "From brunch to after dark" });
+
+  it("stacks the day pair on phones", () => {
+    render(<Home />);
+    expect(pair().className.split(" ")).not.toContain("grid-cols-2");
+  });
+
+  it("keeps the pair side by side on desktop", () => {
+    render(<Home />);
+    expect(pair()).toHaveClass("md:grid-cols-2");
+  });
+
+  it("sets the brunch half on cream on phones", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." }).parentElement).toHaveClass("bg-cream", "md:bg-white");
+  });
+
+  it("keeps the moment heading in sentence case on phones", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ }).className.split(" ")).not.toContain("uppercase");
+  });
+
+  it("sets the moment heading in capitals on desktop", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ })).toHaveClass("md:uppercase");
+  });
 
   it("pairs a day photo with the evening photo", () => {
     render(<Home />);

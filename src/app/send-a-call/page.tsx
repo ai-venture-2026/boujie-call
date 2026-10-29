@@ -39,7 +39,7 @@ export default function SendACall() {
             <h2 className="max-w-2xl text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04] rise">
               Four steps. One <em className="text-rose">unforgettable</em> moment.
             </h2>
-            <ol aria-label="How a Call works" className="mt-10 grid grid-cols-2 gap-x-4 border-t-[0.5px] border-rose/25 md:mt-16 md:grid-cols-4 md:gap-x-0 md:divide-x-[0.5px] md:divide-rose/25">
+            <ol aria-label="How a Call works" className="mt-10 grid grid-cols-1 gap-x-4 border-t-[0.5px] border-rose/25 md:mt-16 md:grid-cols-4 md:gap-x-0 md:divide-x-[0.5px] md:divide-rose/25">
               {callSteps.map((step, i) => (
                 <li key={step.title} className="border-b-[0.5px] border-rose/25 py-6 rise md:border-b-0 md:px-8 md:py-10 md:first:pl-0 md:last:pr-0">
                   <span className="label text-rose">{String(i + 1).padStart(2, "0")}</span>

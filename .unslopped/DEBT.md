@@ -12,3 +12,4 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [soon] Product gallery view and scroll drift apart when the window crosses md; sync on a matchMedia change (src/components/product-view.tsx) :: logged 2026-10-29, cycle 20261029-a10368
 - [soon] Size guide dialog renders inside the Size fieldset; move it outside so its table is not announced with the radio group (src/components/size-guide.tsx) :: logged 2026-10-29, cycle 20261029-a10368
 - [cleanup] Size guide closes when a text selection drag ends on the backdrop; close only when pointerdown and click both hit the dialog (src/components/size-guide.tsx) :: logged 2026-10-29, cycle 20261029-a10368
+- [soon] next dev re-adds a Next.js agent block with em dashes to AGENTS.md on every start; decide whether to commit it or turn it off (AGENTS.md) :: logged 2026-10-29, cycle 20261029-abd860
