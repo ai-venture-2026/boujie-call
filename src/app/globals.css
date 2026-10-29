@@ -81,7 +81,8 @@
 
 @keyframes drawer-in {
   from {
-    transform: translateX(100%);
+    opacity: 0;
+    transform: translateY(-12px);
   }
 }
 

@@ -13,11 +13,11 @@ const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 const romper = getProduct("the-romper");
 
 const strip = [
-  { src: "/images/strip/ribbon.webp", box: "mt-28 aspect-[4/3] w-[44vw] md:w-[20vw]" },
-  { src: "/images/strip/open-box.webp", box: "aspect-[3/4] w-[36vw] md:w-[18vw]" },
-  { src: "/images/strip/card.webp", box: "mt-16 aspect-square w-[30vw] md:w-[15vw]" },
-  { src: "/images/strip/unboxing.webp", box: "mt-6 aspect-[4/5] w-[48vw] md:w-[24vw]" },
-  { src: "/images/strip/mist.webp", box: "mt-32 aspect-[4/3] w-[44vw] md:w-[20vw]" },
+  { src: "/images/strip/ribbon.webp", box: "md:mt-28 md:aspect-[4/3] md:w-[20vw]" },
+  { src: "/images/strip/open-box.webp", box: "md:aspect-[3/4] md:w-[18vw]" },
+  { src: "/images/strip/card.webp", box: "md:mt-16 md:aspect-square md:w-[15vw]" },
+  { src: "/images/strip/unboxing.webp", box: "md:mt-6 md:aspect-[4/5] md:w-[24vw]" },
+  { src: "/images/strip/mist.webp", box: "max-md:col-span-2 max-md:aspect-[3/2] md:mt-32 md:aspect-[4/3] md:w-[20vw]" },
 ];
 
 function PieceCard({ product }: { product: Product }) {
@@ -31,8 +31,8 @@ function PieceCard({ product }: { product: Product }) {
           <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
         )}
       </div>
-      <h3 className="mt-5 text-2xl">{product.name}</h3>
-      <div className="mt-1 flex items-baseline justify-between gap-4">
+      <h3 className="mt-3 text-lg md:mt-5 md:text-2xl">{product.name}</h3>
+      <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
         <Price product={product} />
         <span className="label text-[10px] text-muted">{product.colorways.length} colorways</span>
       </div>
@@ -47,7 +47,7 @@ export default function Home() {
       <main>
         <HeroCarousel>
           <p className="label">LUXURY NIGHTWEAR GIFTS</p>
-          <h1 id="hero-title" className="mt-6 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02]">
+          <h1 id="hero-title" className="mt-4 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02] max-md:text-[2.4rem] md:mt-6">
             The gift that makes her <em>feel</em> like the <em>moment.</em>
           </h1>
           <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
@@ -57,11 +57,11 @@ export default function Home() {
         </HeroCarousel>
 
         <section id="detail" className="grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-2">
-          <div className="flex flex-col items-center justify-center bg-stone px-6 py-20 md:px-12 md:py-12">
-            <div className="relative aspect-[3/4] w-full max-w-sm md:aspect-auto md:min-h-0 md:flex-1">
+          <div className="flex flex-col items-center justify-center bg-stone px-6 py-12 max-md:order-2 md:px-12">
+            <div className="relative hidden aspect-[3/4] w-full max-w-sm md:block md:aspect-auto md:min-h-0 md:flex-1">
               <Image src="/images/products/the-romper-mocha.webp" alt="The Romper in Mocha" fill sizes="(min-width: 768px) 30vw, 80vw" className="object-contain mix-blend-multiply" />
             </div>
-            <div className="mt-8 w-full max-w-sm rise">
+            <div className="w-full max-w-sm rise md:mt-8">
               <p className="label">The Romper · Mocha</p>
               <p className="mt-4 text-base leading-relaxed text-muted">{romper?.description}</p>
               <Link href="/shop/the-romper" className="cta mt-8">
@@ -69,25 +69,25 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="relative min-h-[70svh] md:min-h-0">
+          <div className="relative aspect-[4/5] max-md:order-1 md:aspect-auto">
             <Image src="/images/details/brown-romper-hip.webp" alt="A close-up of the brown lace hem of The Romper in Mocha at the hip" fill sizes="(min-width: 768px) 50vw, 100vw" style={{ objectPosition: "42% 40%" }} className="object-cover" />
           </div>
         </section>
 
-        <section id="how" className="overflow-hidden bg-cream py-28 md:py-40">
+        <section id="how" className="overflow-hidden bg-cream py-20 md:py-40">
           <h2 className={`${wrap} text-center text-[clamp(2.25rem,5vw,4.75rem)] leading-[1.05] uppercase rise`}>
             Someone places a call.
             <br />
             She <em className="text-rose normal-case">receives</em> a moment.
           </h2>
-          <div data-strip className="mt-20 flex items-start justify-center gap-4 md:gap-6">
+          <div data-strip className="mt-14 grid grid-cols-2 gap-3 px-6 md:mt-20 md:flex md:items-start md:justify-center md:gap-6 md:px-0">
             {strip.map((s) => (
-              <div key={s.src} className={`relative shrink-0 overflow-hidden ${s.box}`}>
+              <div key={s.src} className={`relative aspect-[4/5] shrink-0 overflow-hidden ${s.box}`}>
                 <Image src={s.src} alt="" fill sizes="(min-width: 768px) 24vw, 48vw" className="object-cover" />
               </div>
             ))}
           </div>
-          <ol aria-label="How it works" className={`${wrap} mt-24 grid gap-12 text-center md:grid-cols-3 md:gap-16`}>
+          <ol aria-label="How it works" className={`${wrap} mt-16 grid gap-10 md:mt-24 text-center md:grid-cols-3 md:gap-16`}>
             {steps.map((step) => (
               <li key={step.title} className="rise">
                 <h3 className="text-2xl">{step.title}</h3>
@@ -97,35 +97,35 @@ export default function Home() {
           </ol>
         </section>
 
-        <section aria-label="From brunch to after dark" className="relative grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-2">
-          <div className="flex flex-col items-center bg-white px-6 pt-16 pb-14 text-center md:justify-center md:pt-0 md:pb-24">
+        <section aria-label="From brunch to after dark" className="relative grid grid-cols-2 md:h-[calc(100svh-5rem)] md:min-h-[600px]">
+          <div className="flex flex-col items-center bg-white px-3 pt-10 pb-28 text-center md:justify-center md:px-6 md:pt-0 md:pb-24">
             <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
               <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
             </div>
-            <h2 className="mt-8 text-[clamp(2rem,2.8vw,2.75rem)] leading-[1.04] rise">
+            <h2 className="mt-5 text-[clamp(1.25rem,2.8vw,2.75rem)] leading-[1.04] rise">
               Cute enough to open at <em className="text-rose">brunch.</em>
             </h2>
-            <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-3 flex min-h-11 items-center text-xs text-muted hover:text-ink">
+            <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center text-[9px] md:mt-3 md:text-xs text-muted hover:text-ink">
               The Slip Dress · Rose
             </Link>
           </div>
-          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 pt-16 pb-32 text-center text-cream md:justify-center md:pt-0 md:pb-24">
+          <div data-nav="dark" className="flex flex-col items-center bg-ink px-3 pt-10 pb-28 text-center text-cream md:justify-center md:px-6 md:pt-0 md:pb-24">
             <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
               <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
             </div>
-            <h2 className="mt-8 text-[clamp(2rem,2.8vw,2.75rem)] leading-[1.04] rise">
+            <h2 className="mt-5 text-[clamp(1.25rem,2.8vw,2.75rem)] leading-[1.04] rise">
               Irresistible enough to wear <em className="text-pink">that night.</em>
             </h2>
-            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-3 flex min-h-11 items-center text-xs text-cream/80 hover:text-cream">
+            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[9px] md:mt-3 md:text-xs text-cream/80 hover:text-cream">
               The Slip Dress · After Dark
             </Link>
-            <Link href="/shop" className="cta absolute bottom-12 left-1/2 -translate-x-1/2 border-pink bg-pink text-ink [--cta-fill:var(--color-cream)] md:bottom-14">
+            <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap md:bottom-12 border-pink bg-pink text-ink [--cta-fill:var(--color-cream)] md:bottom-14">
               Shop the collection
             </Link>
           </div>
         </section>
 
-        <section aria-labelledby="pieces-title" className="bg-cream py-20 md:py-24">
+        <section aria-labelledby="pieces-title" className="bg-cream py-16 md:py-24">
           <div className={wrap}>
             <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
               <div className="rise">
@@ -138,7 +138,7 @@ export default function Home() {
                 View all pieces
               </Link>
             </div>
-            <ul aria-label="Pieces" className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-3">
+            <ul aria-label="Pieces" className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-6 md:mt-12 md:gap-y-12">
               {["the-slip-dress", "the-romper", "the-boujie-set"].map((slug) => {
                 const product = getProduct(slug);
                 return product && (

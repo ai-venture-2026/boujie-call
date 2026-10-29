@@ -20,7 +20,7 @@ describe("Shop", () => {
 
   it("shows the offer line", () => {
     render(<Shop />);
-    expect(screen.getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
+    expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 
   it("avoids the words the owner ruled out", () => {
@@ -100,7 +100,7 @@ describe("Add to your bag", () => {
 describe("Product page offer", () => {
   it("shows the offer line", async () => {
     await renderProduct("the-romper");
-    expect(screen.getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
+    expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 });
 
@@ -178,5 +178,32 @@ describe("Product page shapes", () => {
     await renderProduct("the-slip-dress");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("bg-stone");
+  });
+});
+
+describe("Product gallery thumbnails", () => {
+  it("hides the thumbnail row when a colorway has one photo", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.queryByRole("button", { name: /^Show / })).toBeNull();
+  });
+});
+
+describe("Shop on phones", () => {
+  it("hides the featured model cards below the small breakpoint", () => {
+    const { container } = render(<Shop />);
+    expect(container.querySelector("[data-featured]")).toHaveClass("hidden");
+  });
+
+  it("wraps the piece filters instead of scrolling them", () => {
+    render(<Shop />);
+    expect(screen.getByRole("navigation", { name: "Pieces" })).toHaveClass("flex-wrap");
+  });
+});
+
+describe("Back to the shop", () => {
+  it("shows a back arrow beside the link", async () => {
+    await renderProduct("the-romper");
+    expect(screen.getByRole("link", { name: "Back to the shop" }).querySelector("svg")).not.toBeNull();
   });
 });

@@ -33,7 +33,7 @@ export function ShopGrid() {
 
   return (
     <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-[12rem_1fr] md:gap-16 md:px-12 md:py-24">
-      <nav aria-label="Pieces" className="flex gap-6 overflow-x-auto md:flex-col md:gap-1">
+      <nav aria-label="Pieces" className="flex flex-wrap gap-x-6 md:flex-col md:flex-nowrap md:gap-1">
         <Toggle on={!piece} onClick={() => setPiece(null)}>
           All pieces
         </Toggle>
@@ -46,7 +46,7 @@ export function ShopGrid() {
 
       <div>
         <div className="flex flex-wrap items-center justify-between gap-4 border-b-[0.5px] border-ink/10 pb-4">
-          <p className="label">{piece ? products.find((p) => p.slug === piece)?.name : "All pieces"}</p>
+          <p className="label hidden md:block">{piece ? products.find((p) => p.slug === piece)?.name : "All pieces"}</p>
           <div role="group" aria-label="Colour" className="flex flex-wrap items-center gap-x-5">
             <Toggle on={!colour} onClick={() => setColour(null)}>
               All colours
@@ -60,7 +60,7 @@ export function ShopGrid() {
         </div>
 
         {!piece && !colour && (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+          <div data-featured className="mt-10 hidden gap-6 sm:grid sm:grid-cols-2">
             {featured.map((f) => (
               <Link key={f.src} href={`/shop/${f.slug}?colorway=${colorwaySlug(f.colorway)}`} className="group relative block aspect-[4/5] overflow-hidden">
                 <Image src={f.src} alt={`${f.name} in ${f.colorway}`} fill sizes="(min-width: 768px) 35vw, 100vw" style={{ objectPosition: f.focus }} className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
