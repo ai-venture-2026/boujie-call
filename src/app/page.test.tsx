@@ -35,9 +35,14 @@ describe("Home", () => {
     expect(screen.getByRole("link", { name: "Discover the piece" })).not.toHaveClass("cta-primary");
   });
 
-  it("keeps View all pieces outlined", () => {
+  it("sets View all pieces as a text link", () => {
     render(<Home />);
-    expect(screen.getByRole("link", { name: "View all pieces" })).not.toHaveClass("cta-primary");
+    expect(screen.getByRole("link", { name: "View all pieces" })).toHaveClass("link", "label", "text-ink", "min-h-11");
+  });
+
+  it("drops the pill from View all pieces", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "View all pieces" })).not.toHaveClass("cta");
   });
 });
 
@@ -619,9 +624,9 @@ describe("Home rebuild round 2", () => {
     expect(within(pair()).getAllByRole("img")).toHaveLength(2);
   });
 
-  it("puts one shop button below the pair", () => {
+  it("leaves no shop button under the pair", () => {
     render(<Home />);
-    expect(within(pair()).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
+    expect(within(pair()).queryByRole("link", { name: "Shop the collection" })).toBeNull();
   });
 
   it("links each piece in the pieces grid", () => {
@@ -675,10 +680,9 @@ describe("Home on phones", () => {
     expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).not.toHaveClass("max-md:absolute");
   });
 
-  it("spans the shop button row across both panels", () => {
+  it("left-aligns View all pieces under the subtitle on phones", () => {
     render(<Home />);
-    const pair = screen.getByRole("region", { name: "From brunch to after dark" });
-    expect(within(pair).getByRole("link", { name: "Shop the collection" }).parentElement).toHaveClass("md:col-span-2", "text-center");
+    expect(screen.getByRole("link", { name: "View all pieces" })).toHaveClass("self-start", "md:self-auto");
   });
 
   it("centers View all pieces on the heading row", () => {

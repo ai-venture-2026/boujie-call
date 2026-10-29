@@ -123,24 +123,21 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="mt-9 text-center md:col-span-2 md:mt-12">
-            <Link href="/shop" className="cta">
-              Shop the collection
-            </Link>
-          </div>
         </section>
 
         <section aria-labelledby="pieces-title" className="bg-cream pb-18 md:pb-30">
           <div className={wrap}>
-            <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8">
               <div className="rise">
                 <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
                   The <em className="text-rose">pieces</em>
                 </h2>
                 <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">Satin and lace, made to be gifted. Sizes S to XL.</p>
               </div>
-              <Link href="/shop" className="cta self-start md:self-auto">
-                View all pieces
+              <Link href="/shop" className="link label inline-flex min-h-11 items-center self-start text-ink md:self-auto">
+                <span>
+                  View all pieces <span aria-hidden="true">→</span>
+                </span>
               </Link>
             </div>
             <ul aria-label="Pieces" className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-6 md:mt-12 md:gap-y-12">

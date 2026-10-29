@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Dark pink version, Home: the Shop button under the brunch and night pair is gone, so the pair flows into The pieces at the standard spacing; View all pieces is a quiet underlined text link with an arrow; no two Home calls to action with the same destination sit within one screen.
 - Dark pink version, Home layout: the brunch and night pair is a contained diptych of equal panels (4:3 photos, text below) with Shop the collection centered beneath it; View all pieces sits on the heading row; piece cards get #f0c0d0 frames; padded Home sections sit 120px apart on desktop and 72px on phones.
 - Dark pink version, softer pass: a neutral soft black #1c1b1b for large dark areas and text (no purple undertone), Dusty Rose #ecb8c2, the header logo tinted Boujie Pink, Dusty Rose for the offer bar and the one filled pill per view, outlined header Shop button, dark gift section on Home, paler product frames with a soft contact shadow, about 20 percent more space between sections, #f0c0d0 hairlines.
 - Dark pink version (darkpink-version preview only): After Dark header with the pink logo and a Boujie Pink offer bar above it; dark heroes on Home, Shop, Send a Call and About, with phone hero words below the photo; Cream Lace light sections and soft pink image frames; dark footer with a pink monogram; secondary buttons outlined After Dark on light and Blush Silk on dark.
