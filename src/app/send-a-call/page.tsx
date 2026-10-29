@@ -18,14 +18,14 @@ export default function SendACall() {
     <>
       <SiteHeader />
       <main>
-        <section className="relative flex flex-col md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
-          <div className="relative h-[calc(100svh-4.75rem)] min-h-[560px] md:order-2 md:h-auto md:min-h-0">
+        <section data-nav="dark" className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
+          <div className="relative h-[60svh] min-h-[420px] md:order-2 md:h-auto md:min-h-0">
             <Image src="/images/send-a-call/hero-rose-slip.webp" alt="A woman in a pale pink slip with lace trim leans on a taupe wall, arms raised" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "70% 25%" }} className="object-cover" />
           </div>
-          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 md:bg-white max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-10 max-md:bg-linear-to-t max-md:from-ink/90 max-md:via-ink/60 max-md:to-transparent max-md:pt-40 max-md:pb-10 max-md:text-cream md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
             <p className="label">Send a Call</p>
             <h1 className="mt-6 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02]">
-              Place your Boujie <em className="text-rose max-md:text-pink">Call.</em>
+              Place your Boujie <em className="text-pink">Call.</em>
             </h1>
             <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">The gift experience that lets you say everything without saying a word.</p>
             <a href="#waitlist" className="cta cta-primary mt-8 md:mt-10">
@@ -56,7 +56,7 @@ export default function SendACall() {
           <div className="relative hidden md:block md:min-h-[60svh]">
             <Image src="/images/details/brown-romper-lace.webp" alt="A close-up of the brown lace neckline of The Romper in Mocha" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
           </div>
-          <div className="bg-stone px-6 py-14 md:px-16 md:py-28">
+          <div className="bg-blush px-6 py-14 md:px-16 md:py-28">
             <h2 className="text-[clamp(2.25rem,3.8vw,3.75rem)] leading-[1.04] rise">
               Inside every Boujie <em className="text-rose">Call</em>
             </h2>

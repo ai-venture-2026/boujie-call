@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #faf8f5;
+  --color-cream: #fff8fb;
+  --color-white: #fff8fb;
   --color-pink: #f2a7c3;
   --color-ink: #141014;
   --color-blush: #fde8f0;
@@ -10,7 +11,7 @@
   --color-card-border: #f0c0d0;
   --color-rose: #b4486f;
   --color-rose-deep: #8b3156;
-  --color-stone: #ece8e3;
+  --color-stone: #fbe1eb;
   --color-muted: #6b5763;
   --color-muted-dark: #b9a9b1;
 
@@ -38,7 +39,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid currentColor;
     outline-offset: 3px;
   }
 
@@ -133,7 +134,7 @@
     justify-content: center;
     min-height: 48px;
     padding: 0 2.25rem;
-    border: 0.5px solid var(--color-card-border);
+    border: 0.5px solid var(--color-ink);
     border-radius: 9999px;
     font-size: 11px;
     font-weight: 500;
@@ -171,7 +172,11 @@
     color: var(--color-ink);
   }
 
-  [data-nav="dark"] .cta-primary {
+  [data-nav="dark"] .cta:not(.cta-primary) {
+    border-color: var(--color-blush);
+  }
+
+  [data-nav="dark"] .cta-primary:not(dialog *) {
     --cta-fill: var(--color-cream);
     --cta-on: var(--color-ink);
     outline-color: var(--color-cream);

@@ -23,11 +23,11 @@ export default function About() {
     <>
       <SiteHeader />
       <main>
-        <section data-nav="dark" className="relative flex flex-col bg-ink text-cream md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
-          <div className="relative h-[calc(100svh-4.75rem)] min-h-[560px] md:order-2 md:h-auto md:min-h-0">
+        <section data-nav="dark" className="relative flex flex-col bg-ink text-blush md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
+          <div className="relative h-[60svh] min-h-[420px] md:order-2 md:h-auto md:min-h-0">
             <Image src="/images/about/hero-blue-romper.webp" alt="A woman in The Romper in Powder Blue relaxes in a floral armchair with a book" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "66% 35%" }} className="object-cover" />
           </div>
-          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-10 max-md:bg-linear-to-t max-md:from-ink/90 max-md:via-ink/60 max-md:to-transparent max-md:pt-40 max-md:pb-10 max-md:text-cream md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
             <p className="label text-muted-dark">About</p>
             <h1 className="mt-6 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02]">
               Every girl deserves a Boujie <em className="text-pink">Call.</em>
@@ -66,7 +66,7 @@ export default function About() {
           </ul>
         </section>
 
-        <section data-nav="dark" className="bg-ink py-16 text-cream md:py-40">
+        <section data-nav="dark" className="bg-ink py-16 text-blush md:py-40">
           <figure className={`${wrap} max-w-4xl text-center`}>
             <blockquote className="font-serif text-[clamp(1.75rem,3.2vw,3rem)] leading-[1.2] font-light italic rise">
               &ldquo;I wanted to send something that felt truly special, not just flowers, not just a gift card. Something she would actually remember.&rdquo;

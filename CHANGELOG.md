@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Dark pink version (darkpink-version preview only): After Dark header with the pink logo and a Boujie Pink offer bar above it; dark heroes on Home, Shop, Send a Call and About, with phone hero words below the photo; Cream Lace light sections and soft pink image frames; dark footer with a pink monogram; secondary buttons outlined After Dark on light and Blush Silk on dark.
 - Phones: a quick add bar on product pages (name, price, pink Add to your bag) appears once the main button scrolls away, sits above the iPhone home bar, and sends you back to the selectors when a color or size is missing.
 - Phones: card names hold one line, a lone last card centers, every tap target is at least 44px tall and readable text at least 16px (audited at 375px; no page scrolls sideways). The footer reads monogram first for screen readers.
 - Phones: Home's brunch and night halves stack (brunch on cream, night on ink with the Shop button at its foot); the how-it-works heading drops to sentence case at 2rem; Send a Call steps sit in one column; the footer opens with the BC monogram and ends with the copyright.

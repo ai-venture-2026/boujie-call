@@ -44,10 +44,11 @@ describe("About", () => {
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 
-  it("sets the closing section on blush", () => {
+  it("sets the closing section on Cream Lace", () => {
     render(<About />);
-    expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-blush");
+    expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-cream");
   });
+
 
   it("closes on the rose dress banner", () => {
     render(<About />);
@@ -67,9 +68,9 @@ describe("About", () => {
     expect(within(story).getByRole("img").getAttribute("src")).toContain("story-after-dark");
   });
 
-  it("sets the hero words over the photo on phones", () => {
+  it("sets the hero words below the photo on phones", () => {
     render(<About />);
-    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).not.toHaveClass("max-md:absolute");
   });
 
   it("marks the hero for the adaptive nav", () => {

@@ -164,6 +164,11 @@ describe("Shop collection", () => {
     expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveAttribute("href", "/send-a-call");
   });
 
+  it("sets the collection header on ink", () => {
+    render(<Shop />);
+    expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ink");
+  });
+
   it("titles the page The collection", () => {
     render(<Shop />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("The collection");

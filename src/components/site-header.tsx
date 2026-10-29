@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BAG_OPENED, bagCount, useBag } from "@/lib/bag";
 import { pages, socials } from "@/lib/content";
 import { OFFER } from "@/lib/products";
@@ -13,39 +13,12 @@ export function Logo({ tone, className }: { tone: "ink" | "pink"; className: str
   return <Image src={`/boujie-call-logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
 }
 
-const onScroll = (l: () => void) => {
-  window.addEventListener("scroll", l, { passive: true });
-  window.addEventListener("resize", l);
-  return () => {
-    window.removeEventListener("scroll", l);
-    window.removeEventListener("resize", l);
-  };
-};
-
-function useScrolled() {
-  return useSyncExternalStore(onScroll, () => window.scrollY > 8, () => false);
-}
-
-// True when a section marked data-nav="dark" sits under the header.
-function useOverDark() {
-  return useSyncExternalStore(
-    onScroll,
-    () => (document.elementsFromPoint?.(window.innerWidth / 2, 40) ?? []).some((el) => !el.closest("header") && el.closest("[data-nav=dark]")),
-    () => false,
-  );
-}
-
-// overlay: Home hero, where the left 38% is a white panel and the rest is photo.
-export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+export function SiteHeader() {
   const pathname = usePathname();
   const drawer = useRef<HTMLDialogElement>(null);
   const close = () => drawer.current?.close();
   const current = (href: string) => (pathname === href ? "page" : undefined);
   const count = bagCount(useBag());
-  const scrolled = useScrolled();
-  const dark = useOverDark();
-  const clear = overlay && !scrolled;
-  const onPhoto = clear ? "md:text-cream" : "";
   const [bagOpen, setBagOpen] = useState(false);
   const bagButton = useRef<HTMLButtonElement>(null);
   const bagPanel = useRef<HTMLDivElement>(null);
@@ -91,16 +64,15 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
     };
   }, [bagOpen]);
 
-  const glass = dark ? "border-cream/10 bg-ink/55 text-cream backdrop-blur-md" : "border-ink/10 bg-white/70 text-ink backdrop-blur-md";
-
   return (
-    <header className={`sticky top-0 z-40 border-b-[0.5px] transition-colors duration-500 ${clear ? "border-ink/10 bg-white text-ink md:border-transparent md:bg-transparent" : glass}`}>
+    <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ink text-blush">
+      <p className="label bg-pink px-6 py-2 text-center text-[10px] text-ink">{OFFER}</p>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home" className="flex min-h-11 items-center">
-          <Logo tone={dark && !clear ? "pink" : "ink"} className="h-10 md:h-12" />
+          <Logo tone="pink" className="h-10 md:h-12" />
         </Link>
 
-        <div className={`hidden items-center gap-10 md:flex md:fixed md:top-0 md:right-28 md:left-[38%] md:h-20 md:justify-center ${onPhoto} transition-colors duration-500`}>
+        <div className="hidden items-center gap-10 md:absolute md:inset-y-0 md:right-28 md:left-[38%] md:flex md:justify-center">
           <nav aria-label="Main">
             <ul className="label flex gap-9">
               {pages.map((p) => (
@@ -112,12 +84,12 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
               ))}
             </ul>
           </nav>
-          <Link href="/shop" className="cta min-h-10 px-6">
+          <Link href="/shop" className="cta cta-primary min-h-10 px-6">
             Shop the collection
           </Link>
         </div>
 
-        <div className={`flex items-center gap-5 transition-colors duration-500 ${onPhoto}`}>
+        <div className="flex items-center gap-5">
           <button
             ref={bagButton}
             type="button"

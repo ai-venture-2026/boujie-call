@@ -25,9 +25,10 @@ export function ClosingBanner({
 }) {
   const ink = tone === "ink";
   return (
-    <section id={id} data-nav={ink ? "dark" : undefined} className={`relative ${ink ? "bg-ink text-cream" : "bg-blush text-ink"}`}>
+    <section id={id} data-nav={ink ? "dark" : undefined} className={`relative ${ink ? "bg-ink text-blush" : "bg-cream text-ink"}`}>
       <div className="relative h-[52svh] md:absolute md:inset-0 md:h-auto">
         <Image src={photo} alt={alt} fill sizes="(min-width: 768px) 100vw, 270vw" style={{ objectPosition: focus }} className="object-cover" />
+        {ink && <div aria-hidden="true" className="absolute inset-0 hidden bg-linear-to-r from-ink/85 via-ink/40 to-transparent md:block" />}
       </div>
       <div className="relative mx-auto max-w-7xl px-6 py-16 md:flex md:h-[64svh] md:max-h-[720px] md:min-h-[540px] md:items-center md:px-12 md:py-0">
         <div className="max-w-lg md:max-w-[min(30rem,42%)] rise">

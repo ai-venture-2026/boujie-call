@@ -42,12 +42,12 @@ function PieceCard({ product }: { product: Product }) {
 export default function Home() {
   return (
     <>
-      <SiteHeader overlay />
+      <SiteHeader />
       <main>
         <HeroCarousel>
           <p className="label">LUXURY NIGHTWEAR GIFTS</p>
           <h1 id="hero-title" className="mt-4 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02] max-md:text-[2.4rem] md:mt-6">
-            The gift that makes her <em>feel</em> like the <em>moment.</em>
+            The gift that makes her <em className="text-pink">feel</em> like the <em className="text-pink">moment.</em>
           </h1>
           <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
           <Link href="/shop" className="cta cta-primary mt-10">
@@ -108,14 +108,14 @@ export default function Home() {
               The Slip Dress · Rose
             </Link>
           </div>
-          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 max-md:relative pt-12 pb-28 text-center text-cream md:justify-center md:px-6 md:pt-0 md:pb-24">
+          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 max-md:relative pt-12 pb-28 text-center text-blush md:justify-center md:px-6 md:pt-0 md:pb-24">
             <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
               <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
             </div>
             <h2 className="mt-5 text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
               Irresistible enough to wear <em className="text-pink">that night.</em>
             </h2>
-            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-cream/80 hover:text-cream">
+            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-blush/80 hover:text-blush">
               The Slip Dress · After Dark
             </Link>
             <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap md:bottom-14 cta-primary">

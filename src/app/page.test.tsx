@@ -65,9 +65,9 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
   });
 
-  it("shows the ink logo", () => {
+  it("shows the pink logo", () => {
     render(<SiteHeader />);
-    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("logo-ink");
+    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("logo-pink");
   });
 
   it("opens the drawer from the menu button", () => {
@@ -99,7 +99,7 @@ describe("SiteFooter", () => {
 
   it("signs off with the BC monogram", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("monogram");
+    expect(screen.getByRole("img", { name: "Boujie Call" }).className).toContain("monogram");
   });
 
   it("links the pieces from the Shop column", () => {
@@ -256,15 +256,15 @@ describe("Home editorial redesign", () => {
 });
 
 describe("Home night half", () => {
-  it("keeps one ink section in main", () => {
-    const { container } = render(<Home />);
-    expect(container.querySelectorAll("main .bg-ink")).toHaveLength(1);
+  it("sets the hero on ink", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-nav=dark]")).toHaveClass("bg-ink");
   });
 
 
-  it("sets the closing section on blush", () => {
+  it("sets the closing section on Cream Lace", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#closing")).toHaveClass("bg-blush");
+    expect(container.querySelector("section#closing")).toHaveClass("bg-cream");
   });
 });
 
@@ -455,14 +455,14 @@ describe("Colour rhythm", () => {
 });
 
 describe("Hero split", () => {
-  it("sets the hero text on a white panel on desktop", () => {
+  it("sets the hero text on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("md:bg-white");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("bg-ink");
   });
 
-  it("clears the header over the hero on desktop", () => {
+  it("sets the header on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("banner")).toHaveClass("md:bg-transparent");
+    expect(screen.getByRole("banner")).toHaveClass("bg-ink");
   });
 
   it("keeps the header white off Home", () => {
@@ -540,9 +540,9 @@ describe("Home rebuild round 1", () => {
     expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).not.toBeNull();
   });
 
-  it("keeps the nav light over the white footer", () => {
+  it("sets the footer on ink", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("contentinfo").closest("[data-nav=dark]")).toBeNull();
+    expect(screen.getByRole("contentinfo")).toHaveAttribute("data-nav", "dark");
   });
 });
 
@@ -619,11 +619,24 @@ describe("Home rebuild round 2", () => {
 });
 
 describe("Nav position", () => {
-  it("places the nav links where Home places them on every page", () => {
-    const { container: home } = render(<SiteHeader overlay />);
-    const { container: other } = render(<SiteHeader />);
-    const group = (c: HTMLElement) => c.querySelector("nav[aria-label=Main]")?.parentElement?.className.replace(/md:text-cream/, "").trim();
-    expect(group(other)).toBe(group(home));
+  it("holds the desktop nav inside the header", () => {
+    const { container } = render(<SiteHeader />);
+    expect(container.querySelector("nav[aria-label=Main]")?.parentElement).toHaveClass("md:absolute");
+  });
+
+  it("opens the header with the offer bar", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("banner").firstElementChild).toHaveTextContent("Free shipping on 2 or more. Any 2 for $85.");
+  });
+
+  it("sets the offer bar on pink", () => {
+    render(<SiteHeader />);
+    expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.")[0]).toHaveClass("bg-pink", "text-ink");
+  });
+
+  it("tints the footer monogram pink", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("img", { name: "Boujie Call" })).toHaveClass("bg-pink");
   });
 });
 
@@ -633,9 +646,9 @@ describe("Home on phones", () => {
     expect(screen.getByRole("list", { name: "Pieces" })).toHaveClass("grid-cols-2");
   });
 
-  it("sets the hero words over the photo", () => {
+  it("sets the hero words below the photo", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).not.toHaveClass("max-md:absolute");
   });
 
   it("keeps the seam button on one line", () => {
