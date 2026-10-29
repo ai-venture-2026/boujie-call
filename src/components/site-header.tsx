@@ -10,6 +10,7 @@ import { OFFER } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
+  if (tone === "pink") return <span role="img" aria-label="Boujie Call" className={`block aspect-[960/342] bg-pink [mask:url(/boujie-call-logo-ink.png)_center/contain_no-repeat] ${className}`} />;
   return <Image src={`/boujie-call-logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
 }
 

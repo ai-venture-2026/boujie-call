@@ -67,7 +67,7 @@ describe("SiteHeader", () => {
 
   it("shows the pink logo", () => {
     render(<SiteHeader />);
-    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("logo-pink");
+    expect(screen.getByRole("img", { name: "Boujie Call" })).toHaveClass("bg-pink");
   });
 
   it("opens the drawer from the menu button", () => {

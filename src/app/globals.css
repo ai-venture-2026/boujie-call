@@ -4,10 +4,10 @@
   --color-cream: #fff8fb;
   --color-white: #fff8fb;
   --color-pink: #f2a7c3;
-  --color-dusty: #e6b8c8;
-  --color-ink: #141014;
+  --color-dusty: #ecb8c2;
+  --color-ink: #1c1b1b;
   --color-blush: #fde8f0;
-  --color-ribbon: #1a1018;
+  --color-ribbon: #1c1b1b;
   --color-card: #fff0f5;
   --color-card-border: #f0c0d0;
   --color-rose: #b4486f;
@@ -69,7 +69,7 @@
 }
 
 .drawer::backdrop {
-  background: rgb(20 16 20 / 0.5);
+  background: rgb(28 27 27 / 0.5);
 }
 
 @keyframes bag-in {
