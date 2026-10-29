@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Share image, sitemap and robots follow the deployed address (Vercel's production host) instead of a hard-coded boujiecall.com, so link previews work on vercel.app.
 - Sharper photos on phones: image size hints match how large the cropped photos are drawn, and six photos are re-exported at full resolution. Hero photos were stretched 3x on a 3x phone; now about 1.4x, banners and section photos 1x or less.
 - Link preview: the gift box photo with the Boujie Call logo, 1200x630, with alt text.
 - Phones, round 2: full-screen heroes with the words on the photo on Send a Call and About, steps two per row, tighter spacing; a full-screen cream menu with page rows, a collection photo, the offer and a solid Shop button; a back arrow on Back to the shop.
