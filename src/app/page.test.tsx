@@ -374,9 +374,9 @@ describe("Colour rhythm", () => {
 });
 
 describe("Hero split", () => {
-  it("sets the hero text on a white panel", () => {
+  it("sets the hero text on a white panel on desktop", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest(".bg-white")).not.toBeNull();
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("md:bg-white");
   });
 
   it("clears the header over the hero on desktop", () => {
@@ -503,5 +503,28 @@ describe("Nav position", () => {
     const { container: other } = render(<SiteHeader />);
     const group = (c: HTMLElement) => c.querySelector("nav[aria-label=Main]")?.parentElement?.className.replace(/md:text-cream/, "").trim();
     expect(group(other)).toBe(group(home));
+  });
+});
+
+describe("Home on phones", () => {
+  it("lays the pieces in two columns", () => {
+    render(<Home />);
+    expect(screen.getByRole("list", { name: "Pieces" })).toHaveClass("grid-cols-2");
+  });
+
+  it("sets the hero words over the photo", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute");
+  });
+
+  it("keeps the seam button on one line", () => {
+    render(<Home />);
+    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
+    expect(within(night).getByRole("link", { name: "Shop the collection" })).toHaveClass("whitespace-nowrap");
+  });
+
+  it("lays the gift strip in two columns", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelector("[data-strip]")).toHaveClass("grid-cols-2");
   });
 });

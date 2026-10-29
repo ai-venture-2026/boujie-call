@@ -63,6 +63,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         ) : (
           <Frame product={product} colorway={shown} view={views[view]} className="aspect-[3/4]" />
         )}
+        {shown.images.length > 1 && (
         <div className="mt-3 grid grid-cols-3 gap-3">
           {views.map((v, i) => (
             <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden bg-stone aria-pressed:outline-1 aria-pressed:outline-ink" style={shown.images[i] ? undefined : { background: shown.swatch ?? shown.hex }}>
@@ -70,6 +71,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
             </button>
           ))}
         </div>
+        )}
       </div>
 
       <div>

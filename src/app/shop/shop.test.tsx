@@ -180,3 +180,23 @@ describe("Product page shapes", () => {
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("bg-stone");
   });
 });
+
+describe("Product gallery thumbnails", () => {
+  it("hides the thumbnail row when a colorway has one photo", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.queryByRole("button", { name: /^Show / })).toBeNull();
+  });
+});
+
+describe("Shop on phones", () => {
+  it("hides the featured model cards below the small breakpoint", () => {
+    const { container } = render(<Shop />);
+    expect(container.querySelector("[data-featured]")).toHaveClass("hidden");
+  });
+
+  it("wraps the piece filters instead of scrolling them", () => {
+    render(<Shop />);
+    expect(screen.getByRole("navigation", { name: "Pieces" })).toHaveClass("flex-wrap");
+  });
+});
