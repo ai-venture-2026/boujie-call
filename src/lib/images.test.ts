@@ -12,7 +12,7 @@ const imagePaths = sources("src").flatMap((file) => readFileSync(file, "utf8").m
 
 describe("Public images", () => {
   it("keeps one folder per use", () => {
-    expect(readdirSync("public/images").sort()).toEqual(["about", "banners", "brand", "brunch-night", "details", "gift-strip", "hero", "products", "send-a-call"]);
+    expect(readdirSync("public/images").sort()).toEqual(["about", "banners", "brand", "details", "gift-strip", "hero", "products", "send-a-call"]);
   });
 
   it("keeps no images loose in public", () => {
