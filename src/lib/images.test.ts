@@ -68,9 +68,15 @@ describe("Pink batch swap", () => {
     expect(hue >= 300 || hue <= 15, `hue ${hue.toFixed(1)}`).toBe(true);
   });
 
-  it("lists only the lace detail as still waiting for pink", () => {
+  it("sets the lace close-up on soft pink", async () => {
+    const { hue, sat } = await groundHue("public/images/details/brown-romper-lace.webp", 0.9, 0.3);
+    expect(sat).toBeGreaterThan(0.04);
+    expect(hue >= 300 || hue <= 15, `hue ${hue.toFixed(1)}`).toBe(true);
+  });
+
+  it("lists no photo as still waiting for pink", () => {
     const readme = readFileSync("assets/pink-batch/README.md", "utf8");
     const waiting = readme.split("## Staying")[0].match(/^\| [\w/-]+\.webp/gm) ?? [];
-    expect(waiting.map((row) => row.slice(2)).sort()).toEqual(["details/brown-romper-lace.webp"]);
+    expect(waiting.map((row) => row.slice(2)).sort()).toEqual([]);
   });
 });
