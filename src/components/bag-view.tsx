@@ -41,7 +41,7 @@ export function BagView() {
           return (
             <li key={name} className="grid grid-cols-[6rem_1fr] gap-5 border-b-[0.5px] border-ink/15 py-6 sm:grid-cols-[7.5rem_1fr]">
               <div className="relative aspect-[3/4] bg-stone">
-                {photo && <Image src={photo} alt="" fill sizes="120px" className="object-cover mix-blend-multiply" />}
+                {photo && <Image src={photo} alt="" fill sizes="120px" className="object-cover" />}
               </div>
               <div className="flex flex-col">
                 <div className="flex items-start justify-between gap-4">

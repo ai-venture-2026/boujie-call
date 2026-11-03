@@ -572,3 +572,17 @@ describe("Shop cards on phones", () => {
     expect(items().at(-1)).toHaveClass("max-md:last:odd:justify-self-center");
   });
 });
+
+const blendedProductPhotos = (root: Element) => [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? "") && img.classList.contains("mix-blend-multiply"));
+
+describe("Product photo ground", () => {
+  it("shows shop grid photos without a blend", () => {
+    const { container } = render(<Shop />);
+    expect(blendedProductPhotos(container)).toEqual([]);
+  });
+
+  it("shows product page photos without a blend", async () => {
+    const { container } = await renderProduct("the-romper");
+    expect(blendedProductPhotos(container)).toEqual([]);
+  });
+});

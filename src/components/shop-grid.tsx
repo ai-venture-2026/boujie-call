@@ -82,7 +82,7 @@ export function ShopGrid() {
               <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
                 <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images[0] ? "contact" : ""}`}>
                   {colorway.images[0] ? (
-                    <Image src={colorway.images[0]} alt="" fill sizes="(min-width: 1024px) 22vw, 45vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
+                    <Image src={colorway.images[0]} alt="" fill sizes="(min-width: 1024px) 22vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                   ) : (
                     <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
                   )}

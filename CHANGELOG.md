@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Product photos: all seven photos in public/images/products (four rompers, three slip dresses) carry the soft pink #F9EEF2 background in the file itself, so they sit seamlessly on the pink cards in the shop, product pages, bag, mini bag and Home.
 - Home: the brunch and night pair is gone (Cute enough to open at brunch, Irresistible enough to wear that night), with both photos deleted. Home runs from the gift section straight into The pieces, which now has section spacing above it as well as below. The pink batch replace list is down to 14 photos.
 - Image folders: logos and monogram move from the public root to public/images/brand; the Home gift photos live in public/images/gift-strip, the brunch and night pair in brunch-night, and the closing banners in banners. The site looks the same. New soft pink photos are dropped in assets/pink-batch, which lists the 15 photos waiting for a pink version.
 - Dark pink version, phones: the Home, About and Send a Call heroes follow the light version again, words over a full-screen photo on a soft black fade, with the fade strengthened so the words stay readable on light pink photos. Home piece cards read name, price, then colorway count on phones, with the price at body size.

@@ -78,7 +78,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           {views.map((v, i) => (
             <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images[i] ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
               {shown.images[i] ? (
-                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
+                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover" />
               ) : (
                 <ToCome label={`${product.name} in ${shown.name}, ${v}`} />
               )}
@@ -105,7 +105,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         <div className="mt-3 grid grid-cols-3 gap-3 max-md:hidden">
           {views.map((v, i) => (
             <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden bg-stone aria-pressed:outline-1 aria-pressed:outline-pink">
-              {shown.images[i] ? <Image src={shown.images[i]} alt="" fill sizes="120px" className="object-cover mix-blend-multiply" /> : <ToCome />}
+              {shown.images[i] ? <Image src={shown.images[i]} alt="" fill sizes="120px" className="object-cover" /> : <ToCome />}
             </button>
           ))}
         </div>

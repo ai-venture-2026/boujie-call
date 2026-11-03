@@ -96,3 +96,13 @@ describe("Bag page", () => {
     expect(container.textContent).not.toMatch(/\bcart\b|\bitems?\b|\border\b|purchase|!/i);
   });
 });
+
+const blendedProductPhotos = (root: Element) => [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? "") && img.classList.contains("mix-blend-multiply"));
+
+describe("Bag photo ground", () => {
+  it("shows bag photos without a blend", () => {
+    fill([slip, romper]);
+    const { container } = render(<BagPage />);
+    expect(blendedProductPhotos(container)).toEqual([]);
+  });
+});
