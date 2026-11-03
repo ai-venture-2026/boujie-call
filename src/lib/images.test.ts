@@ -42,7 +42,7 @@ const pinkSwaps: [string, string, number, number][] = [
   ["public/images/details/brown-romper-hip.webp", "assets/shoot/home/section-2-mocha-romper.png", 0.05, 0.05],
   ["public/images/send-a-call/hero-rose-slip.webp", "assets/shoot/pages/send-a-call-hero-rose-slip.png", 0.05, 0.05],
   ["public/images/banners/blue-romper-banner.webp", "assets/shoot/banners/home-banner-blue-romper.png", 0.05, 0.05],
-  ["public/images/about/hero-blue-romper.webp", "assets/shoot/pages/about-hero-blue-romper.png", 0.5, 0.2],
+  ["public/images/about/hero-blue-romper.webp", "assets/shoot/pages/about-hero-blue-romper.png", 0.05, 0.1],
   ["public/images/about/story-after-dark.webp", "assets/shoot/pages/about-story-after-dark.png", 0.05, 0.5],
 ];
 
@@ -51,8 +51,8 @@ const groundHue = async (file: string, fx: number, fy: number) => {
   const size = Math.max(8, Math.round(width / 40));
   const left = Math.min(width - size, Math.max(0, Math.round(fx * width) - size / 2));
   const top = Math.min(height - size, Math.max(0, Math.round(fy * height) - size / 2));
-  const patch = await sharp(file).extract({ left: Math.round(left), top: Math.round(top), width: size, height: size }).toBuffer();
-  const { channels } = await sharp(patch).stats();
+  const { data, info } = await sharp(file).extract({ left: Math.round(left), top: Math.round(top), width: size, height: size }).raw().toBuffer({ resolveWithObject: true });
+  const { channels } = await sharp(data, { raw: { width: info.width, height: info.height, channels: info.channels } }).stats();
   const [r, g, b] = channels.map((c) => c.mean);
   const max = Math.max(r, g, b);
   const d = max - Math.min(r, g, b);
