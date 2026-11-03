@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ClosingBanner } from "@/components/closing-banner";
@@ -35,30 +34,6 @@ function PieceCard({ product }: { product: Product }) {
       <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-4">
         <Price product={product} compact />
         <span className="label text-muted">{product.colorways.length} colorways</span>
-      </div>
-    </Link>
-  );
-}
-
-// One half of the brunch and night pair; the whole panel opens the Slip Dress in its colorway.
-function Panel({ colorway, name, photo, alt, ground, line, dark = false, children }: { colorway: string; name: string; photo: string; alt: string; ground: string; line: string; dark?: boolean; children: ReactNode }) {
-  return (
-    <Link
-      href={`/shop/the-slip-dress?colorway=${colorway}`}
-      aria-labelledby={`panel-${colorway}-title panel-${colorway}-shop`}
-      data-nav={dark ? "dark" : undefined}
-      className={`group flex flex-col border-[0.5px] focus-visible:outline-ink ${ground}`}
-    >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Image src={photo} alt={alt} fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover transition-transform duration-400 ease-out motion-safe:group-hover:scale-[1.02]" />
-      </div>
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center md:px-4 md:py-10 lg:px-10">
-        <h2 id={`panel-${colorway}-title`} className="max-w-[10em] text-[34px] leading-[1.04] font-medium md:text-[clamp(1.375rem,calc(2.8vw+2px),2.875rem)] rise">{children}</h2>
-        <span className={`label mt-2 flex min-h-11 items-center md:mt-3 ${line}`}>
-          <span id={`panel-${colorway}-shop`} className="underline decoration-pink decoration-1 underline-offset-6 transition-colors md:decoration-transparent md:group-hover:decoration-pink">
-            Shop the Slip Dress in {name} <span aria-hidden="true">→</span>
-          </span>
-        </span>
       </div>
     </Link>
   );
@@ -121,16 +96,7 @@ export default function Home() {
           </ol>
         </section>
 
-        <section aria-label="From brunch to after dark" className="mx-auto grid max-w-7xl gap-3 px-6 py-18 md:grid-cols-2 md:gap-4 md:px-12 md:py-section">
-          <Panel colorway="rose" name="Rose" photo="/images/brunch-night/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" ground="border-card-border bg-cream" line="text-muted">
-            Cute enough to open at <em className="text-rose">brunch.</em>
-          </Panel>
-          <Panel colorway="after-dark" name="After Dark" photo="/images/brunch-night/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" ground="border-ribbon bg-ribbon text-blush" line="text-blush/80" dark>
-            Irresistible enough to wear <em className="text-pink">that night.</em>
-          </Panel>
-        </section>
-
-        <section aria-labelledby="pieces-title" className="bg-cream pb-18 md:pb-section">
+        <section aria-labelledby="pieces-title" className="bg-cream py-18 md:py-section">
           <div className={wrap}>
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8">
               <div className="rise">
