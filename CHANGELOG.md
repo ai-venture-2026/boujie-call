@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Home: the brunch and night pair is gone (Cute enough to open at brunch, Irresistible enough to wear that night), with both photos deleted. Home runs from the gift section straight into The pieces, which now has section spacing above it as well as below. The pink batch replace list is down to 14 photos.
 - Image folders: logos and monogram move from the public root to public/images/brand; the Home gift photos live in public/images/gift-strip, the brunch and night pair in brunch-night, and the closing banners in banners. The site looks the same. New soft pink photos are dropped in assets/pink-batch, which lists the 15 photos waiting for a pink version.
 - Dark pink version, phones: the Home, About and Send a Call heroes follow the light version again, words over a full-screen photo on a soft black fade, with the fade strengthened so the words stay readable on light pink photos. Home piece cards read name, price, then colorway count on phones, with the price at body size.
 - Dark pink version, laptops: the product page fits 1024x640, 1280x720 and 1440x800 with Add to your bag on screen; the image column sizes to the screen height so the 3:4 photo never runs past it; fluid title, description, labels, body and section spacing scale down between 1024 and 1440; the info column is sticky. Clicking the logo or Home while on Home scrolls back to the top.
