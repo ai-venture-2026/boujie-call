@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Shop from "./page";
 import ProductPage from "./[slug]/page";
@@ -570,5 +572,29 @@ describe("Shop cards on phones", () => {
   it("centers a single last card", () => {
     render(<Shop />);
     expect(items().at(-1)).toHaveClass("max-md:last:odd:justify-self-center");
+  });
+});
+
+const blendedProductPhotos = (root: Element) => {
+  const photos = [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? ""));
+  expect(photos.length).toBeGreaterThan(0);
+  return photos.filter((img) => img.classList.contains("mix-blend-multiply"));
+};
+
+describe("Product photo ground", () => {
+  it("draws the contact shadow above the opaque photo", () => {
+    const rule = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8").match(/\.contact::after\s*\{[^}]*\}/)?.[0] ?? "";
+    expect(rule).toMatch(/z-index:\s*1;/);
+    expect(rule).toMatch(/pointer-events:\s*none;/);
+  });
+
+  it("shows shop grid photos without a blend", () => {
+    const { container } = render(<Shop />);
+    expect(blendedProductPhotos(container)).toEqual([]);
+  });
+
+  it("shows product page photos without a blend", async () => {
+    const { container } = await renderProduct("the-romper");
+    expect(blendedProductPhotos(container)).toEqual([]);
   });
 });

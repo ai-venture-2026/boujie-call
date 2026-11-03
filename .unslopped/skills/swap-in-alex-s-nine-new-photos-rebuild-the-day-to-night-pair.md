@@ -2,12 +2,12 @@
 name: swap-in-alex-s-nine-new-photos-rebuild-the-day-to-night-pair
 title: Swap in Alex's nine new photos, rebuild the day to night pair and the closing waitlist banner on Home
 created: 2026-10-28T22:40:59.260Z
-updated: 2026-10-28T22:40:59.260Z
-runs: 1
-completed: 1
+updated: 2026-11-03T16:06:22.181Z
+lastCycle: 20261103-e8bd70
+runs: 2
+completed: 2
 abandoned: 0
-gateFailures: 1
-lastCycle: 20261028-b0aacd
+gateFailures: 2
 tags: swap, alex, nine, new, photos, rebuild, day, night, assets, public, src
 ---
 # Swap in Alex's nine new photos, rebuild the day to night pair and the closing waitlist banner on Home
@@ -15,58 +15,39 @@ tags: swap, alex, nine, new, photos, rebuild, day, night, assets, public, src
 ## When to use
 Requests like:
 - "Swap in Alex's nine new photos, rebuild the day to night pair and the closing waitlist banner on Home"
+- "Remove the brunch and night pair from Home and delete both photos"
 
 ## Playbook
 Files touched:
 - CHANGELOG.md
-- assets/DAY.png
-- assets/NIGHT.png
-- assets/boujieA.png
-- assets/boujieB.png
-- assets/boujieC.png
-- assets/boujieD.png
-- assets/boujieE.png
-- assets/lastCTAsect.png
-- assets/section2imagereplacement.png
-- public/boujie-call-monogram-ink.png
-- public/images/close/blue-romper-banner.webp
-- public/images/details/brown-romper-hip.webp
-- public/images/details/pink-slip-hem.webp
-- public/images/hero/black-slip-studio.webp
-- public/images/hero/mocha-romper.webp
-- public/images/strip/card.webp
-- public/images/strip/mist.webp
-- public/images/strip/open-box.webp
-- public/images/strip/ribbon.webp
-- public/images/strip/unboxing.webp
-- public/images/turn/day-rose-slip.webp
-- public/images/turn/night-after-dark.webp
+- assets/pink-batch/README.md
+- assets/shoot/home/day-rose-slip.png
+- assets/shoot/home/night-after-dark.png
+- public/images/brunch-night/day-rose-slip.webp
+- public/images/brunch-night/night-after-dark.webp
 - src/app/page.test.tsx
 - src/app/page.tsx
-- src/components/site-footer.tsx
-- src/lib/content.ts
+- src/lib/images.test.ts
 
 Acceptance criteria that passed:
-- Section two shows the new brown romper photo, not a crop of the hero photo
-- The strip shows five photos, none of them a hero photo
-- The day and night pair shows the two new photos with each heading outside the photo frame
-- The night caption links to The Slip Dress in After Dark
-- The closing section shows the banner photo, the closing headline and the waitlist form
-- Rejection: an invalid email in the closing form is refused and shows no confirmation
-- At 1440x900 the closing section is shorter than the screen
-- At 1440x900 the closing text sits left of the model without overlapping her
-- At 1536x730 the first hero model's head clears the nav with less headroom than before
-- The footer is plain white edge to edge, with no dark frame or gap after the closing section, and carries the ink BC monogram and small Shop, Company and Socials columns, and no form
-- The day and night section is exactly one screen under the nav at 1440x900 and 1536x730, with the button inside it
-- Instagram in the footer links to https://www.instagram.com/boujiecall/; TikTok stays plain text
-- The closing section sets every word in ink, not rose or pink, over the banner photo
-- No horizontal overflow at 390px on Home
+- Home renders no "From brunch to after dark" region and neither panel headline (page test)
+- Rejection: the new absence tests fail while the pair is still on Home, shown by the red run
+- The pieces section has py-18 and md:py-section, and in a 1440 and 390 screenshot its heading sits clear of the gift section
+- public/images has no brunch-night folder and assets/shoot/home has no day-rose-slip.png or night-after-dark.png
+- assets/pink-batch/README.md lists 14 photos to replace and no brunch or night photo
+- npm run build exits 0 and npm test passes
 
 Gate runs: 9 (1 failed)
 
 ## Known failures
 - deploy gate, approval failed 1 time(s): a human must run: unslopped approve deploy
+- code gate, tests kept failed 1 time(s): tests were removed:
+- code gate, style failed 1 time(s): 1 style problem(s) in the diff. write precisely and directly:
 
 ## Notes
 - Text set straight on a photo needs its contrast checked against the actual wall colour; rose on the blush-beige wall was unreadable at small sizes.
 - Alex sends many mid-round layout requests; fold small related ones into the open round and record each in the plan as it lands.
+- Live after PR #13: neither panel headline on Home, Home images 18 to 16, all four pages 200 at 1440 and 390 with 0 broken images.
+- Starting a cycle with the previous cycle's notes uncommitted made the branch checkout fail and the cycle start on the old branch. Commit the notes before starting the next cycle.
+- Removing a feature trips the tests kept check; a ## Removed tests section with the reason clears it.
+- unslopped pr took the PR title type from the last commit (chore notes) and opened against main; retitle and retarget to develop.

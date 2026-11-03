@@ -25,7 +25,7 @@ function PieceCard({ product }: { product: Product }) {
     <Link href={`/shop/${product.slug}`} className="group block">
       <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
         {photo ? (
-          <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
+          <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
         ) : (
           <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
         )}
@@ -58,7 +58,7 @@ export default function Home() {
         <section id="detail" className="grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-2">
           <div className="flex flex-col items-center justify-center bg-stone px-6 py-12 max-md:order-2 md:px-12">
             <div className="relative hidden aspect-[3/4] w-full max-w-sm md:block md:aspect-auto md:min-h-0 md:flex-1">
-              <Image src="/images/products/the-romper-mocha.webp" alt="The Romper in Mocha" fill sizes="(min-width: 768px) 30vw, 80vw" className="object-contain mix-blend-multiply" />
+              <Image src="/images/products/the-romper-mocha.webp" alt="The Romper in Mocha" fill sizes="(min-width: 768px) 30vw, 80vw" className="object-contain" />
             </div>
             <div className="w-full max-w-sm rise md:mt-8">
               <p className="label">The Romper · Mocha</p>

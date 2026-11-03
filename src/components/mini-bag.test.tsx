@@ -101,3 +101,18 @@ describe("Mini bag", () => {
     expect(panel()).not.toBeNull();
   });
 });
+
+const blendedProductPhotos = (root: Element) => {
+  const photos = [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? ""));
+  expect(photos.length).toBeGreaterThan(0);
+  return photos.filter((img) => img.classList.contains("mix-blend-multiply"));
+};
+
+describe("Mini bag photo ground", () => {
+  it("shows mini bag photos without a blend", () => {
+    fill([slip]);
+    render(<SiteHeader />);
+    fireEvent.click(icon());
+    expect(blendedProductPhotos(panel() as HTMLElement)).toEqual([]);
+  });
+});

@@ -724,3 +724,16 @@ describe("Sharp photos on phones", () => {
     expect(sizesOf(container.querySelector("#detail img[alt*='hip']"))).toContain("190vw");
   });
 });
+
+const blendedProductPhotos = (root: Element) => {
+  const photos = [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? ""));
+  expect(photos.length).toBeGreaterThan(0);
+  return photos.filter((img) => img.classList.contains("mix-blend-multiply"));
+};
+
+describe("Home photo ground", () => {
+  it("shows home product photos without a blend", () => {
+    const { container } = render(<Home />);
+    expect(blendedProductPhotos(container)).toEqual([]);
+  });
+});
