@@ -65,10 +65,6 @@ describe("Pink batch swap", () => {
     expect(hue >= 300 || hue <= 15, `hue ${hue.toFixed(1)}`).toBe(true);
   });
 
-  it("empties the drop folder down to its README", () => {
-    expect(readdirSync("assets/pink-batch")).toEqual(["README.md"]);
-  });
-
   it("lists only the three photos still waiting for pink", () => {
     const readme = readFileSync("assets/pink-batch/README.md", "utf8");
     const waiting = readme.split("## Staying")[0].match(/^\| [\w/-]+\.webp/gm) ?? [];

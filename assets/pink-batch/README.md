@@ -14,4 +14,4 @@ Landscape photos at least 2500px wide, portrait and square at least 1200px wide.
 
 ## Staying
 
-Soft pink or black backgrounds: banners/blue-romper-banner.webp (pink version swapped in), banners/rose-dress-banner.webp, banners/mocha-romper-banner.webp. The seven products/ cutouts sit on the site's pink frames and stay too.
+Soft pink or black backgrounds: banners/rose-dress-banner.webp, banners/mocha-romper-banner.webp. banners/blue-romper-banner.webp already carries its soft pink version. The seven products/ cutouts sit on the site's pink frames and stay too.
