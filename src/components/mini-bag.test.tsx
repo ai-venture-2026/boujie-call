@@ -102,7 +102,11 @@ describe("Mini bag", () => {
   });
 });
 
-const blendedProductPhotos = (root: Element) => [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? "") && img.classList.contains("mix-blend-multiply"));
+const blendedProductPhotos = (root: Element) => {
+  const photos = [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? ""));
+  expect(photos.length).toBeGreaterThan(0);
+  return photos.filter((img) => img.classList.contains("mix-blend-multiply"));
+};
 
 describe("Mini bag photo ground", () => {
   it("shows mini bag photos without a blend", () => {

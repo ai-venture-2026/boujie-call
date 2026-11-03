@@ -8,10 +8,11 @@ const stone = [0xf9, 0xee, 0xf2];
 describe("Product photos", () => {
   it.each(readdirSync(dir).filter((f) => f.endsWith(".webp")))("%s sits on #F9EEF2", async (file) => {
     const { data, info } = await sharp(join(dir, file)).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-    const corners = [0, info.width - 1, (info.height - 1) * info.width, info.height * info.width - 1];
-    for (const px of corners) {
+    const { width: w, height: h } = info;
+    const border = [...Array(w).keys()].flatMap((x) => [x, (h - 1) * w + x]).concat([...Array(h).keys()].flatMap((y) => [y * w, y * w + w - 1]));
+    for (const px of border) {
       const rgb = [...data.subarray(px * 3, px * 3 + 3)];
-      rgb.forEach((v, i) => expect(Math.abs(v - stone[i])).toBeLessThanOrEqual(2));
+      rgb.forEach((v, i) => expect(Math.abs(v - stone[i]), `${file} pixel ${px}`).toBeLessThanOrEqual(2));
     }
   });
 });
