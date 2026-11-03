@@ -4,9 +4,7 @@ Drop new soft pink background photos here, in any file name and format. This fol
 
 ## Waiting for a pink version
 
-| Replaces | Shape | Shown on |
-|---|---|---|
-| details/brown-romper-lace.webp | 4:5 portrait | Shop header, Send a Call |
+None. Every photo on the site has its soft pink version.
 
 Landscape photos at least 2500px wide, portrait and square at least 1200px wide.
 
