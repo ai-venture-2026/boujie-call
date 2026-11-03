@@ -79,4 +79,8 @@ describe("Pink batch swap", () => {
     const waiting = readme.split("## Staying")[0].match(/^\| [\w/-]+\.webp/gm) ?? [];
     expect(waiting.map((row) => row.slice(2)).sort()).toEqual([]);
   });
+
+  it("states that nothing is waiting for pink", () => {
+    expect(readFileSync("assets/pink-batch/README.md", "utf8")).toMatch(/## Waiting for a pink version\s+None\./);
+  });
 });
