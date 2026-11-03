@@ -8,6 +8,12 @@ describe("Send a Call page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Place your Boujie Call.");
   });
 
+  it("describes the hero wall as soft pink", () => {
+    render(<SendACall />);
+    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(hero).getByRole("img")).toHaveAccessibleName(/soft pink wall/);
+  });
+
   it("shows the rose slip photo in the hero", () => {
     render(<SendACall />);
     const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
