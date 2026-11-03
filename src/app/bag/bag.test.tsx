@@ -96,3 +96,17 @@ describe("Bag page", () => {
     expect(container.textContent).not.toMatch(/\bcart\b|\bitems?\b|\border\b|purchase|!/i);
   });
 });
+
+const blendedProductPhotos = (root: Element) => {
+  const photos = [...root.querySelectorAll("img")].filter((img) => /images(\/|%2F)products/.test(img.getAttribute("src") ?? ""));
+  expect(photos.length).toBeGreaterThan(0);
+  return photos.filter((img) => img.classList.contains("mix-blend-multiply"));
+};
+
+describe("Bag photo ground", () => {
+  it("shows bag photos without a blend", () => {
+    fill([slip, romper]);
+    const { container } = render(<BagPage />);
+    expect(blendedProductPhotos(container)).toEqual([]);
+  });
+});

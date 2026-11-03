@@ -55,7 +55,7 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
               return (
                 <li key={`${line.slug}-${line.colorway}-${line.size}`} className="flex gap-4 border-b-[0.5px] border-card-border py-4">
                   <div className="relative aspect-[3/4] w-14 shrink-0 bg-stone">
-                    {photo && <Image src={photo} alt="" fill sizes="56px" className="object-cover mix-blend-multiply" />}
+                    {photo && <Image src={photo} alt="" fill sizes="56px" className="object-cover" />}
                   </div>
                   <div className="flex flex-1 items-start justify-between gap-3">
                     <div>
