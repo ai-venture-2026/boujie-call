@@ -33,7 +33,7 @@ export function ShopGrid() {
   };
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-[12rem_1fr] md:gap-x-16 md:gap-y-0 md:px-12 md:py-24">
+    <div className="mx-auto grid max-w-7xl gap-10 px-6 py-19 md:grid-cols-[12rem_1fr] md:gap-x-16 md:gap-y-0 md:px-12 md:py-28">
       <div className="-mx-6 flex gap-2 px-6 [scrollbar-width:none] max-md:overflow-x-auto max-md:py-1.5 md:contents">
       <nav aria-label="Pieces" className="flex shrink-0 gap-2 md:row-span-2 md:flex-col md:gap-1">
         <Toggle on={!piece} onClick={() => setPiece(null)}>
@@ -66,10 +66,10 @@ export function ShopGrid() {
                 <Image src={f.src} alt={`${f.name} in ${f.colorway}`} fill sizes="(min-width: 768px) 35vw, 100vw" style={{ objectPosition: f.focus }} className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                 <span className="absolute right-5 bottom-5 left-5 flex items-end justify-between bg-white/90 p-5 sm:left-auto sm:w-56">
                   <span>
-                    <span className="label block text-[10px]">{f.name}</span>
-                    <span className="label block text-[10px] text-muted">{f.colorway}</span>
+                    <span className="label block">{f.name}</span>
+                    <span className="label block text-muted">{f.colorway}</span>
                   </span>
-                  <span className="font-serif text-xl">{formatPrice(products.find((p) => p.slug === f.slug)?.priceCents ?? null)}</span>
+                  <span className="font-sans text-[17px] font-medium">{formatPrice(products.find((p) => p.slug === f.slug)?.priceCents ?? null)}</span>
                 </span>
               </Link>
             ))}
@@ -80,17 +80,17 @@ export function ShopGrid() {
           {shown.map(({ product, colorway }) => (
             <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
               <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
-                <div className="relative aspect-[3/4] overflow-hidden bg-stone">
+                <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images[0] ? "contact" : ""}`}>
                   {colorway.images[0] ? (
                     <Image src={colorway.images[0]} alt="" fill sizes="(min-width: 1024px) 22vw, 45vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
                   ) : (
-                    <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
+                    <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
                   )}
                 </div>
-                <span className="label mt-4 block truncate text-[10px]">{product.name}</span>
-                <span className="mt-1 flex items-baseline justify-between gap-4">
-                  <span className="label text-[10px] text-muted">{colorway.name}</span>
-                  <span className="text-base md:text-sm">{formatPrice(product.priceCents)}</span>
+                <span className="label mt-4 block truncate">{product.name}</span>
+                <span className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
+                  <span className="label whitespace-nowrap text-muted">{colorway.name}</span>
+                  <span className="text-[17px] font-medium md:text-[15px]">{formatPrice(product.priceCents)}</span>
                 </span>
               </Link>
             </li>

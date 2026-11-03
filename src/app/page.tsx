@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ClosingBanner } from "@/components/closing-banner";
@@ -23,17 +24,41 @@ function PieceCard({ product }: { product: Product }) {
   const photo = product.colorways[0].images[0];
   return (
     <Link href={`/shop/${product.slug}`} className="group block">
-      <div className="relative aspect-[4/5] overflow-hidden bg-stone">
+      <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
         {photo ? (
-          <Image src={photo} alt="" fill sizes="(min-width: 640px) 30vw, 100vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
+          <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03]" />
         ) : (
-          <span className="label absolute right-4 bottom-4 text-[10px] text-muted">Image to come</span>
+          <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
         )}
       </div>
-      <h3 className="mt-3 truncate text-lg md:mt-5 md:text-2xl">{product.name}</h3>
-      <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
-        <Price product={product} />
-        <span className="label text-[10px] text-muted">{product.colorways.length} colorways</span>
+      <h3 className="mt-3 truncate text-xl font-medium md:mt-5 md:text-[26px]">{product.name}</h3>
+      <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-4">
+        <Price product={product} compact />
+        <span className="label text-muted">{product.colorways.length} colorways</span>
+      </div>
+    </Link>
+  );
+}
+
+// One half of the brunch and night pair; the whole panel opens the Slip Dress in its colorway.
+function Panel({ colorway, name, photo, alt, ground, line, dark = false, children }: { colorway: string; name: string; photo: string; alt: string; ground: string; line: string; dark?: boolean; children: ReactNode }) {
+  return (
+    <Link
+      href={`/shop/the-slip-dress?colorway=${colorway}`}
+      aria-labelledby={`panel-${colorway}-title panel-${colorway}-shop`}
+      data-nav={dark ? "dark" : undefined}
+      className={`group flex flex-col border-[0.5px] focus-visible:outline-ink ${ground}`}
+    >
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <Image src={photo} alt={alt} fill sizes="(min-width: 1280px) 584px, (min-width: 768px) 45vw, 100vw" style={{ objectPosition: "50% 0%" }} className="object-cover transition-transform duration-400 ease-out motion-safe:group-hover:scale-[1.02]" />
+      </div>
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center md:px-4 md:py-10 lg:px-10">
+        <h2 id={`panel-${colorway}-title`} className="max-w-[10em] text-[34px] leading-[1.04] font-medium md:text-[clamp(1.375rem,calc(2.8vw+2px),2.875rem)] rise">{children}</h2>
+        <span className={`label mt-2 flex min-h-11 items-center md:mt-3 ${line}`}>
+          <span id={`panel-${colorway}-shop`} className="underline decoration-pink decoration-1 underline-offset-6 transition-colors md:decoration-transparent md:group-hover:decoration-pink">
+            Shop the Slip Dress in {name} <span aria-hidden="true">→</span>
+          </span>
+        </span>
       </div>
     </Link>
   );
@@ -42,12 +67,12 @@ function PieceCard({ product }: { product: Product }) {
 export default function Home() {
   return (
     <>
-      <SiteHeader overlay />
+      <SiteHeader />
       <main>
         <HeroCarousel>
           <p className="label">LUXURY NIGHTWEAR GIFTS</p>
           <h1 id="hero-title" className="mt-4 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02] max-md:text-[2.4rem] md:mt-6">
-            The gift that makes her <em>feel</em> like the <em>moment.</em>
+            The gift that makes her <em className="text-pink">feel</em> like the <em className="text-pink">moment.</em>
           </h1>
           <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
           <Link href="/shop" className="cta cta-primary mt-10">
@@ -73,11 +98,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how" className="overflow-hidden bg-cream py-20 md:py-40">
+        <section id="how" data-nav="dark" className="overflow-hidden bg-ribbon py-18 text-blush md:py-section">
           <h2 className={`${wrap} text-center text-[2rem] leading-[1.05] md:text-[clamp(2.25rem,5vw,4.75rem)] md:uppercase rise`}>
             Someone places a call.
             <br />
-            She <em className="text-rose normal-case">receives</em> a moment.
+            She <em className="text-pink normal-case">receives</em> a moment.
           </h2>
           <div data-strip className="mt-14 grid grid-cols-2 gap-3 px-6 md:mt-20 md:flex md:items-start md:justify-center md:gap-6 md:px-0">
             {strip.map((s) => (
@@ -89,52 +114,35 @@ export default function Home() {
           <ol aria-label="How it works" className={`${wrap} mt-16 grid gap-10 md:mt-24 text-center md:grid-cols-3 md:gap-16`}>
             {steps.map((step) => (
               <li key={step.title} className="rise">
-                <h3 className="text-2xl">{step.title}</h3>
-                <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-muted">{step.body}</p>
+                <h3 className="text-[26px] font-medium">{step.title}</h3>
+                <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-blush/80">{step.body}</p>
               </li>
             ))}
           </ol>
         </section>
 
-        <section aria-label="From brunch to after dark" className="relative grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-2">
-          <div className="flex flex-col items-center bg-cream px-6 pt-12 pb-12 text-center md:justify-center md:bg-white md:px-6 md:pt-0 md:pb-24">
-            <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
-              <Image src="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
-            </div>
-            <h2 className="mt-5 text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
-              Cute enough to open at <em className="text-rose">brunch.</em>
-            </h2>
-            <Link href="/shop/the-slip-dress?colorway=rose" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-muted hover:text-ink">
-              The Slip Dress · Rose
-            </Link>
-          </div>
-          <div data-nav="dark" className="flex flex-col items-center bg-ink px-6 max-md:relative pt-12 pb-28 text-center text-cream md:justify-center md:px-6 md:pt-0 md:pb-24">
-            <div className="relative aspect-[4/5] w-full max-w-[17rem] md:h-[min(50svh,28rem)] md:w-auto md:max-w-none">
-              <Image src="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" fill sizes="(min-width: 768px) 23rem, 17rem" className="object-cover" />
-            </div>
-            <h2 className="mt-5 text-[2rem] leading-[1.04] md:text-[clamp(1.25rem,2.8vw,2.75rem)] rise">
-              Irresistible enough to wear <em className="text-pink">that night.</em>
-            </h2>
-            <Link href="/shop/the-slip-dress?colorway=after-dark" className="label mt-2 flex min-h-11 items-center text-[10px] md:mt-3 md:text-xs text-cream/80 hover:text-cream">
-              The Slip Dress · After Dark
-            </Link>
-            <Link href="/shop" className="cta absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap md:bottom-14 cta-primary">
-              Shop the collection
-            </Link>
-          </div>
+        <section aria-label="From brunch to after dark" className="mx-auto grid max-w-7xl gap-3 px-6 py-18 md:grid-cols-2 md:gap-4 md:px-12 md:py-section">
+          <Panel colorway="rose" name="Rose" photo="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" ground="border-card-border bg-cream" line="text-muted">
+            Cute enough to open at <em className="text-rose">brunch.</em>
+          </Panel>
+          <Panel colorway="after-dark" name="After Dark" photo="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" ground="border-ribbon bg-ribbon text-blush" line="text-blush/80" dark>
+            Irresistible enough to wear <em className="text-pink">that night.</em>
+          </Panel>
         </section>
 
-        <section aria-labelledby="pieces-title" className="bg-cream py-16 md:py-24">
+        <section aria-labelledby="pieces-title" className="bg-cream pb-18 md:pb-section">
           <div className={wrap}>
-            <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8">
               <div className="rise">
                 <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
                   The <em className="text-rose">pieces</em>
                 </h2>
                 <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">Satin and lace, made to be gifted. Sizes S to XL.</p>
               </div>
-              <Link href="/shop" className="cta self-start md:self-auto">
-                View all pieces
+              <Link href="/shop" className="link label inline-flex min-h-11 items-center self-start text-ink md:self-auto">
+                <span>
+                  View all pieces <span aria-hidden="true">→</span>
+                </span>
               </Link>
             </div>
             <ul aria-label="Pieces" className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-6 md:mt-12 md:gap-y-12">
@@ -163,7 +171,7 @@ export default function Home() {
           }
           line="The pieces are here. Find the one that feels like her."
         >
-          <Link href="/shop" className="cta cta-primary">
+          <Link href="/shop" className="cta">
             Shop the collection
           </Link>
         </ClosingBanner>

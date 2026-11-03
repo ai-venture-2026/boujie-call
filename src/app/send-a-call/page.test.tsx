@@ -64,7 +64,7 @@ describe("Send a Call page", () => {
 describe("Send a Call on phones", () => {
   it("sets the hero words over the photo", () => {
     render(<SendACall />);
-    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute", "max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)]");
   });
 
   it("lays the four steps in one column on phones", () => {
@@ -76,9 +76,19 @@ describe("Send a Call on phones", () => {
 describe("Send a Call close", () => {
   const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
 
+  it("sets the hero on ink", () => {
+    render(<SendACall />);
+    expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ribbon");
+  });
+
+  it("sets the box contents on blush", () => {
+    render(<SendACall />);
+    expect(screen.getByRole("heading", { name: "Inside every Boujie Call" }).parentElement).toHaveClass("bg-blush");
+  });
+
   it("sets the closing section on ink", () => {
     const { container } = render(<SendACall />);
-    expect(close(container)).toHaveClass("bg-ink");
+    expect(close(container)).toHaveClass("bg-ribbon");
   });
 
   it("closes on the mocha romper banner", () => {

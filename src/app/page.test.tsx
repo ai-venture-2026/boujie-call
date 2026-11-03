@@ -35,9 +35,14 @@ describe("Home", () => {
     expect(screen.getByRole("link", { name: "Discover the piece" })).not.toHaveClass("cta-primary");
   });
 
-  it("keeps View all pieces outlined", () => {
+  it("sets View all pieces as a text link", () => {
     render(<Home />);
-    expect(screen.getByRole("link", { name: "View all pieces" })).not.toHaveClass("cta-primary");
+    expect(screen.getByRole("link", { name: "View all pieces" })).toHaveClass("link", "label", "text-ink", "min-h-11");
+  });
+
+  it("drops the pill from View all pieces", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "View all pieces" })).not.toHaveClass("cta");
   });
 });
 
@@ -65,9 +70,9 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
   });
 
-  it("shows the ink logo", () => {
+  it("shows the pink logo", () => {
     render(<SiteHeader />);
-    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("logo-ink");
+    expect(screen.getByRole("img", { name: "Boujie Call" })).toHaveClass("bg-pink");
   });
 
   it("opens the drawer from the menu button", () => {
@@ -99,7 +104,7 @@ describe("SiteFooter", () => {
 
   it("signs off with the BC monogram", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("img", { name: "Boujie Call" }).getAttribute("src")).toContain("monogram");
+    expect(screen.getByRole("img", { name: "Boujie Call" }).className).toContain("monogram");
   });
 
   it("links the pieces from the Shop column", () => {
@@ -250,21 +255,21 @@ describe("Home editorial redesign", () => {
 
   it("sets the night half of the turn on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink")).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ribbon")).not.toBeNull();
   });
 
 });
 
 describe("Home night half", () => {
-  it("keeps one ink section in main", () => {
-    const { container } = render(<Home />);
-    expect(container.querySelectorAll("main .bg-ink")).toHaveLength(1);
+  it("sets the hero on ink", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-nav=dark]")).toHaveClass("bg-ribbon");
   });
 
 
-  it("sets the closing section on blush", () => {
+  it("sets the closing section on Cream Lace", () => {
     const { container } = render(<Home />);
-    expect(container.querySelector("section#closing")).toHaveClass("bg-blush");
+    expect(container.querySelector("section#closing")).toHaveClass("bg-cream");
   });
 });
 
@@ -310,7 +315,7 @@ describe("Hero carousel", () => {
 });
 
 describe("Day to night turn", () => {
-  const night = () => screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink") as HTMLElement;
+  const night = () => screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ribbon") as HTMLElement;
 
   it("shows the After Dark night photograph", () => {
     render(<Home />);
@@ -319,7 +324,7 @@ describe("Day to night turn", () => {
 
   it("links the night caption to The Slip Dress in After Dark", () => {
     render(<Home />);
-    expect(within(night()).getByRole("link", { name: "The Slip Dress · After Dark" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
+    expect(screen.getByRole("link", { name: /Shop the Slip Dress in After Dark/ })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
   });
 
   it("keeps each heading outside its photo frame", () => {
@@ -357,9 +362,9 @@ describe("Closing section", () => {
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("blue-romper-banner");
   });
 
-  it("offers a pink Shop the collection pill in the closing section", () => {
+  it("offers an outlined Shop the collection pill in the closing section", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta-primary");
+    expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).not.toHaveClass("cta-primary");
   });
 
   it("sends the closing pill to the shop", () => {
@@ -432,7 +437,7 @@ describe("Strict pass", () => {
 
   it("cuts to ink without a scroll fade", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ink")).not.toHaveClass("nightfall");
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest(".bg-ribbon")).not.toHaveClass("nightfall");
   });
 
   it("drops the line above the closing line", () => {
@@ -446,23 +451,132 @@ describe("Strict pass", () => {
   });
 });
 
-describe("Colour rhythm", () => {
-  it("sets the accent words in rose", () => {
+describe("Clickable diptych", () => {
+  const panel = (name: string) => screen.getByRole("link", { name: new RegExp(name) });
+
+  it("links the whole brunch panel to the Slip Dress in Rose", () => {
+    render(<Home />);
+    expect(panel("Shop the Slip Dress in Rose")).toHaveAttribute("href", "/shop/the-slip-dress?colorway=rose");
+  });
+
+  it("puts the brunch photo inside its panel link", () => {
+    render(<Home />);
+    expect(within(panel("Shop the Slip Dress in Rose")).getByRole("img")).toBeInTheDocument();
+  });
+
+  it("names the brunch panel from its visible text", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "Cute enough to open at brunch. Shop the Slip Dress in Rose" })).toHaveAttribute("href", "/shop/the-slip-dress?colorway=rose");
+  });
+
+  it("puts the brunch headline inside its panel link", () => {
+    render(<Home />);
+    expect(within(panel("Shop the Slip Dress in Rose")).getByRole("heading")).toBeInTheDocument();
+  });
+
+  it("shows the Shop line with an arrow", () => {
+    render(<Home />);
+    expect(panel("Shop the Slip Dress in After Dark")).toHaveTextContent("Shop the Slip Dress in After Dark →");
+  });
+
+  it("underlines the Shop line on hover from md", () => {
+    render(<Home />);
+    expect(screen.getByText("Shop the Slip Dress in Rose")).toHaveClass("md:decoration-transparent", "md:group-hover:decoration-pink");
+  });
+
+  it("scales the photo gently on hover", () => {
+    render(<Home />);
+    const img = within(panel("Shop the Slip Dress in Rose")).getByRole("img");
+    expect(img).toHaveClass("motion-safe:group-hover:scale-[1.02]", "duration-400");
+  });
+
+  it("gives the night panel an ink focus ring", () => {
+    render(<Home />);
+    expect(panel("Shop the Slip Dress in After Dark")).toHaveClass("focus-visible:outline-ink");
+  });
+
+  it("centers each text block under its photo", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).parentElement).toHaveClass("flex-1", "justify-center");
+  });
+});
+
+describe("Piece cards on phones", () => {
+  it("stacks the colorway count under the price below sm", () => {
+    render(<Home />);
+    const count = within(screen.getByRole("list", { name: "Pieces" })).getAllByText("3 colorways")[0];
+    expect(count.parentElement).toHaveClass("flex-col", "sm:flex-row");
+  });
+
+  it("sets the card price at body size", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByText("$48.00")[0]).toHaveClass("text-base");
+  });
+});
+
+describe("Typography", () => {
+  it("lets every Home label take the shared label size", () => {
     const { container } = render(<Home />);
-    const accents = [...container.querySelectorAll("main em")].filter((e) => ["receives", "brunch."].includes(e.textContent ?? ""));
-    expect(accents.map((e) => e.classList.contains("text-rose"))).toEqual([true, true]);
+    expect(container.querySelectorAll('[class*="text-[10px]"], [class*="md:text-xs"]')).toHaveLength(0);
+  });
+
+  it("sets piece names in Cormorant 500", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Slip Dress" })).toHaveClass("font-medium");
+  });
+
+  it("sets step titles in Cormorant 500", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Place the Call" })).toHaveClass("font-medium");
+  });
+
+  it("sets the panel headlines in Cormorant 500", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." })).toHaveClass("font-medium");
+  });
+
+  it("sets Home prices in DM Sans 500", () => {
+    render(<Home />);
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByText("$48.00")[0]).toHaveClass("font-sans", "font-medium");
+  });
+
+  it("darkens the light waitlist placeholder", () => {
+    render(<WaitlistForm />);
+    expect(screen.getByLabelText("Email address")).toHaveClass("placeholder:text-ink/65");
+  });
+});
+
+describe("Colour rhythm", () => {
+  it("sets the dark section accent in pink", () => {
+    render(<Home />);
+    expect(screen.getByText("receives")).toHaveClass("text-pink");
+  });
+
+  it("sets the light section accent in rose", () => {
+    render(<Home />);
+    expect(screen.getByText("brunch.")).toHaveClass("text-rose");
+  });
+
+  it("sets the gift section on Black Ribbon", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("bg-ribbon");
+  });
+
+  it("fills only the hero pill on Home", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelectorAll("main .cta-primary")).toHaveLength(1);
   });
 });
 
 describe("Hero split", () => {
-  it("sets the hero text on a white panel on desktop", () => {
+  it("sets the hero text on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("md:bg-white");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("md:bg-ribbon");
   });
 
-  it("clears the header over the hero on desktop", () => {
+  it("sets the header on ink", () => {
     render(<Home />);
-    expect(screen.getByRole("banner")).toHaveClass("md:bg-transparent");
+    expect(screen.getByRole("banner")).toHaveClass("bg-ribbon");
   });
 
   it("keeps the header white off Home", () => {
@@ -540,18 +654,29 @@ describe("Home rebuild round 1", () => {
     expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).not.toBeNull();
   });
 
-  it("keeps the nav light over the white footer", () => {
+  it("sets the footer on ink", () => {
     render(<SiteFooter />);
-    expect(screen.getByRole("contentinfo").closest("[data-nav=dark]")).toBeNull();
+    expect(screen.getByRole("contentinfo")).toHaveAttribute("data-nav", "dark");
   });
 });
 
 describe("Home rebuild round 2", () => {
   const pair = () => screen.getByRole("region", { name: "From brunch to after dark" });
 
-  it("anchors the shop pill to the night half on phones", () => {
+  it("keeps the shop button out of the night panel", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]")).toHaveClass("max-md:relative");
+    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
+    expect(within(night).queryByRole("link", { name: "Shop the collection" })).toBeNull();
+  });
+
+  it("sets the pair inside the page container", () => {
+    render(<Home />);
+    expect(pair()).toHaveClass("max-w-7xl", "px-6", "md:px-12", "gap-3", "md:gap-4");
+  });
+
+  it("frames each photo at 4:3 across its panel", () => {
+    render(<Home />);
+    expect(within(pair()).getAllByRole("img").map((img) => img.parentElement?.classList.contains("aspect-[4/3]"))).toEqual([true, true]);
   });
 
   it("keeps each piece name on one line", () => {
@@ -574,9 +699,9 @@ describe("Home rebuild round 2", () => {
     expect(pair()).toHaveClass("md:grid-cols-2");
   });
 
-  it("sets the brunch half on cream on phones", () => {
+  it("frames the brunch panel with a hairline", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." }).parentElement).toHaveClass("bg-cream", "md:bg-white");
+    expect(screen.getByRole("heading", { name: "Cute enough to open at brunch." }).closest(".bg-cream")).toHaveClass("border-card-border");
   });
 
   it("keeps the moment heading in sentence case on phones", () => {
@@ -594,10 +719,9 @@ describe("Home rebuild round 2", () => {
     expect(within(pair()).getAllByRole("img")).toHaveLength(2);
   });
 
-  it("puts one shop button in the night half", () => {
+  it("leaves no shop button under the pair", () => {
     render(<Home />);
-    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
-    expect(within(night).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
+    expect(within(pair()).queryByRole("link", { name: "Shop the collection" })).toBeNull();
   });
 
   it("links each piece in the pieces grid", () => {
@@ -619,11 +743,24 @@ describe("Home rebuild round 2", () => {
 });
 
 describe("Nav position", () => {
-  it("places the nav links where Home places them on every page", () => {
-    const { container: home } = render(<SiteHeader overlay />);
-    const { container: other } = render(<SiteHeader />);
-    const group = (c: HTMLElement) => c.querySelector("nav[aria-label=Main]")?.parentElement?.className.replace(/md:text-cream/, "").trim();
-    expect(group(other)).toBe(group(home));
+  it("holds the desktop nav inside the header", () => {
+    const { container } = render(<SiteHeader />);
+    expect(container.querySelector("nav[aria-label=Main]")?.parentElement).toHaveClass("md:absolute");
+  });
+
+  it("opens the header with the offer bar", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("banner").firstElementChild).toHaveTextContent("Free shipping on 2 or more. Any 2 for $85.");
+  });
+
+  it("sets the offer bar on Dusty Rose", () => {
+    render(<SiteHeader />);
+    expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.")[0]).toHaveClass("bg-dusty", "text-ribbon", "tracking-[0.12em]");
+  });
+
+  it("tints the footer monogram pink", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("img", { name: "Boujie Call" })).toHaveClass("bg-pink");
   });
 });
 
@@ -635,13 +772,38 @@ describe("Home on phones", () => {
 
   it("sets the hero words over the photo", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute", "max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)]");
   });
 
-  it("keeps the seam button on one line", () => {
+  it("left-aligns View all pieces under the subtitle on phones", () => {
     render(<Home />);
-    const night = screen.getByRole("heading", { name: "Irresistible enough to wear that night." }).closest("[data-nav=dark]") as HTMLElement;
-    expect(within(night).getByRole("link", { name: "Shop the collection" })).toHaveClass("whitespace-nowrap");
+    expect(screen.getByRole("link", { name: "View all pieces" })).toHaveClass("self-start", "md:self-auto");
+  });
+
+  it("centers View all pieces on the heading row", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "View all pieces" }).parentElement).toHaveClass("md:items-center", "md:justify-between");
+  });
+
+  it("frames every piece card with a hairline", () => {
+    render(<Home />);
+    const frames = within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("link").map((a) => a.firstElementChild);
+    expect(frames.every((f) => f?.classList.contains("border-card-border"))).toBe(true);
+  });
+
+  it("spaces the gift section with the fluid section token", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("py-18", "md:py-section");
+  });
+
+  it("spaces the pair with the fluid section token", () => {
+    render(<Home />);
+    expect(screen.getByRole("region", { name: "From brunch to after dark" })).toHaveClass("py-18", "md:py-section");
+  });
+
+  it("drops the pieces top padding after the pair", () => {
+    render(<Home />);
+    expect(screen.getByRole("region", { name: /pieces/i })).toHaveClass("pb-18", "md:pb-section");
   });
 
   it("lays the gift strip in two columns", () => {

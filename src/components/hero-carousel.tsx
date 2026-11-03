@@ -23,10 +23,10 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
     <section
       aria-labelledby="hero-title"
       aria-roledescription="carousel"
-      className="relative flex flex-col md:-mt-20 md:grid md:h-svh md:min-h-[680px] md:grid-cols-[38fr_62fr]"
+      data-nav="dark"
+      className="relative flex flex-col bg-ribbon text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]"
     >
-      <div className="relative h-[calc(100svh-4.75rem)] min-h-[560px] overflow-hidden md:order-2 md:h-auto md:min-h-0">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-40 bg-linear-to-b from-ink/50 to-transparent md:block" />
+      <div className="relative h-[calc(100svh-6.75rem)] min-h-[560px] overflow-hidden md:order-2 md:h-auto md:min-h-0">
         {heroSlides.map((s, i) => (
           <div
             key={s.src}
@@ -49,10 +49,10 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
         ))}
       </div>
 
-      <div data-hero-words className="flex flex-col justify-between bg-linear-to-t from-ink/90 via-ink/65 to-transparent px-6 pt-40 pb-4 text-cream max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-20 md:order-1 md:bg-white md:bg-none md:text-ink md:px-12 md:pt-20 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+      <div data-hero-words className="flex flex-col justify-between px-6 pt-10 pb-4 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-20 max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)] max-md:pt-40 md:order-1 md:bg-ribbon md:px-12 md:pt-12 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
         <div className="flex flex-1 flex-col items-start justify-center">{children}</div>
         <div className="mt-6 flex items-center justify-between gap-4 md:mt-0">
-          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-[10px] text-cream/80 md:whitespace-nowrap md:text-muted md:hover:text-ink">
+          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-blush/75 hover:text-blush md:whitespace-nowrap">
             {slide.piece} · {slide.colorway}
           </Link>
           <div className="flex items-center gap-1">
@@ -68,17 +68,17 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
                 }}
                 className="relative h-11 w-6"
               >
-                <span aria-hidden="true" className="absolute inset-x-1 top-1/2 h-px bg-cream/40 md:bg-ink/20" />
+                <span aria-hidden="true" className="absolute inset-x-1 top-1/2 h-px bg-blush/30" />
                 {i === index && (
                   <span
                     key={`${index}-${running}`}
                     aria-hidden="true"
-                    className={`absolute inset-x-1 top-1/2 h-px origin-left bg-rose ${running ? "motion-safe:animate-[progress_5s_linear]" : ""}`}
+                    className={`absolute inset-x-1 top-1/2 h-px origin-left bg-pink ${running ? "motion-safe:animate-[progress_5s_linear]" : ""}`}
                   />
                 )}
               </button>
             ))}
-            <button type="button" aria-label={paused ? "Play slideshow" : "Pause slideshow"} onClick={() => setPaused((p) => !p)} className="ml-1 grid size-11 place-items-center text-cream/80 md:text-muted md:hover:text-ink">
+            <button type="button" aria-label={paused ? "Play slideshow" : "Pause slideshow"} onClick={() => setPaused((p) => !p)} className="ml-1 grid size-11 place-items-center text-blush/75 hover:text-blush">
               <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
                 {paused ? <path d="M2 1l7 4-7 4z" /> : <path d="M2 1h2v8H2zM6 1h2v8H6z" />}
               </svg>

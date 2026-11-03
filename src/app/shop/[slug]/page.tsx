@@ -24,25 +24,25 @@ export default async function ProductPage({ params }: Props) {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-7xl px-6 pt-10 pb-28 md:px-12 md:pt-16">
+      <main className="mx-auto max-w-7xl px-6 pt-10 pb-28 md:px-12 md:pt-8 short:pt-6">
         <Link href="/shop" className="cta group gap-3 px-6">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1" className="transition-transform group-hover:-translate-x-1">
             <path d="M15 9H3M8 4L3 9l5 5" />
           </svg>
           Back to the shop
         </Link>
-        <div className="mt-8">
+        <div className="mt-8 md:mt-6">
           <ProductView
             product={product}
             intro={
               <>
-                <h1 className="text-5xl md:text-6xl">{product.name}</h1>
-                <Price product={product} className="mt-4" />
-                <p className="mt-6 max-w-md leading-relaxed text-muted">{product.description}</p>
+                <h1 className="text-[clamp(36px,3.2vw,52px)]">{product.name}</h1>
+                <Price product={product} className="mt-3" />
+                <p className="mt-4 max-w-md leading-relaxed text-muted md:text-[clamp(15px,1.1vw,17px)]">{product.description}</p>
               </>
             }
             details={
-              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base md:text-sm">
+              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base">
                 <dt>Fabric</dt>
                 <dd className="text-muted">{product.fabric}</dd>
                 <dt>Care</dt>
