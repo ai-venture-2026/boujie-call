@@ -95,7 +95,7 @@ export default function SendACall() {
         <ClosingBanner
           id="waitlist"
           tone="ink"
-          photo="/images/close/mocha-romper-banner.webp"
+          photo="/images/banners/mocha-romper-banner.webp"
           alt="A woman in The Romper in Mocha smiles down at a black gift box tied in pink ribbon"
           focus="78% 20%"
           title={

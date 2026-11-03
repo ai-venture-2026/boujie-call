@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Image folders: logos and monogram move from the public root to public/images/brand; the Home gift photos live in public/images/gift-strip, the brunch and night pair in brunch-night, and the closing banners in banners. The site looks the same.
 - Dark pink version, phones: the Home, About and Send a Call heroes follow the light version again, words over a full-screen photo on a soft black fade, with the fade strengthened so the words stay readable on light pink photos. Home piece cards read name, price, then colorway count on phones, with the price at body size.
 - Dark pink version, laptops: the product page fits 1024x640, 1280x720 and 1440x800 with Add to your bag on screen; the image column sizes to the screen height so the 3:4 photo never runs past it; fluid title, description, labels, body and section spacing scale down between 1024 and 1440; the info column is sticky. Clicking the logo or Home while on Home scrolls back to the top.
 - Dark pink version, Home: each brunch and night panel opens The Slip Dress with its colorway selected; Shop the Slip Dress in Rose and in After Dark lines with a pink underline on hover (always on phones); the photo scales gently on hover unless reduced motion is set; both headlines wrap to two lines so the Shop lines sit level.
