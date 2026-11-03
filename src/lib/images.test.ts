@@ -37,11 +37,13 @@ const pinkSwaps: [string, string, number, number][] = [
   ["public/images/gift-strip/ribbon.webp", "assets/shoot/home/strip-a-ribbon.png", 0.05, 0.05],
   ["public/images/gift-strip/open-box.webp", "assets/shoot/home/strip-b-open-box.png", 0.1, 0.95],
   ["public/images/gift-strip/card.webp", "assets/shoot/home/strip-c-card.png", 0.95, 0.5],
-  ["public/images/gift-strip/unboxing.webp", "assets/shoot/home/strip-d-unboxing.png", 0.95, 0.05],
+  ["public/images/gift-strip/unboxing.webp", "assets/shoot/home/strip-d-unboxing.png", 0.1, 0.7],
   ["public/images/gift-strip/mist.webp", "assets/shoot/home/strip-e-mist.png", 0.05, 0.05],
   ["public/images/details/brown-romper-hip.webp", "assets/shoot/home/section-2-mocha-romper.png", 0.05, 0.05],
   ["public/images/send-a-call/hero-rose-slip.webp", "assets/shoot/pages/send-a-call-hero-rose-slip.png", 0.05, 0.05],
   ["public/images/banners/blue-romper-banner.webp", "assets/shoot/banners/home-banner-blue-romper.png", 0.05, 0.05],
+  ["public/images/about/hero-blue-romper.webp", "assets/shoot/pages/about-hero-blue-romper.png", 0.5, 0.2],
+  ["public/images/about/story-after-dark.webp", "assets/shoot/pages/about-story-after-dark.png", 0.05, 0.5],
 ];
 
 const groundHue = async (file: string, fx: number, fy: number) => {
@@ -49,7 +51,8 @@ const groundHue = async (file: string, fx: number, fy: number) => {
   const size = Math.max(8, Math.round(width / 40));
   const left = Math.min(width - size, Math.max(0, Math.round(fx * width) - size / 2));
   const top = Math.min(height - size, Math.max(0, Math.round(fy * height) - size / 2));
-  const { channels } = await sharp(file).extract({ left: Math.round(left), top: Math.round(top), width: size, height: size }).stats();
+  const patch = await sharp(file).extract({ left: Math.round(left), top: Math.round(top), width: size, height: size }).toBuffer();
+  const { channels } = await sharp(patch).stats();
   const [r, g, b] = channels.map((c) => c.mean);
   const max = Math.max(r, g, b);
   const d = max - Math.min(r, g, b);
@@ -65,9 +68,9 @@ describe("Pink batch swap", () => {
     expect(hue >= 300 || hue <= 15, `hue ${hue.toFixed(1)}`).toBe(true);
   });
 
-  it("lists only the three photos still waiting for pink", () => {
+  it("lists only the lace detail as still waiting for pink", () => {
     const readme = readFileSync("assets/pink-batch/README.md", "utf8");
     const waiting = readme.split("## Staying")[0].match(/^\| [\w/-]+\.webp/gm) ?? [];
-    expect(waiting.map((row) => row.slice(2)).sort()).toEqual(["about/hero-blue-romper.webp", "about/story-after-dark.webp", "details/brown-romper-lace.webp"]);
+    expect(waiting.map((row) => row.slice(2)).sort()).toEqual(["details/brown-romper-lace.webp"]);
   });
 });
