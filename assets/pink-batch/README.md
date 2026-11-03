@@ -7,8 +7,6 @@ Drop new soft pink background photos here, in any file name and format. This fol
 | Replaces | Shape | Shown on |
 |---|---|---|
 | details/brown-romper-lace.webp | 4:5 portrait | Shop header, Send a Call |
-| about/hero-blue-romper.webp | 3:2 landscape | About hero |
-| about/story-after-dark.webp | 3:2 landscape | About story |
 
 Landscape photos at least 2500px wide, portrait and square at least 1200px wide.
 
