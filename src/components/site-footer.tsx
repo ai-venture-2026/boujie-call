@@ -26,7 +26,7 @@ export function SiteFooter() {
     <footer data-nav="dark" className="bg-ribbon text-blush">
       <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 pt-14 pb-8 md:flex-row md:items-end md:justify-between md:px-12 md:pt-16 md:pb-10">
         <div className="flex flex-col items-start gap-5">
-          <span role="img" aria-label="Boujie Call" className="block aspect-[439/430] h-24 bg-pink [mask:url(/boujie-call-monogram-ink.png)_center/contain_no-repeat] md:h-36" />
+          <span role="img" aria-label="Boujie Call" className="block aspect-[439/430] h-24 bg-pink [mask:url(/images/brand/monogram-ink.png)_center/contain_no-repeat] md:h-36" />
           <p className="font-serif text-xl italic">Luxury nightwear gifts.</p>
           <ul className="flex flex-col gap-1 text-[15px] text-blush/75 max-md:hidden">
             {socials.map((s) => (
