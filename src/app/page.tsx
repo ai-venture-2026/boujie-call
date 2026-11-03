@@ -13,11 +13,11 @@ const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 const romper = getProduct("the-romper");
 
 const strip = [
-  { src: "/images/strip/ribbon.webp", box: "md:mt-28 md:aspect-[4/3] md:w-[20vw]" },
-  { src: "/images/strip/open-box.webp", box: "md:aspect-[3/4] md:w-[18vw]" },
-  { src: "/images/strip/card.webp", box: "md:mt-16 md:aspect-square md:w-[15vw]" },
-  { src: "/images/strip/unboxing.webp", box: "md:mt-6 md:aspect-[4/5] md:w-[24vw]" },
-  { src: "/images/strip/mist.webp", box: "max-md:col-span-2 max-md:aspect-[3/2] md:mt-32 md:aspect-[4/3] md:w-[20vw]" },
+  { src: "/images/gift-strip/ribbon.webp", box: "md:mt-28 md:aspect-[4/3] md:w-[20vw]" },
+  { src: "/images/gift-strip/open-box.webp", box: "md:aspect-[3/4] md:w-[18vw]" },
+  { src: "/images/gift-strip/card.webp", box: "md:mt-16 md:aspect-square md:w-[15vw]" },
+  { src: "/images/gift-strip/unboxing.webp", box: "md:mt-6 md:aspect-[4/5] md:w-[24vw]" },
+  { src: "/images/gift-strip/mist.webp", box: "max-md:col-span-2 max-md:aspect-[3/2] md:mt-32 md:aspect-[4/3] md:w-[20vw]" },
 ];
 
 function PieceCard({ product }: { product: Product }) {
@@ -122,10 +122,10 @@ export default function Home() {
         </section>
 
         <section aria-label="From brunch to after dark" className="mx-auto grid max-w-7xl gap-3 px-6 py-18 md:grid-cols-2 md:gap-4 md:px-12 md:py-section">
-          <Panel colorway="rose" name="Rose" photo="/images/turn/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" ground="border-card-border bg-cream" line="text-muted">
+          <Panel colorway="rose" name="Rose" photo="/images/brunch-night/day-rose-slip.webp" alt="A woman laughs over a coffee cup in The Slip Dress in Rose" ground="border-card-border bg-cream" line="text-muted">
             Cute enough to open at <em className="text-rose">brunch.</em>
           </Panel>
-          <Panel colorway="after-dark" name="After Dark" photo="/images/turn/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" ground="border-ribbon bg-ribbon text-blush" line="text-blush/80" dark>
+          <Panel colorway="after-dark" name="After Dark" photo="/images/brunch-night/night-after-dark.webp" alt="A woman looks back over her shoulder in The Slip Dress in After Dark" ground="border-ribbon bg-ribbon text-blush" line="text-blush/80" dark>
             Irresistible enough to wear <em className="text-pink">that night.</em>
           </Panel>
         </section>
@@ -161,7 +161,7 @@ export default function Home() {
         <ClosingBanner
           id="closing"
           tone="light"
-          photo="/images/close/blue-romper-banner.webp"
+          photo="/images/banners/blue-romper-banner.webp"
           alt="A woman in The Romper in Powder Blue sits on a stone block"
           focus="80% 0%"
           title={
