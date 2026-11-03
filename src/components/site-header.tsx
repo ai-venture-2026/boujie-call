@@ -3,49 +3,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BAG_OPENED, bagCount, useBag } from "@/lib/bag";
 import { pages, socials } from "@/lib/content";
 import { OFFER } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
+  if (tone === "pink") return <span role="img" aria-label="Boujie Call" className={`block aspect-[960/342] bg-pink [mask:url(/boujie-call-logo-ink.png)_center/contain_no-repeat] ${className}`} />;
   return <Image src={`/boujie-call-logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
 }
 
-const onScroll = (l: () => void) => {
-  window.addEventListener("scroll", l, { passive: true });
-  window.addEventListener("resize", l);
-  return () => {
-    window.removeEventListener("scroll", l);
-    window.removeEventListener("resize", l);
-  };
-};
-
-function useScrolled() {
-  return useSyncExternalStore(onScroll, () => window.scrollY > 8, () => false);
-}
-
-// True when a section marked data-nav="dark" sits under the header.
-function useOverDark() {
-  return useSyncExternalStore(
-    onScroll,
-    () => (document.elementsFromPoint?.(window.innerWidth / 2, 40) ?? []).some((el) => !el.closest("header") && el.closest("[data-nav=dark]")),
-    () => false,
-  );
-}
-
-// overlay: Home hero, where the left 38% is a white panel and the rest is photo.
-export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+export function SiteHeader() {
   const pathname = usePathname();
   const drawer = useRef<HTMLDialogElement>(null);
   const close = () => drawer.current?.close();
   const current = (href: string) => (pathname === href ? "page" : undefined);
+  // A link to the page already open scrolls back to its top instead of doing nothing.
+  const toTop = (href: string, e: React.MouseEvent) => {
+    if (pathname !== href || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  };
   const count = bagCount(useBag());
-  const scrolled = useScrolled();
-  const dark = useOverDark();
-  const clear = overlay && !scrolled;
-  const onPhoto = clear ? "md:text-cream" : "";
   const [bagOpen, setBagOpen] = useState(false);
   const bagButton = useRef<HTMLButtonElement>(null);
   const bagPanel = useRef<HTMLDivElement>(null);
@@ -91,33 +70,32 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
     };
   }, [bagOpen]);
 
-  const glass = dark ? "border-cream/10 bg-ink/55 text-cream backdrop-blur-md" : "border-ink/10 bg-white/70 text-ink backdrop-blur-md";
-
   return (
-    <header className={`sticky top-0 z-40 border-b-[0.5px] transition-colors duration-500 ${clear ? "border-ink/10 bg-white text-ink md:border-transparent md:bg-transparent" : glass}`}>
+    <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ribbon text-blush">
+      <p className="label bg-dusty px-6 py-2 text-center leading-4 tracking-[0.12em] text-ribbon">{OFFER}</p>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
-        <Link href="/" aria-label="Boujie Call home" className="flex min-h-11 items-center">
-          <Logo tone={dark && !clear ? "pink" : "ink"} className="h-10 md:h-12" />
+        <Link href="/" aria-label="Boujie Call home" onClick={(e) => toTop("/", e)} className="flex min-h-11 items-center">
+          <Logo tone="pink" className="h-10 md:h-12" />
         </Link>
 
-        <div className={`hidden items-center gap-10 md:flex md:fixed md:top-0 md:right-28 md:left-[38%] md:h-20 md:justify-center ${onPhoto} transition-colors duration-500`}>
+        <div className="hidden items-center gap-6 md:absolute md:inset-y-0 md:right-28 md:left-56 md:flex md:justify-center xl:left-[38%] xl:gap-10">
           <nav aria-label="Main">
-            <ul className="label flex gap-9">
+            <ul className="label flex gap-6 whitespace-nowrap xl:gap-9">
               {pages.map((p) => (
                 <li key={p.href}>
-                  <Link href={p.href} aria-current={current(p.href)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
+                  <Link href={p.href} aria-current={current(p.href)} onClick={(e) => toTop(p.href, e)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
                     {p.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
-          <Link href="/shop" className="cta min-h-10 px-6">
+          <Link href="/shop" className="cta min-h-10 px-6 whitespace-nowrap max-lg:hidden">
             Shop the collection
           </Link>
         </div>
 
-        <div className={`flex items-center gap-5 transition-colors duration-500 ${onPhoto}`}>
+        <div className="flex items-center gap-5">
           <button
             ref={bagButton}
             type="button"
@@ -169,7 +147,14 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       >
         <div className="flex h-full flex-col overflow-y-auto">
           <div className="flex items-center justify-between border-b-[0.5px] border-ink/10 px-6 py-4">
-            <Link href="/" aria-label="Boujie Call home" onClick={close}>
+            <Link
+                href="/"
+                aria-label="Boujie Call home"
+                onClick={(e) => {
+                  close();
+                  toTop("/", e);
+                }}
+              >
               <Logo tone="ink" className="h-10" />
             </Link>
             <button type="button" aria-label="Close menu" className="grid size-11 place-items-center" onClick={close}>
@@ -182,7 +167,14 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             <ul>
               {pages.map((p) => (
                 <li key={p.href} className="border-b-[0.5px] border-ink/10">
-                  <Link href={p.href} aria-current={current(p.href)} onClick={close} className="flex min-h-16 items-center justify-between font-serif text-3xl aria-[current=page]:text-rose aria-[current=page]:italic">
+                  <Link
+                    href={p.href}
+                    aria-current={current(p.href)}
+                    onClick={(e) => {
+                      close();
+                      toTop(p.href, e);
+                    }}
+                    className="flex min-h-16 items-center justify-between font-serif text-3xl aria-[current=page]:text-rose aria-[current=page]:italic">
                     {p.label}
                     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1">
                       <path d="M3 9h12M10 4l5 5-5 5" />
@@ -197,11 +189,11 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
           <div className="mt-auto px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))]">
-            <p className="label text-[10px] text-muted">{OFFER}</p>
+            <p className="label text-muted">{OFFER}</p>
             <Link href="/shop" onClick={close} className="cta cta-primary mt-4 w-full">
               Shop the collection
             </Link>
-            <ul className="label mt-5 flex gap-6 text-[10px] text-muted">
+            <ul className="label mt-5 flex gap-6 text-muted">
               {socials.map((s) => (
                 <li key={s.label}>
                   <a href={s.url} className="text-ink">

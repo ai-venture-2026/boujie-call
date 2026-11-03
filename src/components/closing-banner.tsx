@@ -25,15 +25,16 @@ export function ClosingBanner({
 }) {
   const ink = tone === "ink";
   return (
-    <section id={id} data-nav={ink ? "dark" : undefined} className={`relative ${ink ? "bg-ink text-cream" : "bg-blush text-ink"}`}>
+    <section id={id} data-nav={ink ? "dark" : undefined} className={`relative ${ink ? "bg-ribbon text-blush" : "bg-cream text-ink"}`}>
       <div className="relative h-[52svh] md:absolute md:inset-0 md:h-auto">
         <Image src={photo} alt={alt} fill sizes="(min-width: 768px) 100vw, 270vw" style={{ objectPosition: focus }} className="object-cover" />
+        {ink && <div aria-hidden="true" className="absolute inset-0 hidden bg-linear-to-r from-ribbon/85 via-ribbon/40 to-transparent md:block" />}
       </div>
-      <div className="relative mx-auto max-w-7xl px-6 py-16 md:flex md:h-[64svh] md:max-h-[720px] md:min-h-[540px] md:items-center md:px-12 md:py-0">
+      <div className="relative mx-auto max-w-7xl px-6 py-19 md:flex md:h-[64svh] md:max-h-[720px] md:min-h-[540px] md:items-center md:px-12 md:py-0">
         <div className="max-w-lg md:max-w-[min(30rem,42%)] rise">
           <h2 className="text-[clamp(2.5rem,4.4vw,4.5rem)] leading-[1.02]">{title}</h2>
-          <p className={`mt-5 font-serif text-xl italic md:text-2xl ${ink ? "text-cream/80" : "text-ink/80"}`}>{line}</p>
-          {body && <p className={`mt-6 max-w-sm text-base leading-relaxed ${ink ? "text-cream/75" : "text-ink/75"}`}>{body}</p>}
+          <p className={`mt-5 font-serif text-xl italic md:text-2xl ${ink ? "text-blush/80" : "text-ink/80"}`}>{line}</p>
+          {body && <p className={`mt-6 max-w-sm text-base leading-relaxed ${ink ? "text-blush/75" : "text-ink/75"}`}>{body}</p>}
           <div className="mt-6">{children}</div>
         </div>
       </div>

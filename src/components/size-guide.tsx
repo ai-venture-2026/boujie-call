@@ -12,7 +12,7 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
 
   return (
     <>
-      <button type="button" onClick={() => dialog.current?.showModal()} className="link ml-4 inline-flex min-h-11 items-center text-base md:text-sm">
+      <button type="button" onClick={() => dialog.current?.showModal()} className="link ml-4 inline-flex min-h-11 items-center text-base">
         Size guide
       </button>
       <dialog
@@ -32,13 +32,13 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
               </svg>
             </button>
           </div>
-          <p className="mt-3 text-sm text-muted">Placeholder. Measurements to come from Boujie Call.</p>
-          <table className="mt-8 w-full text-left text-sm">
+          <p className="mt-3 text-[15px] text-muted">Placeholder. Measurements to come from Boujie Call.</p>
+          <table className="mt-8 w-full text-left text-[15px]">
             <caption className="sr-only">Measurements by size, placeholder</caption>
             <thead>
               <tr className="border-b-[0.5px] border-ink/15">
                 {["Size", ...columns].map((c) => (
-                  <th key={c} scope="col" className="label pb-3 text-[10px] font-normal text-muted">
+                  <th key={c} scope="col" className="label pb-3 text-muted">
                     {c}
                   </th>
                 ))}

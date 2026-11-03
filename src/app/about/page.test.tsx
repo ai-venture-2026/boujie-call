@@ -13,6 +13,11 @@ describe("About", () => {
     expect(pillars.map((p) => p.textContent)).toEqual(["Luxe without pretense", "Made for the moment", "For her, by her"]);
   });
 
+  it("sets the founder quote at Cormorant 400", () => {
+    const { container } = render(<About />);
+    expect(container.querySelector("blockquote")).not.toHaveClass("font-light");
+  });
+
   it("attributes the founder quote", () => {
     render(<About />);
     expect(screen.getByText("Founder, Boujie Call").closest("figure")?.querySelector("blockquote")).toHaveTextContent("Something she would actually remember.");
@@ -44,10 +49,11 @@ describe("About", () => {
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 
-  it("sets the closing section on blush", () => {
+  it("sets the closing section on Cream Lace", () => {
     render(<About />);
-    expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-blush");
+    expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-cream");
   });
+
 
   it("closes on the rose dress banner", () => {
     render(<About />);
@@ -67,9 +73,14 @@ describe("About", () => {
     expect(within(story).getByRole("img").getAttribute("src")).toContain("story-after-dark");
   });
 
+  it("sets the About eyebrow in full Blush Silk on phones", () => {
+    render(<About />);
+    expect(screen.getByText("About", { selector: "p" })).toHaveClass("max-md:text-blush");
+  });
+
   it("sets the hero words over the photo on phones", () => {
     render(<About />);
-    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("max-md:absolute", "max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)]");
   });
 
   it("marks the hero for the adaptive nav", () => {

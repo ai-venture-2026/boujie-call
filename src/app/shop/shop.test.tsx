@@ -34,6 +34,56 @@ describe("Shop", () => {
   });
 });
 
+describe("Product page on laptops", () => {
+  it("sizes the product title fluidly", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-[clamp(36px,3.2vw,52px)]");
+  });
+
+  it("caps the image column so the photo fits the viewport", async () => {
+    const { container } = await renderProduct("the-slip-dress");
+    expect(container.querySelector("main .grid")).toHaveClass("lg:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),calc(50%-2rem))_1fr]");
+  });
+
+  it("keeps the main photo at 3:4", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" })).toHaveClass("aspect-[3/4]");
+  });
+
+  it("keeps the info column in view on desktop", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("md:sticky", "md:top-32", "md:self-start");
+  });
+
+  it("narrows the image column below lg", async () => {
+    const { container } = await renderProduct("the-slip-dress");
+    expect(container.querySelector("main .grid")).toHaveClass("md:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),45%)_1fr]");
+  });
+
+  it("tightens the gap above the button on short laptop screens", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("short:mt-5");
+  });
+
+  it("sets size pills 40px tall for mouse users from md", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("radio", { name: "M" }).parentElement).toHaveClass("md:pointer-fine:h-10", "md:min-w-12");
+  });
+});
+
+describe("Product typography", () => {
+  it("sets the product price in DM Sans 500", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getAllByText("$48.00")[0]).toHaveClass("font-sans", "font-medium");
+  });
+
+  it("reads the offer line at body size on desktop", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.").at(-1)).not.toHaveClass("md:text-sm");
+  });
+});
+
 describe("Product page", () => {
   it("checks the colorway the visitor chooses", async () => {
     await renderProduct("the-slip-dress");
@@ -164,6 +214,11 @@ describe("Shop collection", () => {
     expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveAttribute("href", "/send-a-call");
   });
 
+  it("sets the collection header on ink", () => {
+    render(<Shop />);
+    expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ribbon");
+  });
+
   it("titles the page The collection", () => {
     render(<Shop />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("The collection");
@@ -224,6 +279,12 @@ describe("Product page shapes", () => {
     await renderProduct("the-slip-dress");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("bg-stone");
+  });
+
+  it("grounds the product photo with a contact shadow", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("contact");
   });
 });
 
@@ -501,9 +562,9 @@ describe("Shop cards on phones", () => {
     expect(within(items()[0]).getByText("The Slip Dress")).toHaveClass("truncate");
   });
 
-  it("sets the card price at 16px", () => {
+  it("sets the card price at 17px", () => {
     render(<Shop />);
-    expect(within(items()[0]).getByText("$48.00")).toHaveClass("text-base");
+    expect(within(items()[0]).getByText("$48.00")).toHaveClass("text-[17px]");
   });
 
   it("centers a single last card", () => {

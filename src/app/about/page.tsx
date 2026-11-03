@@ -23,12 +23,12 @@ export default function About() {
     <>
       <SiteHeader />
       <main>
-        <section data-nav="dark" className="relative flex flex-col bg-ink text-cream md:grid md:h-[calc(100svh-5rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
-          <div className="relative h-[calc(100svh-4.75rem)] min-h-[560px] md:order-2 md:h-auto md:min-h-0">
+        <section data-nav="dark" className="relative flex flex-col bg-ribbon text-blush md:grid md:h-[calc(100svh-7rem)] md:min-h-[600px] md:grid-cols-[38fr_62fr]">
+          <div className="relative h-[calc(100svh-6.75rem)] min-h-[560px] md:order-2 md:h-auto md:min-h-0">
             <Image src="/images/about/hero-blue-romper.webp" alt="A woman in The Romper in Powder Blue relaxes in a floral armchair with a book" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "66% 35%" }} className="object-cover" />
           </div>
-          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-10 max-md:bg-linear-to-t max-md:from-ink/90 max-md:via-ink/60 max-md:to-transparent max-md:pt-40 max-md:pb-10 max-md:text-cream md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
-            <p className="label text-muted-dark">About</p>
+          <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-10 max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)] max-md:pt-40 max-md:pb-10 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+            <p className="label text-blush/75 max-md:text-blush">About</p>
             <h1 className="mt-6 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02]">
               Every girl deserves a Boujie <em className="text-pink">Call.</em>
             </h1>
@@ -37,7 +37,7 @@ export default function About() {
         </section>
 
         <section className="grid bg-cream md:grid-cols-2">
-          <div className="flex flex-col justify-center px-6 py-16 md:px-16 md:py-32">
+          <div className="flex flex-col justify-center px-6 py-19 md:px-16 md:py-38">
             <p className="label text-rose">Our story</p>
             <h2 className="mt-6 text-[clamp(2.25rem,3.8vw,3.75rem)] leading-[1.04] rise">
               It started with a <em className="text-rose">feeling.</em>
@@ -55,10 +55,10 @@ export default function About() {
           </div>
         </section>
 
-        <section className="bg-blush py-16 md:py-40">
-          <ul aria-label="What we stand for" className={`${wrap} grid border-t-[0.5px] border-rose/25 md:grid-cols-3 md:divide-x-[0.5px] md:divide-rose/25`}>
+        <section className="bg-blush py-19 md:py-section-lg">
+          <ul aria-label="What we stand for" className={`${wrap} grid border-t-[0.5px] border-card-border md:grid-cols-3 md:divide-x-[0.5px] md:divide-card-border`}>
             {pillars.map((p) => (
-              <li key={p.title} className="border-b-[0.5px] border-rose/25 py-10 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
+              <li key={p.title} className="border-b-[0.5px] border-card-border py-10 rise md:border-b-0 md:px-10 md:py-14 md:first:pl-0 md:last:pr-0">
                 <h2 className="text-[clamp(1.75rem,2.6vw,2.5rem)] leading-[1.05]">{p.title}</h2>
                 <p className="mt-5 max-w-xs text-base leading-relaxed text-muted">{p.body}</p>
               </li>
@@ -66,9 +66,9 @@ export default function About() {
           </ul>
         </section>
 
-        <section data-nav="dark" className="bg-ink py-16 text-cream md:py-40">
+        <section data-nav="dark" className="bg-ribbon py-19 text-blush md:py-section-lg">
           <figure className={`${wrap} max-w-4xl text-center`}>
-            <blockquote className="font-serif text-[clamp(1.75rem,3.2vw,3rem)] leading-[1.2] font-light italic rise">
+            <blockquote className="font-serif text-[clamp(1.75rem,3.2vw,3rem)] leading-[1.2] italic rise">
               &ldquo;I wanted to send something that felt truly special, not just flowers, not just a gift card. Something she would actually remember.&rdquo;
             </blockquote>
             <figcaption className="label mt-10 text-pink">Founder, Boujie Call</figcaption>

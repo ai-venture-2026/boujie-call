@@ -12,7 +12,7 @@ const views = ["front", "back", "detail"];
 function ToCome({ label }: { label?: string }) {
   return (
     <div role={label ? "img" : undefined} aria-label={label} className="absolute inset-0">
-      <span className={`label absolute text-muted ${label ? "right-4 bottom-4 text-[10px]" : "right-2 bottom-2 text-[8px] tracking-[0.12em]"}`}>Image to come</span>
+      <span className={`label absolute text-muted ${label ? "right-4 bottom-4" : "right-2 bottom-2 whitespace-nowrap text-[10px] tracking-[0.1em]"}`}>Image to come</span>
     </div>
   );
 }
@@ -64,7 +64,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
   }
 
   return (
-    <div className="grid gap-10 md:grid-cols-2 md:gap-16">
+    <div className="grid gap-10 md:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),45%)_1fr] lg:grid-cols-[min(max(16rem,calc((100svh-14rem)*0.75)),calc(50%-2rem))_1fr] lg:gap-16">
       <div>
         {/* Phones swipe the track; from md only the active slide shows and the thumbnails pick it. */}
         <div
@@ -76,9 +76,9 @@ export function ProductView({ product, intro, details }: { product: Product; int
           className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] md:overflow-visible"
         >
           {views.map((v, i) => (
-            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${i === view ? "" : "md:hidden"}`}>
+            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images[i] ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
               {shown.images[i] ? (
-                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 50vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
+                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover mix-blend-multiply" />
               ) : (
                 <ToCome label={`${product.name} in ${shown.name}, ${v}`} />
               )}
@@ -111,13 +111,13 @@ export function ProductView({ product, intro, details }: { product: Product; int
         </div>
       </div>
 
-      <div>
+      <div className="md:sticky md:top-32 md:self-start">
         {intro}
-        <fieldset ref={colorways} className="mt-10 scroll-mt-28">
-          <legend className="text-base md:text-sm">
+        <fieldset ref={colorways} className="mt-7 scroll-mt-28 short:mt-5">
+          <legend className="text-base">
             Colorway: <span className="text-muted">{chosen ? chosen.name : "choose one"}</span>
           </legend>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             {product.colorways.map((c) => (
               <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
                 <input type="radio" name="colorway" value={c.name} aria-label={c.name} className="sr-only" checked={chosen?.name === c.name} onChange={() => {
@@ -125,33 +125,33 @@ export function ProductView({ product, intro, details }: { product: Product; int
                     setView(0);
                     if (track.current) track.current.scrollLeft = 0;
                   }} />
-                <span aria-hidden="true" className="size-7 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
+                <span aria-hidden="true" className="size-8 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
               </label>
             ))}
           </div>
         </fieldset>
-        <fieldset ref={sizes} className="mt-8 scroll-mt-28">
-          <legend className="float-left py-2.5 text-base md:text-sm">
+        <fieldset ref={sizes} className="mt-6 scroll-mt-28 short:mt-4">
+          <legend className="float-left py-2.5 text-base">
             Size: <span className="text-muted">{size ?? "choose one"}</span>
           </legend>
           <SizeGuide sizes={product.sizes} />
-          <div className="clear-both mt-4 flex flex-wrap gap-2 pt-px">
+          <div className="clear-both mt-3 flex flex-wrap gap-2 pt-px">
             {product.sizes.map((s) => (
-              <label key={s} className="grid h-11 min-w-14 cursor-pointer place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors md:text-sm hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer md:min-w-12 md:pointer-fine:h-10 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
                 <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>
             ))}
           </div>
         </fieldset>
-        <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-10 w-full sm:w-auto">
+        <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-7 w-full sm:w-auto short:mt-5">
           Add to your bag
         </button>
-        <p className="mt-3 text-base text-muted md:text-sm">{OFFER}</p>
-        <p role="alert" className="mt-4 text-base md:text-sm">
+        <p className="mt-3 text-base text-muted">{OFFER}</p>
+        <p role="alert" className="mt-4 text-base">
           {missing}
         </p>
-        <p role="status" className="text-base text-muted md:text-sm">
+        <p role="status" className="text-base text-muted">
           {added}
         </p>
         {details}
@@ -165,7 +165,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         >
           <div className="min-w-0">
             <p className="truncate font-serif text-xl">{product.name}</p>
-            <p className="text-base text-muted">{formatPrice(product.priceCents)}</p>
+            <p className="text-[17px] font-medium text-muted">{formatPrice(product.priceCents)}</p>
           </div>
           <button type="button" onClick={() => add(true)} className="cta cta-primary shrink-0 px-6">
             Add to your bag
@@ -176,11 +176,11 @@ export function ProductView({ product, intro, details }: { product: Product; int
   );
 }
 
-export function Price({ product, className = "" }: { product: Product; className?: string }) {
+export function Price({ product, compact = false, className = "" }: { product: Product; compact?: boolean; className?: string }) {
   return (
     <p className={`flex items-baseline gap-3 ${className}`}>
-      <span className="font-serif text-2xl">{formatPrice(product.priceCents)}</span>
-      {product.placeholderPrice && <span className="text-xs text-muted">Placeholder price</span>}
+      <span className={`font-sans font-medium ${compact ? "text-base" : "text-xl"}`}>{formatPrice(product.priceCents)}</span>
+      {product.placeholderPrice && <span className="text-[13px] text-muted">Placeholder price</span>}
     </p>
   );
 }
