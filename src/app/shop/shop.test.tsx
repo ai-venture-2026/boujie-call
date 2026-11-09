@@ -667,3 +667,50 @@ describe("Live stock from Shopify", () => {
     expect(setCards.every((c) => c.textContent?.includes("Coming soon") && !c.textContent.includes("$48.00"))).toBe(true);
   });
 });
+
+describe("Gallery across the md breakpoint", () => {
+  let wide = true;
+  let onChange: (() => void) | null = null;
+  beforeEach(() => {
+    wide = true;
+    vi.stubGlobal("matchMedia", (q: string) => ({
+      get matches() {
+        return q.includes("min-width") ? wide : false;
+      },
+      addEventListener: (_: string, fn: () => void) => (onChange = fn),
+      removeEventListener() {},
+    }));
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
+  const track = (container: HTMLElement) => {
+    const el = container.querySelector(".snap-x") as HTMLDivElement;
+    Object.defineProperty(el, "clientWidth", { configurable: true, value: 400 });
+    return el;
+  };
+
+  it("scrolls to the chosen photo when the window narrows below md", async () => {
+    const { container } = await renderProduct("the-romper");
+    const el = track(container);
+    fireEvent.click(screen.getByRole("button", { name: "Show back" }));
+    wide = false;
+    act(() => onChange?.());
+    expect(el.scrollLeft).toBe(400);
+  });
+
+  it("keeps the chosen photo when the track scrolls at md", async () => {
+    const { container } = await renderProduct("the-romper");
+    const el = track(container);
+    fireEvent.click(screen.getByRole("button", { name: "Show detail" }));
+    fireEvent.scroll(el);
+    expect(screen.getByRole("button", { name: "Show detail" })).toHaveAttribute("aria-pressed", "true");
+  });
+});
+
+describe("Gallery without matchMedia", () => {
+  it("marks the tapped dot current", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("button", { name: "Photo 2 of 3" }));
+    expect(screen.getByRole("button", { name: "Photo 2 of 3" })).toHaveAttribute("aria-current", "true");
+  });
+});
