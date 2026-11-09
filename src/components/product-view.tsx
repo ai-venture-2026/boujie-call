@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { addToBag, BAG_OPENED } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
-import { colorwaySlug, OFFER, type Colorway, type Product } from "@/lib/products";
+import { colorwaySlug, OFFER, stockKey, type Colorway, type Product } from "@/lib/products";
 import { SizeGuide } from "./size-guide";
 
 const views = ["front", "back", "detail"];
@@ -44,6 +44,9 @@ export function ProductView({ product, intro, details }: { product: Product; int
   const [size, setSize] = useState<string | null>(null);
   const [missing, setMissing] = useState("");
   const [added, setAdded] = useState("");
+  const left = (c: Colorway | null, s: string) => (c ? product.stock?.[stockKey(c.name, s)] : undefined);
+  const soldOut = (s: string) => left(chosen, s) === 0;
+  const count = size ? left(chosen, size) : undefined;
 
   function add(fromBar = false) {
     setAdded("");
@@ -122,6 +125,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
               <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
                 <input type="radio" name="colorway" value={c.name} aria-label={c.name} className="sr-only" checked={chosen?.name === c.name} onChange={() => {
                     setChosen(c);
+                    if (size && left(c, size) === 0) setSize(null);
                     setView(0);
                     if (track.current) track.current.scrollLeft = 0;
                   }} />
@@ -137,16 +141,21 @@ export function ProductView({ product, intro, details }: { product: Product; int
           <SizeGuide sizes={product.sizes} />
           <div className="clear-both mt-3 flex flex-wrap gap-2 pt-px">
             {product.sizes.map((s) => (
-              <label key={s} className="grid h-11 min-w-14 cursor-pointer md:min-w-12 md:pointer-fine:h-10 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
-                <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
+              <label key={s} className={`grid h-11 min-w-14 md:min-w-12 md:pointer-fine:h-10 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2 ${soldOut(s) ? "cursor-not-allowed text-muted line-through" : "cursor-pointer hover:border-pink"}`}>
+                <input type="radio" name="size" value={s} aria-label={soldOut(s) ? `${s}, sold out` : s} disabled={soldOut(s)} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>
             ))}
           </div>
+          <p aria-live="polite" className="mt-3 text-[15px] text-muted empty:hidden">{!!count && count <= 2 ? (count === 1 ? "Last one" : `${count} left`) : ""}</p>
         </fieldset>
-        <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-7 w-full sm:w-auto short:mt-5">
-          Add to your bag
-        </button>
+        {product.comingSoon ? (
+          <p className="label mt-7 short:mt-5">Coming soon</p>
+        ) : (
+          <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-7 w-full sm:w-auto short:mt-5">
+            Add to your bag
+          </button>
+        )}
         <p className="mt-3 text-base text-muted">{OFFER}</p>
         <p role="alert" className="mt-4 text-base">
           {missing}
@@ -156,7 +165,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         </p>
         {details}
       </div>
-      {quickAdd && (
+      {quickAdd && !product.comingSoon && (
         <div
           role="region"
           aria-label="Quick add"

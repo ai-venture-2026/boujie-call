@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Live Shopify stock: the shop and product pages read price, sizes and stock from the Shopify Storefront API (refreshed every 60 seconds) when SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_PUBLIC_TOKEN are set. A sold-out size is crossed out and cannot be picked; 2 or fewer left shows "2 left" or "Last one"; a piece Shopify does not sell shows "Coming soon" instead of Add to your bag and its price. Without the settings, or if Shopify does not answer, the shop shows src/lib/products.ts as before. Photos and copy still come from products.ts.
 - Deeper pink products: the seven product photos and their cards sit on #F8D7E3, with garment colours unchanged. The lace close-up in the Shop header and on Send a Call is cut from the pink brown romper hero, so no beige photo remains.
 - About photos: the About hero and the About story are Alex's soft pink versions, and the About hero is now full resolution.
 - Soft pink photos: the four Home hero slides, the five gift strip photos, the Home detail photo, the Send a Call hero and the Home closing banner are Alex's soft pink versions; the beige ones are gone.

@@ -4,14 +4,18 @@ import Link from "next/link";
 import { ShopGrid } from "@/components/shop-grid";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { OFFER } from "@/lib/products";
+import { OFFER, products } from "@/lib/products";
+import { getCatalog, withLive } from "@/lib/shopify";
 
 export const metadata: Metadata = {
   title: "Shop | Boujie Call",
   description: "The Slip Dress, The Boujie Set and The Romper. Satin nightwear pieces in sizes S to XL.",
 };
 
-export default function Shop() {
+export const revalidate = 60;
+
+export default async function Shop() {
+  const live = withLive(products, await getCatalog());
   return (
     <>
       <SiteHeader />
@@ -26,7 +30,7 @@ export default function Shop() {
             <p className="label mt-3">{OFFER}</p>
           </div>
         </section>
-        <ShopGrid />
+        <ShopGrid products={live} />
         <p className="-mt-6 pb-20 text-center md:-mt-10 md:pb-28">
           <Link href="/send-a-call" className="link inline-flex min-h-11 items-center text-base text-muted">
             Sending it as a gift? Place a Call

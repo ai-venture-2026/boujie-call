@@ -3,35 +3,37 @@ import { join } from "node:path";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Shop from "./page";
 import ProductPage from "./[slug]/page";
-import { colorwaySlug, products } from "@/lib/products";
+import { colorwaySlug, products, type Product } from "@/lib/products";
+import { ProductView } from "@/components/product-view";
+import { ShopGrid } from "@/components/shop-grid";
 import { readBag } from "@/lib/bag";
 
 const renderProduct = async (slug: string) => render(await ProductPage({ params: Promise.resolve({ slug }) }));
 
 describe("Shop", () => {
-  it("links every colorway card to its product page", () => {
-    render(<Shop />);
+  it("links every colorway card to its product page", async () => {
+    render(await Shop());
     const hrefs = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("link").map((l) => l.getAttribute("href"));
     expect(hrefs).toEqual(products.flatMap((p) => p.colorways.map((c) => `/shop/${p.slug}?colorway=${colorwaySlug(c.name)}`)));
   });
 
-  it("shows the confirmed price without a placeholder note", () => {
-    render(<Shop />);
+  it("shows the confirmed price without a placeholder note", async () => {
+    render(await Shop());
     expect(screen.queryByText("Placeholder price")).toBeNull();
   });
 
-  it("shows the offer line", () => {
-    render(<Shop />);
+  it("shows the offer line", async () => {
+    render(await Shop());
     expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 
-  it("avoids the words the owner ruled out", () => {
-    const { container } = render(<Shop />);
+  it("avoids the words the owner ruled out", async () => {
+    const { container } = render(await Shop());
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b/i);
   });
 
-  it("uses no exclamation points", () => {
-    const { container } = render(<Shop />);
+  it("uses no exclamation points", async () => {
+    const { container } = render(await Shop());
     expect(container.textContent).not.toContain("!");
   });
 });
@@ -200,61 +202,61 @@ describe("Shop collection", () => {
   const cards = () => within(screen.getByRole("list", { name: "Collection" })).queryAllByRole("listitem");
   const press = (name: string) => fireEvent.click(screen.getAllByRole("button", { name })[0]);
 
-  it("drops the every piece line from the header", () => {
-    render(<Shop />);
+  it("drops the every piece line from the header", async () => {
+    render(await Shop());
     expect(screen.queryByText(/Every piece is a moment/)).toBeNull();
   });
 
-  it("keeps the gift link out of the header", () => {
-    render(<Shop />);
+  it("keeps the gift link out of the header", async () => {
+    render(await Shop());
     const header = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
     expect(within(header).queryByRole("link", { name: /Place a Call/ })).toBeNull();
   });
 
-  it("offers the gift link below the grid", () => {
-    render(<Shop />);
+  it("offers the gift link below the grid", async () => {
+    render(await Shop());
     expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveAttribute("href", "/send-a-call");
   });
 
-  it("sets the collection header on ink", () => {
-    render(<Shop />);
+  it("sets the collection header on ink", async () => {
+    render(await Shop());
     expect(screen.getByRole("heading", { level: 1 }).closest("section")).toHaveClass("bg-ribbon");
   });
 
-  it("titles the page The collection", () => {
-    render(<Shop />);
+  it("titles the page The collection", async () => {
+    render(await Shop());
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("The collection");
   });
 
-  it("shows one card per colorway", () => {
-    render(<Shop />);
+  it("shows one card per colorway", async () => {
+    render(await Shop());
     expect(cards()).toHaveLength(10);
   });
 
-  it("narrows to one piece from the sidebar", () => {
-    render(<Shop />);
+  it("narrows to one piece from the sidebar", async () => {
+    render(await Shop());
     press("The Romper");
     expect(cards()).toHaveLength(4);
   });
 
-  it("narrows to one colour", () => {
-    render(<Shop />);
+  it("narrows to one colour", async () => {
+    render(await Shop());
     press("After Dark");
     expect(cards().every((c) => c.textContent?.includes("After Dark"))).toBe(true);
   });
 
-  it("spells color the US way", () => {
-    render(<Shop />);
+  it("spells color the US way", async () => {
+    render(await Shop());
     expect(screen.getByRole("button", { name: "All colors" })).toBeInTheDocument();
   });
 
-  it("names All pieces once in the filters", () => {
-    render(<Shop />);
+  it("names All pieces once in the filters", async () => {
+    render(await Shop());
     expect(within(screen.getByRole("main")).getAllByText("All pieces")).toHaveLength(1);
   });
 
-  it("offers a reset when nothing matches", () => {
-    render(<Shop />);
+  it("offers a reset when nothing matches", async () => {
+    render(await Shop());
     press("The Boujie Set");
     press("Bloom");
     expect(screen.getByRole("button", { name: "Show all pieces" })).toBeInTheDocument();
@@ -393,28 +395,28 @@ describe("Size guide", () => {
 });
 
 describe("Shop on phones", () => {
-  it("hides the featured model cards below the small breakpoint", () => {
-    const { container } = render(<Shop />);
+  it("hides the featured model cards below the small breakpoint", async () => {
+    const { container } = render(await Shop());
     expect(container.querySelector("[data-featured]")).toHaveClass("hidden");
   });
 
-  it("scrolls the filter row sideways on phones", () => {
-    render(<Shop />);
+  it("scrolls the filter row sideways on phones", async () => {
+    render(await Shop());
     expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("max-md:overflow-x-auto");
   });
 
-  it("leaves room for the focus ring inside the filter row", () => {
-    render(<Shop />);
+  it("leaves room for the focus ring inside the filter row", async () => {
+    render(await Shop());
     expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("max-md:py-1.5");
   });
 
-  it("keeps the color filters in the piece filter row", () => {
-    render(<Shop />);
+  it("keeps the color filters in the piece filter row", async () => {
+    render(await Shop());
     expect(screen.getByRole("group", { name: "Color" }).parentElement).toBe(screen.getByRole("navigation", { name: "Pieces" }).parentElement);
   });
 
-  it("gives each card name its own line", () => {
-    render(<Shop />);
+  it("gives each card name its own line", async () => {
+    render(await Shop());
     const price = within(screen.getByRole("list", { name: "Collection" })).getAllByText("$48.00")[0];
     expect(price.parentElement?.textContent).toBe("Rose$48.00");
   });
@@ -559,18 +561,18 @@ describe("Phone targets on product pages", () => {
 describe("Shop cards on phones", () => {
   const items = () => within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem");
 
-  it("keeps each card name on one line", () => {
-    render(<Shop />);
+  it("keeps each card name on one line", async () => {
+    render(await Shop());
     expect(within(items()[0]).getByText("The Slip Dress")).toHaveClass("truncate");
   });
 
-  it("sets the card price at 17px", () => {
-    render(<Shop />);
+  it("sets the card price at 17px", async () => {
+    render(await Shop());
     expect(within(items()[0]).getByText("$48.00")).toHaveClass("text-[17px]");
   });
 
-  it("centers a single last card", () => {
-    render(<Shop />);
+  it("centers a single last card", async () => {
+    render(await Shop());
     expect(items().at(-1)).toHaveClass("max-md:last:odd:justify-self-center");
   });
 });
@@ -588,13 +590,80 @@ describe("Product photo ground", () => {
     expect(rule).toMatch(/pointer-events:\s*none;/);
   });
 
-  it("shows shop grid photos without a blend", () => {
-    const { container } = render(<Shop />);
+  it("shows shop grid photos without a blend", async () => {
+    const { container } = render(await Shop());
     expect(blendedProductPhotos(container)).toEqual([]);
   });
 
   it("shows product page photos without a blend", async () => {
     const { container } = await renderProduct("the-romper");
     expect(blendedProductPhotos(container)).toEqual([]);
+  });
+});
+
+describe("Live stock from Shopify", () => {
+  const romper = { ...products.find((p) => p.slug === "the-romper")!, stock: { "Rose/S": 0, "Rose/M": 2, "Rose/L": 1, "Rose/XL": 5, "Mocha/S": 3 } };
+  const view = (product: Product) => render(<ProductView product={product} intro={null} details={null} />);
+  const pick = (name: string) => fireEvent.click(screen.getByRole("radio", { name }));
+
+  it("disables a sold-out size", () => {
+    view(romper);
+    pick("Rose");
+    expect(screen.getByRole("radio", { name: "S, sold out" })).toBeDisabled();
+  });
+
+  it("crosses out a sold-out size", () => {
+    view(romper);
+    pick("Rose");
+    expect(screen.getByRole("radio", { name: "S, sold out" }).closest("label")).toHaveClass("line-through");
+  });
+
+  it("clears a size that is sold out in the new colorway", () => {
+    view(romper);
+    pick("Mocha");
+    pick("S");
+    pick("Rose");
+    expect(screen.queryByRole("radio", { name: /^S/, checked: true })).toBeNull();
+  });
+
+  it("says 2 left when two remain", () => {
+    view(romper);
+    pick("Rose");
+    pick("M");
+    expect(screen.getByText("2 left")).toBeInTheDocument();
+  });
+
+  it("announces the stock note to screen readers", () => {
+    view(romper);
+    pick("Rose");
+    pick("M");
+    expect(screen.getByText("2 left")).toHaveAttribute("aria-live", "polite");
+  });
+
+  it("says Last one when one remains", () => {
+    view(romper);
+    pick("Rose");
+    pick("L");
+    expect(screen.getByText("Last one")).toBeInTheDocument();
+  });
+
+  it("stays quiet with three or more left", () => {
+    view(romper);
+    pick("Rose");
+    pick("XL");
+    expect(screen.queryByText(/left|Last one/)).toBeNull();
+  });
+
+  it("shows Coming soon instead of Add to your bag", () => {
+    view({ ...romper, comingSoon: true });
+    expect(screen.queryByRole("button", { name: "Add to your bag" })).toBeNull();
+    expect(screen.getByText("Coming soon")).toBeInTheDocument();
+  });
+
+  it("shows Coming soon instead of the price on shop cards", () => {
+    render(<ShopGrid products={products.map((p) => (p.slug === "the-boujie-set" ? { ...p, comingSoon: true } : p))} />);
+    const setCards = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").filter((c) => c.textContent?.includes("The Boujie Set"));
+    expect(setCards).toHaveLength(3);
+    expect(setCards.every((c) => c.textContent?.includes("Coming soon") && !c.textContent.includes("$48.00"))).toBe(true);
   });
 });
