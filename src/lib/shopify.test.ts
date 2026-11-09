@@ -54,6 +54,16 @@ describe("getCatalog", () => {
     expect(await getCatalog()).toBeNull();
   });
 
+  it("returns null when Shopify lists no products", async () => {
+    connect(vi.fn().mockResolvedValue(answer([])));
+    expect(await getCatalog()).toBeNull();
+  });
+
+  it("returns null for a price that is not a finite number", async () => {
+    connect(vi.fn().mockResolvedValue(answer([{ handle: "the-romper", variants: { nodes: [variant("Rose", "S", true, 1, "1e400")] } }])));
+    expect((await getCatalog())?.["the-romper"].priceCents).toBeNull();
+  });
+
   it("sends the token to the store's Storefront API", async () => {
     const fetch = vi.fn().mockResolvedValue(answer([]));
     connect(fetch);

@@ -147,7 +147,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
               </label>
             ))}
           </div>
-          {!!count && count <= 2 && <p className="mt-3 text-[15px] text-muted">{count === 1 ? "Last one" : `${count} left`}</p>}
+          <p aria-live="polite" className="mt-3 text-[15px] text-muted empty:hidden">{!!count && count <= 2 ? (count === 1 ? "Last one" : `${count} left`) : ""}</p>
         </fieldset>
         {product.comingSoon ? (
           <p className="label mt-7 short:mt-5">Coming soon</p>

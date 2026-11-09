@@ -25,10 +25,11 @@ export async function getCatalog(): Promise<Catalog | null> {
       headers: { "Content-Type": "application/json", "X-Shopify-Storefront-Access-Token": token },
       body: JSON.stringify({ query: QUERY }),
       next: { revalidate: 60 },
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return null;
     const nodes: { handle: string; variants: { nodes: Variant[] } }[] | undefined = (await res.json())?.data?.products?.nodes;
-    if (!nodes) return null;
+    if (!nodes?.length) return null;
     return Object.fromEntries(
       nodes.map((p) => {
         const stock: Record<string, number | null> = {};
@@ -40,10 +41,11 @@ export async function getCatalog(): Promise<Catalog | null> {
           stock[stockKey(color, size)] = !v.availableForSale ? 0 : typeof qty === "number" && qty > 0 ? qty : null;
         }
         const cents = Math.round(Number(p.variants.nodes[0]?.price.amount) * 100);
-        return [p.handle, { priceCents: cents > 0 ? cents : null, stock }];
+        return [p.handle, { priceCents: Number.isFinite(cents) && cents > 0 ? cents : null, stock }];
       }),
     );
-  } catch {
+  } catch (error) {
+    console.error("Shopify catalog unavailable, using products.ts", error);
     return null;
   }
 }

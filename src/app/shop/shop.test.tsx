@@ -633,6 +633,13 @@ describe("Live stock from Shopify", () => {
     expect(screen.getByText("2 left")).toBeInTheDocument();
   });
 
+  it("announces the stock note to screen readers", () => {
+    view(romper);
+    pick("Rose");
+    pick("M");
+    expect(screen.getByText("2 left")).toHaveAttribute("aria-live", "polite");
+  });
+
   it("says Last one when one remains", () => {
     view(romper);
     pick("Rose");
