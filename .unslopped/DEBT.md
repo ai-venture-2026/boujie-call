@@ -30,5 +30,5 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [soon] Shopify option names and values match case sensitively; a value like rose or Small would be dropped and its sold out state ignored; normalise both sides (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [soon] Live price comes from the first variant only; use priceRange.minVariantPrice if variants ever differ in price (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [cleanup] shopify.ts has no server-only guard; add it so a client import fails the build (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
-- [soon] A Coming soon piece still shows its price in the product page header; ask Alex whether to hide it there too (src/app/shop/[slug]/page.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
+- [accepted] A Coming soon piece keeps its price in the product page header; Alex agreed 2026-11-09 to keep it so visitors see what it will cost (src/app/shop/[slug]/page.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [soon] Choosing a colorway where the picked size is sold out clears the size silently; announce it to screen readers (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
