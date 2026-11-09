@@ -4,10 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { formatPrice } from "@/lib/content";
-import { colorwaySlug, products } from "@/lib/products";
-
-const cards = products.flatMap((p) => p.colorways.map((c) => ({ product: p, colorway: c })));
-const colours = [...new Set(cards.map((c) => c.colorway.name))];
+import { colorwaySlug, type Product } from "@/lib/products";
 
 const featured = [
   { slug: "the-slip-dress", name: "The Slip Dress", colorway: "After Dark", src: "/images/hero/black-slip-studio.webp", focus: "48% 40%" },
@@ -23,7 +20,9 @@ function Toggle({ on, onClick, children }: { on: boolean; onClick: () => void; c
   );
 }
 
-export function ShopGrid() {
+export function ShopGrid({ products }: { products: Product[] }) {
+  const cards = products.flatMap((p) => p.colorways.map((c) => ({ product: p, colorway: c })));
+  const colours = [...new Set(cards.map((c) => c.colorway.name))];
   const [piece, setPiece] = useState<string | null>(null);
   const [colour, setColour] = useState<string | null>(null);
   const shown = cards.filter((c) => (!piece || c.product.slug === piece) && (!colour || c.colorway.name === colour));
@@ -90,7 +89,7 @@ export function ShopGrid() {
                 <span className="label mt-4 block truncate">{product.name}</span>
                 <span className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
                   <span className="label whitespace-nowrap text-muted">{colorway.name}</span>
-                  <span className="text-[17px] font-medium md:text-[15px]">{formatPrice(product.priceCents)}</span>
+                  <span className="text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}</span>
                 </span>
               </Link>
             </li>

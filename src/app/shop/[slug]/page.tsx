@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Price, ProductView } from "@/components/product-view";
 import { getProduct, products } from "@/lib/products";
+import { getCatalog, withLive } from "@/lib/shopify";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,9 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return product ? { title: `${product.name} | Boujie Call`, description: product.description } : {};
 }
 
+export const revalidate = 60;
+
 export default async function ProductPage({ params }: Props) {
-  const product = getProduct((await params).slug);
-  if (!product) notFound();
+  const slug = (await params).slug;
+  if (!getProduct(slug)) notFound();
+  const product = withLive(products, await getCatalog()).find((p) => p.slug === slug)!;
 
   return (
     <>

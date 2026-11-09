@@ -22,7 +22,13 @@ export type Product = {
   // Any number of colorways per piece.
   colorways: Colorway[];
   sizes: string[];
+  // Live from Shopify, keyed "Colorway/Size": 0 sold out, n left, null in stock with no count.
+  stock?: Record<string, number | null>;
+  // Shopify answered but does not sell this piece.
+  comingSoon?: boolean;
 };
+
+export const stockKey = (colorway: string, size: string) => `${colorway}/${size}`;
 
 const sizes = ["S", "M", "L", "XL"];
 
