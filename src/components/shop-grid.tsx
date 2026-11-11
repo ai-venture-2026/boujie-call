@@ -76,24 +76,27 @@ export function ShopGrid({ products }: { products: Product[] }) {
         )}
 
         <ul aria-label="Collection" className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3">
-          {shown.map(({ product, colorway }) => (
-            <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
-              <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
-                <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images[0] ? "contact" : ""}`}>
-                  {colorway.images[0] ? (
-                    <Image src={colorway.images[0]} alt="" fill sizes="(min-width: 1024px) 22vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-                  ) : (
-                    <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
-                  )}
-                </div>
-                <span className="label mt-4 block truncate">{product.name}</span>
-                <span className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
-                  <span className="label whitespace-nowrap text-muted">{colorway.name}</span>
-                  <span className="text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
+          {shown.map(({ product, colorway }) => {
+            const photo = colorway.gallery?.[0].src ?? colorway.images[0];
+            return (
+              <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
+                <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
+                  <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images.includes(photo) ? "contact" : ""}`}>
+                    {photo ? (
+                      <Image src={photo} alt="" fill sizes="(min-width: 1024px) 22vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                    ) : (
+                      <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
+                    )}
+                  </div>
+                  <span className="label mt-4 block truncate">{product.name}</span>
+                  <span className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
+                    <span className="label whitespace-nowrap text-muted">{colorway.name}</span>
+                    <span className="text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}</span>
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         {shown.length === 0 && (
