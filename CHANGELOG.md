@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Studio product photos: the shop grid and product pages lead each Slip Dress and Romper colorway with Alex's studio photos on the site pink #F8D7E3, front then back (The Romper in Rose adds a side view), with the pink cutout last in the gallery. Home, the bag and the mini bag keep the cutouts. The Boujie Set still shows Image to come.
+- Home heroes: the black slip and pink slip heroes take the same deeper pink background as the blue and brown romper heroes; that black slip photo also shows in the shop grid and the phone menu. The Home section 2 close-up of The Romper in Mocha moves from a grey mauve to a rose pink background, deeper than the pink panel beside it.
 - Live Shopify stock: the shop and product pages read price, sizes and stock from the Shopify Storefront API (refreshed every 60 seconds) when SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_PUBLIC_TOKEN are set. A sold-out size is crossed out and cannot be picked; 2 or fewer left shows "2 left" or "Last one"; a piece Shopify does not sell shows "Coming soon" instead of Add to your bag and its price. Without the settings, or if Shopify does not answer, the shop shows src/lib/products.ts as before. Photos and copy still come from products.ts.
 - Deeper pink products: the seven product photos and their cards sit on #F8D7E3, with garment colours unchanged. The lace close-up in the Shop header and on Send a Call is cut from the pink brown romper hero, so no beige photo remains.
 - About photos: the About hero and the About story are Alex's soft pink versions, and the About hero is now full resolution.
