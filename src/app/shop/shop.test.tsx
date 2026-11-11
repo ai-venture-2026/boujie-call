@@ -389,6 +389,11 @@ describe("Product gallery thumbnails", () => {
     await renderProduct("the-slip-dress");
     expect(screen.getByRole("button", { name: "Photo 1 of 3" })).toHaveAttribute("aria-current", "true");
   });
+
+  it("rings the selected thumbnail without thinning the focus outline", async () => {
+    await renderProduct("the-slip-dress");
+    expect(screen.getByRole("button", { name: "Show front" }).className).not.toMatch(/outline-1/);
+  });
 });
 
 describe("Size guide", () => {
@@ -398,6 +403,12 @@ describe("Size guide", () => {
     await renderProduct("the-romper");
     open();
     expect(screen.getByRole("dialog", { name: "Size guide" })).toBeInTheDocument();
+  });
+
+  it("keeps the size guide outside the size choices", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(screen.getByRole("dialog", { name: "Size guide" }).closest("fieldset")).toBeNull();
   });
 
   it("marks the chart as a placeholder", async () => {
@@ -523,6 +534,20 @@ describe("Quick add bar on phones", () => {
     await renderProduct("the-romper");
     leave();
     expect(within(bar() as HTMLElement).getByText("The Romper")).toBeInTheDocument();
+  });
+
+  it("names the chosen pick", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    fireEvent.click(screen.getByRole("radio", { name: "M" }));
+    leave();
+    expect(within(bar() as HTMLElement).getByText("Rose, M")).toBeInTheDocument();
+  });
+
+  it("names no colorway before one is chosen", async () => {
+    await renderProduct("the-romper");
+    leave();
+    expect(within(bar() as HTMLElement).queryByText(/Rose|Mocha|Powder Blue|After Dark/)).toBeNull();
   });
 
   it("shows the price", async () => {
@@ -675,6 +700,23 @@ describe("Live stock from Shopify", () => {
     pick("S");
     pick("Rose");
     expect(screen.queryByRole("radio", { name: /^S/, checked: true })).toBeNull();
+  });
+
+  it("says the size was cleared because it is sold out", () => {
+    view(romper);
+    pick("Mocha");
+    pick("S");
+    pick("Rose");
+    expect(screen.getByText("S is sold out in Rose. Choose another size.")).toHaveAttribute("aria-live", "polite");
+  });
+
+  it("drops the sold out note on the next colorway change", () => {
+    view(romper);
+    pick("Mocha");
+    pick("S");
+    pick("Rose");
+    pick("Mocha");
+    expect(screen.queryByText("S is sold out in Rose. Choose another size.")).toBeNull();
   });
 
   it("says 2 left when two remain", () => {
