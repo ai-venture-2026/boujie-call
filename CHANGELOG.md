@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Shop shows real photos only: the two generated model tiles above the grid are gone, and the shop header's generated lace close-up is now the Mocha Romper studio photo framed on its lace neckline. Home, About and Send a Call keep their photos.
 - Studio product photos: the shop grid and product pages lead each Slip Dress and Romper colorway with Alex's studio photos on the site pink #F8D7E3, front then back (The Romper in Rose adds a side view), with the pink cutout last in the gallery. Home, the bag and the mini bag keep the cutouts. The Boujie Set still shows Image to come.
 - Home heroes: the black slip and pink slip heroes take the same deeper pink background as the blue and brown romper heroes; that black slip photo also shows in the shop grid and the phone menu. The Home section 2 close-up of The Romper in Mocha moves from a grey mauve to a rose pink background, deeper than the pink panel beside it.
 - Product gallery: the photo and its dot or thumbnail stay in step when the window is resized across 768px; narrowing below it scrolls to the photo that was chosen, and widening no longer jumps back to the front photo.

@@ -6,11 +6,6 @@ import { useState } from "react";
 import { formatPrice } from "@/lib/content";
 import { colorwaySlug, type Product } from "@/lib/products";
 
-const featured = [
-  { slug: "the-slip-dress", name: "The Slip Dress", colorway: "After Dark", src: "/images/hero/black-slip-studio.webp", focus: "48% 40%" },
-  { slug: "the-romper", name: "The Romper", colorway: "Powder Blue", src: "/images/hero/blue-romper-studio.webp", focus: "40% 60%" },
-];
-
 // Below md the toggles are pill chips in one sideways row; from md they are plain text filters.
 function Toggle({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
@@ -57,24 +52,6 @@ export function ShopGrid({ products }: { products: Product[] }) {
       </div>
 
       <div className="md:col-start-2">
-
-        {!piece && !colour && (
-          <div data-featured className="mt-10 hidden gap-6 sm:grid sm:grid-cols-2">
-            {featured.map((f) => (
-              <Link key={f.src} href={`/shop/${f.slug}?colorway=${colorwaySlug(f.colorway)}`} className="group relative block aspect-[4/5] overflow-hidden">
-                <Image src={f.src} alt={`${f.name} in ${f.colorway}`} fill sizes="(min-width: 768px) 35vw, 100vw" style={{ objectPosition: f.focus }} className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-                <span className="absolute right-5 bottom-5 left-5 flex items-end justify-between bg-white/90 p-5 sm:left-auto sm:w-56">
-                  <span>
-                    <span className="label block">{f.name}</span>
-                    <span className="label block text-muted">{f.colorway}</span>
-                  </span>
-                  <span className="font-sans text-[17px] font-medium">{formatPrice(products.find((p) => p.slug === f.slug)?.priceCents ?? null)}</span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        )}
-
         <ul aria-label="Collection" className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3">
           {shown.map(({ product, colorway }) => {
             const photo = colorway.gallery?.[0].src ?? colorway.images[0];
