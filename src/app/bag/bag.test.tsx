@@ -46,6 +46,22 @@ describe("Bag page", () => {
     expect(screen.getByText("$96.00")).toBeInTheDocument();
   });
 
+  it("shows the Shopify price for a piece", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ "the-slip-dress": 5000 }) }));
+    fill([{ ...slip, qty: 2 }]);
+    render(<BagPage />);
+    expect(await screen.findByText("$100.00")).toBeInTheDocument();
+    vi.unstubAllGlobals();
+  });
+
+  it("keeps the local price when Shopify does not answer", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+    fill([slip]);
+    render(<BagPage />);
+    expect((await screen.findAllByText("$48.00")).length).toBeGreaterThan(0);
+    vi.unstubAllGlobals();
+  });
+
   it("nudges toward free shipping at one piece", () => {
     fill([slip]);
     render(<BagPage />);

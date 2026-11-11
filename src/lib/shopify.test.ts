@@ -1,5 +1,6 @@
 import { getCatalog, withLive } from "./shopify";
 import { products } from "./products";
+import { GET } from "@/app/api/prices/route";
 
 const variant = (color: string, size: string, availableForSale: boolean, quantityAvailable: number | null, amount = "48.0") => ({
   availableForSale,
@@ -82,6 +83,26 @@ describe("getCatalog", () => {
   it("reads the price in cents", async () => {
     connect(vi.fn().mockResolvedValue(answer([romper])));
     expect((await getCatalog())?.["the-romper"].priceCents).toBe(4800);
+  });
+
+  it("keys each variant id by its stock key", async () => {
+    const withId = { handle: "the-romper", variants: { nodes: [{ ...variant("Rose", "S", true, 2), id: "gid://shopify/ProductVariant/1" }] } };
+    connect(vi.fn().mockResolvedValue(answer([withId])));
+    expect((await getCatalog())?.["the-romper"].variants).toEqual({ "Rose/S": "gid://shopify/ProductVariant/1" });
+  });
+});
+
+describe("GET /api/prices", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+
+  it("answers each piece's Shopify price in cents", async () => {
+    vi.stubEnv("SHOPIFY_STORE_DOMAIN", "example.myshopify.com");
+    vi.stubEnv("SHOPIFY_STOREFRONT_PUBLIC_TOKEN", "test-token");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(answer([{ handle: "the-romper", variants: { nodes: [variant("Rose", "S", true, 2, "52.0")] } }])));
+    expect(await (await GET()).json()).toEqual({ "the-romper": 5200 });
   });
 });
 

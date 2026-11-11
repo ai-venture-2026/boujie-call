@@ -3,13 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { bagCount, offerNote, removeFromBag, setQty, subtotalCents, useBag, MAX_QTY } from "@/lib/bag";
+import { bagCount, offerNote, removeFromBag, setQty, priceOf, subtotalCents, useBag, useLivePrices, MAX_QTY } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
 import { getProduct } from "@/lib/products";
 
 export function BagView() {
   const lines = useBag();
+  const prices = useLivePrices();
   const [note, setNote] = useState("");
   const count = bagCount(lines);
 
@@ -48,7 +49,7 @@ export function BagView() {
                   <Link href={`/shop/${product.slug}`} className="font-serif text-[26px] font-medium leading-tight hover:text-rose">
                     {product.name}
                   </Link>
-                  <span className="text-[17px] font-medium">{formatPrice(product.priceCents)}</span>
+                  <span className="text-[17px] font-medium">{formatPrice(priceOf(product.slug, prices))}</span>
                 </div>
                 <p className="label mt-2 text-muted">
                   {line.colorway}, {line.size}
@@ -79,7 +80,7 @@ export function BagView() {
         <p className="font-serif text-xl italic">{offerNote(count)}</p>
         <div className="mt-8 flex items-baseline justify-between border-t-[0.5px] border-ink/15 pt-6">
           <span className="label">Subtotal</span>
-          <span className="font-sans text-xl font-medium">{formatPrice(subtotalCents(lines))}</span>
+          <span className="font-sans text-xl font-medium">{formatPrice(subtotalCents(lines, prices))}</span>
         </div>
         {count >= 2 && <p className="mt-2 text-[15px] text-ink">Any 2 for $85 applied at checkout</p>}
         <p className="mt-2 text-[15px] text-muted">Shipping and taxes calculated at checkout</p>

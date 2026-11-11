@@ -30,6 +30,8 @@ export type Product = {
   comingSoon?: boolean;
 };
 
+export const MAX_QTY = 10;
+
 export const stockKey = (colorway: string, size: string) => `${colorway}/${size}`;
 
 const sizes = ["S", "M", "L", "XL"];
