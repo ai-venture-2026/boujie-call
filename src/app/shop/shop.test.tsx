@@ -673,9 +673,10 @@ describe("Gallery across the md breakpoint", () => {
   let onChange: (() => void) | null = null;
   beforeEach(() => {
     wide = true;
+    onChange = null;
     vi.stubGlobal("matchMedia", (q: string) => ({
       get matches() {
-        return q.includes("min-width") ? wide : false;
+        return q === "(min-width: 48rem)" ? wide : false;
       },
       addEventListener: (_: string, fn: () => void) => (onChange = fn),
       removeEventListener() {},
@@ -708,9 +709,12 @@ describe("Gallery across the md breakpoint", () => {
 });
 
 describe("Gallery without matchMedia", () => {
-  it("marks the tapped dot current", async () => {
-    await renderProduct("the-romper");
-    fireEvent.click(screen.getByRole("button", { name: "Photo 2 of 3" }));
+  it("moves the dot with a swipe", async () => {
+    const { container } = await renderProduct("the-romper");
+    const el = container.querySelector(".snap-x") as HTMLDivElement;
+    Object.defineProperty(el, "clientWidth", { configurable: true, value: 400 });
+    el.scrollLeft = 400;
+    fireEvent.scroll(el);
     expect(screen.getByRole("button", { name: "Photo 2 of 3" })).toHaveAttribute("aria-current", "true");
   });
 });

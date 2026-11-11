@@ -31,3 +31,5 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [cleanup] shopify.ts has no server-only guard; add it so a client import fails the build (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [accepted] A Coming soon piece keeps its price in the product page header; Alex agreed 2026-11-09 to keep it so visitors see what it will cost (src/app/shop/[slug]/page.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [soon] Choosing a colorway where the picked size is sold out clears the size silently; announce it to screen readers (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
+- [accepted] Gallery uses matchMedia addEventListener with no addListener fallback; Safari 13 and older would throw, outside Next 16 browser support (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-64b013
+- [cleanup] Gallery onScroll builds a new MediaQueryList per scroll event; hold one query in a ref (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-64b013

@@ -42,7 +42,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
   }, []);
 
   // From md the other slides are hidden, so the track cannot hold the scroll position; restore it on the way back down.
-  const md = () => window.matchMedia?.("(min-width: 768px)");
+  const md = () => window.matchMedia?.("(min-width: 48rem)");
   useEffect(() => {
     const query = md();
     if (!query) return;
