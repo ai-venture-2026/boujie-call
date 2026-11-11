@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Shop from "./page";
+import SendACall from "../send-a-call/page";
 import ProductPage from "./[slug]/page";
 import { colorwaySlug, products, type Product } from "@/lib/products";
 import { ProductView } from "@/components/product-view";
@@ -431,12 +432,25 @@ describe("Size guide", () => {
   });
 });
 
-describe("Shop on phones", () => {
-  it("hides the featured model cards below the small breakpoint", async () => {
-    const { container } = render(await Shop());
-    expect(container.querySelector("[data-featured]")).toHaveClass("hidden");
+describe("Shop shows real product photos only", () => {
+  const generated = (root: Element) => [...root.querySelectorAll("img")].map((img) => decodeURIComponent(img.getAttribute("src") ?? "")).filter((src) => /\/images\/(hero|details)\//.test(src));
+
+  it("renders no generated model photo", async () => {
+    render(await Shop());
+    expect(generated(screen.getByRole("main"))).toEqual([]);
   });
 
+  it("heads the shop with the Mocha Romper studio photo", async () => {
+    render(await Shop());
+    expect(decodeURIComponent(screen.getByRole("img", { name: "The lace neckline of The Romper in Mocha" }).getAttribute("src") ?? "")).toContain("studio/the-romper-mocha-front");
+  });
+  it("keeps the lace close-up on Send a Call", () => {
+    render(<SendACall />);
+    expect(decodeURIComponent(screen.getByRole("img", { name: "A close-up of the brown lace neckline of The Romper in Mocha" }).getAttribute("src") ?? "")).toContain("details/brown-romper-lace");
+  });
+});
+
+describe("Shop on phones", () => {
   it("scrolls the filter row sideways on phones", async () => {
     render(await Shop());
     expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("max-md:overflow-x-auto");
