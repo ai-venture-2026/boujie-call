@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Phone menu photo: the collection card in the phone menu shows the real Slip Dress After Dark studio photo, framed on its lace neckline, instead of the generated hero.
 - Product page fixes: the phone quick add bar shows the chosen colorway and size (for example Rose, M); the size guide window no longer sits inside the size choices, so screen readers stop reading its table with them; the selected gallery thumbnail is marked with a pink ring, keeping the full keyboard focus outline; and when a colour change clears a sold out size, the page says so (S is sold out in Rose. Choose another size.).
 - Checkout handoff: Checkout can send the bag to Shopify's own checkout. It stays off, showing "Checkout opens soon", until SHOPIFY_CHECKOUT_ENABLED is set to true in Vercel at launch. The bag is checked on the server first (known piece, colour, size, 1 to 10 each); a sold out size is named, and a Shopify failure asks to try again.
 - Shopify prices in the bag: the bag, mini bag and subtotal show the price set in Shopify, read from /api/prices, and fall back to the site's own prices if Shopify does not answer.

@@ -185,7 +185,7 @@ export function SiteHeader() {
             </ul>
           </nav>
           <Link href="/shop" onClick={close} className="relative mx-6 mt-8 block aspect-[16/10] shrink-0 overflow-hidden">
-            <Image src="/images/hero/black-slip-studio.webp" alt="" fill sizes="100vw" style={{ objectPosition: "48% 30%" }} className="object-cover" />
+            <Image src="/images/products/studio/the-slip-dress-after-dark-front.webp" alt="" fill sizes="100vw" style={{ objectPosition: "50% 28%" }} className="object-cover" />
             <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
           <div className="mt-auto px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))]">
