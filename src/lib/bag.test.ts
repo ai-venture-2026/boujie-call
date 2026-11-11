@@ -1,4 +1,4 @@
-import { addToBag, BAG_KEY, bagCount, readBag, subtotalCents } from "./bag";
+import { addToBag, BAG_KEY, bagCount, picked, readBag, setSkip, subtotalCents } from "./bag";
 
 const dress = { slug: "the-slip-dress", colorway: "After Dark", size: "M" };
 
@@ -61,5 +61,36 @@ describe("subtotalCents", () => {
 
   it("falls back to the local price for a piece Shopify did not price", () => {
     expect(subtotalCents([line], {})).toBe(9600);
+  });
+});
+
+describe("picking pieces for checkout", () => {
+  const rose = { slug: "the-romper", colorway: "Rose", size: "S" };
+  const mocha = { slug: "the-romper", colorway: "Mocha", size: "M" };
+  beforeEach(() => localStorage.clear());
+
+  it("keeps an unticked piece in the bag", () => {
+    addToBag(rose);
+    setSkip(rose, true);
+    expect(readBag()).toEqual([{ ...rose, qty: 1, skip: true }]);
+  });
+
+  it("leaves an unticked piece out of the picked pieces", () => {
+    addToBag(rose);
+    addToBag(mocha);
+    setSkip(rose, true);
+    expect(picked(readBag())).toEqual([{ ...mocha, qty: 1 }]);
+  });
+
+  it("reads a skip that is not exactly true as ticked", () => {
+    localStorage.setItem(BAG_KEY, JSON.stringify([{ ...rose, qty: 1, skip: "yes" }]));
+    expect(readBag()).toEqual([{ ...rose, qty: 1 }]);
+  });
+
+  it("ticks a piece again when it is added again", () => {
+    addToBag(rose);
+    setSkip(rose, true);
+    addToBag(rose);
+    expect(readBag()).toEqual([{ ...rose, qty: 2 }]);
   });
 });

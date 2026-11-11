@@ -1,10 +1,67 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import BagPage from "./page";
+import * as checkoutModule from "@/lib/checkout";
 import { BAG_KEY, MAX_QTY, readBag, setQty } from "@/lib/bag";
 
 const fill = (lines: object[]) => localStorage.setItem(BAG_KEY, JSON.stringify(lines));
 const slip = { slug: "the-slip-dress", colorway: "Rose", size: "M", qty: 1 };
 const romper = { slug: "the-romper", colorway: "Mocha", size: "S", qty: 1 };
+
+describe("Bag tick boxes", () => {
+  const tick = (name: string) => screen.getByRole("checkbox", { name: `Check out ${name}` });
+  beforeEach(() => localStorage.clear());
+  afterEach(() => vi.restoreAllMocks());
+
+  it("ticks every piece on first view", () => {
+    fill([slip, romper]);
+    render(<BagPage />);
+    expect(tick("The Slip Dress, Rose, M")).toBeChecked();
+  });
+
+  it("keeps an unticked piece in the bag", () => {
+    fill([slip, romper]);
+    render(<BagPage />);
+    fireEvent.click(tick("The Slip Dress, Rose, M"));
+    expect(readBag()).toHaveLength(2);
+  });
+
+  it("totals only ticked pieces", () => {
+    fill([slip, romper]);
+    render(<BagPage />);
+    fireEvent.click(tick("The Slip Dress, Rose, M"));
+    expect(within(screen.getByText("Subtotal").parentElement as HTMLElement).getByText("$48.00")).toBeInTheDocument();
+  });
+
+  it("drops the two piece line when one piece is unticked", () => {
+    fill([slip, romper]);
+    render(<BagPage />);
+    fireEvent.click(tick("The Slip Dress, Rose, M"));
+    expect(screen.queryByText("Any 2 for $85 applied at checkout")).toBeNull();
+  });
+
+  it("sends only ticked pieces to checkout", () => {
+    const start = vi.spyOn(checkoutModule, "startCheckout").mockResolvedValue({ ok: false, message: "x" });
+    fill([slip, romper]);
+    render(<BagPage />);
+    fireEvent.click(tick("The Slip Dress, Rose, M"));
+    fireEvent.click(screen.getByRole("button", { name: "Checkout" }));
+    expect(start).toHaveBeenCalledWith([romper]);
+  });
+
+  it("disables checkout with nothing ticked", () => {
+    fill([slip]);
+    render(<BagPage />);
+    fireEvent.click(tick("The Slip Dress, Rose, M"));
+    expect(screen.getByRole("button", { name: "Checkout" })).toBeDisabled();
+  });
+
+  it("asks for a tick when nothing is ticked", () => {
+    fill([slip]);
+    render(<BagPage />);
+    fireEvent.click(tick("The Slip Dress, Rose, M"));
+    expect(screen.getByText("Tick a piece to check out.")).toBeInTheDocument();
+  });
+});
 
 describe("Bag page", () => {
   beforeEach(() => localStorage.clear());

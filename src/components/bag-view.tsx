@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { bagCount, offerNote, removeFromBag, setQty, priceOf, subtotalCents, useBag, useLivePrices, MAX_QTY } from "@/lib/bag";
+import { bagCount, offerNote, picked, removeFromBag, setQty, setSkip, priceOf, subtotalCents, useBag, useLivePrices, MAX_QTY } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
 import { getProduct } from "@/lib/products";
@@ -12,15 +12,16 @@ export function BagView() {
   const lines = useBag();
   const prices = useLivePrices();
   const [note, setNote] = useState("");
-  const count = bagCount(lines);
+  const chosen = picked(lines);
+  const count = bagCount(chosen);
 
   async function checkout() {
-    const result = await startCheckout(lines);
+    const result = await startCheckout(chosen);
     if (result.ok) window.location.assign(result.url);
     else setNote(result.message);
   }
 
-  if (count === 0) {
+  if (lines.length === 0) {
     return (
       <div className="flex flex-col items-start gap-8 py-10">
         <p className="font-serif text-3xl">Your bag is empty</p>
@@ -40,7 +41,10 @@ export function BagView() {
           const photo = product.colorways.find((c) => c.name === line.colorway)?.images[0];
           const name = `${product.name}, ${line.colorway}, ${line.size}`;
           return (
-            <li key={name} className="grid grid-cols-[6rem_1fr] gap-5 border-b-[0.5px] border-ink/15 py-6 sm:grid-cols-[7.5rem_1fr]">
+            <li key={name} className="grid grid-cols-[auto_6rem_1fr] gap-4 border-b-[0.5px] border-ink/15 py-6 sm:grid-cols-[auto_7.5rem_1fr] sm:gap-5">
+              <label className="-ml-3 grid size-11 cursor-pointer place-items-center self-center">
+                <input type="checkbox" aria-label={`Check out ${name}`} checked={!line.skip} onChange={(e) => setSkip(line, !e.target.checked)} className="size-5 cursor-pointer accent-pink" />
+              </label>
               <div className="relative aspect-[3/4] bg-stone">
                 {photo && <Image src={photo} alt="" fill sizes="120px" className="object-cover" />}
               </div>
@@ -80,13 +84,14 @@ export function BagView() {
         <p className="font-serif text-xl italic">{offerNote(count)}</p>
         <div className="mt-8 flex items-baseline justify-between border-t-[0.5px] border-ink/15 pt-6">
           <span className="label">Subtotal</span>
-          <span className="font-sans text-xl font-medium">{formatPrice(subtotalCents(lines, prices))}</span>
+          <span className="font-sans text-xl font-medium">{formatPrice(subtotalCents(chosen, prices))}</span>
         </div>
         {count >= 2 && <p className="mt-2 text-[15px] text-ink">Any 2 for $85 applied at checkout</p>}
         <p className="mt-2 text-[15px] text-muted">Shipping and taxes calculated at checkout</p>
-        <button type="button" onClick={checkout} className="cta cta-primary mt-8 w-full">
+        <button type="button" onClick={checkout} disabled={count === 0} className="cta cta-primary mt-8 w-full disabled:cursor-not-allowed disabled:opacity-40">
           Checkout
         </button>
+        {count === 0 && <p className="mt-3 text-[15px] text-muted">Tick a piece to check out.</p>}
         <p role="status" className="mt-4 text-[15px] text-ink">
           {note}
         </p>
