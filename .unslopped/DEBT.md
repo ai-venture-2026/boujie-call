@@ -9,7 +9,6 @@ Categories: cleanup (mechanical, safe to batch), pattern (a wrong shape new code
 copy; fix it before it spreads), soon (costs someone time while it exists), accepted
 (evaluated and staying as is).
 - [soon] Privacy and Terms pages are missing; the footer leaves them out until they exist, and they are needed before the waitlist collects emails (src/components/site-footer.tsx) :: logged 2026-10-28, cycle 20261028-478322
-- [soon] Product gallery view and scroll drift apart when the window crosses md; sync on a matchMedia change (src/components/product-view.tsx) :: logged 2026-10-29, cycle 20261029-a10368
 - [soon] Size guide dialog renders inside the Size fieldset; move it outside so its table is not announced with the radio group (src/components/size-guide.tsx) :: logged 2026-10-29, cycle 20261029-a10368
 - [cleanup] Size guide closes when a text selection drag ends on the backdrop; close only when pointerdown and click both hit the dialog (src/components/size-guide.tsx) :: logged 2026-10-29, cycle 20261029-a10368
 - [soon] next dev re-adds a Next.js agent block with em dashes to AGENTS.md on every start; decide whether to commit it or turn it off (AGENTS.md) :: logged 2026-10-29, cycle 20261029-abd860
@@ -30,5 +29,7 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [soon] Shopify option names and values match case sensitively; a value like rose or Small would be dropped and its sold out state ignored; normalise both sides (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [soon] Live price comes from the first variant only; use priceRange.minVariantPrice if variants ever differ in price (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [cleanup] shopify.ts has no server-only guard; add it so a client import fails the build (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
-- [soon] A Coming soon piece still shows its price in the product page header; ask Alex whether to hide it there too (src/app/shop/[slug]/page.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
+- [accepted] A Coming soon piece keeps its price in the product page header; Alex agreed 2026-11-09 to keep it so visitors see what it will cost (src/app/shop/[slug]/page.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [soon] Choosing a colorway where the picked size is sold out clears the size silently; announce it to screen readers (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
+- [accepted] Gallery uses matchMedia addEventListener with no addListener fallback; Safari 13 and older would throw, outside Next 16 browser support (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-64b013
+- [cleanup] Gallery onScroll builds a new MediaQueryList per scroll event; hold one query in a ref (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-64b013

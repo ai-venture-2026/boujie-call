@@ -40,6 +40,18 @@ export function ProductView({ product, intro, details }: { product: Product; int
     io.observe(mainAdd.current);
     return () => io.disconnect();
   }, []);
+
+  // From md the other slides are hidden, so the track cannot hold the scroll position; restore it on the way back down.
+  const md = () => window.matchMedia?.("(min-width: 48rem)");
+  useEffect(() => {
+    const query = md();
+    if (!query) return;
+    const sync = () => {
+      if (!query.matches && track.current) track.current.scrollLeft = view * track.current.clientWidth;
+    };
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, [view]);
   const shown = chosen ?? product.colorways[0];
   const slots = shown.gallery ?? views.map((v, i) => ({ src: shown.images[i] ?? "", view: v }));
   const [size, setSize] = useState<string | null>(null);
@@ -74,6 +86,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         <div
           ref={track}
           onScroll={(e) => {
+            if (md()?.matches) return;
             const { scrollLeft, clientWidth } = e.currentTarget;
             if (clientWidth > 0) setView(Math.min(slots.length - 1, Math.max(0, Math.round(scrollLeft / clientWidth))));
           }}
