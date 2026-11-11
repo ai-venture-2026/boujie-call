@@ -9,6 +9,8 @@ export type Colorway = {
   swatch?: string;
   // Photo paths in /public, in gallery order. Empty shows placeholder frames.
   images: string[];
+  // Shop grid and product page photos with their alt view; Home and the bag keep images.
+  gallery?: { src: string; view: string }[];
 };
 
 export type Product = {
@@ -46,9 +48,16 @@ const bloom: Colorway = {
 
 export const colorwaySlug = (name: string) => name.toLowerCase().replaceAll(" ", "-");
 
-// Photos live in public/images/products as <slug>-<colorway>.webp.
-const photographed = (slug: string, colorways: Colorway[]): Colorway[] =>
-  colorways.map((c) => ({ ...c, images: [`/images/products/${slug}-${colorwaySlug(c.name)}.webp`] }));
+// Cutouts live in public/images/products as <slug>-<colorway>.webp, studio photos in studio/<slug>-<colorway>-<view>.webp.
+const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>): Colorway[] =>
+  colorways.map((c) => {
+    const name = `${slug}-${colorwaySlug(c.name)}`;
+    const cutout = `/images/products/${name}.webp`;
+    const views = (studio[c.name] ?? []).map((view) => ({ src: `/images/products/studio/${name}-${view}.webp`, view }));
+    return { ...c, images: [cutout], gallery: [...views, { src: cutout, view: "on its own" }] };
+  });
+
+const frontBack = ["front", "back"];
 
 export const products: Product[] = [
   {
@@ -59,7 +68,7 @@ export const products: Product[] = [
     description: "The one she reaches for when the night is hers. A soft, fluid slip that skims and moves with her.",
     fabric: "Satin with lace trim.",
     care: "Hand wash cold, lay flat to dry.",
-    colorways: photographed("the-slip-dress", [rose, afterDark, bloom]),
+    colorways: photographed("the-slip-dress", [rose, afterDark, bloom], { Rose: frontBack, "After Dark": frontBack, Bloom: frontBack }),
     sizes,
   },
   {
@@ -81,7 +90,7 @@ export const products: Product[] = [
     description: "One piece, zero effort. Soft, flirty, and made to be lived in.",
     fabric: "Stretch satin with lace trim.",
     care: "Hand wash cold, lay flat to dry.",
-    colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose]),
+    colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose], { "Powder Blue": frontBack, Mocha: frontBack, "After Dark": frontBack, Rose: ["front", "back", "side"] }),
     sizes,
   },
 ];

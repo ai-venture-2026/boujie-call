@@ -45,6 +45,21 @@ describe("product photos", () => {
   });
 
   it("leaves The Boujie Set without photos", () => {
-    expect(getProduct("the-boujie-set")?.colorways.flatMap((c) => c.images)).toEqual([]);
+    expect(getProduct("the-boujie-set")?.colorways.flatMap((c) => [...c.images, ...(c.gallery ?? [])])).toEqual([]);
+  });
+
+  it("orders the Rose slip dress gallery front, back, cutout", () => {
+    const rose = getProduct("the-slip-dress")?.colorways.find((c) => c.name === "Rose");
+    expect(rose?.gallery).toEqual([
+      { src: "/images/products/studio/the-slip-dress-rose-front.webp", view: "front" },
+      { src: "/images/products/studio/the-slip-dress-rose-back.webp", view: "back" },
+      { src: "/images/products/the-slip-dress-rose.webp", view: "on its own" },
+    ]);
+  });
+
+  it("points every gallery path at a file in public", () => {
+    const paths = products.flatMap((p) => p.colorways.flatMap((c) => (c.gallery ?? []).map((g) => g.src)));
+    expect(paths.length).toBe(22);
+    expect(paths.filter((p) => !existsSync(`public${p}`))).toEqual([]);
   });
 });

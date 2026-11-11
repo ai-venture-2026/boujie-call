@@ -53,6 +53,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
     return () => query.removeEventListener("change", sync);
   }, [view]);
   const shown = chosen ?? product.colorways[0];
+  const slots = shown.gallery ?? views.map((v, i) => ({ src: shown.images[i] ?? "", view: v }));
   const [size, setSize] = useState<string | null>(null);
   const [missing, setMissing] = useState("");
   const [added, setAdded] = useState("");
@@ -87,14 +88,14 @@ export function ProductView({ product, intro, details }: { product: Product; int
           onScroll={(e) => {
             if (md()?.matches) return;
             const { scrollLeft, clientWidth } = e.currentTarget;
-            if (clientWidth > 0) setView(Math.min(views.length - 1, Math.max(0, Math.round(scrollLeft / clientWidth))));
+            if (clientWidth > 0) setView(Math.min(slots.length - 1, Math.max(0, Math.round(scrollLeft / clientWidth))));
           }}
           className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] md:overflow-visible"
         >
-          {views.map((v, i) => (
-            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images[i] ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
-              {shown.images[i] ? (
-                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover" />
+          {slots.map(({ src, view: v }, i) => (
+            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images.includes(src) ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
+              {src ? (
+                <Image src={src} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover" />
               ) : (
                 <ToCome label={`${product.name} in ${shown.name}, ${v}`} />
               )}
@@ -102,11 +103,11 @@ export function ProductView({ product, intro, details }: { product: Product; int
           ))}
         </div>
         <div className="mt-1 flex justify-center md:hidden">
-          {views.map((v, i) => (
+          {slots.map(({ view: v }, i) => (
             <button
               key={v}
               type="button"
-              aria-label={`Photo ${i + 1} of ${views.length}`}
+              aria-label={`Photo ${i + 1} of ${slots.length}`}
               aria-current={i === view}
               onClick={() => {
                 setView(i);
@@ -118,10 +119,10 @@ export function ProductView({ product, intro, details }: { product: Product; int
             </button>
           ))}
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-3 max-md:hidden">
-          {views.map((v, i) => (
+        <div className={`mt-3 grid gap-3 max-md:hidden ${slots.length === 4 ? "grid-cols-4" : "grid-cols-3"}`}>
+          {slots.map(({ src, view: v }, i) => (
             <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden bg-stone aria-pressed:outline-1 aria-pressed:outline-pink">
-              {shown.images[i] ? <Image src={shown.images[i]} alt="" fill sizes="120px" className="object-cover" /> : <ToCome />}
+              {src ? <Image src={src} alt="" fill sizes="120px" className="object-cover" /> : <ToCome />}
             </button>
           ))}
         </div>

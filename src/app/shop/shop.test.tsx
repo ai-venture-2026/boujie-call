@@ -285,24 +285,61 @@ describe("Product page shapes", () => {
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("bg-stone");
   });
 
-  it("grounds the product photo with a contact shadow", async () => {
+  it("grounds the cutout with a contact shadow", async () => {
     await renderProduct("the-slip-dress");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
-    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).toHaveClass("contact");
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, on its own" }).parentElement).toHaveClass("contact");
+  });
+
+  it("leaves the studio photo without the added shadow", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).parentElement).not.toHaveClass("contact");
+  });
+});
+
+describe("Studio photos", () => {
+  it("opens The Slip Dress in Rose on its studio front photo", async () => {
+    await renderProduct("the-slip-dress");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).getAttribute("src")).toMatch(/studio(\/|%2F)the-slip-dress-rose-front/);
+  });
+
+  it("shows four photos for The Romper in Rose", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("button", { name: "Photo 4 of 4" })).toBeInTheDocument();
+  });
+
+  it("shows four thumbnails for The Romper in Rose", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getAllByRole("button", { name: /^Show / })).toHaveLength(4);
+  });
+
+  it("shows a studio photo on the shop card", async () => {
+    render(await Shop());
+    const card = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").find((c) => c.textContent?.includes("The Slip Dress") && c.querySelector("a")?.getAttribute("href")?.endsWith("colorway=rose"));
+    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-slip-dress-rose-front/);
+  });
+
+  it("keeps three image to come frames for The Boujie Set", async () => {
+    await renderProduct("the-boujie-set");
+    expect(screen.getAllByText("Image to come")).toHaveLength(6);
   });
 });
 
 describe("Product gallery thumbnails", () => {
   const slide = (name: string) => screen.getByRole("img", { name }).parentElement;
 
-  it("shows three thumbnails when a colorway has one photo", async () => {
+  it("shows one thumbnail per photo", async () => {
     await renderProduct("the-slip-dress");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
     expect(screen.getAllByRole("button", { name: /^Show / })).toHaveLength(3);
   });
 
   it("marks a view without a photo as image to come", async () => {
-    await renderProduct("the-slip-dress");
+    await renderProduct("the-boujie-set");
     expect(within(screen.getByRole("button", { name: "Show back" })).getByText("Image to come")).toBeInTheDocument();
   });
 
@@ -702,9 +739,9 @@ describe("Gallery across the md breakpoint", () => {
   it("keeps the chosen photo when the track scrolls at md", async () => {
     const { container } = await renderProduct("the-romper");
     const el = track(container);
-    fireEvent.click(screen.getByRole("button", { name: "Show detail" }));
+    fireEvent.click(screen.getByRole("button", { name: "Show on its own" }));
     fireEvent.scroll(el);
-    expect(screen.getByRole("button", { name: "Show detail" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Show on its own" })).toHaveAttribute("aria-pressed", "true");
   });
 });
 
