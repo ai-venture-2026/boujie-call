@@ -1,7 +1,8 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { getProduct, MAX_QTY } from "./products";
 
-export type BagLine = { slug: string; colorway: string; size: string; qty: number };
+// skip marks a piece the shopper unticked: it stays in the bag but is left out of checkout and totals.
+export type BagLine = { slug: string; colorway: string; size: string; qty: number; skip?: true };
 
 export const BAG_KEY = "bc-bag";
 export { MAX_QTY } from "./products";
@@ -37,7 +38,7 @@ export function readBag(): BagLine[] {
   let lines: BagLine[] = [];
   try {
     const parsed: unknown = JSON.parse(raw ?? "[]");
-    if (Array.isArray(parsed)) lines = parsed.filter(isValid).map(({ slug, colorway, size, qty }) => ({ slug, colorway, size, qty }));
+    if (Array.isArray(parsed)) lines = parsed.filter(isValid).map(({ slug, colorway, size, qty, skip }) => ({ slug, colorway, size, qty, ...(skip === true && { skip }) }));
   } catch {}
   cache = { raw, lines };
   return lines;
@@ -55,13 +56,19 @@ export function addToBag(pick: Omit<BagLine, "qty">) {
   const same = (l: BagLine) => l.slug === pick.slug && l.colorway === pick.colorway && l.size === pick.size;
   const existing = lines.find(same);
   writeBag(
-    existing ? lines.map((l) => (same(l) ? { ...l, qty: Math.min(l.qty + 1, MAX_QTY) } : l)) : [...lines, { ...pick, qty: 1 }],
+    existing ? lines.map((l) => (same(l) ? { slug: l.slug, colorway: l.colorway, size: l.size, qty: Math.min(l.qty + 1, MAX_QTY) } : l)) : [...lines, { ...pick, qty: 1 }],
   );
 }
 
 export const bagCount = (lines: BagLine[]) => lines.reduce((n, l) => n + l.qty, 0);
 
 const sameLine = (a: Omit<BagLine, "qty">) => (b: BagLine) => a.slug === b.slug && a.colorway === b.colorway && a.size === b.size;
+
+export const picked = (lines: BagLine[]) => lines.filter((l) => !l.skip);
+
+export function setSkip(pick: Omit<BagLine, "qty">, skip: boolean) {
+  writeBag(readBag().map((l) => (sameLine(pick)(l) ? { slug: l.slug, colorway: l.colorway, size: l.size, qty: l.qty, ...(skip && { skip: true as const }) } : l)));
+}
 
 export function setQty(pick: Omit<BagLine, "qty">, qty: number) {
   const next = Math.min(Math.max(Math.round(qty), 1), MAX_QTY);

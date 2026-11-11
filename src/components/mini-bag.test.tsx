@@ -51,6 +51,27 @@ describe("Mini bag", () => {
     expect(within(panel() as HTMLElement).getByText("+ 1 more")).toBeInTheDocument();
   });
 
+  it("drops Checkout when a piece is unticked", () => {
+    fill([{ ...slip, skip: true }, { ...slip, size: "S" }]);
+    render(<SiteHeader />);
+    fireEvent.click(icon());
+    expect(within(panel() as HTMLElement).queryByRole("button", { name: "Checkout" })).toBeNull();
+  });
+
+  it("lists unticked pieces instead of the empty state", () => {
+    fill([{ ...slip, skip: true }]);
+    render(<SiteHeader />);
+    fireEvent.click(icon());
+    expect(within(panel() as HTMLElement).queryByText("Your bag is empty")).toBeNull();
+  });
+
+  it("points to the bag when a piece is unticked", () => {
+    fill([{ ...slip, skip: true }, { ...slip, size: "S" }]);
+    render(<SiteHeader />);
+    fireEvent.click(icon());
+    expect(within(panel() as HTMLElement).getByText("Choose what to check out in your bag.")).toBeInTheDocument();
+  });
+
   it("links View bag to the bag page", () => {
     fill([slip]);
     render(<SiteHeader />);
