@@ -39,3 +39,19 @@ describe("Header links on the page already open", () => {
     expect(window.scrollTo).not.toHaveBeenCalled();
   });
 });
+
+describe("Phone menu photo", () => {
+  const photos = () => {
+    render(<SiteHeader />);
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    return [...screen.getByRole("dialog").querySelectorAll("img")].map((img) => decodeURIComponent(img.getAttribute("src") ?? ""));
+  };
+
+  it("shows the Slip Dress After Dark studio photo", () => {
+    expect(photos().some((src) => src.includes("studio/the-slip-dress-after-dark-front"))).toBe(true);
+  });
+
+  it("shows no generated hero photo", () => {
+    expect(photos().filter((src) => src.includes("/images/hero/"))).toEqual([]);
+  });
+});
