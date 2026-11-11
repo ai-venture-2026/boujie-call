@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Checkout handoff: Checkout can send the bag to Shopify's own checkout. It stays off, showing "Checkout opens soon", until SHOPIFY_CHECKOUT_ENABLED is set to true in Vercel at launch. The bag is checked on the server first (known piece, colour, size, 1 to 10 each); a sold out size is named, and a Shopify failure asks to try again.
+- Shopify prices in the bag: the bag, mini bag and subtotal show the price set in Shopify, read from /api/prices, and fall back to the site's own prices if Shopify does not answer.
 - Shop shows real photos only: the two generated model tiles above the grid are gone, and the shop header's generated lace close-up is now the Mocha Romper studio photo framed on its lace neckline. Home, About and Send a Call keep their photos.
 - Studio product photos: the shop grid and product pages lead each Slip Dress and Romper colorway with Alex's studio photos on the site pink #F8D7E3, front then back (The Romper in Rose adds a side view), with the pink cutout last in the gallery. Home, the bag and the mini bag keep the cutouts. The Boujie Set still shows Image to come.
 - Home heroes: the black slip and pink slip heroes take the same deeper pink background as the blue and brown romper heroes; that black slip photo also shows in the shop grid and the phone menu. The Home section 2 close-up of The Romper in Mocha moves from a grey mauve to a rose pink background, deeper than the pink panel beside it.

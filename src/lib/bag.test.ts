@@ -1,4 +1,4 @@
-import { addToBag, BAG_KEY, bagCount, readBag } from "./bag";
+import { addToBag, BAG_KEY, bagCount, readBag, subtotalCents } from "./bag";
 
 const dress = { slug: "the-slip-dress", colorway: "After Dark", size: "M" };
 
@@ -49,5 +49,17 @@ describe("bag", () => {
 
   it("counts pieces across lines", () => {
     expect(bagCount([{ ...dress, qty: 2 }, { ...dress, size: "S", qty: 1 }])).toBe(3);
+  });
+});
+
+describe("subtotalCents", () => {
+  const line = { slug: "the-romper", colorway: "Rose", size: "S", qty: 2 };
+
+  it("prices lines from the Shopify prices it is given", () => {
+    expect(subtotalCents([line], { "the-romper": 5000 })).toBe(10000);
+  });
+
+  it("falls back to the local price for a piece Shopify did not price", () => {
+    expect(subtotalCents([line], {})).toBe(9600);
   });
 });

@@ -1,16 +1,17 @@
 import { stockKey, type Product } from "./products";
 
-export type Catalog = Record<string, { priceCents: number | null; stock: Record<string, number | null> }>;
+export type Catalog = Record<string, { priceCents: number | null; stock: Record<string, number | null>; variants?: Record<string, string> }>;
 
 type Variant = {
+  id?: string;
   availableForSale: boolean;
   quantityAvailable: number | null;
   price: { amount: string };
   selectedOptions: { name: string; value: string }[];
 };
 
-const API_VERSION = "2026-07";
-const QUERY = `{ products(first: 50) { nodes { handle variants(first: 100) { nodes { availableForSale quantityAvailable price { amount } selectedOptions { name value } } } } } }`;
+export const API_VERSION = "2026-07";
+const QUERY = `{ products(first: 50) { nodes { handle variants(first: 100) { nodes { id availableForSale quantityAvailable price { amount } selectedOptions { name value } } } } } }`;
 
 const option = (v: Variant, name: string) => v.selectedOptions.find((o) => o.name.toLowerCase() === name)?.value;
 
@@ -33,15 +34,17 @@ export async function getCatalog(): Promise<Catalog | null> {
     return Object.fromEntries(
       nodes.map((p) => {
         const stock: Record<string, number | null> = {};
+        const variants: Record<string, string> = {};
         for (const v of p.variants.nodes) {
           const color = option(v, "color");
           const size = option(v, "size");
           if (!color || !size) continue;
           const qty = v.quantityAvailable;
+          if (v.id) variants[stockKey(color, size)] = v.id;
           stock[stockKey(color, size)] = !v.availableForSale ? 0 : typeof qty === "number" && qty > 0 ? qty : null;
         }
         const cents = Math.round(Number(p.variants.nodes[0]?.price.amount) * 100);
-        return [p.handle, { priceCents: Number.isFinite(cents) && cents > 0 ? cents : null, stock }];
+        return [p.handle, { priceCents: Number.isFinite(cents) && cents > 0 ? cents : null, stock, variants }];
       }),
     );
   } catch (error) {

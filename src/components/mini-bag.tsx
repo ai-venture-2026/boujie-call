@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { bagCount, offerNote, subtotalCents, useBag } from "@/lib/bag";
+import { bagCount, offerNote, priceOf, subtotalCents, useBag, useLivePrices } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
 import { getProduct } from "@/lib/products";
@@ -12,6 +12,7 @@ const SHOWN = 3;
 
 export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (over: boolean) => void; onNavigate: () => void }) {
   const lines = useBag();
+  const prices = useLivePrices();
   const count = bagCount(lines);
   const [note, setNote] = useState("");
   const rest = lines.length - SHOWN;
@@ -65,7 +66,7 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
                         {line.qty > 1 && `, ${line.qty} pieces`}
                       </p>
                     </div>
-                    <span className="text-[15px] font-medium">{formatPrice(product.priceCents)}</span>
+                    <span className="text-[15px] font-medium">{formatPrice(priceOf(product.slug, prices))}</span>
                   </div>
                 </li>
               );
@@ -75,7 +76,7 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
           <p className="mt-5 font-serif text-lg italic">{offerNote(count)}</p>
           <div className="mt-4 flex items-baseline justify-between">
             <span className="label">Subtotal</span>
-            <span className="font-sans text-[17px] font-medium">{formatPrice(subtotalCents(lines))}</span>
+            <span className="font-sans text-[17px] font-medium">{formatPrice(subtotalCents(lines, prices))}</span>
           </div>
           {count >= 2 && <p className="mt-1 text-[13px] text-muted">Any 2 for $85 applied at checkout</p>}
           <div className="mt-6 grid grid-cols-2 gap-3">

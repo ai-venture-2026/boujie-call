@@ -1,10 +1,10 @@
-import { useSyncExternalStore } from "react";
-import { getProduct } from "./products";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { getProduct, MAX_QTY } from "./products";
 
 export type BagLine = { slug: string; colorway: string; size: string; qty: number };
 
 export const BAG_KEY = "bc-bag";
-export const MAX_QTY = 10;
+export { MAX_QTY } from "./products";
 export const BAG_OPENED = "bc-bag-opened";
 
 const listeners = new Set<() => void>();
@@ -72,7 +72,23 @@ export function removeFromBag(pick: Omit<BagLine, "qty">) {
   writeBag(readBag().filter((l) => !sameLine(pick)(l)));
 }
 
-export const subtotalCents = (lines: BagLine[]) => lines.reduce((sum, l) => sum + (getProduct(l.slug)?.priceCents ?? 0) * l.qty, 0);
+export type Prices = Record<string, number>;
+
+// Shopify sets the official price; products.ts covers a piece Shopify did not price.
+export const priceOf = (slug: string, prices: Prices) => prices[slug] ?? getProduct(slug)?.priceCents ?? 0;
+
+export const subtotalCents = (lines: BagLine[], prices: Prices = {}) => lines.reduce((sum, l) => sum + priceOf(l.slug, prices) * l.qty, 0);
+
+export function useLivePrices(): Prices {
+  const [prices, setPrices] = useState<Prices>({});
+  useEffect(() => {
+    fetch("/api/prices")
+      .then((res) => (res.ok ? res.json() : {}))
+      .then(setPrices)
+      .catch(() => {});
+  }, []);
+  return prices;
+}
 
 export const offerNote = (count: number) => (count === 0 ? null : count === 1 ? "Add one more piece for free shipping" : "You've unlocked free shipping");
 
