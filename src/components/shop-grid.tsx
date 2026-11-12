@@ -6,10 +6,11 @@ import { useState } from "react";
 import { formatPrice } from "@/lib/content";
 import { colorwaySlug, type Product } from "@/lib/products";
 
-// Below md the toggles are pill chips in one sideways row; from md they are plain text filters.
-function Toggle({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
+// Filters are pills at every width so they read as buttons; colours carry their dot.
+function Toggle({ on, onClick, swatch, children }: { on: boolean; onClick: () => void; swatch?: string; children: React.ReactNode }) {
   return (
-    <button type="button" aria-pressed={on} onClick={onClick} className="label min-h-11 shrink-0 text-left whitespace-nowrap text-muted transition-colors hover:text-ink aria-pressed:text-ink max-md:rounded-full max-md:border-[0.5px] max-md:border-card-border max-md:px-4 max-md:aria-pressed:border-pink max-md:aria-pressed:bg-blush">
+    <button type="button" aria-pressed={on} onClick={onClick} className="label inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border-[0.5px] border-card-border px-4 text-left whitespace-nowrap text-muted transition-colors hover:border-pink hover:text-ink aria-pressed:border-pink aria-pressed:bg-blush aria-pressed:text-ink">
+      {swatch && <span data-swatch aria-hidden="true" className="size-3.5 shrink-0 rounded-full border-[0.5px] border-ink/15" style={{ background: swatch }} />}
       {children}
     </button>
   );
@@ -17,7 +18,7 @@ function Toggle({ on, onClick, children }: { on: boolean; onClick: () => void; c
 
 export function ShopGrid({ products }: { products: Product[] }) {
   const cards = products.flatMap((p) => p.colorways.map((c) => ({ product: p, colorway: c })));
-  const colours = [...new Set(cards.map((c) => c.colorway.name))];
+  const colours = [...new Map(cards.map((c) => [c.colorway.name, c.colorway.swatch ?? c.colorway.hex])).entries()];
   const [piece, setPiece] = useState<string | null>(null);
   const [colour, setColour] = useState<string | null>(null);
   const shown = cards.filter((c) => (!piece || c.product.slug === piece) && (!colour || c.colorway.name === colour));
@@ -29,7 +30,7 @@ export function ShopGrid({ products }: { products: Product[] }) {
   return (
     <div className="mx-auto grid max-w-7xl gap-10 px-6 py-19 md:grid-cols-[12rem_1fr] md:gap-x-16 md:gap-y-0 md:px-12 md:py-28">
       <div className="-mx-6 flex gap-2 px-6 [scrollbar-width:none] max-md:overflow-x-auto max-md:py-1.5 md:contents">
-      <nav aria-label="Pieces" className="flex shrink-0 gap-2 md:row-span-2 md:flex-col md:gap-1">
+      <nav aria-label="Pieces" className="flex shrink-0 gap-2 md:row-span-2 md:flex-col md:items-start">
         <Toggle on={!piece} onClick={() => setPiece(null)}>
           All pieces
         </Toggle>
@@ -39,12 +40,12 @@ export function ShopGrid({ products }: { products: Product[] }) {
           </Toggle>
         ))}
       </nav>
-      <div role="group" aria-label="Color" className="flex shrink-0 items-center gap-2 md:col-start-2 md:flex-wrap md:gap-x-5 md:border-b-[0.5px] md:border-ink/10 md:pb-4">
+      <div role="group" aria-label="Color" className="flex shrink-0 items-center gap-2 md:col-start-2 md:flex-wrap md:border-b-[0.5px] md:border-card-border md:pb-5">
         <Toggle on={!colour} onClick={() => setColour(null)}>
           All colors
         </Toggle>
-        {colours.map((name) => (
-          <Toggle key={name} on={colour === name} onClick={() => setColour(name)}>
+        {colours.map(([name, swatch]) => (
+          <Toggle key={name} on={colour === name} onClick={() => setColour(name)} swatch={swatch}>
             {name}
           </Toggle>
         ))}

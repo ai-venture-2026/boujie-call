@@ -258,6 +258,32 @@ describe("Shop collection", () => {
     expect(screen.getByRole("button", { name: "All colors" })).toBeInTheDocument();
   });
 
+  it("draws the colour filter as a pill at every width", async () => {
+    render(await Shop());
+    expect(screen.getByRole("button", { name: "Rose" }).className.split(" ")).toEqual(expect.arrayContaining(["rounded-full", "border-[0.5px]"]));
+  });
+
+  it("draws the piece filter as a pill at every width", async () => {
+    render(await Shop());
+    expect(within(screen.getByRole("navigation", { name: "Pieces" })).getByRole("button", { name: "The Romper" }).className.split(" ")).toContain("rounded-full");
+  });
+
+  it("puts the colour's dot in its pill", async () => {
+    render(await Shop());
+    expect((screen.getByRole("button", { name: "Mocha" }).querySelector("[data-swatch]") as HTMLElement).style.background).toBe("rgb(74, 44, 34)");
+  });
+
+  it("leaves All colors without a dot", async () => {
+    render(await Shop());
+    expect(screen.getByRole("button", { name: "All colors" }).querySelector("[data-swatch]")).toBeNull();
+  });
+
+  it("fills the chosen pill", async () => {
+    render(await Shop());
+    fireEvent.click(screen.getByRole("button", { name: "Rose" }));
+    expect(screen.getByRole("button", { name: "Rose" }).className.split(" ")).toEqual(expect.arrayContaining(["aria-pressed:bg-blush", "aria-pressed:border-pink"]));
+  });
+
   it("names All pieces once in the filters", async () => {
     render(await Shop());
     expect(within(screen.getByRole("main")).getAllByText("All pieces")).toHaveLength(1);
