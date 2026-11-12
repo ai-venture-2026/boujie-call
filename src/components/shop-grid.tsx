@@ -29,8 +29,8 @@ export function ShopGrid({ products }: { products: Product[] }) {
 
   return (
     <div className="mx-auto grid max-w-7xl gap-10 px-6 py-19 md:grid-cols-[12rem_1fr] md:gap-x-16 md:gap-y-0 md:px-12 md:py-28">
-      <div className="-mx-6 flex gap-2 px-6 [scrollbar-width:none] max-md:overflow-x-auto max-md:py-1.5 md:contents">
-      <nav aria-label="Pieces" className="flex shrink-0 gap-2 md:row-span-2 md:flex-col md:items-start">
+      <div className="-mx-6 flex min-w-0 flex-col gap-3 md:sticky md:top-28 md:mx-0 md:gap-8 md:self-start">
+      <nav aria-label="Pieces" className="flex shrink-0 gap-2 px-6 py-1.5 [scrollbar-width:none] max-md:overflow-x-auto md:flex-col md:items-start md:p-0">
         <Toggle on={!piece} onClick={() => setPiece(null)}>
           All pieces
         </Toggle>
@@ -40,7 +40,7 @@ export function ShopGrid({ products }: { products: Product[] }) {
           </Toggle>
         ))}
       </nav>
-      <div role="group" aria-label="Color" className="flex shrink-0 items-center gap-2 md:col-start-2 md:flex-wrap md:border-b-[0.5px] md:border-card-border md:pb-5">
+      <div role="group" aria-label="Color" className="flex shrink-0 items-center gap-2 px-6 py-1.5 [scrollbar-width:none] max-md:overflow-x-auto md:flex-col md:items-start md:border-t-[0.5px] md:border-card-border md:p-0 md:pt-8">
         <Toggle on={!colour} onClick={() => setColour(null)}>
           All colors
         </Toggle>
@@ -52,30 +52,39 @@ export function ShopGrid({ products }: { products: Product[] }) {
       </div>
       </div>
 
-      <div className="md:col-start-2">
-        <ul aria-label="Collection" className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3">
-          {shown.map(({ product, colorway }) => {
-            const photo = colorway.card ?? colorway.gallery?.[0].src ?? colorway.images[0];
-            return (
-              <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
-                <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
-                  <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images.includes(photo) ? "contact" : ""}`}>
-                    {photo ? (
-                      <Image src={photo} alt="" fill sizes="(min-width: 1024px) 22vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-                    ) : (
-                      <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
-                    )}
-                  </div>
-                  <span className="label mt-4 block truncate">{product.name}</span>
-                  <span className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
-                    <span className="label whitespace-nowrap text-muted">{colorway.name}</span>
-                    <span className="text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}</span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+      <div role="region" aria-label="Collection" className="grid gap-16 md:gap-20">
+        {products.map((p) => {
+          const group = shown.filter((c) => c.product.slug === p.slug);
+          if (group.length === 0) return null;
+          return (
+            <section key={p.slug}>
+              <h2 className="label text-ink">{p.name}</h2>
+              <ul aria-label={p.name} className="mt-6 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
+                {group.map(({ product, colorway }) => {
+                  const photo = colorway.card ?? colorway.gallery?.[0].src ?? colorway.images[0];
+                  return (
+                    <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
+                      <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
+                        <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images.includes(photo) ? "contact" : ""}`}>
+                          {photo ? (
+                            <Image src={photo} alt="" fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                          ) : (
+                            <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
+                          )}
+                        </div>
+                        <span className="label mt-4 block truncate">{product.name}</span>
+                        <span className="mt-1 block">
+                          <span className="label block whitespace-nowrap text-muted">{colorway.name}</span>
+                          <span className="mt-1 block text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}</span>
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          );
+        })}
 
         {shown.length === 0 && (
           <div className="mt-6 flex flex-col items-start gap-6">

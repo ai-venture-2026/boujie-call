@@ -16,7 +16,7 @@ const unphotographed: Product = { ...set, colorways: set.colorways.map((c) => ({
 describe("Shop", () => {
   it("links every colorway card to its product page", async () => {
     render(await Shop());
-    const hrefs = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("link").map((l) => l.getAttribute("href"));
+    const hrefs = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("link").map((l) => l.getAttribute("href"));
     expect(hrefs).toEqual(products.flatMap((p) => p.colorways.map((c) => `/shop/${p.slug}?colorway=${colorwaySlug(c.name)}`)));
   });
 
@@ -25,9 +25,10 @@ describe("Shop", () => {
     expect(screen.queryByText("Placeholder price")).toBeNull();
   });
 
-  it("shows the offer line", async () => {
+  it("leaves the offer line to the top banner", async () => {
     render(await Shop());
-    expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
+    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(hero).queryByText("Free shipping on 2 or more. Any 2 for $85.")).toBeNull();
   });
 
   it("avoids the words the owner ruled out", async () => {
@@ -207,7 +208,7 @@ describe("Product button", () => {
 });
 
 describe("Shop collection", () => {
-  const cards = () => within(screen.getByRole("list", { name: "Collection" })).queryAllByRole("listitem");
+  const cards = () => within(screen.getByRole("region", { name: "Collection" })).queryAllByRole("listitem");
   const press = (name: string) => fireEvent.click(screen.getAllByRole("button", { name })[0]);
 
   it("drops the every piece line from the header", async () => {
@@ -224,6 +225,49 @@ describe("Shop collection", () => {
   it("offers the gift link below the grid", async () => {
     render(await Shop());
     expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveAttribute("href", "/send-a-call");
+  });
+
+  it("draws the gift link as a pill button", async () => {
+    render(await Shop());
+    expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveClass("cta");
+  });
+
+  it("heads the cards by piece", async () => {
+    render(await Shop());
+    const collection = screen.getByRole("region", { name: "Collection" });
+    expect(within(collection).getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual(["The Slip Dress", "The Boujie Set", "The Romper"]);
+  });
+
+  it("lays four cards across on desktop", async () => {
+    render(await Shop());
+    expect(screen.getByRole("list", { name: "The Romper" })).toHaveClass("lg:grid-cols-4");
+  });
+
+  it("hides a piece with no card in the chosen colour", async () => {
+    render(await Shop());
+    press("Bloom");
+    expect(within(screen.getByRole("region", { name: "Collection" })).getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual(["The Slip Dress"]);
+  });
+
+  it("scrolls the colour row sideways on its own on phones", async () => {
+    render(await Shop());
+    expect(screen.getByRole("group", { name: "Color" })).toHaveClass("max-md:overflow-x-auto");
+  });
+
+  it("lets the filter rows shrink so phones never scroll sideways", async () => {
+    render(await Shop());
+    expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("min-w-0");
+  });
+
+  it("keeps the filters in view while scrolling on desktop", async () => {
+    render(await Shop());
+    expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("md:sticky");
+  });
+
+  it("puts the price on its own line", async () => {
+    render(await Shop());
+    const price = within(screen.getByRole("region", { name: "Collection" })).getAllByText("$48.00")[0];
+    expect(price).toHaveClass("block");
   });
 
   it("sets the collection header on ink", async () => {
@@ -353,7 +397,7 @@ describe("Studio photos", () => {
 
   it("shows a studio photo on the shop card", async () => {
     render(await Shop());
-    const card = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").find((c) => c.textContent?.includes("The Slip Dress") && c.querySelector("a")?.getAttribute("href")?.endsWith("colorway=rose"));
+    const card = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.textContent?.includes("The Slip Dress") && c.querySelector("a")?.getAttribute("href")?.endsWith("colorway=rose"));
     expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-slip-dress-rose-front/);
   });
 
@@ -364,13 +408,13 @@ describe("Studio photos", () => {
 
   it("shows the close crop on The Boujie Set shop card", async () => {
     render(await Shop());
-    const card = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-boujie-set?colorway=rose");
+    const card = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-boujie-set?colorway=rose");
     expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-boujie-set-rose-card/);
   });
 
   it("keeps the Romper card on its front photo", async () => {
     render(await Shop());
-    const card = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-romper?colorway=mocha");
+    const card = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-romper?colorway=mocha");
     expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-romper-mocha-front/);
   });
 });
@@ -509,12 +553,12 @@ describe("Shop shows real product photos only", () => {
 describe("Shop on phones", () => {
   it("scrolls the filter row sideways on phones", async () => {
     render(await Shop());
-    expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("max-md:overflow-x-auto");
+    expect(screen.getByRole("navigation", { name: "Pieces" })).toHaveClass("max-md:overflow-x-auto");
   });
 
   it("leaves room for the focus ring inside the filter row", async () => {
     render(await Shop());
-    expect(screen.getByRole("navigation", { name: "Pieces" }).parentElement).toHaveClass("max-md:py-1.5");
+    expect(screen.getByRole("navigation", { name: "Pieces" })).toHaveClass("py-1.5");
   });
 
   it("keeps the color filters in the piece filter row", async () => {
@@ -524,7 +568,7 @@ describe("Shop on phones", () => {
 
   it("gives each card name its own line", async () => {
     render(await Shop());
-    const price = within(screen.getByRole("list", { name: "Collection" })).getAllByText("$48.00")[0];
+    const price = within(screen.getByRole("region", { name: "Collection" })).getAllByText("$48.00")[0];
     expect(price.parentElement?.textContent).toBe("Rose$48.00");
   });
 });
@@ -680,7 +724,7 @@ describe("Phone targets on product pages", () => {
 });
 
 describe("Shop cards on phones", () => {
-  const items = () => within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem");
+  const items = () => within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem");
 
   it("keeps each card name on one line", async () => {
     render(await Shop());
@@ -800,7 +844,7 @@ describe("Live stock from Shopify", () => {
 
   it("shows Coming soon instead of the price on shop cards", () => {
     render(<ShopGrid products={products.map((p) => (p.slug === "the-boujie-set" ? { ...p, comingSoon: true } : p))} />);
-    const setCards = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").filter((c) => c.textContent?.includes("The Boujie Set"));
+    const setCards = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").filter((c) => c.textContent?.includes("The Boujie Set"));
     expect(setCards).toHaveLength(3);
     expect(setCards.every((c) => c.textContent?.includes("Coming soon") && !c.textContent.includes("$48.00"))).toBe(true);
   });
