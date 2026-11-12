@@ -111,21 +111,33 @@ describe("Gift pop-up", () => {
 describe("Gift pop-up before Send a Call opens", () => {
   beforeEach(() => vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", ""));
 
-  it("says Send a Call opens soon", () => {
+  it("lets people see her details step", () => {
     render(<GiftButton label="Send a Call" />);
     open();
-    expect(within(dialog()).getByText("Send a Call opens soon. Look around, and come back to send her gift.")).toBeInTheDocument();
+    toDetails();
+    expect(within(dialog()).getByLabelText("Her email")).toBeInTheDocument();
   });
 
-  it("labels the pop-up Coming soon instead of a step", () => {
+  it("greys out the final button", () => {
     render(<GiftButton label="Send a Call" />);
     open();
-    expect(within(dialog()).queryByText(/Step 1 of 2/)).toBeNull();
+    toDetails();
+    expect(within(dialog()).getByRole("button", { name: "Opens soon" })).toBeDisabled();
   });
 
-  it("offers no way on to her details", () => {
+  it("says sending opens soon beside the final button", () => {
     render(<GiftButton label="Send a Call" />);
     open();
-    expect(within(dialog()).queryByRole("button", { name: "Next" })).toBeNull();
+    toDetails();
+    expect(within(dialog()).getByText("Send a Call opens soon. You can look through the form, but nothing is sent yet.")).toBeInTheDocument();
+  });
+
+  it("never sends while closed", () => {
+    const start = vi.spyOn(sendModule, "startCall");
+    render(<GiftButton label="Send a Call" />);
+    open();
+    toDetails();
+    fireEvent.click(within(dialog()).getByRole("button", { name: "Opens soon" }));
+    expect(start).not.toHaveBeenCalled();
   });
 });
