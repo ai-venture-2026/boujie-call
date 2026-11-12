@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Cleaner product photo edges: the 27 photos on the site pink (Romper, Slip Dress and Boujie Set studio photos, card crops and cutouts) are redone from the originals with soft, blended outlines, so arms, hair and lace no longer look cut out or pixelated. Same pink, same framing, higher export quality.
 - Shop refinements: cards are grouped under a heading per piece, 4 across on desktop, so no lone card sits on a row; on desktop the piece and colour filters share the left column and stay in view while scrolling; on phones pieces and colours are two rows; each card shows the price on its own line; the gift link is a pill button; the hero no longer repeats the offer line from the top banner.
 - Shop filters: the colour and piece filters are pills at every width, so they read as buttons. Each colour pill shows its colour dot (Bloom its print); the chosen pill fills blush with a pink border.
 - Send a Call, step 3b (off): /send-a-call/start, the sender's form. She picks a Call (with price and contents), a piece Shopify sells and its colour (the photo follows), enters her name and email, the receiver's first name and email, and a note up to 300 characters. With SEND_A_CALL_ENABLED on, the Send a Call hero button reads Send a Call and links there; with it off the page does not exist and the waitlist stays. Saving needs the developer's database; payment comes later.
