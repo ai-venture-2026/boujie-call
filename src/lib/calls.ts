@@ -49,6 +49,10 @@ export function memoryStore(): CallStore {
   };
 }
 
+export const TOKEN_SHAPE = /^[A-Za-z0-9_-]{43}$/;
+// An unreadable date counts as expired, so a bad row never stays open forever.
+export const isExpired = (call: Call) => call.status === "expired" || !(Date.parse(call.expiresAt) > Date.now());
+
 export const hashToken = (token: string) => createHash("sha256").update(token).digest("hex");
 
 // The link carries the token; only its hash is stored, so a leaked row cannot open a gift.
