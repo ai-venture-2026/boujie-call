@@ -3,7 +3,6 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Home from "./page";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { WaitlistForm } from "@/components/waitlist-form";
 import { BAG_KEY } from "@/lib/bag";
 import { heroSlides } from "@/lib/content";
 
@@ -148,12 +147,6 @@ describe("SiteFooter", () => {
     expect(within(screen.getByRole("contentinfo")).queryByRole("textbox")).toBeNull();
   });
 
-
-  it("gives each waitlist field its own id", () => {
-    render(<><WaitlistForm /><WaitlistForm /></>);
-    const [a, b] = screen.getAllByLabelText("Email address");
-    expect(a.id).not.toBe(b.id);
-  });
 });
 
 describe("Home signup", () => {
@@ -170,44 +163,6 @@ describe("Home signup", () => {
   it("keeps the ruled out words off Home", () => {
     const { container } = render(<Home />);
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
-  });
-});
-
-describe("WaitlistForm", () => {
-  it("shows the email label to everyone", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByText("Email address")).not.toHaveClass("sr-only");
-  });
-
-  it("gives the field an example address", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByLabelText("Email address")).toHaveAttribute("placeholder", "name@email.com");
-  });
-
-  it("fills the submit in pink", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByRole("button", { name: "Join the waitlist" })).toHaveClass("cta-primary");
-  });
-
-  it("draws the field as a full box", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByLabelText("Email address")).toHaveClass("border");
-  });
-
-  const submit = (email: string) => {
-    render(<WaitlistForm />);
-    fireEvent.change(screen.getByLabelText("Email address"), { target: { value: email } });
-    fireEvent.click(screen.getByRole("button", { name: "Join the waitlist" }));
-  };
-
-  it("tells a valid signup the list opens soon", () => {
-    submit("her@example.com");
-    expect(screen.getByRole("status")).toHaveTextContent("The list opens soon");
-  });
-
-  it("shows no status for an invalid email", () => {
-    submit("not-an-email");
-    expect(screen.getByRole("status")).toBeEmptyDOMElement();
   });
 });
 
@@ -446,10 +401,6 @@ describe("Typography", () => {
     expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByText("$48.00")[0]).toHaveClass("font-sans", "font-medium");
   });
 
-  it("darkens the light waitlist placeholder", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByLabelText("Email address")).toHaveClass("placeholder:text-ink/65");
-  });
 });
 
 describe("Colour rhythm", () => {

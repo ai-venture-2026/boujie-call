@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { ShopGrid } from "@/components/shop-grid";
+import { GiftButton } from "@/components/gift-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { products } from "@/lib/products";
@@ -31,9 +31,7 @@ export default async function Shop() {
         </section>
         <ShopGrid products={live} />
         <p className="-mt-6 pb-20 text-center md:-mt-10 md:pb-28">
-          <Link href="/send-a-call" className="cta">
-            Sending it as a gift? Place a Call
-          </Link>
+          <GiftButton label="Sending it as a gift? Place a Call" className="cta" />
         </p>
       </main>
       <SiteFooter />

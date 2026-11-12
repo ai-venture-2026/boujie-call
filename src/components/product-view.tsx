@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } fro
 import { addToBag, BAG_OPENED } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
 import { colorwaySlug, OFFER, stockKey, type Colorway, type Product } from "@/lib/products";
+import { GiftButton } from "./gift-button";
 import { SizeGuide } from "./size-guide";
 
 const views = ["front", "back", "detail"];
@@ -172,9 +173,12 @@ export function ProductView({ product, intro, details }: { product: Product; int
         {product.comingSoon ? (
           <p className="label mt-7 short:mt-5">Coming soon</p>
         ) : (
-          <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-7 w-full sm:w-auto short:mt-5">
-            Add to your bag
-          </button>
+          <div className="mt-7 flex flex-wrap gap-3 short:mt-5">
+            <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary w-full sm:w-auto">
+              Add to your bag
+            </button>
+            <GiftButton key={chosen?.name ?? ""} label="Send as a gift" className="cta w-full sm:w-auto" start={{ slug: product.slug, colorway: (chosen ?? product.colorways[0]).name }} />
+          </div>
         )}
         <p className="mt-3 text-base text-muted">{OFFER}</p>
         <p role="alert" className="mt-4 text-base">
