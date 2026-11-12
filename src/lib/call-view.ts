@@ -23,7 +23,7 @@ export async function callView(token: string): Promise<CallView> {
   if (!TOKEN_SHAPE.test(token)) return { state: "missing" };
   const call = await getCallStore()!.byTokenHash(hashToken(token));
   const product = call ? getProduct(call.slug) : undefined;
-  if (!call || !product) return { state: "missing" };
+  if (!call || !product || call.status === "pending") return { state: "missing" };
   if (call.status === "claimed") return { state: "claimed" };
   if (isExpired(call)) return { state: "expired" };
   const colorway = product.colorways.find((c) => c.name === call.colorway);

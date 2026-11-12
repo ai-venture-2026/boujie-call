@@ -13,11 +13,13 @@ export type Call = {
   slug: string;
   colorway: string;
   senderName: string;
+  senderEmail: string;
   recipientName: string;
   recipientEmail: string;
   note: string;
   tokenHash: string;
-  status: "sent" | "claimed" | "expired";
+  // pending: saved by the sender, waiting for payment; no link has been sent yet.
+  status: "pending" | "sent" | "claimed" | "expired";
   createdAt: string;
   expiresAt: string;
   claim?: Claim;
@@ -33,18 +35,19 @@ export type CallStore = {
 
 export function memoryStore(): CallStore {
   const calls = new Map<string, Call>();
+  const find = (hash: string) => (hash ? [...calls.values()].find((c) => c.tokenHash === hash) : undefined);
   return {
-    save: async (call) => void calls.set(call.tokenHash, call),
-    byTokenHash: async (hash) => calls.get(hash) ?? null,
+    save: async (call) => void calls.set(call.id, call),
+    byTokenHash: async (hash) => find(hash) ?? null,
     claim: async (hash, claim) => {
-      const call = calls.get(hash);
+      const call = find(hash);
       if (call?.status !== "sent") return false;
-      calls.set(hash, { ...call, status: "claimed", claim });
+      calls.set(call.id, { ...call, status: "claimed", claim });
       return true;
     },
     markNotified: async (hash) => {
-      const call = calls.get(hash);
-      if (call?.claim) calls.set(hash, { ...call, claim: { ...call.claim, notified: true } });
+      const call = find(hash);
+      if (call?.claim) calls.set(call.id, { ...call, claim: { ...call.claim, notified: true } });
     },
   };
 }

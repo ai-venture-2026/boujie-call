@@ -10,6 +10,7 @@ const call: Call = {
   slug: "the-romper",
   colorway: "Rose",
   senderName: "Mia",
+  senderEmail: "mia@example.com",
   recipientName: "Ana",
   recipientEmail: "ana@example.com",
   note: "Love you",
