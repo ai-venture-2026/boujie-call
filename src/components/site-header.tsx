@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { BAG_OPENED, bagCount, useBag } from "@/lib/bag";
+import { BAG_OPENED, bagCount, useBag, useCheckoutReturn } from "@/lib/bag";
 import { pages, socials } from "@/lib/content";
 import { OFFER } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
@@ -25,6 +25,7 @@ export function SiteHeader() {
     window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
   const count = bagCount(useBag());
+  useCheckoutReturn();
   const [bagOpen, setBagOpen] = useState(false);
   const bagButton = useRef<HTMLButtonElement>(null);
   const bagPanel = useRef<HTMLDivElement>(null);

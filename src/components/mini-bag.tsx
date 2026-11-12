@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { bagCount, offerNote, picked, priceOf, subtotalCents, useBag, useLivePrices } from "@/lib/bag";
+import { bagCount, rememberCheckout, offerNote, picked, priceOf, subtotalCents, useBag, useLivePrices } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
 import { getProduct } from "@/lib/products";
@@ -21,7 +21,10 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
 
   async function checkout() {
     const result = await startCheckout(chosen);
-    if (result.ok) window.location.assign(result.url);
+    if (result.ok) {
+      rememberCheckout(result.cart, chosen);
+      window.location.assign(result.url);
+    }
     else setNote(result.message);
   }
 

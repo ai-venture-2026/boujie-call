@@ -1,4 +1,4 @@
-import { addToBag, BAG_KEY, bagCount, picked, readBag, setSkip, subtotalCents } from "./bag";
+import { addToBag, BAG_KEY, bagCount, CHECKOUT_KEY, picked, readBag, rememberCheckout, setSkip, settleCheckout, subtotalCents } from "./bag";
 
 const dress = { slug: "the-slip-dress", colorway: "After Dark", size: "M" };
 
@@ -92,5 +92,65 @@ describe("picking pieces for checkout", () => {
     setSkip(rose, true);
     addToBag(rose);
     expect(readBag()).toEqual([{ ...rose, qty: 2 }]);
+  });
+});
+
+describe("return from checkout", () => {
+  const cart = "gid://shopify/Cart/c1?key=k1";
+  const rose = { slug: "the-romper", colorway: "Rose", size: "S" };
+  const mocha = { slug: "the-romper", colorway: "Mocha", size: "S", qty: 1, skip: true as const };
+  const pending = () => localStorage.getItem(CHECKOUT_KEY);
+  beforeEach(() => {
+    localStorage.setItem(BAG_KEY, JSON.stringify([{ ...rose, qty: 3 }, mocha]));
+    rememberCheckout(cart, [{ ...rose, qty: 2 }]);
+  });
+
+  it("takes the sent pieces out of the bag after an order", async () => {
+    await settleCheckout(async () => true);
+    expect(readBag()).toEqual([{ ...rose, qty: 1 }, mocha]);
+  });
+
+  it("forgets the checkout once its order is settled", async () => {
+    await settleCheckout(async () => true);
+    expect(pending()).toBeNull();
+  });
+
+  it("keeps the bag while the Shopify cart is still open", async () => {
+    await settleCheckout(async () => false);
+    expect(readBag()).toEqual([{ ...rose, qty: 3 }, mocha]);
+    expect(pending()).not.toBeNull();
+  });
+
+  it("asks Shopify about the saved cart", async () => {
+    const placed = vi.fn(async () => false);
+    await settleCheckout(placed);
+    expect(placed).toHaveBeenCalledWith(cart);
+  });
+
+  it("drops a week old checkout without touching the bag", async () => {
+    vi.spyOn(Date, "now").mockReturnValue(Date.now() + 8 * 24 * 60 * 60 * 1000);
+    const placed = vi.fn(async () => true);
+    await settleCheckout(placed);
+    vi.restoreAllMocks();
+    expect(placed).not.toHaveBeenCalled();
+    expect(readBag()).toEqual([{ ...rose, qty: 3 }, mocha]);
+    expect(pending()).toBeNull();
+  });
+
+  it("subtracts once when two returns overlap", async () => {
+    await Promise.all([settleCheckout(async () => true), settleCheckout(async () => true)]);
+    expect(readBag()).toEqual([{ ...rose, qty: 1 }, mocha]);
+  });
+
+  it("changes nothing when Shopify cannot be asked", async () => {
+    await settleCheckout(async () => Promise.reject(new Error("offline")));
+    expect(readBag()).toEqual([{ ...rose, qty: 3 }, mocha]);
+    expect(pending()).not.toBeNull();
+  });
+
+  it("leaves a piece unticked after checkout in the bag", async () => {
+    localStorage.setItem(BAG_KEY, JSON.stringify([{ ...rose, qty: 3, skip: true }, mocha]));
+    await settleCheckout(async () => true);
+    expect(readBag()).toEqual([{ ...rose, qty: 3, skip: true }, mocha]);
   });
 });

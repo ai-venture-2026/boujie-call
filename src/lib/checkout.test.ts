@@ -1,4 +1,4 @@
-import { startCheckout } from "./checkout";
+import { orderPlaced, startCheckout } from "./checkout";
 
 const node = (color: string, size: string, availableForSale = true) => ({
   id: `gid://shopify/ProductVariant/${color}-${size}`,
@@ -13,7 +13,8 @@ const node = (color: string, size: string, availableForSale = true) => ({
 
 const catalog = { ok: true, status: 200, json: async () => ({ data: { products: { nodes: [{ handle: "the-romper", variants: { nodes: [node("Rose", "S"), node("Rose", "M", false)] } }] } } }) };
 const cart = (body: object) => ({ ok: true, status: 200, json: async () => ({ data: { cartCreate: body } }) });
-const created = cart({ cart: { checkoutUrl: "https://shop.example/checkouts/abc" }, userErrors: [] });
+const CART_ID = "gid://shopify/Cart/c1-abc?key=k1";
+const created = cart({ cart: { id: CART_ID, checkoutUrl: "https://shop.example/checkouts/abc" }, userErrors: [] });
 
 const shopify = (cartAnswer: unknown = created) => vi.fn(async (_url: string, init: { body: string }) => (init.body.includes("cartCreate") ? cartAnswer : catalog));
 const cartCalls = (fetch: ReturnType<typeof shopify>) => fetch.mock.calls.filter(([, init]) => init.body.includes("cartCreate"));
@@ -43,7 +44,7 @@ describe("startCheckout", () => {
 
   it("returns the Shopify checkout address", async () => {
     on(shopify());
-    expect(await startCheckout([rose])).toEqual({ ok: true, url: "https://shop.example/checkouts/abc" });
+    expect(await startCheckout([rose])).toEqual({ ok: true, url: "https://shop.example/checkouts/abc", cart: CART_ID });
   });
 
   it("sends each variant id with its quantity", async () => {
@@ -87,5 +88,44 @@ describe("startCheckout", () => {
   it("asks to try again when Shopify is unreachable", async () => {
     on(vi.fn().mockRejectedValue(new Error("offline")));
     expect(await startCheckout([rose])).toEqual({ ok: false, message: "We couldn't open checkout. Please try again." });
+  });
+});
+
+describe("orderPlaced", () => {
+  beforeEach(() => {
+    vi.stubEnv("SHOPIFY_STORE_DOMAIN", "example.myshopify.com");
+    vi.stubEnv("SHOPIFY_STOREFRONT_PUBLIC_TOKEN", "test-token");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+  const answer = (data: object) => vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => data });
+
+  it("reports an order once Shopify has removed the cart", async () => {
+    vi.stubGlobal("fetch", answer({ data: { cart: null } }));
+    expect(await orderPlaced(CART_ID)).toBe(true);
+  });
+
+  it("reports no order while the cart still exists", async () => {
+    vi.stubGlobal("fetch", answer({ data: { cart: { id: CART_ID } } }));
+    expect(await orderPlaced(CART_ID)).toBe(false);
+  });
+
+  it("reports no order when Shopify answers with errors", async () => {
+    vi.stubGlobal("fetch", answer({ data: { cart: null }, errors: [{ message: "Throttled" }] }));
+    expect(await orderPlaced(CART_ID)).toBe(false);
+  });
+
+  it("reports no order when Shopify is unreachable", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+    expect(await orderPlaced(CART_ID)).toBe(false);
+  });
+
+  it("refuses an id that is not a Shopify cart without asking Shopify", async () => {
+    const fetch = answer({ data: { cart: null } });
+    vi.stubGlobal("fetch", fetch);
+    expect(await orderPlaced("gid://shopify/Order/1")).toBe(false);
+    expect(fetch).not.toHaveBeenCalled();
   });
 });
