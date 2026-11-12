@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Gift buttons everywhere: the shop's 'Sending it as a gift? Place a Call' and a new 'Send as a gift' button on each product page open the gift pop-up in place; on a product page it starts on that piece and the colour chosen. Pieces that are Coming soon show no gift button. The old waitlist form is removed.
 - Send a Call pop-up: the Send a Call buttons (Send a Call hero and closing, About closing) open a two step gift pop-up instead of a waitlist: step 1 picks the Call, piece and colour with its photo; step 2 takes both names and emails and the note. Continue answers that Send a Call opens soon until payment exists. The waitlist is gone from those pages and from the site description.
 - Cleaner product photo edges: the 27 photos on the site pink (Romper, Slip Dress and Boujie Set studio photos, card crops and cutouts) are redone from the originals with soft, blended outlines, so arms, hair and lace no longer look cut out or pixelated. Same pink, same framing, higher export quality.
 - Shop refinements: cards are grouped under a heading per piece, 4 across on desktop, so no lone card sits on a row; on desktop the piece and colour filters share the left column and stay in view while scrolling; on phones pieces and colours are two rows; each card shows the price on its own line; the gift link is a pill button; the hero no longer repeats the offer line from the top banner.

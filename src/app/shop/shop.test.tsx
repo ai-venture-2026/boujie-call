@@ -71,7 +71,7 @@ describe("Product page on laptops", () => {
 
   it("tightens the gap above the button on short laptop screens", async () => {
     await renderProduct("the-slip-dress");
-    expect(screen.getByRole("button", { name: "Add to your bag" })).toHaveClass("short:mt-5");
+    expect(screen.getByRole("button", { name: "Add to your bag" }).parentElement).toHaveClass("short:mt-5");
   });
 
   it("sets size pills 40px tall for mouse users from md", async () => {
@@ -180,6 +180,25 @@ describe("Product photos", () => {
   });
 });
 
+describe("Send as a gift", () => {
+  it("opens the gift pop-up from a product page", async () => {
+    await renderProduct("the-romper");
+    expect(screen.getByRole("button", { name: "Send as a gift" })).toHaveAttribute("aria-haspopup", "dialog");
+  });
+
+  it("starts the pop-up on the colour chosen on the page", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("radio", { name: "Mocha" }));
+    fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
+    expect(within(screen.getByRole("dialog", { name: "Choose her gift" })).getByRole("radio", { name: "Mocha" })).toBeChecked();
+  });
+
+  it("leaves the gift button off a piece that is coming soon", () => {
+    render(<ProductView product={{ ...products.find((p) => p.slug === "the-romper")!, comingSoon: true }} intro={null} details={null} />);
+    expect(screen.queryByRole("button", { name: "Send as a gift" })).toBeNull();
+  });
+});
+
 describe("Product button", () => {
   it("uses the cta button for add to your bag", async () => {
     await renderProduct("the-romper");
@@ -222,14 +241,14 @@ describe("Shop collection", () => {
     expect(within(header).queryByRole("link", { name: /Place a Call/ })).toBeNull();
   });
 
-  it("offers the gift link below the grid", async () => {
+  it("opens the gift pop-up from below the grid", async () => {
     render(await Shop());
-    expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveAttribute("href", "/send-a-call");
+    expect(screen.getByRole("button", { name: "Sending it as a gift? Place a Call" })).toHaveAttribute("aria-haspopup", "dialog");
   });
 
-  it("draws the gift link as a pill button", async () => {
+  it("draws the gift button as an outlined pill", async () => {
     render(await Shop());
-    expect(screen.getByRole("link", { name: "Sending it as a gift? Place a Call" })).toHaveClass("cta");
+    expect(screen.getByRole("button", { name: "Sending it as a gift? Place a Call" })).toHaveClass("cta");
   });
 
   it("heads the cards by piece", async () => {
