@@ -53,6 +53,10 @@ export function siteUrl(env: Record<string, string | undefined>): string {
 
 export const SITE_URL = siteUrl(process.env);
 
+// Only production is open to search engines, so staging and previews are never indexed as copies.
+export const isLive = (env: Record<string, string | undefined>) => env.VERCEL_ENV === "production";
+export const indexing = (env: Record<string, string | undefined>) => (isLive(env) ? undefined : { index: false, follow: false });
+
 // Home hero photos. "text" is the type colour that reads on the photo's empty left side.
 export type HeroSlide = { src: string; alt: string; slug: string; piece: string; colorway: string; focus: string; text: "ink" | "cream" };
 

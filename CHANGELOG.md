@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Launch guards: a Boujie Call error page (This page didn't load, with Try again and Back to the shop) replaces the framework default when a page fails; staging and previews tell search engines not to index or crawl them, while the live site (VERCEL_ENV production) stays open.
 - Gift buttons everywhere: the shop's 'Sending it as a gift? Place a Call' and a new 'Send as a gift' button on each product page open the gift pop-up in place; on a product page it starts on that piece and the colour chosen. Pieces that are Coming soon show no gift button. The old waitlist form is removed.
 - Send a Call pop-up: the Send a Call buttons (Send a Call hero and closing, About closing) open a two step gift pop-up instead of a waitlist: step 1 picks the Call, piece and colour with its photo; step 2 takes both names and emails and the note. Continue answers that Send a Call opens soon until payment exists. The waitlist is gone from those pages and from the site description.
 - Cleaner product photo edges: the 27 photos on the site pink (Romper, Slip Dress and Boujie Set studio photos, card crops and cutouts) are redone from the originals with soft, blended outlines, so arms, hair and lace no longer look cut out or pixelated. Same pink, same framing, higher export quality.
