@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Shop filters: the colour and piece filters are pills at every width, so they read as buttons. Each colour pill shows its colour dot (Bloom its print); the chosen pill fills blush with a pink border.
 - Send a Call, step 3b (off): /send-a-call/start, the sender's form. She picks a Call (with price and contents), a piece Shopify sells and its colour (the photo follows), enters her name and email, the receiver's first name and email, and a note up to 300 characters. With SEND_A_CALL_ENABLED on, the Send a Call hero button reads Send a Call and links there; with it off the page does not exist and the waitlist stays. Saving needs the developer's database; payment comes later.
 - Send a Call, step 3a (server only, off): the sender's gift details (Call tier, piece, colour, her name and email, the receiver's first name and email, a note up to 300 characters) are checked and saved as waiting for payment. Nothing is emailed and no claim link exists until payment is built. Stays off until SEND_A_CALL_ENABLED is true in Vercel.
 - Send a Call, step 2b: the claim page at /call/<link>. The receiver sees who sent her gift, the piece and colour with its photo and the note (no price), picks her size (sold out sizes crossed out) and enters a US address; Claim my gift confirms with her city and state. Claimed, expired and closed links explain themselves; unknown links are a 404; the page is hidden from search engines. Claiming opens once the developer connects the database and OWNER_EMAIL is set.
