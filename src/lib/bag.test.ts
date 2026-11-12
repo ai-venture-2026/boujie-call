@@ -136,4 +136,21 @@ describe("return from checkout", () => {
     expect(readBag()).toEqual([{ ...rose, qty: 3 }, mocha]);
     expect(pending()).toBeNull();
   });
+
+  it("subtracts once when two returns overlap", async () => {
+    await Promise.all([settleCheckout(async () => true), settleCheckout(async () => true)]);
+    expect(readBag()).toEqual([{ ...rose, qty: 1 }, mocha]);
+  });
+
+  it("changes nothing when Shopify cannot be asked", async () => {
+    await settleCheckout(async () => Promise.reject(new Error("offline")));
+    expect(readBag()).toEqual([{ ...rose, qty: 3 }, mocha]);
+    expect(pending()).not.toBeNull();
+  });
+
+  it("leaves a piece unticked after checkout in the bag", async () => {
+    localStorage.setItem(BAG_KEY, JSON.stringify([{ ...rose, qty: 3, skip: true }, mocha]));
+    await settleCheckout(async () => true);
+    expect(readBag()).toEqual([{ ...rose, qty: 3, skip: true }, mocha]);
+  });
 });

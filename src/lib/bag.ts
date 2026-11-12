@@ -89,33 +89,56 @@ export function rememberCheckout(cart: string | undefined, lines: BagLine[]) {
   } catch {}
 }
 
+let settling: Promise<void> | null = null;
+let checked = false;
+
+// Overlapping returns share one check, so a piece is never subtracted twice.
+export function settleCheckout(placed: (cart: string) => Promise<boolean>) {
+  settling ??= settle(placed).finally(() => (settling = null));
+  return settling;
+}
+
 // An expired cart also reads as gone, so a checkout older than a week is forgotten instead of cleared.
-export async function settleCheckout(placed: (cart: string) => Promise<boolean>) {
-  let saved: { cart?: unknown; lines?: unknown; at?: unknown } | null = null;
-  try {
-    saved = JSON.parse(localStorage.getItem(CHECKOUT_KEY) ?? "null");
-  } catch {}
-  if (!saved) return;
+async function settle(placed: (cart: string) => Promise<boolean>) {
+  const read = () => {
+    try {
+      return localStorage.getItem(CHECKOUT_KEY);
+    } catch {
+      return null;
+    }
+  };
   const forget = () => {
     try {
       localStorage.removeItem(CHECKOUT_KEY);
     } catch {}
   };
+  const raw = read();
+  let saved: { cart?: unknown; lines?: unknown; at?: unknown } | null = null;
+  try {
+    saved = JSON.parse(raw ?? "null");
+  } catch {}
+  if (!saved) return;
   const { cart, lines, at } = saved;
   if (typeof cart !== "string" || !Array.isArray(lines) || typeof at !== "number" || Date.now() - at > CHECKOUT_DAYS * 864e5) return forget();
-  if (!(await placed(cart))) return;
+  try {
+    if (!(await placed(cart))) return;
+  } catch {
+    return;
+  }
+  if (read() !== raw) return;
+  forget();
   const sent = lines.filter(isValid);
   writeBag(
     readBag()
-      .map((l) => ({ ...l, qty: l.qty - (sent.find(sameLine(l))?.qty ?? 0) }))
+      .map((l) => (l.skip ? l : { ...l, qty: l.qty - (sent.find(sameLine(l))?.qty ?? 0) }))
       .filter((l) => l.qty > 0),
   );
-  forget();
 }
 
 export function useCheckoutReturn() {
   useEffect(() => {
-    void settleCheckout(orderPlaced);
+    if (!checked) void settleCheckout(orderPlaced);
+    checked = true;
     const restored = (e: PageTransitionEvent) => e.persisted && void settleCheckout(orderPlaced);
     window.addEventListener("pageshow", restored);
     return () => window.removeEventListener("pageshow", restored);

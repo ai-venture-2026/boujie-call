@@ -29,3 +29,6 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [cleanup] Gallery onScroll builds a new MediaQueryList per scroll event; hold one query in a ref (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-64b013
 - [soon] Vercel build warns that engines node >=20.9 floats to each new Node major; pin a major (for example 22.x) so a Node release cannot change the build unannounced (package.json) :: logged 2026-11-11
 - [cleanup] eslint 9.39.5 is past end of support (npm deprecation warning on every build); upgrade to the supported major with eslint-config-next (package.json) :: logged 2026-11-11
+- [soon] orderPlaced is a public server action with no rate limit; a script could spend the Storefront throttle that real checkouts need. Bind it to a cookie set by startCheckout or rate limit it (src/lib/checkout.ts) :: logged 2026-11-12, cycle 20261112-cd59c4
+- [accepted] A second checkout overwrites bc-checkout; if the first cart was paid in another tab its pieces stay in the bag (src/lib/bag.ts) :: logged 2026-11-12, cycle 20261112-cd59c4
+- [accepted] Shopify answers null for an expired cart as well as a completed one; a cart expiring inside the 7 day window would clear an abandoned bag. An orders/create webhook would remove the guess (src/lib/checkout.ts) :: logged 2026-11-12, cycle 20261112-cd59c4
