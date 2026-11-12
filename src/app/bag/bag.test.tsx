@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import BagPage from "./page";
 import * as checkoutModule from "@/lib/checkout";
-import { BAG_KEY, MAX_QTY, readBag, setQty } from "@/lib/bag";
+import { BAG_KEY, CHECKOUT_KEY, MAX_QTY, readBag, setQty } from "@/lib/bag";
+import { waitFor } from "@testing-library/react";
 
 const fill = (lines: object[]) => localStorage.setItem(BAG_KEY, JSON.stringify(lines));
 const slip = { slug: "the-slip-dress", colorway: "Rose", size: "M", qty: 1 };
@@ -46,6 +47,18 @@ describe("Bag tick boxes", () => {
     fireEvent.click(tick("The Slip Dress, Rose, M"));
     fireEvent.click(screen.getByRole("button", { name: "Checkout" }));
     expect(start).toHaveBeenCalledWith([romper]);
+  });
+
+  it("saves the Shopify cart before leaving for checkout", async () => {
+    vi.spyOn(checkoutModule, "startCheckout").mockResolvedValue({ ok: true, url: "https://shop.example/c", cart: "gid://shopify/Cart/c1?key=k1" });
+    const assign = vi.fn();
+    vi.stubGlobal("location", { ...window.location, assign });
+    fill([slip]);
+    render(<BagPage />);
+    fireEvent.click(screen.getByRole("button", { name: "Checkout" }));
+    await waitFor(() => expect(assign).toHaveBeenCalled());
+    vi.unstubAllGlobals();
+    expect(JSON.parse(localStorage.getItem(CHECKOUT_KEY) ?? "{}")).toMatchObject({ cart: "gid://shopify/Cart/c1?key=k1", lines: [slip] });
   });
 
   it("disables checkout with nothing ticked", () => {

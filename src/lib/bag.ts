@@ -1,4 +1,5 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { orderPlaced } from "./checkout";
 import { getProduct, MAX_QTY } from "./products";
 
 // skip marks a piece the shopper unticked: it stays in the bag but is left out of checkout and totals.
@@ -7,6 +8,8 @@ export type BagLine = { slug: string; colorway: string; size: string; qty: numbe
 export const BAG_KEY = "bc-bag";
 export { MAX_QTY } from "./products";
 export const BAG_OPENED = "bc-bag-opened";
+export const CHECKOUT_KEY = "bc-checkout";
+const CHECKOUT_DAYS = 7;
 
 const listeners = new Set<() => void>();
 const empty: BagLine[] = [];
@@ -77,6 +80,46 @@ export function setQty(pick: Omit<BagLine, "qty">, qty: number) {
 
 export function removeFromBag(pick: Omit<BagLine, "qty">) {
   writeBag(readBag().filter((l) => !sameLine(pick)(l)));
+}
+
+export function rememberCheckout(cart: string | undefined, lines: BagLine[]) {
+  if (!cart) return;
+  try {
+    localStorage.setItem(CHECKOUT_KEY, JSON.stringify({ cart, lines, at: Date.now() }));
+  } catch {}
+}
+
+// An expired cart also reads as gone, so a checkout older than a week is forgotten instead of cleared.
+export async function settleCheckout(placed: (cart: string) => Promise<boolean>) {
+  let saved: { cart?: unknown; lines?: unknown; at?: unknown } | null = null;
+  try {
+    saved = JSON.parse(localStorage.getItem(CHECKOUT_KEY) ?? "null");
+  } catch {}
+  if (!saved) return;
+  const forget = () => {
+    try {
+      localStorage.removeItem(CHECKOUT_KEY);
+    } catch {}
+  };
+  const { cart, lines, at } = saved;
+  if (typeof cart !== "string" || !Array.isArray(lines) || typeof at !== "number" || Date.now() - at > CHECKOUT_DAYS * 864e5) return forget();
+  if (!(await placed(cart))) return;
+  const sent = lines.filter(isValid);
+  writeBag(
+    readBag()
+      .map((l) => ({ ...l, qty: l.qty - (sent.find(sameLine(l))?.qty ?? 0) }))
+      .filter((l) => l.qty > 0),
+  );
+  forget();
+}
+
+export function useCheckoutReturn() {
+  useEffect(() => {
+    void settleCheckout(orderPlaced);
+    const restored = (e: PageTransitionEvent) => e.persisted && void settleCheckout(orderPlaced);
+    window.addEventListener("pageshow", restored);
+    return () => window.removeEventListener("pageshow", restored);
+  }, []);
 }
 
 export type Prices = Record<string, number>;

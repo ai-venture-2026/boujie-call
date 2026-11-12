@@ -29,4 +29,3 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [cleanup] Gallery onScroll builds a new MediaQueryList per scroll event; hold one query in a ref (src/components/product-view.tsx) :: logged 2026-11-09, cycle 20261109-64b013
 - [soon] Vercel build warns that engines node >=20.9 floats to each new Node major; pin a major (for example 22.x) so a Node release cannot change the build unannounced (package.json) :: logged 2026-11-11
 - [cleanup] eslint 9.39.5 is past end of support (npm deprecation warning on every build); upgrade to the supported major with eslint-config-next (package.json) :: logged 2026-11-11
-- [soon] After a completed Shopify checkout the bought pieces stay in the site bag; clear them on return from checkout (needs an order or cart completion signal from Shopify) (src/lib/bag.ts) :: logged 2026-11-11, cycle 20261111-df4f30

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { bagCount, offerNote, picked, removeFromBag, setQty, setSkip, priceOf, subtotalCents, useBag, useLivePrices, MAX_QTY } from "@/lib/bag";
+import { bagCount, rememberCheckout, offerNote, picked, removeFromBag, setQty, setSkip, priceOf, subtotalCents, useBag, useLivePrices, MAX_QTY } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
 import { getProduct } from "@/lib/products";
@@ -17,7 +17,10 @@ export function BagView() {
 
   async function checkout() {
     const result = await startCheckout(chosen);
-    if (result.ok) window.location.assign(result.url);
+    if (result.ok) {
+      rememberCheckout(result.cart, chosen);
+      window.location.assign(result.url);
+    }
     else setNote(result.message);
   }
 
