@@ -44,8 +44,18 @@ describe("product photos", () => {
     expect(getProduct("the-slip-dress")?.colorways.find((c) => c.name === "Rose")?.images).toEqual(["/images/products/the-slip-dress-rose.webp"]);
   });
 
-  it("leaves The Boujie Set without photos", () => {
-    expect(getProduct("the-boujie-set")?.colorways.flatMap((c) => [...c.images, ...(c.gallery ?? [])])).toEqual([]);
+  const setViews = (name: string) => getProduct("the-boujie-set")?.colorways.find((c) => c.name === name)?.gallery?.map((g) => g.view);
+
+  it.each([
+    ["After Dark", ["front", "back", "on its own"]],
+    ["Powder Blue", ["front", "side", "on its own"]],
+    ["Rose", ["front", "back", "on its own"]],
+  ])("orders The Boujie Set in %s by its photos", (name, views) => {
+    expect(setViews(name)).toEqual(views);
+  });
+
+  it("keeps brown off The Boujie Set", () => {
+    expect(getProduct("the-boujie-set")?.colorways.map((c) => c.name)).not.toContain("Brown");
   });
 
   it("orders the Rose slip dress gallery front, back, cutout", () => {
@@ -59,7 +69,7 @@ describe("product photos", () => {
 
   it("points every gallery path at a file in public", () => {
     const paths = products.flatMap((p) => p.colorways.flatMap((c) => (c.gallery ?? []).map((g) => g.src)));
-    expect(paths.length).toBe(22);
+    expect(paths.length).toBe(31);
     expect(paths.filter((p) => !existsSync(`public${p}`))).toEqual([]);
   });
 });

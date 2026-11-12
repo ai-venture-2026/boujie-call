@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Boujie Set photos: the set shows Alex's photos on the site pink in After Dark (front, back), Powder Blue (front, side) and Rose (front, back), each followed by the set on its own; shop cards lead with the front photo. Brown photos are kept aside until the owner confirms the colour. The set stays Coming soon until it is published in Shopify.
 - Bag clears after an order: when a shopper pays on Shopify and comes back to the site within a week, the pieces they sent to checkout leave the bag; unticked pieces stay. The site asks Shopify whether the checkout's cart still exists (Shopify removes it once the order is placed) and changes nothing if Shopify does not answer or the shopper backed out.
 - Shopify names: colour and size values typed in Shopify with different capitals or extra spaces (for example "rose " or "xl") still match the site's Rose and XL, so their stock, sold out state and checkout keep working.
 - Bag tick boxes: each piece in the bag has a tick box, ticked by default. Checkout sends only ticked pieces; the subtotal, the free shipping note and the Any 2 line count only ticked pieces; unticked pieces stay in the bag, also after a reload. With nothing ticked, Checkout is greyed out and says to tick a piece. With a piece unticked, the mini bag drops Checkout and points to the bag page.

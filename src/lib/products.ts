@@ -81,7 +81,7 @@ export const products: Product[] = [
     description: "A satin cami and shorts set, cute enough for brunch and soft enough to sleep in.",
     fabric: "Satin with lace trim.",
     care: "Hand wash cold, lay flat to dry.",
-    colorways: [afterDark, powderBlue, rose],
+    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }),
     sizes,
   },
   {
