@@ -46,7 +46,7 @@ export default function SendACall() {
                 </li>
               ))}
             </ol>
-            <p className="mt-10 font-serif text-2xl italic rise md:mt-14">You only need her first name and number. We handle the rest, beautifully.</p>
+            <p className="mt-10 font-serif text-2xl italic rise md:mt-14">You only need their first name and email. We handle the rest, beautifully.</p>
           </div>
         </section>
 
@@ -101,7 +101,7 @@ export default function SendACall() {
               The call is coming. Are you going to <em className="text-pink">pick up?</em>
             </>
           }
-          line="Choose her gift and write her note. We handle the rest."
+          line="Choose their gift and write your note. We handle the rest."
         >
           <GiftButton label="Send a Call" />
         </ClosingBanner>

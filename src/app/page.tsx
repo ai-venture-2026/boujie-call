@@ -48,7 +48,7 @@ export default function Home() {
         <HeroCarousel>
           <p className="label">LUXURY NIGHTWEAR GIFTS</p>
           <h1 id="hero-title" className="mt-4 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02] max-md:text-[2.4rem] md:mt-6">
-            The gift that makes her <em className="text-pink">feel</em> like the <em className="text-pink">moment.</em>
+            The gift that makes them <em className="text-pink">feel</em> like the <em className="text-pink">moment.</em>
           </h1>
           <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
           <Link href="/shop" className="cta cta-primary mt-10">
@@ -78,7 +78,7 @@ export default function Home() {
           <h2 className={`${wrap} text-center text-[2rem] leading-[1.05] md:text-[clamp(2.25rem,5vw,4.75rem)] md:uppercase rise`}>
             Someone places a call.
             <br />
-            She <em className="text-pink normal-case">receives</em> a moment.
+            They <em className="text-pink normal-case">receive</em> a moment.
           </h2>
           <div data-strip className="mt-14 grid grid-cols-2 gap-3 px-6 md:mt-20 md:flex md:items-start md:justify-center md:gap-6 md:px-0">
             {strip.map((s) => (
@@ -139,7 +139,7 @@ export default function Home() {
               Be first to receive a Boujie <em className="text-rose-deep">Call.</em>
             </>
           }
-          line="The pieces are here. Find the one that feels like her."
+          line="The pieces are here. Find the one that feels like you."
         >
           <Link href="/shop" className="cta">
             Shop the collection

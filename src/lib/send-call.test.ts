@@ -68,8 +68,8 @@ describe("startCall", () => {
 
   it.each([
     ["a name with a line break", { senderName: "Mia\nBcc: x@y.z" }, "Enter your name."],
-    ["a malformed email", { recipientEmail: "ana@" }, "Enter her email address."],
-    ["an empty note", { note: "  " }, "Write her a note."],
+    ["a malformed email", { recipientEmail: "ana@" }, "Enter their email address."],
+    ["an empty note", { note: "  " }, "Write them a note."],
     ["a note over 300 characters", { note: "x".repeat(301) }, "Keep the note under 300 characters."],
   ])("refuses %s", async (_, change, message) => {
     expect(await startCall({ ...gift, ...change })).toEqual({ ok: false, message });

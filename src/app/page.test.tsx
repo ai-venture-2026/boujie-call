@@ -10,13 +10,13 @@ describe("Home", () => {
   it("has one h1 with the brand promise", () => {
     render(<Home />);
     const headings = screen.getAllByRole("heading", { level: 1 });
-    expect(headings.map((h) => h.textContent)).toEqual(["The gift that makes her feel like the moment."]);
+    expect(headings.map((h) => h.textContent)).toEqual(["The gift that makes them feel like the moment."]);
   });
 
   it("lists the three steps in order", () => {
     render(<Home />);
     const steps = within(screen.getByRole("list", { name: "How it works" })).getAllByRole("heading");
-    expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "She gets the Call", "She picks up"]);
+    expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "They get the Call", "They pick up"]);
   });
 
   it("links TikTok to the placeholder handle", () => {
@@ -208,7 +208,7 @@ describe("Waitlist copy", () => {
 });
 
 describe("Home editorial redesign", () => {
-  const hero = () => screen.getByRole("region", { name: "The gift that makes her feel like the moment." });
+  const hero = () => screen.getByRole("region", { name: "The gift that makes them feel like the moment." });
 
   it("labels the hero as luxury nightwear gifts", () => {
     render(<Home />);
@@ -329,7 +329,7 @@ describe("Closing section", () => {
 
   it("ends on the closing line", () => {
     const { container } = render(<Home />);
-    expect(within(close(container)).getByText("The pieces are here. Find the one that feels like her.")).toBeInTheDocument();
+    expect(within(close(container)).getByText("The pieces are here. Find the one that feels like you.")).toBeInTheDocument();
   });
 
   it("is not a centered stack", () => {
@@ -339,7 +339,7 @@ describe("Closing section", () => {
 });
 
 describe("Hero polish", () => {
-  const hero = () => screen.getByRole("region", { name: "The gift that makes her feel like the moment." });
+  const hero = () => screen.getByRole("region", { name: "The gift that makes them feel like the moment." });
 
   it("shows no counter text", () => {
     render(<Home />);
@@ -382,7 +382,7 @@ describe("Strict pass", () => {
 
   it("drops the line above the closing line", () => {
     render(<Home />);
-    expect(screen.getByText("The pieces are here. Find the one that feels like her.")).not.toHaveClass("border-t-[0.5px]");
+    expect(screen.getByText("The pieces are here. Find the one that feels like you.")).not.toHaveClass("border-t-[0.5px]");
   });
 
   it("keeps social placeholders out of the footer", () => {
@@ -430,7 +430,7 @@ describe("Typography", () => {
 describe("Colour rhythm", () => {
   it("sets the dark section accent in pink", () => {
     render(<Home />);
-    expect(screen.getByText("receives")).toHaveClass("text-pink");
+    expect(screen.getByText("receive")).toHaveClass("text-pink");
   });
 
   it("sets the light section accent in rose", () => {
@@ -477,7 +477,7 @@ describe("Hero pace", () => {
 
   it("keeps advancing while the mouse is over the hero", () => {
     render(<Home />);
-    fireEvent.mouseEnter(screen.getByRole("region", { name: "The gift that makes her feel like the moment." }));
+    fireEvent.mouseEnter(screen.getByRole("region", { name: "The gift that makes them feel like the moment." }));
     act(() => vi.advanceTimersByTime(5000));
     expect(screen.getByRole("button", { name: "Show slide 2" })).toHaveAttribute("aria-current", "true");
   });

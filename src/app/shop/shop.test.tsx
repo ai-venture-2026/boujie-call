@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Shop from "./page";
+import Home from "../page";
 import SendACall from "../send-a-call/page";
 import ProductPage from "./[slug]/page";
 import { colorwaySlug, products, type Product } from "@/lib/products";
@@ -180,6 +181,30 @@ describe("Product photos", () => {
   });
 });
 
+describe("Gender neutral gift copy", () => {
+  const gendered = /\b(her|hers|she)\b/i;
+
+  it("keeps gendered pronouns off Home", () => {
+    const { container } = render(<Home />);
+    expect(container.textContent).not.toMatch(gendered);
+  });
+
+  it("keeps gendered pronouns off Send a Call", () => {
+    const { container } = render(<SendACall />);
+    expect(container.textContent).not.toMatch(gendered);
+  });
+
+  it("keeps gendered pronouns off the shop", async () => {
+    const { container } = render(await Shop());
+    expect(container.textContent).not.toMatch(gendered);
+  });
+
+  it("keeps gendered pronouns off The Slip Dress page", async () => {
+    const { container } = await renderProduct("the-slip-dress");
+    expect(container.textContent).not.toMatch(gendered);
+  });
+});
+
 describe("Send as a gift", () => {
   it("opens the gift pop-up from a product page", async () => {
     await renderProduct("the-romper");
@@ -190,7 +215,7 @@ describe("Send as a gift", () => {
     await renderProduct("the-romper");
     fireEvent.click(screen.getByRole("radio", { name: "Mocha" }));
     fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
-    expect(within(screen.getByRole("dialog", { name: "Choose her gift" })).getByRole("radio", { name: "Mocha" })).toBeChecked();
+    expect(within(screen.getByRole("dialog", { name: "Choose their gift" })).getByRole("radio", { name: "Mocha" })).toBeChecked();
   });
 
   it("leaves the gift button off a piece that is coming soon", () => {

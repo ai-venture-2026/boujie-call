@@ -3,14 +3,14 @@ import { GiftButton } from "./gift-button";
 import * as sendModule from "@/lib/send-call";
 
 const open = () => fireEvent.click(screen.getByRole("button", { name: "Send a Call" }));
-const dialog = () => screen.getByRole("dialog", { name: "Choose her gift" });
+const dialog = () => screen.getByRole("dialog", { name: "Choose their gift" });
 const type = (label: string, value: string) => fireEvent.change(within(dialog()).getByLabelText(label), { target: { value } });
 const toDetails = () => fireEvent.click(within(dialog()).getByRole("button", { name: "Next" }));
 const fill = () => {
   type("Your name", "Mia");
   type("Your email", "mia@example.com");
-  type("Her first name", "Ana");
-  type("Her email", "ana@example.com");
+  type("Their first name", "Ana");
+  type("Their email", "ana@example.com");
   type("Your note", "Happy birthday");
 };
 
@@ -47,11 +47,11 @@ describe("Gift pop-up", () => {
     expect(within(dialog()).getByRole("radio", { name: "Mocha" })).toBeChecked();
   });
 
-  it("moves to her details on Next", () => {
+  it("moves to their details on Next", () => {
     render(<GiftButton label="Send a Call" />);
     open();
     toDetails();
-    expect(within(dialog()).getByLabelText("Her email")).toBeInTheDocument();
+    expect(within(dialog()).getByLabelText("Their email")).toBeInTheDocument();
   });
 
   it("keeps the choice when going back", () => {
@@ -111,11 +111,11 @@ describe("Gift pop-up", () => {
 describe("Gift pop-up before Send a Call opens", () => {
   beforeEach(() => vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", ""));
 
-  it("lets people see her details step", () => {
+  it("lets people see their details step", () => {
     render(<GiftButton label="Send a Call" />);
     open();
     toDetails();
-    expect(within(dialog()).getByLabelText("Her email")).toBeInTheDocument();
+    expect(within(dialog()).getByLabelText("Their email")).toBeInTheDocument();
   });
 
   it("greys out the final button", () => {

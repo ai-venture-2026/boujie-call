@@ -10,8 +10,8 @@ const type = (label: string, value: string) => fireEvent.change(screen.getByLabe
 const fill = () => {
   type("Your name", "Mia");
   type("Your email", "mia@example.com");
-  type("Her first name", "Ana");
-  type("Her email", "ana@example.com");
+  type("Their first name", "Ana");
+  type("Their email", "ana@example.com");
   type("Your note", "Happy birthday");
 };
 

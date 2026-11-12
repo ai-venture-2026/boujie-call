@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Gender neutral gift copy: every line about the person receiving a gift uses they and their (Home headline, how it works, Send a Call steps, the gift pop-up and form, form errors, box contents, the owner's claim email, the Slip Dress description), and the gift flow says email instead of number and text. The About brand lines wait for the owner.
 - Gift pop-up while coming soon: both steps show, so people can see the full form; the final button is greyed out and reads Opens soon, with a line saying nothing is sent yet. The receiver still enters her own address when she claims.
 - Menu: the Soon pill beside Send a Call is gone from the menus and footer; Coming soon stays on the Send a Call page and in the gift pop-up.
 - Backlog fixes: the size guide stays open when a text selection drag ends outside it; a lone last shop card is centred on tablets too; divider lines in the menu, size guide, product quick add bar and bag use the site's card border colour; the product gallery checks the screen size once instead of on every scroll.

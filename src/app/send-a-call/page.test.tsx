@@ -48,7 +48,7 @@ describe("Send a Call page", () => {
   it("lists the four steps in order", () => {
     render(<SendACall />);
     const steps = within(screen.getByRole("list", { name: "How a Call works" })).getAllByRole("heading");
-    expect(steps.map((s) => s.textContent)).toEqual(["You choose her tier", "You write her message", "She gets the Call", "She picks up"]);
+    expect(steps.map((s) => s.textContent)).toEqual(["You choose their tier", "You write your message", "They get the Call", "They pick up"]);
   });
 
   it("lists five things inside every box", () => {
@@ -81,9 +81,9 @@ describe("Send a Call page", () => {
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 
-  it("describes the Call as a text message", () => {
+  it("describes the Call as an email", () => {
     const { container } = render(<SendACall />);
-    expect(container.textContent).toMatch(/gets a text/);
+    expect(container.textContent).toMatch(/get an email/);
   });
 });
 
@@ -131,11 +131,11 @@ describe("Send a Call close", () => {
 describe("Call channel across pages", () => {
   it("drops the old email wording on Home", () => {
     const { container } = render(<Home />);
-    expect(container.textContent).not.toMatch(/name and email/);
+    expect(container.textContent).not.toMatch(/name and number/);
   });
 
   it("drops the old email wording on Send a Call", () => {
     const { container } = render(<SendACall />);
-    expect(container.textContent).not.toMatch(/name and email/);
+    expect(container.textContent).not.toMatch(/name and number/);
   });
 });
