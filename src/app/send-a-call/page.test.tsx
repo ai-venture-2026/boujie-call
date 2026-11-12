@@ -25,6 +25,14 @@ describe("Send a Call page", () => {
     expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "#waitlist");
   });
 
+  it("points its button at the sender's form once Send a Call opens", () => {
+    vi.stubEnv("SEND_A_CALL_ENABLED", "true");
+    render(<SendACall />);
+    vi.unstubAllEnvs();
+    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(hero).getByRole("link", { name: "Send a Call" })).toHaveAttribute("href", "/send-a-call/start");
+  });
+
   it("lists the four steps in order", () => {
     render(<SendACall />);
     const steps = within(screen.getByRole("list", { name: "How a Call works" })).getAllByRole("heading");

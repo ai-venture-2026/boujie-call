@@ -28,9 +28,15 @@ export default function SendACall() {
               Place your Boujie <em className="text-pink">Call.</em>
             </h1>
             <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">The gift experience that lets you say everything without saying a word.</p>
-            <a href="#waitlist" className="cta cta-primary mt-8 md:mt-10">
-              Join the waitlist
-            </a>
+            {process.env.SEND_A_CALL_ENABLED === "true" ? (
+              <a href="/send-a-call/start" className="cta cta-primary mt-8 md:mt-10">
+                Send a Call
+              </a>
+            ) : (
+              <a href="#waitlist" className="cta cta-primary mt-8 md:mt-10">
+                Join the waitlist
+              </a>
+            )}
           </div>
         </section>
 
