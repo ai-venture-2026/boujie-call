@@ -90,6 +90,14 @@ describe("getCatalog", () => {
     connect(vi.fn().mockResolvedValue(answer([withId])));
     expect((await getCatalog())?.["the-romper"].variants).toEqual({ "Rose/S": "gid://shopify/ProductVariant/1" });
   });
+
+  it("maps hand typed option values to the site spelling", async () => {
+    const typed = { handle: "the-romper", variants: { nodes: [{ ...variant(" rose ", "s", true, 2), id: "gid://shopify/ProductVariant/1" }] } };
+    connect(vi.fn().mockResolvedValue(answer([typed])));
+    const live = (await getCatalog())?.["the-romper"];
+    expect(live?.stock).toEqual({ "Rose/S": 2 });
+    expect(live?.variants).toEqual({ "Rose/S": "gid://shopify/ProductVariant/1" });
+  });
 });
 
 describe("GET /api/prices", () => {

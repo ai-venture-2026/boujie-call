@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Shopify names: colour and size values typed in Shopify with different capitals or extra spaces (for example "rose " or "xl") still match the site's Rose and XL, so their stock, sold out state and checkout keep working.
 - Bag tick boxes: each piece in the bag has a tick box, ticked by default. Checkout sends only ticked pieces; the subtotal, the free shipping note and the Any 2 line count only ticked pieces; unticked pieces stay in the bag, also after a reload. With nothing ticked, Checkout is greyed out and says to tick a piece. With a piece unticked, the mini bag drops Checkout and points to the bag page.
 - Phone menu photo: the collection card in the phone menu shows the real Slip Dress After Dark studio photo, framed on its lace neckline, instead of the generated hero.
 - Product page fixes: the phone quick add bar shows the chosen colorway and size (for example Rose, M); the size guide window no longer sits inside the size choices, so screen readers stop reading its table with them; the selected gallery thumbnail is marked with a pink ring, keeping the full keyboard focus outline; and when a colour change clears a sold out size, the page says so (S is sold out in Rose. Choose another size.).

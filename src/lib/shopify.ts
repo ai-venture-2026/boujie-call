@@ -1,4 +1,4 @@
-import { stockKey, type Product } from "./products";
+import { getProduct, stockKey, type Product } from "./products";
 
 export type Catalog = Record<string, { priceCents: number | null; stock: Record<string, number | null>; variants?: Record<string, string> }>;
 
@@ -14,6 +14,9 @@ export const API_VERSION = "2026-07";
 const QUERY = `{ products(first: 50) { nodes { handle variants(first: 100) { nodes { id availableForSale quantityAvailable price { amount } selectedOptions { name value } } } } } }`;
 
 const option = (v: Variant, name: string) => v.selectedOptions.find((o) => o.name.toLowerCase() === name)?.value;
+
+// The owner types option values by hand in Shopify; spell them as the site does so stock keys line up.
+const siteName = (names: string[], value: string | undefined) => (value === undefined ? value : (names.find((n) => n.toLowerCase() === value.trim().toLowerCase()) ?? value));
 
 // Null means use products.ts as it is: not configured, unreachable, or no data.
 export async function getCatalog(): Promise<Catalog | null> {
@@ -35,9 +38,10 @@ export async function getCatalog(): Promise<Catalog | null> {
       nodes.map((p) => {
         const stock: Record<string, number | null> = {};
         const variants: Record<string, string> = {};
+        const site = getProduct(p.handle);
         for (const v of p.variants.nodes) {
-          const color = option(v, "color");
-          const size = option(v, "size");
+          const color = siteName(site?.colorways.map((c) => c.name) ?? [], option(v, "color"));
+          const size = siteName(site?.sizes ?? [], option(v, "size"));
           if (!color || !size) continue;
           const qty = v.quantityAvailable;
           if (v.id) variants[stockKey(color, size)] = v.id;

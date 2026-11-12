@@ -22,8 +22,6 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [cleanup] Pink swap test samples one background patch per photo with a 15 degree hue bound; add a second opposite patch for a wider margin over beige (src/lib/images.test.ts) :: logged 2026-11-03, cycle 20261103-1bd081
 - [accepted] Gift strip ribbon master is 1200 px wide, below the 2500 px landscape rule; displays sharp at gift strip size, ask Alex for a larger export when convenient (assets/shoot/home/strip-a-ribbon.png) :: logged 2026-11-03, cycle 20261103-1bd081
 - [cleanup] Product photo test checks border pixels only; add an interior garment patch compared against the white originals (src/lib/product-photos.test.ts) :: logged 2026-11-03, cycle 20261103-5bb413
-- [soon] Bag, mini bag and bag subtotal still price lines from products.ts, not Shopify; make Shopify the price source in the checkout cycle (src/lib/bag.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
-- [soon] Shopify option names and values match case sensitively; a value like rose or Small would be dropped and its sold out state ignored; normalise both sides (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [soon] Live price comes from the first variant only; use priceRange.minVariantPrice if variants ever differ in price (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [cleanup] shopify.ts has no server-only guard; add it so a client import fails the build (src/lib/shopify.ts) :: logged 2026-11-09, cycle 20261109-ac11c7
 - [accepted] A Coming soon piece keeps its price in the product page header; Alex agreed 2026-11-09 to keep it so visitors see what it will cost (src/app/shop/[slug]/page.tsx) :: logged 2026-11-09, cycle 20261109-ac11c7
