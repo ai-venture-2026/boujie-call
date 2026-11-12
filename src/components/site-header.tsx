@@ -8,7 +8,6 @@ import { BAG_OPENED, bagCount, useBag, useCheckoutReturn } from "@/lib/bag";
 import { pages, socials } from "@/lib/content";
 import { OFFER } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
-import { Soon } from "./soon";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
   if (tone === "pink") return <span role="img" aria-label="Boujie Call" className={`block aspect-[960/342] bg-pink [mask:url(/images/brand/logo-ink.png)_center/contain_no-repeat] ${className}`} />;
@@ -87,7 +86,6 @@ export function SiteHeader() {
                 <li key={p.href}>
                   <Link href={p.href} aria-current={current(p.href)} onClick={(e) => toTop(p.href, e)} className="underline-offset-8 hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-pink">
                     {p.label}
-                    <Soon href={p.href} />
                   </Link>
                 </li>
               ))}
@@ -178,10 +176,7 @@ export function SiteHeader() {
                       toTop(p.href, e);
                     }}
                     className="flex min-h-16 items-center justify-between font-serif text-3xl aria-[current=page]:text-rose aria-[current=page]:italic">
-                    <span>
-                      {p.label}
-                      <Soon href={p.href} />
-                    </span>
+                    {p.label}
                     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1">
                       <path d="M3 9h12M10 4l5 5-5 5" />
                     </svg>
