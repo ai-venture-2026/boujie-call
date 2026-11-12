@@ -1,14 +1,14 @@
 "use server";
 
 import { getCallStore } from "./call-store";
-import { hashToken, type Address, type Call } from "./calls";
+import { hashToken, isExpired, TOKEN_SHAPE, type Address, type Call } from "./calls";
 import { sendEmail } from "./mail";
 import { getProduct, stockKey } from "./products";
 import { getCatalog } from "./shopify";
+import { US_STATES } from "./us-states";
 
 export type ClaimResult = { ok: true } | { ok: false; message: string };
 
-const STATES = "AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY".split(" ");
 const NO_GIFT = "This link doesn't match a gift.";
 const fail = (message: string): ClaimResult => ({ ok: false, message });
 
@@ -27,7 +27,7 @@ function readAddress(raw: unknown): Address | string {
   if (!address.line1) return "Enter your street address.";
   if (!address.city) return "Enter your city.";
   if (address.line2 === null) return "Shorten the second address line.";
-  if (!address.state || !STATES.includes(address.state)) return "Choose your state.";
+  if (!address.state || !US_STATES.includes(address.state)) return "Choose your state.";
   if (!address.zip || !/^\d{5}(-\d{4})?$/.test(address.zip)) return "Enter a 5 digit ZIP code.";
   return address as Address;
 }
@@ -44,12 +44,12 @@ export async function claimCall(token: string, input: { size?: unknown; address?
   const store = getCallStore();
   const owner = process.env.OWNER_EMAIL;
   if (!store || !owner) return fail("Claiming opens soon.");
-  if (typeof token !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(token)) return fail(NO_GIFT);
+  if (typeof token !== "string" || !TOKEN_SHAPE.test(token)) return fail(NO_GIFT);
   const hash = hashToken(token);
   const call = await store.byTokenHash(hash);
   if (!call) return fail(NO_GIFT);
   if (call.status === "claimed") return fail("This gift has already been claimed.");
-  if (call.status === "expired" || !(Date.parse(call.expiresAt) > Date.now())) return fail("This gift link has expired.");
+  if (isExpired(call)) return fail("This gift link has expired.");
 
   const product = getProduct(call.slug);
   const size = clean(input?.size, 4);
