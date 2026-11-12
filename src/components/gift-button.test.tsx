@@ -14,6 +14,8 @@ const fill = () => {
   type("Your note", "Happy birthday");
 };
 
+beforeEach(() => vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true"));
+afterEach(() => vi.unstubAllEnvs());
 beforeEach(() => vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ "the-slip-dress": 4800, "the-romper": 4800 }) })));
 afterEach(() => {
   vi.restoreAllMocks();
@@ -95,5 +97,21 @@ describe("Gift pop-up", () => {
     );
     const names = [...document.querySelectorAll<HTMLInputElement>('input[aria-label="The Signature Call"]')].map((r) => r.name);
     expect(new Set(names).size).toBe(2);
+  });
+});
+
+describe("Gift pop-up before Send a Call opens", () => {
+  beforeEach(() => vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", ""));
+
+  it("says Send a Call opens soon", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect(within(dialog()).getByText("Send a Call opens soon. Look around, and come back to send her gift.")).toBeInTheDocument();
+  });
+
+  it("offers no way on to her details", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect(within(dialog()).queryByRole("button", { name: "Next" })).toBeNull();
   });
 });

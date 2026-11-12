@@ -53,6 +53,9 @@ export function siteUrl(env: Record<string, string | undefined>): string {
 
 export const SITE_URL = siteUrl(process.env);
 
+// Send a Call takes gifts only once SEND_A_CALL_ENABLED is true (mapped for the browser in next.config.ts).
+export const callsOpen = () => process.env.NEXT_PUBLIC_CALLS_OPEN === "true";
+
 // Only production is open to search engines, so staging and previews are never indexed as copies.
 export const isLive = (env: Record<string, string | undefined>) => env.VERCEL_ENV === "production";
 export const indexing = (env: Record<string, string | undefined>) => (isLive(env) ? undefined : { index: false, follow: false });

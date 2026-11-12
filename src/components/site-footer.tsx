@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { pages, socials } from "@/lib/content";
+import { Soon } from "./soon";
 import { products } from "@/lib/products";
 
 const shop = [...products.map((p) => ({ href: `/shop/${p.slug}`, label: p.name })), { href: "/shop", label: "All pieces" }];
@@ -13,6 +14,7 @@ function Column({ title, name = title, links }: { title: string; name?: string; 
           <li key={l.href}>
             <Link href={l.href} className="transition-colors hover:text-pink max-md:flex max-md:min-h-11 max-md:items-center max-md:text-base">
               {l.label}
+              <Soon href={l.href} />
             </Link>
           </li>
         ))}
