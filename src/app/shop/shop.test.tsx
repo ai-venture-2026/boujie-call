@@ -10,6 +10,8 @@ import { ShopGrid } from "@/components/shop-grid";
 import { readBag } from "@/lib/bag";
 
 const renderProduct = async (slug: string) => render(await ProductPage({ params: Promise.resolve({ slug }) }));
+const set = products.find((p) => p.slug === "the-boujie-set")!;
+const unphotographed: Product = { ...set, colorways: set.colorways.map((c) => ({ ...c, images: [], gallery: undefined })) };
 
 describe("Shop", () => {
   it("links every colorway card to its product page", async () => {
@@ -166,9 +168,14 @@ describe("Product photos", () => {
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).tagName).toBe("IMG");
   });
 
-  it("keeps placeholders for The Boujie Set", async () => {
-    const { container } = await renderProduct("the-boujie-set");
-    expect(container.querySelector("main img")).toBeNull();
+  it("opens The Boujie Set on its front photo", async () => {
+    await renderProduct("the-boujie-set");
+    expect(screen.getByRole("img", { name: "The Boujie Set in After Dark, front" }).tagName).toBe("IMG");
+  });
+
+  it("keeps placeholders for a piece without photos", () => {
+    const { container } = render(<ProductView product={unphotographed} intro={null} details={null} />);
+    expect(container.querySelector("img")).toBeNull();
   });
 });
 
@@ -324,9 +331,15 @@ describe("Studio photos", () => {
     expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-slip-dress-rose-front/);
   });
 
-  it("keeps three image to come frames for The Boujie Set", async () => {
-    await renderProduct("the-boujie-set");
+  it("keeps three image to come frames for a piece without photos", () => {
+    render(<ProductView product={unphotographed} intro={null} details={null} />);
     expect(screen.getAllByText("Image to come")).toHaveLength(6);
+  });
+
+  it("shows The Boujie Set studio photo on its shop card", async () => {
+    render(await Shop());
+    const card = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-boujie-set?colorway=rose");
+    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-boujie-set-rose-front/);
   });
 });
 
@@ -339,8 +352,8 @@ describe("Product gallery thumbnails", () => {
     expect(screen.getAllByRole("button", { name: /^Show / })).toHaveLength(3);
   });
 
-  it("marks a view without a photo as image to come", async () => {
-    await renderProduct("the-boujie-set");
+  it("marks a view without a photo as image to come", () => {
+    render(<ProductView product={unphotographed} intro={null} details={null} />);
     expect(within(screen.getByRole("button", { name: "Show back" })).getByText("Image to come")).toBeInTheDocument();
   });
 
