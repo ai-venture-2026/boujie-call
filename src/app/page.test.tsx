@@ -183,6 +183,11 @@ describe("Send a Call Soon tag", () => {
     expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Send a Call Soon" })).toBeInTheDocument();
   });
 
+  it("keeps the current page underline off the tag", () => {
+    render(<SiteHeader />);
+    expect(within(screen.getByRole("navigation", { name: "Main" })).getByText("Soon")).toHaveClass("inline-block");
+  });
+
   it("drops the tag once Send a Call opens", () => {
     vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
     render(<SiteHeader />);

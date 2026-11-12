@@ -57,7 +57,7 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
             <div className="p-6 md:p-10">
               <div className="flex items-start justify-between gap-6">
                 <div>
-                  <p className="label text-rose-deep">Step {step} of 2</p>
+                  <p className="label text-rose-deep">{callsOpen() ? `Step ${step} of 2` : "Coming soon"}</p>
                   <h2 id={title} className="mt-2 text-3xl md:text-4xl">
                     Choose her gift
                   </h2>
