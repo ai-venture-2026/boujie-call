@@ -6,7 +6,7 @@ export function Soon({ href }: { href: string }) {
   return (
     <>
       {" "}
-      <span className="label ml-1 rounded-full bg-blush px-2 py-0.5 align-middle font-sans text-rose-deep not-italic">Soon</span>
+      <span className="label ml-1 inline-block rounded-full bg-blush px-2 py-0.5 align-middle font-sans text-rose-deep not-italic">Soon</span>
     </>
   );
 }

@@ -23,6 +23,12 @@ afterEach(() => {
 });
 
 describe("Gift pop-up", () => {
+  it("counts the steps once Send a Call is open", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect(within(dialog()).getByText("Step 1 of 2")).toBeInTheDocument();
+  });
+
   it("opens on the gift choice", () => {
     render(<GiftButton label="Send a Call" />);
     open();
@@ -107,6 +113,12 @@ describe("Gift pop-up before Send a Call opens", () => {
     render(<GiftButton label="Send a Call" />);
     open();
     expect(within(dialog()).getByText("Send a Call opens soon. Look around, and come back to send her gift.")).toBeInTheDocument();
+  });
+
+  it("labels the pop-up Coming soon instead of a step", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect(within(dialog()).queryByText(/Step 1 of 2/)).toBeNull();
   });
 
   it("offers no way on to her details", () => {

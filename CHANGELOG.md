@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Coming soon tidy: the closed gift pop-up's eyebrow reads Coming soon instead of Step 1 of 2, and the desktop menu's current page underline stops before the Soon pill.
 - Send a Call Coming soon: until SEND_A_CALL_ENABLED is on, a Soon tag sits beside Send a Call in the menus and footer, the Send a Call eyebrow reads Coming soon, and the gift pop-up lets people browse the Calls, pieces and colours with an opens soon note instead of Next. Turning the switch on removes every mark.
 - Launch guards: a Boujie Call error page (This page didn't load, with Try again and Back to the shop) replaces the framework default when a page fails; staging and previews tell search engines not to index or crawl them, while the live site (VERCEL_ENV production) stays open.
 - Gift buttons everywhere: the shop's 'Sending it as a gift? Place a Call' and a new 'Send as a gift' button on each product page open the gift pop-up in place; on a product page it starts on that piece and the colour chosen. Pieces that are Coming soon show no gift button. The old waitlist form is removed.
