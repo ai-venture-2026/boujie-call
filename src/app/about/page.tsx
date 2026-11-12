@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { GiftButton } from "@/components/gift-button";
 import { ClosingBanner } from "@/components/closing-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -85,11 +85,9 @@ export default function About() {
               Ready to place your first Boujie <em className="text-rose-deep">Call?</em>
             </>
           }
-          line="Be first when Send a Call opens."
+          line="Choose her gift and write her note. We handle the rest."
         >
-          <Link href="/send-a-call#waitlist" className="cta cta-primary">
-            Join the waitlist
-          </Link>
+          <GiftButton label="Send a Call" />
         </ClosingBanner>
       </main>
       <SiteFooter />

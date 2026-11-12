@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ClosingBanner } from "@/components/closing-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { WaitlistForm } from "@/components/waitlist-form";
+import { GiftButton } from "@/components/gift-button";
 import { boxContents, callSteps, formatPrice, tiers } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -28,15 +28,7 @@ export default function SendACall() {
               Place your Boujie <em className="text-pink">Call.</em>
             </h1>
             <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">The gift experience that lets you say everything without saying a word.</p>
-            {process.env.SEND_A_CALL_ENABLED === "true" ? (
-              <a href="/send-a-call/start" className="cta cta-primary mt-8 md:mt-10">
-                Send a Call
-              </a>
-            ) : (
-              <a href="#waitlist" className="cta cta-primary mt-8 md:mt-10">
-                Join the waitlist
-              </a>
-            )}
+            <GiftButton label="Send a Call" className="cta cta-primary mt-8 md:mt-10" />
           </div>
         </section>
 
@@ -99,7 +91,7 @@ export default function SendACall() {
         </section>
 
         <ClosingBanner
-          id="waitlist"
+          id="gift"
           tone="ink"
           photo="/images/banners/mocha-romper-banner.webp"
           alt="A woman in The Romper in Mocha smiles down at a black gift box tied in pink ribbon"
@@ -109,10 +101,9 @@ export default function SendACall() {
               The call is coming. Are you going to <em className="text-pink">pick up?</em>
             </>
           }
-          line="Be first when Send a Call opens."
-          body="Join the waitlist and we will tell you the day you can send your first Call."
+          line="Choose her gift and write her note. We handle the rest."
         >
-          <WaitlistForm tone="dark" />
+          <GiftButton label="Send a Call" />
         </ClosingBanner>
       </main>
       <SiteFooter />

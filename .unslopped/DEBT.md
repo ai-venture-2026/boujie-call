@@ -36,3 +36,4 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [soon] The real CallStore.claim must also require expires_at > now in its update, so a link that expires between the check and the write cannot be claimed (src/lib/calls.ts) :: logged 2026-11-12, cycle 20261112-bc8f4a
 - [accepted] Two receivers can both claim the last unit of a size; nothing reserves stock without writing to Shopify. Revisit when claims become Shopify orders (src/lib/claim.ts) :: logged 2026-11-12, cycle 20261112-bc8f4a
 - [accepted] Claims accept the 50 states and DC only; APO/FPO and territories (PR, GU, VI) are refused and the ZIP is not matched to the state. Owner to confirm (src/lib/claim.ts) :: logged 2026-11-12, cycle 20261112-bc8f4a
+- [cleanup] WaitlistForm and its tests in page.test.tsx are unused since Send a Call buttons open the gift pop-up; delete them in part B (src/components/waitlist-form.tsx) :: logged 2026-11-12, cycle 20261112-aaeae7

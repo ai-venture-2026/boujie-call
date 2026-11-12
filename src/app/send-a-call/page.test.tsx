@@ -20,18 +20,17 @@ describe("Send a Call page", () => {
     expect(within(hero).getByRole("img").getAttribute("src")).toContain("hero-rose-slip");
   });
 
-  it("points its button at the waitlist form", () => {
+  it("opens the gift pop-up from the hero", () => {
     render(<SendACall />);
-    expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "#waitlist");
+    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(hero).getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
   });
 
-  it("points its button at the sender's form once Send a Call opens", () => {
-    vi.stubEnv("SEND_A_CALL_ENABLED", "true");
-    render(<SendACall />);
-    vi.unstubAllEnvs();
-    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
-    expect(within(hero).getByRole("link", { name: "Send a Call" })).toHaveAttribute("href", "/send-a-call/start");
+  it("never offers the waitlist", () => {
+    const { container } = render(<SendACall />);
+    expect(container.textContent).not.toMatch(/waitlist/i);
   });
+
 
   it("lists the four steps in order", () => {
     render(<SendACall />);
@@ -46,7 +45,7 @@ describe("Send a Call page", () => {
 
   it("shows the three tier prices", () => {
     render(<SendACall />);
-    expect(["$40.00", "$55.00", "$75.00"].map((p) => screen.queryByText(p) !== null)).toEqual([true, true, true]);
+    expect(["$40.00", "$55.00", "$75.00"].map((p) => within(screen.getByRole("main")).queryByText(p) !== null)).toEqual([true, true, true]);
   });
 
   it("drops Price to come", () => {
@@ -88,7 +87,7 @@ describe("Send a Call on phones", () => {
 });
 
 describe("Send a Call close", () => {
-  const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
+  const close = (c: HTMLElement) => c.querySelector("section#gift") as HTMLElement;
 
   it("sets the hero on ink", () => {
     render(<SendACall />);
@@ -110,14 +109,9 @@ describe("Send a Call close", () => {
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("mocha-romper-banner");
   });
 
-  it("frames the waitlist around Send a Call opening", () => {
+  it("ends on the gift button", () => {
     const { container } = render(<SendACall />);
-    expect(within(close(container)).getByText("Be first when Send a Call opens.")).toBeInTheDocument();
-  });
-
-  it("keeps the waitlist form in the closing section", () => {
-    const { container } = render(<SendACall />);
-    expect(within(close(container)).getByLabelText("Email address")).toHaveAttribute("type", "email");
+    expect(within(close(container)).getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
   });
 });
 
