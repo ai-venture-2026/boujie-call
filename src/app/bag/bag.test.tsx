@@ -196,3 +196,26 @@ describe("Bag photo ground", () => {
     expect(blendedProductPhotos(container)).toEqual([]);
   });
 });
+
+describe("Bag polish", () => {
+  const fillOne = () => localStorage.setItem(BAG_KEY, JSON.stringify([{ slug: "the-romper", colorway: "Mocha", size: "M", qty: 1 }]));
+  beforeEach(() => localStorage.clear());
+
+  it("draws Continue shopping as an outlined pill", () => {
+    fillOne();
+    render(<BagPage />);
+    expect(screen.getByRole("link", { name: "Continue shopping" })).toHaveClass("cta");
+  });
+
+  it("lines the summary up with the pieces on phones", () => {
+    fillOne();
+    render(<BagPage />);
+    expect(screen.getByRole("button", { name: "Checkout" }).parentElement).toHaveClass("max-md:p-0");
+  });
+
+  it("gives a piece name the full width on phones", () => {
+    fillOne();
+    render(<BagPage />);
+    expect(within(screen.getByRole("list", { name: "Pieces in your bag" })).getByRole("link", { name: "The Romper" }).parentElement).toHaveClass("max-sm:flex-col");
+  });
+});

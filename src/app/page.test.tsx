@@ -170,6 +170,14 @@ describe("Home signup", () => {
   });
 });
 
+describe("Home how it works", () => {
+  it("ends on a Send a Call button that opens the gift pop-up", () => {
+    render(<Home />);
+    const how = screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
+    expect(within(how).getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
+  });
+});
+
 describe("Send a Call Soon tag", () => {
   afterEach(() => vi.unstubAllEnvs());
 

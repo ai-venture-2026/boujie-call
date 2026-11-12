@@ -101,6 +101,8 @@ describe("Gift pop-up", () => {
         <GiftButton label="Gift it" />
       </>,
     );
+    fireEvent.click(screen.getByRole("button", { name: "Send a Call" }));
+    fireEvent.click(screen.getByRole("button", { name: "Gift it" }));
     const names = [...document.querySelectorAll<HTMLInputElement>('input[aria-label="The Signature Call"]')].map((r) => r.name);
     expect(new Set(names).size).toBe(2);
   });

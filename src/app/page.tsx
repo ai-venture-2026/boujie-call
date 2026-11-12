@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ClosingBanner } from "@/components/closing-banner";
+import { GiftButton } from "@/components/gift-button";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
@@ -94,6 +95,9 @@ export default function Home() {
               </li>
             ))}
           </ol>
+          <div className="mt-14 flex justify-center px-6 md:mt-20">
+            <GiftButton label="Send a Call" className="cta" />
+          </div>
         </section>
 
         <section aria-labelledby="pieces-title" className="bg-cream py-18 md:py-section">
