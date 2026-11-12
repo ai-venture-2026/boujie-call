@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: { siteName: "Boujie Call", type: "website" },
   twitter: { card: "summary_large_image" },
   title: "Boujie Call | Luxury nightwear gift sets",
-  description: "Luxury nightwear gift sets. Curated. Personalized. Unforgettable. Join the waitlist before launch.",
+  description: "Luxury nightwear gift sets. Curated. Personalized. Unforgettable.",
 };
 
 // cover lets the phone quick add bar read the home bar inset.
