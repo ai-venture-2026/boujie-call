@@ -30,6 +30,8 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
   const [details, setDetails] = useState({ senderName: "", senderEmail: "", recipientName: "", recipientEmail: "", note: "" });
   const [answer, setAnswer] = useState<{ ok: boolean; text: string } | null>(null);
   const [sending, setSending] = useState(false);
+  // The pop-up's contents are built on first open, so pages do not carry the tiers and pieces in their HTML.
+  const [opened, setOpened] = useState(false);
   const set = (k: keyof typeof details) => (e: { target: { value: string } }) => setDetails({ ...details, [k]: e.target.value });
 
   async function send() {
@@ -48,13 +50,16 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
 
   return (
     <>
-      <button type="button" aria-haspopup="dialog" onClick={() => dialog.current?.showModal()} className={className}>
+      <button type="button" aria-haspopup="dialog" onClick={() => {
+          setOpened(true);
+          dialog.current?.showModal();
+        }} className={className}>
         {label}
       </button>
       {host &&
         createPortal(
           <dialog ref={dialog} aria-labelledby={title} onClick={(e) => e.target === dialog.current && dialog.current?.close()} className="m-auto max-h-[92svh] w-[min(40rem,calc(100%-2rem))] bg-cream p-0 text-ink backdrop:bg-ink/50">
-            <div className="p-6 md:p-10">
+            {opened && <div className="p-6 md:p-10">
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="label text-rose-deep">{callsOpen() ? `Step ${step} of 2` : "Coming soon"}</p>
@@ -154,7 +159,7 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                   </div>
                 </form>
               )}
-            </div>
+            </div>}
           </dialog>,
           host,
         )}

@@ -52,7 +52,7 @@ export function BagView() {
                 {photo && <Image src={photo} alt="" fill sizes="120px" className="object-cover" />}
               </div>
               <div className="flex flex-col">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start justify-between gap-4 max-sm:flex-col max-sm:gap-1">
                   <Link href={`/shop/${product.slug}`} className="font-serif text-[26px] font-medium leading-tight hover:text-rose">
                     {product.name}
                   </Link>
@@ -83,7 +83,7 @@ export function BagView() {
         })}
       </ul>
 
-      <div className="self-start bg-white p-8">
+      <div className="self-start bg-white p-8 max-md:bg-transparent max-md:p-0">
         <p className="font-serif text-xl italic">{offerNote(count)}</p>
         <div className="mt-8 flex items-baseline justify-between border-t-[0.5px] border-ink/15 pt-6">
           <span className="label">Subtotal</span>
@@ -98,7 +98,7 @@ export function BagView() {
         <p role="status" className="mt-4 text-[15px] text-ink">
           {note}
         </p>
-        <Link href="/shop" className="link mt-6 inline-flex min-h-11 items-center text-[15px]">
+        <Link href="/shop" className="cta mt-6 w-full">
           Continue shopping
         </Link>
       </div>
