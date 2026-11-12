@@ -207,6 +207,12 @@ describe("Bag polish", () => {
     expect(screen.getByRole("link", { name: "Continue shopping" })).toHaveClass("cta");
   });
 
+  it("draws the bag dividers in the card border colour", () => {
+    fillOne();
+    render(<BagPage />);
+    expect(screen.getByRole("list", { name: "Pieces in your bag" })).toHaveClass("border-card-border");
+  });
+
   it("lines the summary up with the pieces on phones", () => {
     fillOne();
     render(<BagPage />);

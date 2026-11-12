@@ -757,7 +757,7 @@ describe("Shop cards on phones", () => {
 
   it("centers a single last card", async () => {
     render(await Shop());
-    expect(items().at(-1)).toHaveClass("max-md:last:odd:justify-self-center");
+    expect(items().at(-1)).toHaveClass("max-lg:last:odd:justify-self-center");
   });
 });
 
@@ -906,6 +906,41 @@ describe("Gallery across the md breakpoint", () => {
     fireEvent.click(screen.getByRole("button", { name: "Show on its own" }));
     fireEvent.scroll(el);
     expect(screen.getByRole("button", { name: "Show on its own" })).toHaveAttribute("aria-pressed", "true");
+  });
+});
+
+describe("Gallery scroll cost", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("builds the screen size check once for many scrolls", async () => {
+    const mm = vi.fn((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("matchMedia", mm);
+    const { container } = await renderProduct("the-romper");
+    const el = container.querySelector(".snap-x") as HTMLDivElement;
+    const before = mm.mock.calls.filter(([q]) => q === "(min-width: 48rem)").length;
+    for (let i = 0; i < 10; i++) fireEvent.scroll(el);
+    expect(mm.mock.calls.filter(([q]) => q === "(min-width: 48rem)").length).toBe(before);
+  });
+});
+
+describe("Size guide drag", () => {
+  const dialog = () => screen.getByRole("dialog", { name: "Size guide" });
+
+  it("stays open when a drag ends on the backdrop", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
+    fireEvent.pointerDown(within(dialog()).getByRole("table"));
+    fireEvent.click(dialog());
+    expect(dialog()).toHaveAttribute("open");
+  });
+
+  it("closes on a click on the backdrop", async () => {
+    await renderProduct("the-romper");
+    fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
+    const d = dialog();
+    fireEvent.pointerDown(d);
+    fireEvent.click(d);
+    expect(d).not.toHaveAttribute("open");
   });
 });
 

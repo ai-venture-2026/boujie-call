@@ -10,6 +10,8 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const title = useId();
   const close = () => dialog.current?.close();
+  // A text selection drag that ends on the backdrop must not close the guide: both press and release have to land there.
+  const pressedBackdrop = useRef(false);
   // The dialog renders into body so its table sits outside the size radio group.
   const host = useSyncExternalStore(
     () => () => {},
@@ -27,7 +29,8 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
           <dialog
             ref={dialog}
             aria-labelledby={title}
-            onClick={(e) => e.target === dialog.current && close()}
+            onPointerDown={(e) => (pressedBackdrop.current = e.target === dialog.current)}
+            onClick={(e) => e.target === dialog.current && pressedBackdrop.current && close()}
             className="m-auto w-[min(32rem,calc(100%-2rem))] bg-cream p-0 text-ink backdrop:bg-ink/50"
           >
             <div className="p-6 md:p-10">
@@ -45,7 +48,7 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
               <table className="mt-8 w-full text-left text-[15px]">
                 <caption className="sr-only">Measurements by size, placeholder</caption>
                 <thead>
-                  <tr className="border-b-[0.5px] border-ink/15">
+                  <tr className="border-b-[0.5px] border-card-border">
                     {["Size", ...columns].map((c) => (
                       <th key={c} scope="col" className="label pb-3 text-muted">
                         {c}
@@ -55,7 +58,7 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
                 </thead>
                 <tbody>
                   {sizes.map((s) => (
-                    <tr key={s} className="border-b-[0.5px] border-ink/15">
+                    <tr key={s} className="border-b-[0.5px] border-card-border">
                       <th scope="row" className="py-3 font-normal">
                         {s}
                       </th>

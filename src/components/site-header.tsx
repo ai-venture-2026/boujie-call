@@ -149,7 +149,7 @@ export function SiteHeader() {
         onClick={(e) => e.target === drawer.current && close()}
       >
         <div className="flex h-full flex-col overflow-y-auto">
-          <div className="flex items-center justify-between border-b-[0.5px] border-ink/10 px-6 py-4">
+          <div className="flex items-center justify-between border-b-[0.5px] border-card-border px-6 py-4">
             <Link
                 href="/"
                 aria-label="Boujie Call home"
@@ -169,7 +169,7 @@ export function SiteHeader() {
           <nav aria-label="Menu" className="px-6">
             <ul>
               {pages.map((p) => (
-                <li key={p.href} className="border-b-[0.5px] border-ink/10">
+                <li key={p.href} className="border-b-[0.5px] border-card-border">
                   <Link
                     href={p.href}
                     aria-current={current(p.href)}

@@ -43,9 +43,10 @@ export function ProductView({ product, intro, details }: { product: Product; int
   }, []);
 
   // From md the other slides are hidden, so the track cannot hold the scroll position; restore it on the way back down.
-  const md = () => window.matchMedia?.("(min-width: 48rem)");
+  const md = useRef<MediaQueryList | null>(null);
   useEffect(() => {
-    const query = md();
+    const query = window.matchMedia?.("(min-width: 48rem)");
+    md.current = query ?? null;
     if (!query) return;
     const sync = () => {
       if (!query.matches && track.current) track.current.scrollLeft = view * track.current.clientWidth;
@@ -88,7 +89,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         <div
           ref={track}
           onScroll={(e) => {
-            if (md()?.matches) return;
+            if (md.current?.matches) return;
             const { scrollLeft, clientWidth } = e.currentTarget;
             if (clientWidth > 0) setView(Math.min(slots.length - 1, Math.max(0, Math.round(scrollLeft / clientWidth))));
           }}
@@ -194,7 +195,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           role="region"
           aria-label="Quick add"
           data-quick-add
-          className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t-[0.5px] border-ink/10 bg-white/95 px-6 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden"
+          className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t-[0.5px] border-card-border bg-white/95 px-6 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden"
         >
           <div className="min-w-0">
             <p className="truncate font-serif text-xl">{product.name}</p>

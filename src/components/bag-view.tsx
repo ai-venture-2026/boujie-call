@@ -37,14 +37,14 @@ export function BagView() {
 
   return (
     <div className="grid gap-14 md:grid-cols-[1fr_22rem] md:gap-20">
-      <ul aria-label="Pieces in your bag" className="border-t-[0.5px] border-ink/15">
+      <ul aria-label="Pieces in your bag" className="border-t-[0.5px] border-card-border">
         {lines.map((line) => {
           const product = getProduct(line.slug);
           if (!product) return null;
           const photo = product.colorways.find((c) => c.name === line.colorway)?.images[0];
           const name = `${product.name}, ${line.colorway}, ${line.size}`;
           return (
-            <li key={name} className="grid grid-cols-[auto_6rem_1fr] gap-4 border-b-[0.5px] border-ink/15 py-6 sm:grid-cols-[auto_7.5rem_1fr] sm:gap-5">
+            <li key={name} className="grid grid-cols-[auto_6rem_1fr] gap-4 border-b-[0.5px] border-card-border py-6 sm:grid-cols-[auto_7.5rem_1fr] sm:gap-5">
               <label className="-ml-3 grid size-11 cursor-pointer place-items-center self-center">
                 <input type="checkbox" aria-label={`Check out ${name}`} checked={!line.skip} onChange={(e) => setSkip(line, !e.target.checked)} className="size-5 cursor-pointer accent-pink" />
               </label>
@@ -85,7 +85,7 @@ export function BagView() {
 
       <div className="self-start bg-white p-8 max-md:bg-transparent max-md:p-0">
         <p className="font-serif text-xl italic">{offerNote(count)}</p>
-        <div className="mt-8 flex items-baseline justify-between border-t-[0.5px] border-ink/15 pt-6">
+        <div className="mt-8 flex items-baseline justify-between border-t-[0.5px] border-card-border pt-6">
           <span className="label">Subtotal</span>
           <span className="font-sans text-xl font-medium">{formatPrice(subtotalCents(chosen, prices))}</span>
         </div>

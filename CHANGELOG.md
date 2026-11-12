@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Backlog fixes: the size guide stays open when a text selection drag ends outside it; a lone last shop card is centred on tablets too; divider lines in the menu, size guide, product quick add bar and bag use the site's card border colour; the product gallery checks the screen size once instead of on every scroll.
 - Home and bag polish: Home's how it works ends with a Send a Call button that opens the gift pop-up; the bag's Continue shopping is an outlined pill under Checkout; on phones the bag summary lines up with the pieces and each piece name gets the full width with its price beneath. View all pieces stays a quiet text link beside the product cards.
 - Coming soon tidy: the closed gift pop-up's eyebrow reads Coming soon instead of Step 1 of 2, and the desktop menu's current page underline stops before the Soon pill.
 - Send a Call Coming soon: until SEND_A_CALL_ENABLED is on, a Soon tag sits beside Send a Call in the menus and footer, the Send a Call eyebrow reads Coming soon, and the gift pop-up lets people browse the Calls, pieces and colours with an opens soon note instead of Next. Turning the switch on removes every mark.
