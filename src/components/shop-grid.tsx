@@ -63,7 +63,7 @@ export function ShopGrid({ products }: { products: Product[] }) {
                 {group.map(({ product, colorway }) => {
                   const photo = colorway.card ?? colorway.gallery?.[0].src ?? colorway.images[0];
                   return (
-                    <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
+                    <li key={`${product.slug}-${colorway.name}`} className="max-lg:last:odd:col-span-2 max-lg:last:odd:w-[calc(50%-0.75rem)] max-lg:last:odd:justify-self-center">
                       <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
                         <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images.includes(photo) ? "contact" : ""}`}>
                           {photo ? (
