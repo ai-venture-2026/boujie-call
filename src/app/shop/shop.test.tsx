@@ -336,10 +336,16 @@ describe("Studio photos", () => {
     expect(screen.getAllByText("Image to come")).toHaveLength(6);
   });
 
-  it("shows The Boujie Set studio photo on its shop card", async () => {
+  it("shows the close crop on The Boujie Set shop card", async () => {
     render(await Shop());
     const card = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-boujie-set?colorway=rose");
-    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-boujie-set-rose-front/);
+    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-boujie-set-rose-card/);
+  });
+
+  it("keeps the Romper card on its front photo", async () => {
+    render(await Shop());
+    const card = within(screen.getByRole("list", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-romper?colorway=mocha");
+    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-romper-mocha-front/);
   });
 });
 

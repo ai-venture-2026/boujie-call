@@ -54,7 +54,7 @@ export function ShopGrid({ products }: { products: Product[] }) {
       <div className="md:col-start-2">
         <ul aria-label="Collection" className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3">
           {shown.map(({ product, colorway }) => {
-            const photo = colorway.gallery?.[0].src ?? colorway.images[0];
+            const photo = colorway.card ?? colorway.gallery?.[0].src ?? colorway.images[0];
             return (
               <li key={`${product.slug}-${colorway.name}`} className="max-md:last:odd:col-span-2 max-md:last:odd:w-[calc(50%-0.75rem)] max-md:last:odd:justify-self-center">
                 <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">

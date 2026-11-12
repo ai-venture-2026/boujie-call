@@ -11,6 +11,8 @@ export type Colorway = {
   images: string[];
   // Shop grid and product page photos with their alt view; Home and the bag keep images.
   gallery?: { src: string; view: string }[];
+  // Closer crop for the shop grid when the first gallery photo is full length.
+  card?: string;
 };
 
 export type Product = {
@@ -51,12 +53,12 @@ const bloom: Colorway = {
 export const colorwaySlug = (name: string) => name.toLowerCase().replaceAll(" ", "-");
 
 // Cutouts live in public/images/products as <slug>-<colorway>.webp, studio photos in studio/<slug>-<colorway>-<view>.webp.
-const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>): Colorway[] =>
+const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>, cards = false): Colorway[] =>
   colorways.map((c) => {
     const name = `${slug}-${colorwaySlug(c.name)}`;
     const cutout = `/images/products/${name}.webp`;
     const views = (studio[c.name] ?? []).map((view) => ({ src: `/images/products/studio/${name}-${view}.webp`, view }));
-    return { ...c, images: [cutout], gallery: [...views, { src: cutout, view: "on its own" }] };
+    return { ...c, images: [cutout], gallery: [...views, { src: cutout, view: "on its own" }], ...(cards && { card: `/images/products/studio/${name}-card.webp` }) };
   });
 
 const frontBack = ["front", "back"];
@@ -81,7 +83,7 @@ export const products: Product[] = [
     description: "A satin cami and shorts set, cute enough for brunch and soft enough to sleep in.",
     fabric: "Satin with lace trim.",
     care: "Hand wash cold, lay flat to dry.",
-    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }),
+    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }, true),
     sizes,
   },
   {

@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import { existsSync } from "node:fs";
 import { getProduct, products } from "./products";
 
@@ -54,7 +55,16 @@ describe("product photos", () => {
     expect(setViews(name)).toEqual(views);
   });
 
-  it("keeps brown off The Boujie Set", () => {
+  it("points each Boujie Set card at a 3:4 file in public", async () => {
+    const cards = getProduct("the-boujie-set")?.colorways.map((c) => c.card ?? "") ?? [];
+    expect(cards).toEqual(["after-dark", "powder-blue", "rose"].map((c) => `/images/products/studio/the-boujie-set-${c}-card.webp`));
+    for (const card of cards) {
+      const { width = 0, height = 0 } = await sharp(`public${card}`).metadata();
+      expect(Math.abs(width / height - 0.75)).toBeLessThan(0.01);
+    }
+  });
+
+    it("keeps brown off The Boujie Set", () => {
     expect(getProduct("the-boujie-set")?.colorways.map((c) => c.name)).not.toContain("Brown");
   });
 
