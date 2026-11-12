@@ -178,28 +178,15 @@ describe("Home how it works", () => {
   });
 });
 
-describe("Send a Call Soon tag", () => {
-  afterEach(() => vi.unstubAllEnvs());
-
-  it("tags Send a Call in the main menu while it is closed", () => {
-    render(<SiteHeader />);
-    expect(within(screen.getByRole("navigation", { name: "Main" })).getByRole("link", { name: "Send a Call Soon" })).toBeInTheDocument();
-  });
-
-  it("tags Send a Call in the footer while it is closed", () => {
-    render(<SiteFooter />);
-    expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Send a Call Soon" })).toBeInTheDocument();
-  });
-
-  it("keeps the current page underline off the tag", () => {
-    render(<SiteHeader />);
-    expect(within(screen.getByRole("navigation", { name: "Main" })).getByText("Soon")).toHaveClass("inline-block");
-  });
-
-  it("drops the tag once Send a Call opens", () => {
-    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
+describe("Menu while Send a Call is closed", () => {
+  it("keeps the main menu label plain", () => {
     render(<SiteHeader />);
     expect(within(screen.getByRole("navigation", { name: "Main" })).getByRole("link", { name: "Send a Call" })).toBeInTheDocument();
+  });
+
+  it("keeps the footer label plain", () => {
+    render(<SiteFooter />);
+    expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Send a Call" })).toBeInTheDocument();
   });
 });
 
