@@ -27,7 +27,7 @@ function readAddress(raw: unknown): Address | string {
 
 const ownerEmail = (call: Call, size: string, a: Address) => {
   const piece = getProduct(call.slug)?.name ?? call.slug;
-  const lines = [`${call.recipientName} claimed her Call from ${call.senderName}.`, "", `${piece}, ${call.colorway}, size ${size}`, `Tier: ${call.tier}`, "", "Ship to:", a.name, a.line1, ...(a.line2 ? [a.line2] : []), `${a.city}, ${a.state} ${a.zip}`];
+  const lines = [`${call.recipientName} claimed their Call from ${call.senderName}.`, "", `${piece}, ${call.colorway}, size ${size}`, `Tier: ${call.tier}`, "", "Ship to:", a.name, a.line1, ...(a.line2 ? [a.line2] : []), `${a.city}, ${a.state} ${a.zip}`];
   const text = lines.join("\n");
   const html = `<pre style="font-family:Arial,sans-serif;font-size:15px">${text.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c] as string)}</pre>`;
   return { subject: `Ship a Call: ${piece} in ${call.colorway}, ${size}`, text, html };

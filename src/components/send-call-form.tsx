@@ -79,7 +79,7 @@ export function SendCallForm({ tiers, pieces }: { tiers: Tier[]; pieces: Product
           </div>
         </div>
         <fieldset className="grid gap-4 sm:grid-cols-2">
-          <legend className="mb-3 text-base">From you, to her</legend>
+          <legend className="mb-3 text-base">From you, to them</legend>
           <label className="grid gap-1 text-[15px]">
             Your name
             <input name="senderName" autoComplete="name" required maxLength={40} className={field} />
@@ -89,11 +89,11 @@ export function SendCallForm({ tiers, pieces }: { tiers: Tier[]; pieces: Product
             <input name="senderEmail" type="email" autoComplete="email" required maxLength={254} className={field} />
           </label>
           <label className="grid gap-1 text-[15px]">
-            Her first name
+            Their first name
             <input name="recipientName" autoComplete="off" required maxLength={40} className={field} />
           </label>
           <label className="grid gap-1 text-[15px]">
-            Her email
+            Their email
             <input name="recipientEmail" type="email" autoComplete="off" required maxLength={254} className={field} />
           </label>
         </fieldset>

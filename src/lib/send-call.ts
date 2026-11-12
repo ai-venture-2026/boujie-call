@@ -32,12 +32,12 @@ export async function startCall(input: Record<string, unknown>): Promise<StartRe
   const senderEmail = one(raw.senderEmail, 254);
   if (!senderEmail || !EMAIL.test(senderEmail)) return fail("Enter your email address.");
   const recipientName = one(raw.recipientName, 40);
-  if (!recipientName) return fail("Enter her first name.");
+  if (!recipientName) return fail("Enter their first name.");
   const recipientEmail = one(raw.recipientEmail, 254);
-  if (!recipientEmail || !EMAIL.test(recipientEmail)) return fail("Enter her email address.");
+  if (!recipientEmail || !EMAIL.test(recipientEmail)) return fail("Enter their email address.");
   const note = clean(raw.note, 300);
-  if (note === null) return fail(typeof raw.note === "string" ? "Keep the note under 300 characters." : "Write her a note.");
-  if (!note) return fail("Write her a note.");
+  if (note === null) return fail(typeof raw.note === "string" ? "Keep the note under 300 characters." : "Write them a note.");
+  if (!note) return fail("Write them a note.");
 
   if (!(await getCatalog())?.[product.slug]) return fail(`${product.name} isn't available to send yet.`);
 

@@ -19,7 +19,7 @@ export default async function StartPage() {
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-6 pt-10 pb-28 md:px-12">
         <p className="label text-rose-deep">Send a Call</p>
-        <h1 className="mt-4 text-[clamp(36px,3.6vw,56px)] leading-[1.05]">Choose her gift.</h1>
+        <h1 className="mt-4 text-[clamp(36px,3.6vw,56px)] leading-[1.05]">Choose their gift.</h1>
         <SendCallForm tiers={tiers} pieces={pieces} />
       </main>
       <SiteFooter />

@@ -69,7 +69,7 @@ export const products: Product[] = [
     name: "The Slip Dress",
     priceCents: 4800,
     placeholderPrice: false,
-    description: "The one she reaches for when the night is hers. A soft, fluid slip that skims and moves with her.",
+    description: "The one you reach for when the night is yours. A soft, fluid slip that skims and moves with you.",
     fabric: "Satin with lace trim.",
     care: "Hand wash cold, lay flat to dry.",
     colorways: photographed("the-slip-dress", [rose, afterDark, bloom], { Rose: frontBack, "After Dark": frontBack, Bloom: frontBack }),

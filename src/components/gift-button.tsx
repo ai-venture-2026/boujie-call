@@ -64,7 +64,7 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                 <div>
                   <p className="label text-rose-deep">Step {step} of 2</p>
                   <h2 id={title} className="mt-2 text-3xl md:text-4xl">
-                    Choose her gift
+                    Choose their gift
                   </h2>
                 </div>
                 <button type="button" aria-label="Close" onClick={() => dialog.current?.close()} className="grid size-11 place-items-center">
@@ -130,8 +130,8 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                   <div className="grid gap-4 sm:grid-cols-2">
                     {input("senderName", "Your name")}
                     {input("senderEmail", "Your email", "email", 254)}
-                    {input("recipientName", "Her first name")}
-                    {input("recipientEmail", "Her email", "email", 254)}
+                    {input("recipientName", "Their first name")}
+                    {input("recipientEmail", "Their email", "email", 254)}
                   </div>
                   <label className="grid gap-1 text-[15px]">
                     Your note

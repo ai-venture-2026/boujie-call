@@ -85,7 +85,7 @@ export default function About() {
               Ready to place your first Boujie <em className="text-rose-deep">Call?</em>
             </>
           }
-          line="Choose her gift and write her note. We handle the rest."
+          line="Choose their gift and write your note. We handle the rest."
         >
           <GiftButton label="Send a Call" />
         </ClosingBanner>
