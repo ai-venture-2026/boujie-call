@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ShopGrid } from "@/components/shop-grid";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { OFFER, products } from "@/lib/products";
+import { products } from "@/lib/products";
 import { getCatalog, withLive } from "@/lib/shopify";
 
 export const metadata: Metadata = {
@@ -27,12 +27,11 @@ export default async function Shop() {
           <div className="flex flex-col items-center justify-center px-6 py-14 text-center">
             <h1 className="text-[clamp(2.25rem,5vw,4.5rem)] leading-none tracking-[0.3em] uppercase">The collection</h1>
             <p className="mt-6 font-serif text-xl italic md:text-2xl">Treat yourself. Or let someone treat you.</p>
-            <p className="label mt-3">{OFFER}</p>
           </div>
         </section>
         <ShopGrid products={live} />
         <p className="-mt-6 pb-20 text-center md:-mt-10 md:pb-28">
-          <Link href="/send-a-call" className="link inline-flex min-h-11 items-center text-base text-muted">
+          <Link href="/send-a-call" className="cta">
             Sending it as a gift? Place a Call
           </Link>
         </p>
