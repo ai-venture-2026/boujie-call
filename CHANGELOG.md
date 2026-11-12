@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Send a Call, step 2a (server only): a gift can be claimed from its link with a size and a US shipping address. The link, size, live stock and address are checked; a gift can be claimed once; expired links are refused; each claim emails the owner (OWNER_EMAIL) what to ship. Claiming stays closed until the developer connects the database in src/lib/call-store.ts.
 - Send a Call, step 1 (server only, not on the page yet): the site can make a private claim link for a gift, build the gift email (sender, receiver, note, Claim your gift button) and send it through Resend once RESEND_API_KEY and MAIL_FROM are set in Vercel. Text messages plug in later as a second channel. See docs/decisions/0001.
 - Boujie Set shop cards: the cards show a closer crop of the front photo, neck to above the knee, so the set sits at the same scale as the Romper and Slip Dress cards. The product page keeps the full length photos.
 - Boujie Set photos: the set shows Alex's photos on the site pink in After Dark (front, back), Powder Blue (front, side) and Rose (front, back), each followed by the set on its own; shop cards lead with the front photo. Brown photos are kept aside until the owner confirms the colour. The set stays Coming soon until it is published in Shopify.

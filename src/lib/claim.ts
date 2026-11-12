@@ -1,0 +1,70 @@
+"use server";
+
+import { getCallStore } from "./call-store";
+import { hashToken, type Address, type Call } from "./calls";
+import { sendEmail } from "./mail";
+import { getProduct, stockKey } from "./products";
+import { getCatalog } from "./shopify";
+
+export type ClaimResult = { ok: true } | { ok: false; message: string };
+
+const STATES = "AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY".split(" ");
+const NO_GIFT = "This link doesn't match a gift.";
+const fail = (message: string): ClaimResult => ({ ok: false, message });
+
+// Form values come from the browser: strings only, over-long values refused rather than cut,
+// and control, line-break, zero-width and direction characters flattened so the label matches what is stored.
+const clean = (value: unknown, max: number) => {
+  if (typeof value !== "string" || value.length > max * 2) return null;
+  const text = value.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2064\ufeff]+/g, " ").trim();
+  return text.length > max ? null : text;
+};
+
+function readAddress(raw: unknown): Address | string {
+  const a = (typeof raw === "object" && raw !== null ? raw : {}) as Record<string, unknown>;
+  const address = { name: clean(a.name, 80), line1: clean(a.line1, 100), line2: clean(a.line2 ?? "", 100), city: clean(a.city, 60), state: clean(a.state, 2)?.toUpperCase(), zip: clean(a.zip, 10) };
+  if (!address.name) return "Enter the name to ship to.";
+  if (!address.line1) return "Enter your street address.";
+  if (!address.city) return "Enter your city.";
+  if (address.line2 === null) return "Shorten the second address line.";
+  if (!address.state || !STATES.includes(address.state)) return "Choose your state.";
+  if (!address.zip || !/^\d{5}(-\d{4})?$/.test(address.zip)) return "Enter a 5 digit ZIP code.";
+  return address as Address;
+}
+
+const ownerEmail = (call: Call, size: string, a: Address) => {
+  const piece = getProduct(call.slug)?.name ?? call.slug;
+  const lines = [`${call.recipientName} claimed her Call from ${call.senderName}.`, "", `${piece}, ${call.colorway}, size ${size}`, `Tier: ${call.tier}`, "", "Ship to:", a.name, a.line1, ...(a.line2 ? [a.line2] : []), `${a.city}, ${a.state} ${a.zip}`];
+  const text = lines.join("\n");
+  const html = `<pre style="font-family:Arial,sans-serif;font-size:15px">${text.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c] as string)}</pre>`;
+  return { subject: `Ship a Call: ${piece} in ${call.colorway}, ${size}`, text, html };
+};
+
+export async function claimCall(token: string, input: { size?: unknown; address?: unknown }): Promise<ClaimResult> {
+  const store = getCallStore();
+  const owner = process.env.OWNER_EMAIL;
+  if (!store || !owner) return fail("Claiming opens soon.");
+  if (typeof token !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(token)) return fail(NO_GIFT);
+  const hash = hashToken(token);
+  const call = await store.byTokenHash(hash);
+  if (!call) return fail(NO_GIFT);
+  if (call.status === "claimed") return fail("This gift has already been claimed.");
+  if (call.status === "expired" || !(Date.parse(call.expiresAt) > Date.now())) return fail("This gift link has expired.");
+
+  const product = getProduct(call.slug);
+  const size = clean(input?.size, 4);
+  if (!size || !product?.sizes.includes(size)) return fail("Choose your size.");
+  const address = readAddress(input?.address);
+  if (typeof address === "string") return fail(address);
+  const catalog = await getCatalog();
+  const stock = catalog?.[call.slug]?.stock;
+  const key = stockKey(call.colorway, size);
+  if (!stock || !(key in stock)) return fail("We couldn't check your size. Please try again.");
+  if (stock[key] === 0) return fail(`${size} is sold out in ${call.colorway}. Choose another size.`);
+
+  if (!(await store.claim(hash, { size, address, claimedAt: new Date().toISOString(), notified: false }))) return fail("This gift has already been claimed.");
+  const sent = await sendEmail({ to: owner, ...ownerEmail(call, size, address) });
+  if (sent.ok) await store.markNotified(hash);
+  else console.error("Claim saved but the owner email was not sent; it stays marked notified false", call.id);
+  return { ok: true };
+}

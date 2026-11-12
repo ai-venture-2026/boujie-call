@@ -81,6 +81,13 @@ describe("memoryStore", () => {
     expect(await store.byTokenHash("abc123")).toMatchObject({ id: "c1" });
   });
 
+  it("claims a Call only once", async () => {
+    const store = memoryStore();
+    await store.save(call);
+    const claim = { size: "M", address: { name: "Ana", line1: "1 A St", line2: "", city: "Atlanta", state: "GA", zip: "30303" }, claimedAt: "2026-11-13T00:00:00.000Z", notified: false };
+    expect([await store.claim("h", claim), await store.claim("h", claim)]).toEqual([true, false]);
+  });
+
   it("finds nothing for an unknown hash", async () => {
     expect(await memoryStore().byTokenHash("nope")).toBeNull();
   });
