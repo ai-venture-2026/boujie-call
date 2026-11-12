@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Send a Call, step 3a (server only, off): the sender's gift details (Call tier, piece, colour, her name and email, the receiver's first name and email, a note up to 300 characters) are checked and saved as waiting for payment. Nothing is emailed and no claim link exists until payment is built. Stays off until SEND_A_CALL_ENABLED is true in Vercel.
 - Send a Call, step 2b: the claim page at /call/<link>. The receiver sees who sent her gift, the piece and colour with its photo and the note (no price), picks her size (sold out sizes crossed out) and enters a US address; Claim my gift confirms with her city and state. Claimed, expired and closed links explain themselves; unknown links are a 404; the page is hidden from search engines. Claiming opens once the developer connects the database and OWNER_EMAIL is set.
 - Send a Call, step 2a (server only): a gift can be claimed from its link with a size and a US shipping address. The link, size, live stock and address are checked; a gift can be claimed once; expired links are refused; each claim emails the owner (OWNER_EMAIL) what to ship. Claiming stays closed until the developer connects the database in src/lib/call-store.ts.
 - Send a Call, step 1 (server only, not on the page yet): the site can make a private claim link for a gift, build the gift email (sender, receiver, note, Claim your gift button) and send it through Resend once RESEND_API_KEY and MAIL_FROM are set in Vercel. Text messages plug in later as a second channel. See docs/decisions/0001.

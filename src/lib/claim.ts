@@ -5,20 +5,13 @@ import { hashToken, isExpired, TOKEN_SHAPE, type Address, type Call } from "./ca
 import { sendEmail } from "./mail";
 import { getProduct, stockKey } from "./products";
 import { getCatalog } from "./shopify";
+import { clean } from "./text-input";
 import { US_STATES } from "./us-states";
 
 export type ClaimResult = { ok: true } | { ok: false; message: string };
 
 const NO_GIFT = "This link doesn't match a gift.";
 const fail = (message: string): ClaimResult => ({ ok: false, message });
-
-// Form values come from the browser: strings only, over-long values refused rather than cut,
-// and control, line-break, zero-width and direction characters flattened so the label matches what is stored.
-const clean = (value: unknown, max: number) => {
-  if (typeof value !== "string" || value.length > max * 2) return null;
-  const text = value.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2064\ufeff]+/g, " ").trim();
-  return text.length > max ? null : text;
-};
 
 function readAddress(raw: unknown): Address | string {
   const a = (typeof raw === "object" && raw !== null ? raw : {}) as Record<string, unknown>;
@@ -47,7 +40,7 @@ export async function claimCall(token: string, input: { size?: unknown; address?
   if (typeof token !== "string" || !TOKEN_SHAPE.test(token)) return fail(NO_GIFT);
   const hash = hashToken(token);
   const call = await store.byTokenHash(hash);
-  if (!call) return fail(NO_GIFT);
+  if (!call || call.status === "pending") return fail(NO_GIFT);
   if (call.status === "claimed") return fail("This gift has already been claimed.");
   if (isExpired(call)) return fail("This gift link has expired.");
 
