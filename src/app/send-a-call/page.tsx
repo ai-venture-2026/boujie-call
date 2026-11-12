@@ -4,7 +4,7 @@ import { ClosingBanner } from "@/components/closing-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { GiftButton } from "@/components/gift-button";
-import { boxContents, callSteps, formatPrice, tiers } from "@/lib/content";
+import { boxContents, callsOpen, callSteps, formatPrice, tiers } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Send a Call | Boujie Call",
@@ -23,7 +23,7 @@ export default function SendACall() {
             <Image src="/images/send-a-call/hero-rose-slip.webp" alt="A woman in a pale pink slip with lace trim leans on a soft pink wall, arms raised" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "70% 25%" }} className="object-cover" />
           </div>
           <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-10 max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)] max-md:pt-40 max-md:pb-10 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
-            <p className="label">Send a Call</p>
+            <p className="label">{callsOpen() ? "Send a Call" : "Send a Call, Coming soon"}</p>
             <h1 className="mt-6 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02]">
               Place your Boujie <em className="text-pink">Call.</em>
             </h1>

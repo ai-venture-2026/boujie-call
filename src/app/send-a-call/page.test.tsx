@@ -26,6 +26,19 @@ describe("Send a Call page", () => {
     expect(within(hero).getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
   });
 
+  it("marks the page Coming soon while it is closed", () => {
+    render(<SendACall />);
+    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
+    expect(within(hero).getByText("Send a Call, Coming soon")).toBeInTheDocument();
+  });
+
+  it("drops Coming soon once it opens", () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
+    render(<SendACall />);
+    vi.unstubAllEnvs();
+    expect(screen.queryByText(/Coming soon/)).toBeNull();
+  });
+
   it("never offers the waitlist", () => {
     const { container } = render(<SendACall />);
     expect(container.textContent).not.toMatch(/waitlist/i);

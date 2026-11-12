@@ -60,7 +60,9 @@ describe("SiteHeader", () => {
   });
 
   it("lists the four pages in the main nav", () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
     render(<SiteHeader />);
+    vi.unstubAllEnvs();
     expect(linkNames(screen.getByRole("navigation", { name: "Main" }))).toEqual(pages);
   });
 
@@ -97,7 +99,9 @@ describe("SiteHeader", () => {
 
 describe("SiteFooter", () => {
   it("lists the four pages", () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
     render(<SiteFooter />);
+    vi.unstubAllEnvs();
     expect(linkNames(screen.getByRole("navigation", { name: "Footer" }))).toEqual(pages);
   });
 
@@ -163,6 +167,26 @@ describe("Home signup", () => {
   it("keeps the ruled out words off Home", () => {
     const { container } = render(<Home />);
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
+  });
+});
+
+describe("Send a Call Soon tag", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("tags Send a Call in the main menu while it is closed", () => {
+    render(<SiteHeader />);
+    expect(within(screen.getByRole("navigation", { name: "Main" })).getByRole("link", { name: "Send a Call Soon" })).toBeInTheDocument();
+  });
+
+  it("tags Send a Call in the footer while it is closed", () => {
+    render(<SiteFooter />);
+    expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Send a Call Soon" })).toBeInTheDocument();
+  });
+
+  it("drops the tag once Send a Call opens", () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
+    render(<SiteHeader />);
+    expect(within(screen.getByRole("navigation", { name: "Main" })).getByRole("link", { name: "Send a Call" })).toBeInTheDocument();
   });
 });
 

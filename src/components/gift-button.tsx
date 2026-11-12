@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { useLivePrices } from "@/lib/bag";
-import { formatPrice, tiers } from "@/lib/content";
+import { callsOpen, formatPrice, tiers } from "@/lib/content";
 import { products } from "@/lib/products";
 import { startCall } from "@/lib/send-call";
 
@@ -106,9 +106,13 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                         </label>
                       ))}
                     </div>
-                    <button type="button" onClick={() => setStep(2)} className="cta cta-primary w-full sm:w-auto sm:justify-self-start">
-                      Next
-                    </button>
+                    {callsOpen() ? (
+                      <button type="button" onClick={() => setStep(2)} className="cta cta-primary w-full sm:w-auto sm:justify-self-start">
+                        Next
+                      </button>
+                    ) : (
+                      <p className="bg-blush px-4 py-3 text-[15px] text-rose-deep">Send a Call opens soon. Look around, and come back to send her gift.</p>
+                    )}
                   </div>
                 </div>
               ) : (
