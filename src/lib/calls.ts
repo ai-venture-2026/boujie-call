@@ -2,6 +2,10 @@ import { createHash, randomBytes } from "node:crypto";
 import { SITE_URL } from "./content";
 import type { Email, Sent } from "./mail";
 
+export type Address = { name: string; line1: string; line2: string; city: string; state: string; zip: string };
+// notified stays false until the owner email goes out, so a failed email can be found and resent.
+export type Claim = { size: string; address: Address; claimedAt: string; notified: boolean };
+
 // See docs/decisions/0001: delivery goes through named channels, storage through CallStore.
 export type Call = {
   id: string;
@@ -16,11 +20,15 @@ export type Call = {
   status: "sent" | "claimed" | "expired";
   createdAt: string;
   expiresAt: string;
+  claim?: Claim;
 };
 
 export type CallStore = {
   save(call: Call): Promise<void>;
   byTokenHash(hash: string): Promise<Call | null>;
+  // Must succeed only while the Call is still "sent", so two claims cannot both win.
+  claim(hash: string, claim: Claim): Promise<boolean>;
+  markNotified(hash: string): Promise<void>;
 };
 
 export function memoryStore(): CallStore {
@@ -28,15 +36,25 @@ export function memoryStore(): CallStore {
   return {
     save: async (call) => void calls.set(call.tokenHash, call),
     byTokenHash: async (hash) => calls.get(hash) ?? null,
+    claim: async (hash, claim) => {
+      const call = calls.get(hash);
+      if (call?.status !== "sent") return false;
+      calls.set(hash, { ...call, status: "claimed", claim });
+      return true;
+    },
+    markNotified: async (hash) => {
+      const call = calls.get(hash);
+      if (call?.claim) calls.set(hash, { ...call, claim: { ...call.claim, notified: true } });
+    },
   };
 }
 
-const hash = (token: string) => createHash("sha256").update(token).digest("hex");
+export const hashToken = (token: string) => createHash("sha256").update(token).digest("hex");
 
 // The link carries the token; only its hash is stored, so a leaked row cannot open a gift.
 export function newClaim() {
   const token = randomBytes(32).toString("base64url");
-  return { token, tokenHash: hash(token) };
+  return { token, tokenHash: hashToken(token) };
 }
 
 export const claimUrl = (token: string) => `${SITE_URL}/call/${token}`;
