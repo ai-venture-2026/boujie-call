@@ -62,7 +62,7 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
             {opened && <div className="p-6 md:p-10">
               <div className="flex items-start justify-between gap-6">
                 <div>
-                  <p className="label text-rose-deep">{callsOpen() ? `Step ${step} of 2` : "Coming soon"}</p>
+                  <p className="label text-rose-deep">Step {step} of 2</p>
                   <h2 id={title} className="mt-2 text-3xl md:text-4xl">
                     Choose her gift
                   </h2>
@@ -111,20 +111,16 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                         </label>
                       ))}
                     </div>
-                    {callsOpen() ? (
-                      <button type="button" onClick={() => setStep(2)} className="cta cta-primary w-full sm:w-auto sm:justify-self-start">
-                        Next
-                      </button>
-                    ) : (
-                      <p className="bg-blush px-4 py-3 text-[15px] text-rose-deep">Send a Call opens soon. Look around, and come back to send her gift.</p>
-                    )}
+                    <button type="button" onClick={() => setStep(2)} className="cta cta-primary w-full sm:w-auto sm:justify-self-start">
+                      Next
+                    </button>
                   </div>
                 </div>
               ) : (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    void send();
+                    if (callsOpen()) void send();
                   }}
                   className="mt-6 grid gap-4"
                 >
@@ -144,6 +140,7 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                   <span id={`${title}-count`} className="-mt-2 text-right text-[14px] text-muted">
                     {details.note.length} of 300
                   </span>
+                  {!callsOpen() && <p className="bg-blush px-4 py-3 text-[15px] text-rose-deep">Send a Call opens soon. You can look through the form, but nothing is sent yet.</p>}
                   {answer && (
                     <p role={answer.ok ? "status" : "alert"} className="text-base">
                       {answer.text}
@@ -153,8 +150,8 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                     <button type="button" onClick={() => setStep(1)} className="cta">
                       Back
                     </button>
-                    <button type="submit" disabled={sending} className="cta cta-primary">
-                      Continue
+                    <button type="submit" disabled={sending || !callsOpen()} className="cta cta-primary disabled:cursor-not-allowed disabled:opacity-40">
+                      {callsOpen() ? "Continue" : "Opens soon"}
                     </button>
                   </div>
                 </form>
