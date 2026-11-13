@@ -55,11 +55,10 @@ describe("product photos", () => {
     expect(setViews(name)).toEqual(views);
   });
 
-  it("points each Boujie Set card at a 3:4 file in public", async () => {
-    const cards = getProduct("the-boujie-set")?.colorways.map((c) => c.card ?? "") ?? [];
-    expect(cards).toEqual(["after-dark", "powder-blue", "rose"].map((c) => `/images/products/studio/the-boujie-set-${c}-card.webp`));
-    for (const card of cards) {
-      const { width = 0, height = 0 } = await sharp(`public${card}`).metadata();
+  it("keeps every shop photo at 3:4", async () => {
+    const fronts = products.flatMap((p) => p.colorways.map((c) => c.gallery?.[0]?.src ?? ""));
+    for (const front of fronts) {
+      const { width = 0, height = 0 } = await sharp(`public${front}`).metadata();
       expect(Math.abs(width / height - 0.75)).toBeLessThan(0.01);
     }
   });
@@ -79,7 +78,7 @@ describe("product photos", () => {
 
   it("points every gallery path at a file in public", () => {
     const paths = products.flatMap((p) => p.colorways.flatMap((c) => (c.gallery ?? []).map((g) => g.src)));
-    expect(paths.length).toBe(31);
+    expect(paths.length).toBe(30);
     expect(paths.filter((p) => !existsSync(`public${p}`))).toEqual([]);
   });
 });

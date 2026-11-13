@@ -22,7 +22,7 @@ export default async function Shop() {
       <main>
         <section data-nav="dark" className="grid bg-ribbon text-blush md:h-[60svh] md:min-h-[460px] md:grid-cols-[38fr_62fr]">
           <div className="relative h-[42svh] md:h-auto">
-            <Image src="/images/products/studio/the-romper-mocha-front.webp" alt="The lace neckline of The Romper in Mocha" fill priority sizes="(min-width: 768px) 38vw, 100vw" style={{ objectPosition: "50% 22%" }} className="object-cover" />
+            <Image src="/images/banners/shop-mocha-romper-lace.webp" alt="The lace neckline of The Romper in Mocha" fill priority sizes="(min-width: 768px) 38vw, 100vw" style={{ objectPosition: "50% 22%" }} className="object-cover" />
           </div>
           <div className="flex flex-col items-center justify-center px-6 py-14 text-center">
             <h1 className="text-[clamp(2.25rem,5vw,4.5rem)] leading-none tracking-[0.3em] uppercase">The collection</h1>
