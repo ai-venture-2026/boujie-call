@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { bagCount, rememberCheckout, offerNote, picked, removeFromBag, setQty, setSkip, priceOf, subtotalCents, useBag, useLivePrices, MAX_QTY } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
 import { getProduct } from "@/lib/products";
 
 export function BagView() {
+  const hint = useId();
   const lines = useBag();
   const prices = useLivePrices();
   const [note, setNote] = useState("");
@@ -37,7 +38,7 @@ export function BagView() {
 
   return (
     <>
-      <p className="mb-6 text-[15px] text-muted">Untick a piece to leave it out of checkout.</p>
+      <p id={hint} className="mb-6 text-[15px] text-muted">Untick a piece to leave it out of checkout.</p>
       <div className="grid gap-14 md:grid-cols-[1fr_22rem] md:gap-20">
         <ul aria-label="Pieces in your bag" className="border-t-[0.5px] border-card-border">
           {lines.map((line) => {
@@ -48,7 +49,7 @@ export function BagView() {
             return (
               <li key={name} className="grid grid-cols-[auto_6rem_1fr] gap-4 border-b-[0.5px] border-card-border py-6 sm:grid-cols-[auto_7.5rem_1fr] sm:gap-5">
                 <label className="-ml-3 grid size-11 cursor-pointer place-items-center self-center">
-                  <input type="checkbox" aria-label={`Check out ${name}`} checked={!line.skip} onChange={(e) => setSkip(line, !e.target.checked)} className="size-5 cursor-pointer accent-pink" />
+                  <input type="checkbox" aria-label={`Check out ${name}`} aria-describedby={hint} checked={!line.skip} onChange={(e) => setSkip(line, !e.target.checked)} className="size-5 cursor-pointer accent-pink" />
                 </label>
                 <div className="relative aspect-[3/4] bg-stone">
                   {photo && <Image src={photo} alt="" fill sizes="120px" className="object-cover" />}
@@ -86,7 +87,7 @@ export function BagView() {
         </ul>
 
         <div className="self-start bg-white p-8 md:pt-0 max-md:bg-transparent max-md:p-0">
-          {offerNote(count) && <p className="font-serif text-xl italic">{offerNote(count)}</p>}
+          {offerNote(count) && <p className="font-serif text-xl italic md:pt-8">{offerNote(count)}</p>}
           <div className="mt-8 first:mt-0 flex items-baseline justify-between border-t-[0.5px] border-card-border pt-6">
             <span className="label">Subtotal</span>
             <span className="font-sans text-xl font-medium">{formatPrice(subtotalCents(chosen, prices))}</span>

@@ -250,3 +250,24 @@ describe("Bag summary top edge", () => {
     expect(screen.getByText("Subtotal").closest("div.self-start")).toHaveClass("md:pt-0");
   });
 });
+
+describe("Bag tick box hint for screen readers", () => {
+  beforeEach(() => localStorage.clear());
+
+  it("reads the hint with each tick box", () => {
+    fill([slip]);
+    render(<BagPage />);
+    expect(screen.getByRole("checkbox", { name: "Check out The Slip Dress, Rose, M" })).toHaveAccessibleDescription("Untick a piece to leave it out of checkout.");
+  });
+});
+
+describe("Bag summary with an offer", () => {
+  beforeEach(() => localStorage.clear());
+
+  it("keeps the offer note clear of the summary's top edge on desktop", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Any 2 for $90.");
+    fill([slip, romper]);
+    render(<BagPage />);
+    expect(screen.getByText("You've unlocked free shipping")).toHaveClass("md:pt-8");
+  });
+});
