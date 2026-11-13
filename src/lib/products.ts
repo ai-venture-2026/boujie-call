@@ -11,7 +11,6 @@ export type Colorway = {
   images: string[];
   // Shop grid and product page photos with their alt view; Home and the bag keep images.
   gallery?: { src: string; view: string }[];
-  // Closer crop for the shop grid when the first gallery photo is full length.
 };
 
 export type Product = {
