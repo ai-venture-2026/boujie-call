@@ -107,7 +107,7 @@ export default function Home() {
                 <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
                   The <em className="text-rose">pieces</em>
                 </h2>
-                <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">Satin and lace, made to be gifted. Sizes S to XL.</p>
+                <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">Made to be gifted. Sizes S to XL.</p>
               </div>
               <Link href="/shop" className="link label inline-flex min-h-11 items-center self-start text-ink md:self-auto">
                 <span>

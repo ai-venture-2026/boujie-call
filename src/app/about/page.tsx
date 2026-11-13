@@ -78,7 +78,7 @@ export default function About() {
         <ClosingBanner
           tone="light"
           photo="/images/banners/rose-dress-banner.webp"
-          alt="A woman in a rose satin dress rests her hand on a gift box beside her"
+          alt="A woman in a rose slip dress rests her hand on a gift box beside her"
           focus="76% 20%"
           title={
             <>

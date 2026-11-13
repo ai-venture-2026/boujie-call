@@ -84,12 +84,11 @@ export function BagView() {
       </ul>
 
       <div className="self-start bg-white p-8 max-md:bg-transparent max-md:p-0">
-        <p className="font-serif text-xl italic">{offerNote(count)}</p>
-        <div className="mt-8 flex items-baseline justify-between border-t-[0.5px] border-card-border pt-6">
+        {offerNote(count) && <p className="font-serif text-xl italic">{offerNote(count)}</p>}
+        <div className="mt-8 first:mt-0 flex items-baseline justify-between border-t-[0.5px] border-card-border pt-6">
           <span className="label">Subtotal</span>
           <span className="font-sans text-xl font-medium">{formatPrice(subtotalCents(chosen, prices))}</span>
         </div>
-        {count >= 2 && <p className="mt-2 text-[15px] text-ink">Any 2 for $85 applied at checkout</p>}
         <p className="mt-2 text-[15px] text-muted">Shipping and taxes calculated at checkout</p>
         <button type="button" onClick={checkout} disabled={count === 0} className="cta cta-primary mt-8 w-full disabled:cursor-not-allowed disabled:opacity-40">
           Checkout

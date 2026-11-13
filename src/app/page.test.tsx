@@ -5,6 +5,9 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { BAG_KEY } from "@/lib/bag";
 import { heroSlides } from "@/lib/content";
+import * as productsModule from "@/lib/products";
+
+afterEach(() => vi.restoreAllMocks());
 
 describe("Home", () => {
   it("has one h1 with the brand promise", () => {
@@ -581,12 +584,14 @@ describe("Nav position", () => {
     expect(container.querySelector("nav[aria-label=Main]")?.parentElement).toHaveClass("md:absolute");
   });
 
-  it("opens the header with the offer bar", () => {
+  it("opens the header with the offer bar once confirmed", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     render(<SiteHeader />);
     expect(screen.getByRole("banner").firstElementChild).toHaveTextContent("Free shipping on 2 or more. Any 2 for $85.");
   });
 
   it("sets the offer bar on Dusty Rose", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     render(<SiteHeader />);
     expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.")[0]).toHaveClass("bg-dusty", "text-ribbon", "tracking-[0.12em]");
   });
@@ -672,7 +677,8 @@ describe("Phone menu", () => {
     expect(within(open()).getByRole("link", { name: "The collection" })).toHaveAttribute("href", "/shop");
   });
 
-  it("carries the offer line", () => {
+  it("carries the offer line once confirmed", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     expect(within(open()).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 

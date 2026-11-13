@@ -1,6 +1,6 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { orderPlaced } from "./checkout";
-import { getProduct, MAX_QTY } from "./products";
+import { getOffer, getProduct, MAX_QTY } from "./products";
 
 // skip marks a piece the shopper unticked: it stays in the bag but is left out of checkout and totals.
 export type BagLine = { slug: string; colorway: string; size: string; qty: number; skip?: true };
@@ -163,7 +163,7 @@ export function useLivePrices(): Prices {
   return prices;
 }
 
-export const offerNote = (count: number) => (count === 0 ? null : count === 1 ? "Add one more piece for free shipping" : "You've unlocked free shipping");
+export const offerNote = (count: number) => (!getOffer() || count === 0 ? null : count === 1 ? "Add one more piece for free shipping" : "You've unlocked free shipping");
 
 function subscribe(listener: () => void) {
   listeners.add(listener);

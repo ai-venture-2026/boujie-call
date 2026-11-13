@@ -21,8 +21,8 @@ export type Product = {
   priceCents: number;
   placeholderPrice: boolean;
   description: string;
-  fabric: string;
-  care: string;
+  fabric: string | null;
+  care: string | null;
   // Any number of colorways per piece.
   colorways: Colorway[];
   sizes: string[];
@@ -69,9 +69,9 @@ export const products: Product[] = [
     name: "The Slip Dress",
     priceCents: 4800,
     placeholderPrice: false,
-    description: "The one you reach for when the night is yours. A soft, fluid slip that skims and moves with you.",
-    fabric: "Satin with lace trim.",
-    care: "Hand wash cold, lay flat to dry.",
+    description: "The one you reach for when the night is yours.",
+    fabric: null,
+    care: null,
     colorways: photographed("the-slip-dress", [rose, afterDark, bloom], { Rose: frontBack, "After Dark": frontBack, Bloom: frontBack }),
     sizes,
   },
@@ -80,9 +80,9 @@ export const products: Product[] = [
     name: "The Boujie Set",
     priceCents: 4800,
     placeholderPrice: false,
-    description: "A satin cami and shorts set, cute enough for brunch and soft enough to sleep in.",
-    fabric: "Satin with lace trim.",
-    care: "Hand wash cold, lay flat to dry.",
+    description: "A cami and shorts set, cute enough for brunch and soft enough to sleep in.",
+    fabric: null,
+    care: null,
     colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }, true),
     sizes,
   },
@@ -92,8 +92,8 @@ export const products: Product[] = [
     priceCents: 4800,
     placeholderPrice: false,
     description: "One piece, zero effort. Soft, flirty, and made to be lived in.",
-    fabric: "Stretch satin with lace trim.",
-    care: "Hand wash cold, lay flat to dry.",
+    fabric: null,
+    care: null,
     colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose], { "Powder Blue": frontBack, Mocha: frontBack, "After Dark": frontBack, Rose: ["front", "back", "side"] }),
     sizes,
   },
@@ -103,4 +103,8 @@ export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }
 
-export const OFFER = "Free shipping on 2 or more. Any 2 for $85.";
+// Facts the owner has not confirmed stay null and their lines stay hidden; her answers go here (Alex, 2026-11-13).
+export const getOffer = (): string | null => null;
+
+// Bust, waist and hip per size, in the owner's unit.
+export const getSizeChart = (): Record<string, [string, string, string]> | null => null;

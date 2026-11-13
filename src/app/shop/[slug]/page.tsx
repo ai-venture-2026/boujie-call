@@ -46,12 +46,22 @@ export default async function ProductPage({ params }: Props) {
               </>
             }
             details={
-              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base">
-                <dt>Fabric</dt>
-                <dd className="text-muted">{product.fabric}</dd>
-                <dt>Care</dt>
-                <dd className="text-muted">{product.care}</dd>
-              </dl>
+              (product.fabric || product.care) && (
+                <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base">
+                  {product.fabric && (
+                    <>
+                      <dt>Fabric</dt>
+                      <dd className="text-muted">{product.fabric}</dd>
+                    </>
+                  )}
+                  {product.care && (
+                    <>
+                      <dt>Care</dt>
+                      <dd className="text-muted">{product.care}</dd>
+                    </>
+                  )}
+                </dl>
+              )
             }
           />
         </div>

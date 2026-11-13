@@ -1,8 +1,11 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import BagPage from "./page";
 import * as checkoutModule from "@/lib/checkout";
+import * as productsModule from "@/lib/products";
 import { BAG_KEY, CHECKOUT_KEY, MAX_QTY, readBag, setQty } from "@/lib/bag";
 import { waitFor } from "@testing-library/react";
+
+afterEach(() => vi.restoreAllMocks());
 
 const fill = (lines: object[]) => localStorage.setItem(BAG_KEY, JSON.stringify(lines));
 const slip = { slug: "the-slip-dress", colorway: "Rose", size: "M", qty: 1 };
@@ -132,22 +135,18 @@ describe("Bag page", () => {
     vi.unstubAllGlobals();
   });
 
-  it("nudges toward free shipping at one piece", () => {
+  it("nudges toward free shipping at one piece once an offer is confirmed", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     fill([slip]);
     render(<BagPage />);
     expect(screen.getByText("Add one more piece for free shipping")).toBeInTheDocument();
   });
 
-  it("confirms free shipping at two pieces", () => {
+  it("confirms free shipping at two pieces once an offer is confirmed", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     fill([slip, romper]);
     render(<BagPage />);
     expect(screen.getByText("You've unlocked free shipping")).toBeInTheDocument();
-  });
-
-  it("notes that the two piece price applies at checkout", () => {
-    fill([slip, romper]);
-    render(<BagPage />);
-    expect(screen.getByText("Any 2 for $85 applied at checkout")).toBeInTheDocument();
   });
 
   it("answers checkout with a note instead of a payment", async () => {
