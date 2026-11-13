@@ -24,6 +24,11 @@ describe("Offer before the owner confirms one", () => {
     expect(screen.queryByText(OLD_OFFER)).toBeNull();
   });
 
+  it("leaves no offer bar element in the header", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("banner").querySelector(".bg-dusty")).toBeNull();
+  });
+
   it("leaves the offer out of the phone menu", () => {
     render(<SiteHeader />);
     fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
@@ -69,6 +74,12 @@ describe("Product details before the owner confirms them", () => {
   it("shows no Care row", async () => {
     await renderProduct("the-boujie-set");
     expect(screen.queryByText("Care")).toBeNull();
+  });
+
+  it("shows no Size guide while a size is missing from the chart", async () => {
+    vi.spyOn(productsModule, "getSizeChart").mockReturnValue({ S: ["32", "26", "36"], M: ["34", "28", "38"], L: ["36", "30", "40"] });
+    await renderProduct("the-romper");
+    expect(screen.queryByRole("button", { name: "Size guide" })).toBeNull();
   });
 
   it("shows no Size guide without measurements", async () => {

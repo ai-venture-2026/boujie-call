@@ -758,12 +758,13 @@ describe("Phone targets on product pages", () => {
 
   it("sets Fabric with Care at 16px on phones", async () => {
     const slipDress = products.find((p) => p.slug === "the-slip-dress")!;
+    const saved = { fabric: slipDress.fabric, care: slipDress.care };
     Object.assign(slipDress, { fabric: "Sample fabric.", care: "Sample care." });
     try {
       await renderProduct("the-slip-dress");
       expect(screen.getByText("Fabric").closest("dl")).toHaveClass("text-base");
     } finally {
-      Object.assign(slipDress, { fabric: null, care: null });
+      Object.assign(slipDress, saved);
     }
   });
 

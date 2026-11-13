@@ -247,7 +247,7 @@ describe("Bag summary top edge", () => {
   it("starts the summary at the list's top line on desktop", () => {
     fill([slip]);
     render(<BagPage />);
-    expect(screen.getByText("Subtotal").closest("div.self-start")).toHaveClass("md:pt-0");
+    expect(screen.getByRole("region", { name: "Summary" })).toHaveClass("md:pt-0");
   });
 });
 
