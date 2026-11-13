@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { addToBag, BAG_OPENED } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
-import { colorwaySlug, OFFER, stockKey, type Colorway, type Product } from "@/lib/products";
+import { colorwaySlug, getOffer, getSizeChart, stockKey, type Colorway, type Product } from "@/lib/products";
 import { GiftButton } from "./gift-button";
 import { SizeGuide } from "./size-guide";
 
@@ -19,6 +19,7 @@ function ToCome({ label }: { label?: string }) {
 }
 
 export function ProductView({ product, intro, details }: { product: Product; intro: ReactNode; details: ReactNode }) {
+  const chart = getSizeChart();
   const fromUrl = useSyncExternalStore(
     () => () => {},
     () => new URLSearchParams(window.location.search).get("colorway"),
@@ -157,7 +158,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           <legend className="float-left py-2.5 text-base">
             Size: <span className="text-muted">{size ?? "choose one"}</span>
           </legend>
-          <SizeGuide sizes={product.sizes} />
+          {chart && <SizeGuide sizes={product.sizes} chart={chart} />}
           <div className="clear-both mt-3 flex flex-wrap gap-2 pt-px">
             {product.sizes.map((s) => (
               <label key={s} className={`grid h-11 min-w-14 md:min-w-12 md:pointer-fine:h-10 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2 ${soldOut(s) ? "cursor-not-allowed text-muted line-through" : "cursor-pointer hover:border-pink"}`}>
@@ -181,7 +182,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
             <GiftButton key={chosen?.name ?? ""} label="Send as a gift" className="cta w-full sm:w-auto" start={{ slug: product.slug, colorway: (chosen ?? product.colorways[0]).name }} />
           </div>
         )}
-        <p className="mt-3 text-base text-muted">{OFFER}</p>
+        {getOffer() && <p className="mt-3 text-base text-muted">{getOffer()}</p>}
         <p role="alert" className="mt-4 text-base">
           {missing}
         </p>

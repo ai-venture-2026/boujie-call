@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BAG_OPENED, bagCount, useBag, useCheckoutReturn } from "@/lib/bag";
 import { pages, socials } from "@/lib/content";
-import { OFFER } from "@/lib/products";
+import { getOffer } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
@@ -73,7 +73,7 @@ export function SiteHeader() {
 
   return (
     <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ribbon text-blush">
-      <p className="label bg-dusty px-6 py-2 text-center leading-4 tracking-[0.12em] text-ribbon">{OFFER}</p>
+      {getOffer() && <p className="label bg-dusty px-6 py-2 text-center leading-4 tracking-[0.12em] text-ribbon">{getOffer()}</p>}
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home" onClick={(e) => toTop("/", e)} className="flex min-h-11 items-center">
           <Logo tone="pink" className="h-10 md:h-12" />
@@ -190,8 +190,8 @@ export function SiteHeader() {
             <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
           <div className="mt-auto px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))]">
-            <p className="label text-muted">{OFFER}</p>
-            <Link href="/shop" onClick={close} className="cta cta-primary mt-4 w-full">
+            {getOffer() && <p className="label mb-4 text-muted">{getOffer()}</p>}
+            <Link href="/shop" onClick={close} className="cta cta-primary w-full">
               Shop the collection
             </Link>
             <ul className="label mt-5 flex gap-6 text-muted">

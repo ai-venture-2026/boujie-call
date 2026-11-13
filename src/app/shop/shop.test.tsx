@@ -5,6 +5,7 @@ import Shop from "./page";
 import Home from "../page";
 import SendACall from "../send-a-call/page";
 import ProductPage from "./[slug]/page";
+import * as productsModule from "@/lib/products";
 import { colorwaySlug, products, type Product } from "@/lib/products";
 import { ProductView } from "@/components/product-view";
 import { ShopGrid } from "@/components/shop-grid";
@@ -12,6 +13,12 @@ import { readBag } from "@/lib/bag";
 
 const renderProduct = async (slug: string) => render(await ProductPage({ params: Promise.resolve({ slug }) }));
 const set = products.find((p) => p.slug === "the-boujie-set")!;
+const sampleChart = { S: ["32", "26", "36"], M: ["34", "28", "38"], L: ["36", "30", "40"], XL: ["38", "32", "42"] } as Record<string, [string, string, string]>;
+const confirmed = () => {
+  vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
+  vi.spyOn(productsModule, "getSizeChart").mockReturnValue(sampleChart);
+};
+afterEach(() => vi.restoreAllMocks());
 const unphotographed: Product = { ...set, colorways: set.colorways.map((c) => ({ ...c, images: [], gallery: undefined })) };
 
 describe("Shop", () => {
@@ -88,6 +95,7 @@ describe("Product typography", () => {
   });
 
   it("reads the offer line at body size on desktop", async () => {
+    confirmed();
     await renderProduct("the-slip-dress");
     expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.").at(-1)).not.toHaveClass("md:text-sm");
   });
@@ -157,7 +165,8 @@ describe("Add to your bag", () => {
 });
 
 describe("Product page offer", () => {
-  it("shows the offer line", async () => {
+  it("shows the offer line once confirmed", async () => {
+    confirmed();
     await renderProduct("the-romper");
     expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
@@ -531,6 +540,7 @@ describe("Product gallery thumbnails", () => {
 
 describe("Size guide", () => {
   const open = () => fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
+  beforeEach(confirmed);
 
   it("opens the size guide", async () => {
     await renderProduct("the-romper");
@@ -542,12 +552,6 @@ describe("Size guide", () => {
     await renderProduct("the-romper");
     open();
     expect(screen.getByRole("dialog", { name: "Size guide" }).closest("fieldset")).toBeNull();
-  });
-
-  it("marks the chart as a placeholder", async () => {
-    await renderProduct("the-romper");
-    open();
-    expect(screen.getByText("Placeholder. Measurements to come from Boujie Call.")).toBeInTheDocument();
   });
 
   it("heads the chart with bust, waist, hip", async () => {
@@ -565,7 +569,7 @@ describe("Size guide", () => {
   it("names the size table", async () => {
     await renderProduct("the-romper");
     open();
-    expect(screen.getByRole("table", { name: "Measurements by size, placeholder" })).toBeInTheDocument();
+    expect(screen.getByRole("table", { name: "Measurements by size" })).toBeInTheDocument();
   });
 
   it("closes from the close button", async () => {
@@ -747,13 +751,20 @@ describe("Phone targets on product pages", () => {
   });
 
   it("gives Size guide a 44px target", async () => {
+    confirmed();
     await renderProduct("the-slip-dress");
     expect(screen.getByRole("button", { name: "Size guide" })).toHaveClass("min-h-11");
   });
 
   it("sets Fabric with Care at 16px on phones", async () => {
-    await renderProduct("the-slip-dress");
-    expect(screen.getByText("Fabric").closest("dl")).toHaveClass("text-base");
+    const slipDress = products.find((p) => p.slug === "the-slip-dress")!;
+    Object.assign(slipDress, { fabric: "Sample fabric.", care: "Sample care." });
+    try {
+      await renderProduct("the-slip-dress");
+      expect(screen.getByText("Fabric").closest("dl")).toHaveClass("text-base");
+    } finally {
+      Object.assign(slipDress, { fabric: null, care: null });
+    }
   });
 
   it("sets the missing choice note at 16px on phones", async () => {
@@ -762,6 +773,7 @@ describe("Phone targets on product pages", () => {
   });
 
   it("sets the offer sentence at 16px on phones", async () => {
+    confirmed();
     await renderProduct("the-slip-dress");
     expect(within(screen.getByRole("main")).getByText("Free shipping on 2 or more. Any 2 for $85.")).toHaveClass("text-base");
   });
@@ -950,6 +962,7 @@ describe("Gallery scroll cost", () => {
 
 describe("Size guide drag", () => {
   const dialog = () => screen.getByRole("dialog", { name: "Size guide" });
+  beforeEach(confirmed);
 
   it("stays open when a drag ends on the backdrop", async () => {
     await renderProduct("the-romper");

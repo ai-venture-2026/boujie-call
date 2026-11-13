@@ -5,8 +5,7 @@ import { createPortal } from "react-dom";
 
 const columns = ["Bust", "Waist", "Hip"];
 
-// Placeholder chart until the owner sends real measurements.
-export function SizeGuide({ sizes }: { sizes: string[] }) {
+export function SizeGuide({ sizes, chart }: { sizes: string[]; chart: Record<string, [string, string, string]> }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const title = useId();
   const close = () => dialog.current?.close();
@@ -44,9 +43,8 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
                   </svg>
                 </button>
               </div>
-              <p className="mt-3 text-[15px] text-muted">Placeholder. Measurements to come from Boujie Call.</p>
               <table className="mt-8 w-full text-left text-[15px]">
-                <caption className="sr-only">Measurements by size, placeholder</caption>
+                <caption className="sr-only">Measurements by size</caption>
                 <thead>
                   <tr className="border-b-[0.5px] border-card-border">
                     {["Size", ...columns].map((c) => (
@@ -62,9 +60,9 @@ export function SizeGuide({ sizes }: { sizes: string[] }) {
                       <th scope="row" className="py-3 font-normal">
                         {s}
                       </th>
-                      {columns.map((c) => (
+                      {columns.map((c, i) => (
                         <td key={c} className="py-3 text-muted">
-                          To come
+                          {chart[s]?.[i]}
                         </td>
                       ))}
                     </tr>

@@ -9,7 +9,7 @@ import { getCatalog, withLive } from "@/lib/shopify";
 
 export const metadata: Metadata = {
   title: "Shop | Boujie Call",
-  description: "The Slip Dress, The Boujie Set and The Romper. Satin nightwear pieces in sizes S to XL.",
+  description: "The Slip Dress, The Boujie Set and The Romper. Nightwear pieces in sizes S to XL.",
 };
 
 export const revalidate = 60;

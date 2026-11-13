@@ -78,12 +78,11 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
             })}
           </ul>
           {rest > 0 && <p className="mt-3 text-[15px] text-muted">+ {rest} more</p>}
-          <p className="mt-5 font-serif text-lg italic">{offerNote(count)}</p>
+          {offerNote(count) && <p className="mt-5 font-serif text-lg italic">{offerNote(count)}</p>}
           <div className="mt-4 flex items-baseline justify-between">
             <span className="label">Subtotal</span>
             <span className="font-sans text-[17px] font-medium">{formatPrice(subtotalCents(chosen, prices))}</span>
           </div>
-          {count >= 2 && <p className="mt-1 text-[13px] text-muted">Any 2 for $85 applied at checkout</p>}
           {choosing && <p className="mt-4 text-[15px] text-muted">Choose what to check out in your bag.</p>}
           <div className={`mt-6 grid gap-3 ${choosing ? "" : "grid-cols-2"}`}>
             <Link href="/bag" onClick={onNavigate} className="cta px-4">

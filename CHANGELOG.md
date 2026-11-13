@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Content accuracy: until the owner confirms them, the site no longer states facts she has not given. The "Any 2 for $85, free shipping on 2 or more" offer is hidden from the top bar, phone menu and product pages, and the bag drops its free shipping and two piece price lines, since Shopify has no such discount. Product pages hide the placeholder Fabric and Care rows and the Size guide link. Five lines no longer name a fabric: the Boujie Set and Slip Dress descriptions, the Home pieces line, the Shop description and the About photo text. Each item returns with a one line edit in src/lib/products.ts once she answers.
 - Layout backlog settled: the desktop menu measures within 15px of the hero photo column on wide screens (centred links, no visible offset), so the old note is closed; the notched iPhone landscape side strips are accepted as a known edge case.
 - Help and policy pages, ready for the owner's text: /help (contact email and questions), /privacy and /terms are built, with a footer Help column and sitemap entries. Each goes live only once its text is filled in src/lib/help.ts; until then nothing on the site changes. The Send a Call answers are written already.
 - Gender neutral gift copy: every line about the person receiving a gift uses they and their (Home headline, how it works, Send a Call steps, the gift pop-up and form, form errors, box contents, the owner's claim email, the Slip Dress description), and the gift flow says email instead of number and text. The About brand lines wait for the owner.
