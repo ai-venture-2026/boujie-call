@@ -61,7 +61,7 @@ export function ShopGrid({ products }: { products: Product[] }) {
               <h2 className="label text-ink">{p.name}</h2>
               <ul aria-label={p.name} className="mt-6 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
                 {group.map(({ product, colorway }) => {
-                  const photo = colorway.card ?? colorway.gallery?.[0].src ?? colorway.images[0];
+                  const photo = colorway.gallery?.[0].src ?? colorway.images[0];
                   return (
                     <li key={`${product.slug}-${colorway.name}`} className="max-lg:last:odd:col-span-2 max-lg:last:odd:w-[calc(50%-0.75rem)] max-lg:last:odd:justify-self-center">
                       <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">

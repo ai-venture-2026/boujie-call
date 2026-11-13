@@ -436,16 +436,16 @@ describe("Studio photos", () => {
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" }).getAttribute("src")).toMatch(/studio(\/|%2F)the-slip-dress-rose-front/);
   });
 
-  it("shows four photos for The Romper in Rose", async () => {
+  it("shows three photos for The Romper in Rose", async () => {
     await renderProduct("the-romper");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
-    expect(screen.getByRole("button", { name: "Photo 4 of 4" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Photo 3 of 3" })).toBeInTheDocument();
   });
 
-  it("shows four thumbnails for The Romper in Rose", async () => {
+  it("shows three thumbnails for The Romper in Rose", async () => {
     await renderProduct("the-romper");
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
-    expect(screen.getAllByRole("button", { name: /^Show / })).toHaveLength(4);
+    expect(screen.getAllByRole("button", { name: /^Show / })).toHaveLength(3);
   });
 
   it("shows a studio photo on the shop card", async () => {
@@ -459,10 +459,10 @@ describe("Studio photos", () => {
     expect(screen.getAllByText("Image to come")).toHaveLength(6);
   });
 
-  it("shows the close crop on The Boujie Set shop card", async () => {
+  it("shows the full front photo on The Boujie Set shop card", async () => {
     render(await Shop());
     const card = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-boujie-set?colorway=rose");
-    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-boujie-set-rose-card/);
+    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-boujie-set-rose-front/);
   });
 
   it("keeps the Romper card on its front photo", async () => {
@@ -588,9 +588,9 @@ describe("Shop shows real product photos only", () => {
     expect(generated(screen.getByRole("main"))).toEqual([]);
   });
 
-  it("heads the shop with the Mocha Romper studio photo", async () => {
+  it("heads the shop with its own Mocha Romper lace photo", async () => {
     render(await Shop());
-    expect(decodeURIComponent(screen.getByRole("img", { name: "The lace neckline of The Romper in Mocha" }).getAttribute("src") ?? "")).toContain("studio/the-romper-mocha-front");
+    expect(decodeURIComponent(screen.getByRole("img", { name: "The lace neckline of The Romper in Mocha" }).getAttribute("src") ?? "")).toContain("images/banners/shop-mocha-romper-lace");
   });
   it("keeps the lace close-up on Send a Call", () => {
     render(<SendACall />);

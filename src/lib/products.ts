@@ -11,8 +11,6 @@ export type Colorway = {
   images: string[];
   // Shop grid and product page photos with their alt view; Home and the bag keep images.
   gallery?: { src: string; view: string }[];
-  // Closer crop for the shop grid when the first gallery photo is full length.
-  card?: string;
 };
 
 export type Product = {
@@ -53,12 +51,12 @@ const bloom: Colorway = {
 export const colorwaySlug = (name: string) => name.toLowerCase().replaceAll(" ", "-");
 
 // Cutouts live in public/images/products as <slug>-<colorway>.webp, studio photos in studio/<slug>-<colorway>-<view>.webp.
-const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>, cards = false): Colorway[] =>
+const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>): Colorway[] =>
   colorways.map((c) => {
     const name = `${slug}-${colorwaySlug(c.name)}`;
     const cutout = `/images/products/${name}.webp`;
     const views = (studio[c.name] ?? []).map((view) => ({ src: `/images/products/studio/${name}-${view}.webp`, view }));
-    return { ...c, images: [cutout], gallery: [...views, { src: cutout, view: "on its own" }], ...(cards && { card: `/images/products/studio/${name}-card.webp` }) };
+    return { ...c, images: [cutout], gallery: [...views, { src: cutout, view: "on its own" }] };
   });
 
 const frontBack = ["front", "back"];
@@ -83,7 +81,7 @@ export const products: Product[] = [
     description: "A cami and shorts set, cute enough for brunch and soft enough to sleep in.",
     fabric: null,
     care: null,
-    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }, true),
+    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }),
     sizes,
   },
   {
@@ -94,7 +92,7 @@ export const products: Product[] = [
     description: "One piece, zero effort. Soft, flirty, and made to be lived in.",
     fabric: null,
     care: null,
-    colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose], { "Powder Blue": frontBack, Mocha: frontBack, "After Dark": frontBack, Rose: ["front", "back", "side"] }),
+    colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose], { "Powder Blue": frontBack, Mocha: frontBack, "After Dark": frontBack, Rose: frontBack }),
     sizes,
   },
 ];

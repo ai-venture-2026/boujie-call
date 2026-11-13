@@ -47,8 +47,8 @@ describe("Phone menu photo", () => {
     return [...screen.getByRole("dialog").querySelectorAll("img")].map((img) => decodeURIComponent(img.getAttribute("src") ?? ""));
   };
 
-  it("shows the Slip Dress After Dark studio photo", () => {
-    expect(photos().some((src) => src.includes("studio/the-slip-dress-after-dark-front"))).toBe(true);
+  it("shows its own Slip Dress After Dark photo", () => {
+    expect(photos().some((src) => src.includes("images/banners/menu-black-slip-dress"))).toBe(true);
   });
 
   it("shows no generated hero photo", () => {
