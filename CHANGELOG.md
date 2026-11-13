@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Review tidy: the size guide appears only once the owner's chart covers every size on sale, the bag summary is a named Summary section screen readers can jump to, and the tests now catch any offer bar and keep product data intact. Nothing visible changes.
 - Bag tick boxes explained: a line above the bag list reads "Untick a piece to leave it out of checkout.", so shoppers know what the boxes do. It shows whenever the bag has pieces. On desktop the summary's top line sits level with the list again.
 - Content accuracy: until the owner confirms them, the site no longer states facts she has not given. The "Any 2 for $85, free shipping on 2 or more" offer is hidden from the top bar, phone menu and product pages, and the bag drops its free shipping and two piece price lines, since Shopify has no such discount. Product pages hide the placeholder Fabric and Care rows and the Size guide link. Five lines no longer name a fabric: the Boujie Set and Slip Dress descriptions, the Home pieces line, the Shop description and the About photo text. Each item returns with a one line edit in src/lib/products.ts once she answers.
 - Layout backlog settled: the desktop menu measures within 15px of the hero photo column on wide screens (centred links, no visible offset), so the old note is closed; the notched iPhone landscape side strips are accepted as a known edge case.

@@ -37,7 +37,7 @@ export function BagView() {
   }
 
   return (
-    <>
+    <div>
       <p id={hint} className="mb-6 text-[15px] text-muted">Untick a piece to leave it out of checkout.</p>
       <div className="grid gap-14 md:grid-cols-[1fr_22rem] md:gap-20">
         <ul aria-label="Pieces in your bag" className="border-t-[0.5px] border-card-border">
@@ -86,7 +86,7 @@ export function BagView() {
           })}
         </ul>
 
-        <div className="self-start bg-white p-8 md:pt-0 max-md:bg-transparent max-md:p-0">
+        <section aria-label="Summary" className="self-start bg-white p-8 md:pt-0 max-md:bg-transparent max-md:p-0">
           {offerNote(count) && <p className="font-serif text-xl italic md:pt-8">{offerNote(count)}</p>}
           <div className="mt-8 first:mt-0 flex items-baseline justify-between border-t-[0.5px] border-card-border pt-6">
             <span className="label">Subtotal</span>
@@ -103,8 +103,8 @@ export function BagView() {
           <Link href="/shop" className="cta mt-6 w-full">
             Continue shopping
           </Link>
-        </div>
+        </section>
       </div>
-    </>
+    </div>
   );
 }
