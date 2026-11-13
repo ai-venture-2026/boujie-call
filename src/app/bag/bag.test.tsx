@@ -224,3 +224,29 @@ describe("Bag polish", () => {
     expect(within(screen.getByRole("list", { name: "Pieces in your bag" })).getByRole("link", { name: "The Romper" }).parentElement).toHaveClass("max-sm:flex-col");
   });
 });
+
+describe("Bag tick box hint", () => {
+  beforeEach(() => localStorage.clear());
+
+  it("explains the tick boxes above the list", () => {
+    fill([slip]);
+    render(<BagPage />);
+    const hint = screen.getByText("Untick a piece to leave it out of checkout.");
+    expect(hint.compareDocumentPosition(screen.getByRole("list", { name: "Pieces in your bag" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("leaves the hint out of an empty bag", () => {
+    render(<BagPage />);
+    expect(screen.queryByText("Untick a piece to leave it out of checkout.")).toBeNull();
+  });
+});
+
+describe("Bag summary top edge", () => {
+  beforeEach(() => localStorage.clear());
+
+  it("starts the summary at the list's top line on desktop", () => {
+    fill([slip]);
+    render(<BagPage />);
+    expect(screen.getByText("Subtotal").closest("div.self-start")).toHaveClass("md:pt-0");
+  });
+});
