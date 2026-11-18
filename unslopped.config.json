@@ -64,7 +64,7 @@
     "worktree": false,
     "pullRequest": {
       "auto": false,
-      "base": null,
+      "base": "develop",
       "draft": false
     },
     "style": {

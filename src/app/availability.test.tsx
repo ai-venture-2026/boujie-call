@@ -92,6 +92,35 @@ describe("Product photo availability pill", () => {
 describe("Home piece cards follow Shopify", () => {
   afterEach(() => vi.restoreAllMocks());
 
+  const live = (stock: Record<string, number | null> = {}) => ({ priceCents: 4800, stock });
+  const allRomper = (count: number) => Object.fromEntries(romper.colorways.flatMap((c) => Object.entries(stockFor(romper, c.name, count))));
+  const homeCard = (name: string) => within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name }).closest("a")!;
+  const showHome = async (catalog: shopifyModule.Catalog) => {
+    vi.spyOn(shopifyModule, "getCatalog").mockResolvedValue(catalog);
+    render(await Home());
+  };
+
+  it("shows a piece Shopify does not sell as coming soon without a price", async () => {
+    await showHome({ "the-slip-dress": live(), "the-romper": live() });
+    const setCard = homeCard("The Boujie Set");
+    expect(setCard.querySelector("[data-pill]")).toHaveTextContent("Coming soon");
+    expect(setCard).toHaveTextContent("Coming soon3 colorways");
+    expect(setCard).not.toHaveTextContent("$48.00");
+  });
+
+  it("marks a piece sold out once every colour is gone", async () => {
+    await showHome({ "the-slip-dress": live(), "the-romper": live(allRomper(0)), "the-boujie-set": live() });
+    const romperCard = homeCard("The Romper");
+    expect(romperCard.querySelector("[data-pill]")).toHaveTextContent("Sold out");
+    expect(romperCard).toHaveTextContent("$48.00, sold out");
+  });
+
+  it("leaves a piece alone while some colour is still in stock", async () => {
+    await showHome({ "the-slip-dress": live(), "the-romper": live({ ...allRomper(0), ...stockFor(romper, "Rose", 3) }), "the-boujie-set": live() });
+    expect(homeCard("The Romper").querySelector("[data-pill]")).toBeNull();
+    expect(homeCard("The Romper")).not.toHaveTextContent("sold out");
+  });
+
   it("shows the price Shopify gives a piece", async () => {
     vi.spyOn(shopifyModule, "getCatalog").mockResolvedValue({ "the-slip-dress": { priceCents: 4800, stock: {} }, "the-romper": { priceCents: 5200, stock: {} }, "the-boujie-set": { priceCents: 4800, stock: {} } });
     render(await Home());
