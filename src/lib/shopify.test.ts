@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { getCatalog, withLive } from "./shopify";
 import { products } from "./products";
 import { GET } from "@/app/api/prices/route";
@@ -140,5 +141,15 @@ describe("withLive", () => {
   it("ignores variants that match no local colorway or size", () => {
     const live = withLive(products, { "the-romper": { priceCents: 4800, stock: { "Rose/S": 1, "Gold/S": 0, "Rose/XXL": 0 } } });
     expect(find(live, "the-romper").stock).toEqual({ "Rose/S": 1 });
+  });
+});
+
+describe("Server boundary", () => {
+  it("marks the Shopify module server only, so a client import fails the build", () => {
+    expect(readFileSync("src/lib/shopify.ts", "utf8").startsWith('import "server-only";')).toBe(true);
+  });
+
+  it("pins the Node major the build runs on", () => {
+    expect(JSON.parse(readFileSync("package.json", "utf8")).engines.node).toBe("24.x");
   });
 });
