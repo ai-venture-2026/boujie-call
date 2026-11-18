@@ -655,7 +655,10 @@ describe("Quick add bar on phones", () => {
     );
     Element.prototype.scrollIntoView = vi.fn();
   });
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    delete (Element.prototype as Partial<Element>).scrollIntoView;
+  });
 
   it("stays hidden while the main button shows", async () => {
     await renderProduct("the-romper");
@@ -743,6 +746,12 @@ describe("Quick add bar on phones", () => {
     await renderProduct("the-romper");
     leave();
     expect((bar() as HTMLElement).className).toContain("safe-area-inset-bottom");
+  });
+});
+
+describe("Test isolation", () => {
+  it("leaves no scrollIntoView stub from the quick-add bar tests", () => {
+    expect(Element.prototype.scrollIntoView).toBeUndefined();
   });
 });
 

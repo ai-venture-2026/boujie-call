@@ -106,11 +106,11 @@ describe("Send a Call form", () => {
   });
 
   it("shows a refused field as an alert", async () => {
-    vi.spyOn(sendModule, "startCall").mockResolvedValue({ ok: false, message: "Choose a Call." });
+    vi.spyOn(sendModule, "startCall").mockImplementation(() => new Promise((done) => setTimeout(() => done({ ok: false, message: "Choose a Call." }), 50)));
     await page();
     fill();
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("Choose a Call.");
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("Choose a Call."));
   });
 
   it("does not exist while the switch is off", async () => {
