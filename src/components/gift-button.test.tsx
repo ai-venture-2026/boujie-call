@@ -5,7 +5,18 @@ import * as sendModule from "@/lib/send-call";
 const open = () => fireEvent.click(screen.getByRole("button", { name: "Send a Call" }));
 const dialog = () => screen.getByRole("dialog", { name: "Choose their gift" });
 const type = (label: string, value: string) => fireEvent.change(within(dialog()).getByLabelText(label), { target: { value } });
-const toDetails = () => fireEvent.click(within(dialog()).getByRole("button", { name: "Next" }));
+const checked = (group: string) => within(dialog()).queryByRole("radiogroup", { name: group })?.querySelector("input:checked") ?? null;
+const pick = (group: string, name?: string) => {
+  const radios = within(within(dialog()).getByRole("radiogroup", { name: group })).getAllByRole("radio");
+  fireEvent.click(name ? radios.find((r) => r.getAttribute("aria-label") === name)! : radios[0]);
+};
+// A shopper picks whatever is still missing, then presses Next.
+const toDetails = () => {
+  if (!checked("Choose a Call")) pick("Choose a Call", "The Signature Call");
+  if (!checked("Choose a piece")) pick("Choose a piece", "The Romper");
+  if (!checked("Choose a colour")) pick("Choose a colour");
+  fireEvent.click(within(dialog()).getByRole("button", { name: "Next" }));
+};
 const fill = () => {
   type("Your name", "Mia");
   type("Your email", "mia@example.com");
@@ -105,6 +116,100 @@ describe("Gift pop-up", () => {
     fireEvent.click(screen.getByRole("button", { name: "Gift it" }));
     const names = [...document.querySelectorAll<HTMLInputElement>('input[aria-label="The Signature Call"]')].map((r) => r.name);
     expect(new Set(names).size).toBe(2);
+  });
+});
+
+describe("Gift pop-up starts with nothing chosen", () => {
+  it("opens a general Send a Call with no Call or piece chosen", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect([checked("Choose a Call"), checked("Choose a piece")]).toEqual([null, null]);
+  });
+
+  it("keeps Next greyed out while a choice is missing", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    pick("Choose a Call", "The Mini Call");
+    pick("Choose a piece", "The Romper");
+    expect(within(dialog()).getByRole("button", { name: "Next" })).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("explains what is still missing beside Next", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect(within(dialog()).getByRole("button", { name: "Next" })).toHaveAccessibleDescription("Choose a Call, a piece and a colour.");
+  });
+
+  it("enables Next once all three are chosen", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    pick("Choose a Call", "The Mini Call");
+    pick("Choose a piece", "The Romper");
+    pick("Choose a colour", "Mocha");
+    expect(within(dialog()).getByRole("button", { name: "Next" })).toHaveAttribute("aria-disabled", "false");
+  });
+
+  it("hides the colour row until a piece is chosen", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect(within(dialog()).queryByRole("radiogroup", { name: "Choose a colour" })).toBeNull();
+  });
+
+  it("shows the piece's colours once it is chosen", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    pick("Choose a piece", "The Romper");
+    expect(within(within(dialog()).getByRole("radiogroup", { name: "Choose a colour" })).getAllByRole("radio").length).toBeGreaterThan(0);
+  });
+
+  it("keeps Next reachable by keyboard while a choice is missing", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    expect(within(dialog()).getByRole("button", { name: "Next" })).not.toBeDisabled();
+  });
+
+  it("stays on step 1 when Next is pressed with a choice missing", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    fireEvent.click(within(dialog()).getByRole("button", { name: "Next" }));
+    expect(within(dialog()).getByText("Step 1 of 2")).toBeInTheDocument();
+  });
+
+  it("drops the hint from Next once everything is chosen", () => {
+    render(<GiftButton label="Send a Call" />);
+    open();
+    pick("Choose a Call", "The Mini Call");
+    pick("Choose a piece", "The Romper");
+    pick("Choose a colour", "Mocha");
+    expect(within(dialog()).getByRole("button", { name: "Next" })).not.toHaveAttribute("aria-describedby");
+  });
+
+  it("keeps Next unavailable for a piece that is not for sale", async () => {
+    render(<GiftButton label="Send as a gift" start={{ slug: "the-boujie-set", colorway: "Rose" }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
+    await waitFor(() => expect(within(dialog()).queryByRole("radio", { name: "The Boujie Set" })).toBeNull());
+    pick("Choose a Call", "The Mini Call");
+    expect(within(dialog()).getByRole("button", { name: "Next" })).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("keeps Next unavailable for a colour the piece does not come in", () => {
+    render(<GiftButton label="Send as a gift" start={{ slug: "the-romper", colorway: "Bloom" }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
+    pick("Choose a Call", "The Mini Call");
+    expect(within(dialog()).getByRole("button", { name: "Next" })).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("clears the colour when another piece is chosen", () => {
+    render(<GiftButton label="Send a Call" start={{ slug: "the-romper", colorway: "Mocha" }} />);
+    open();
+    pick("Choose a piece", "The Slip Dress");
+    expect(checked("Choose a colour")).toBeNull();
+  });
+
+  it("keeps the product page's choice in Send as a gift", () => {
+    render(<GiftButton label="Send as a gift" start={{ slug: "the-romper", colorway: "Mocha" }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
+    expect([checked("Choose a Call"), checked("Choose a piece")?.getAttribute("aria-label"), checked("Choose a colour")?.getAttribute("aria-label")]).toEqual([null, "The Romper", "Mocha"]);
   });
 });
 

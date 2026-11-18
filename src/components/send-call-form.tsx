@@ -10,10 +10,11 @@ const field = "h-12 w-full border border-ink/40 bg-white/80 px-4 text-base text-
 const pill = "cursor-pointer rounded-full border-[0.5px] border-ink/25 px-4 py-2.5 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2";
 
 export function SendCallForm({ tiers, pieces }: { tiers: Tier[]; pieces: Product[] }) {
-  const [tier, setTier] = useState(tiers.find((t) => t.popular)?.name ?? tiers[0]?.name ?? "");
-  const [slug, setSlug] = useState(pieces[0]?.slug ?? "");
+  // Nothing is chosen for the shopper; the browser asks for each choice before Continue.
+  const [tier, setTier] = useState("");
+  const [slug, setSlug] = useState("");
   const piece = pieces.find((p) => p.slug === slug);
-  const [colorway, setColorway] = useState(piece?.colorways[0]?.name ?? "");
+  const [colorway, setColorway] = useState("");
   const colour = piece?.colorways.find((c) => c.name === colorway);
   const photo = colour?.gallery?.[0]?.src ?? colour?.images[0];
   const [note, setNote] = useState("");
@@ -42,7 +43,7 @@ export function SendCallForm({ tiers, pieces }: { tiers: Tier[]; pieces: Product
           <p className="text-base">Choose a Call</p>
           {tiers.map((t) => (
             <label key={t.name} className="flex cursor-pointer items-start justify-between gap-4 border-[0.5px] border-ink/20 p-4 has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
-              <input type="radio" name="tier" aria-label={t.name} className="sr-only" checked={tier === t.name} onChange={() => setTier(t.name)} />
+              <input type="radio" name="tier" required aria-label={t.name} className="sr-only" checked={tier === t.name} onChange={() => setTier(t.name)} />
               <span>
                 <span className="block text-lg">{t.name}</span>
                 <span className="mt-1 block text-[15px] text-muted">{t.contents}</span>
@@ -56,28 +57,30 @@ export function SendCallForm({ tiers, pieces }: { tiers: Tier[]; pieces: Product
           <div className="flex flex-wrap gap-2">
             {pieces.map((p) => (
               <label key={p.slug} className={pill}>
-                <input type="radio" name="slug" aria-label={p.name} className="sr-only" checked={slug === p.slug} onChange={() => {
+                <input type="radio" name="slug" required aria-label={p.name} className="sr-only" checked={slug === p.slug} onChange={() => {
                   setSlug(p.slug);
-                  setColorway(p.colorways[0]?.name ?? "");
+                  setColorway("");
                 }} />
                 {p.name}
               </label>
             ))}
           </div>
         </div>
+        {piece && (
         <div role="radiogroup" aria-label="Choose a colour" className="grid gap-3">
           <p className="text-base">
-            Colour: <span className="text-muted">{colorway}</span>
+            Colour: <span className="text-muted">{colorway || "choose one"}</span>
           </p>
           <div className="flex flex-wrap gap-1">
-            {piece?.colorways.map((c) => (
+            {piece.colorways.map((c) => (
               <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
-                <input type="radio" name="colorway" aria-label={c.name} className="sr-only" checked={colorway === c.name} onChange={() => setColorway(c.name)} />
+                <input type="radio" name="colorway" required aria-label={c.name} className="sr-only" checked={colorway === c.name} onChange={() => setColorway(c.name)} />
                 <span aria-hidden="true" className="size-8 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
               </label>
             ))}
           </div>
         </div>
+        )}
         <fieldset className="grid gap-4 sm:grid-cols-2">
           <legend className="mb-3 text-base">From you, to them</legend>
           <label className="grid gap-1 text-[15px]">

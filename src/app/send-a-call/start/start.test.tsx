@@ -7,7 +7,11 @@ vi.mock("next/navigation", () => ({ notFound: () => { throw new Error("NEXT_NOT_
 
 const page = async () => render(await StartPage());
 const type = (label: string, value: string) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
+// A shopper picks a Call, a piece and a colour, then fills in the details.
 const fill = () => {
+  if (!document.querySelector("input[name=tier]:checked")) fireEvent.click(screen.getByRole("radio", { name: "The Signature Call" }));
+  if (!document.querySelector("input[name=slug]:checked")) fireEvent.click(screen.getByRole("radio", { name: "The Romper" }));
+  if (!document.querySelector("input[name=colorway]:checked")) fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
   type("Your name", "Mia");
   type("Your email", "mia@example.com");
   type("Their first name", "Ana");
@@ -28,6 +32,29 @@ afterEach(() => {
 });
 
 describe("Send a Call form", () => {
+  it("starts with no Call, piece or colour chosen", async () => {
+    await page();
+    expect(document.querySelector("form input[type=radio]:checked")).toBeNull();
+  });
+
+  it("hides the colour row until a piece is chosen", async () => {
+    await page();
+    expect(screen.queryByRole("radiogroup", { name: "Choose a colour" })).toBeNull();
+  });
+
+  it("asks for a colour once a piece is chosen", async () => {
+    await page();
+    fireEvent.click(screen.getByRole("radio", { name: "The Romper" }));
+    expect(screen.getByText("choose one")).toBeInTheDocument();
+  });
+
+  it("marks every gift choice as required", async () => {
+    await page();
+    fireEvent.click(screen.getByRole("radio", { name: "The Romper" }));
+    const required = ["The Signature Call", "The Romper", "Rose"].map((name) => (screen.getByRole("radio", { name }) as HTMLInputElement).required);
+    expect(required).toEqual([true, true, true]);
+  });
+
   it("offers the three Calls", async () => {
     await page();
     expect(within(screen.getByRole("radiogroup", { name: "Choose a Call" })).getAllByRole("radio")).toHaveLength(3);

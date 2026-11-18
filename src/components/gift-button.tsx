@@ -21,12 +21,14 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
   const pieces = priced.length ? priced : products;
 
   const [step, setStep] = useState<1 | 2>(1);
-  const [tier, setTier] = useState(tiers.find((t) => t.popular)?.name ?? tiers[0].name);
-  const [slug, setSlug] = useState(start?.slug ?? pieces[0].slug);
+  // Nothing is chosen for the shopper; Send as a gift on a product page starts on that piece and colour.
+  const [tier, setTier] = useState("");
+  const [slug, setSlug] = useState(start?.slug ?? "");
   const piece = products.find((p) => p.slug === slug);
-  const [colorway, setColorway] = useState(start?.colorway ?? piece?.colorways[0]?.name ?? "");
+  const [colorway, setColorway] = useState(start?.colorway ?? "");
   const colour = piece?.colorways.find((c) => c.name === colorway);
   const photo = colour?.gallery?.[0]?.src ?? colour?.images[0];
+  const ready = Boolean(tier && pieces.some((p) => p.slug === slug) && colour);
   const [details, setDetails] = useState({ senderName: "", senderEmail: "", recipientName: "", recipientEmail: "", note: "" });
   const [answer, setAnswer] = useState<{ ok: boolean; text: string } | null>(null);
   const [sending, setSending] = useState(false);
@@ -94,26 +96,35 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                         <label key={p.slug} className={pill}>
                           <input type="radio" name={`${title}-piece`} aria-label={p.name} className="sr-only" checked={slug === p.slug} onChange={() => {
                             setSlug(p.slug);
-                            setColorway(p.colorways[0]?.name ?? "");
+                            setColorway("");
                           }} />
                           {p.name}
                         </label>
                       ))}
                     </div>
+                    {piece && (
                     <div role="radiogroup" aria-label="Choose a colour" className="flex flex-wrap items-center gap-1">
                       <span className="mr-2 text-[15px]">
-                        Colour: <span className="text-muted">{colorway}</span>
+                        Colour: <span className="text-muted">{colorway || "choose one"}</span>
                       </span>
-                      {piece?.colorways.map((c) => (
+                      {piece.colorways.map((c) => (
                         <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
                           <input type="radio" name={`${title}-colour`} aria-label={c.name} className="sr-only" checked={colorway === c.name} onChange={() => setColorway(c.name)} />
                           <span aria-hidden="true" className="size-8 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
                         </label>
                       ))}
                     </div>
-                    <button type="button" onClick={() => setStep(2)} className="cta cta-primary w-full sm:w-auto sm:justify-self-start">
-                      Next
-                    </button>
+                    )}
+                    <div className="grid gap-2 sm:justify-self-start">
+                      <button type="button" aria-disabled={!ready} aria-describedby={ready ? undefined : `${title}-missing`} onClick={() => ready && setStep(2)} className="cta cta-primary w-full aria-disabled:cursor-not-allowed aria-disabled:opacity-40 sm:w-auto">
+                        Next
+                      </button>
+                      {!ready && (
+                        <p id={`${title}-missing`} className="text-[15px] text-muted">
+                          Choose a Call, a piece and a colour.
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               ) : (
