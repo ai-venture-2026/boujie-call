@@ -1,6 +1,5 @@
 "use server";
 
-import { cookies } from "next/headers";
 import type { BagLine } from "./bag";
 import { getProduct, MAX_QTY, stockKey } from "./products";
 import { API_VERSION, getCatalog } from "./shopify";
@@ -15,7 +14,6 @@ const CART = `mutation ($lines: [CartLineInput!]!) { cartCreate(input: { lines: 
 
 const ORDER = `query ($id: ID!) { cart(id: $id) { id } }`;
 const CART_ID = /^gid:\/\/shopify\/Cart\/[^\s/]{1,300}$/;
-const PASS = "bc_cart";
 const on = () => process.env.SHOPIFY_CHECKOUT_ENABLED === "true";
 
 const fail = (message: string): CheckoutResult => ({ ok: false, message });
@@ -58,7 +56,6 @@ export async function startCheckout(lines: BagLine[]): Promise<CheckoutResult> {
     const url: unknown = result?.cart?.checkoutUrl;
     if (result?.userErrors?.length || typeof url !== "string" || !url.startsWith("https://")) return fail(RETRY);
     const id: unknown = result?.cart?.id;
-    if (typeof id === "string") (await cookies()).set(PASS, id, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 7 });
     return { ok: true, url, ...(typeof id === "string" && { cart: id }) };
   } catch (error) {
     console.error("Shopify checkout unavailable", error);
@@ -67,17 +64,13 @@ export async function startCheckout(lines: BagLine[]): Promise<CheckoutResult> {
 }
 
 // Shopify deletes a cart once its order is placed, so only a clean null answer counts; any doubt keeps the bag.
-// Only the browser holding the httpOnly pass from startCheckout may ask, so scripts cannot make the site query Shopify.
+// No order can exist while checkout is off, so the check never reaches Shopify before launch.
 export async function orderPlaced(cart: string): Promise<boolean> {
   if (!on() || typeof cart !== "string" || !CART_ID.test(cart)) return false;
-  const jar = await cookies();
-  if (jar.get(PASS)?.value !== cart) return false;
   try {
     const res = await storefront(ORDER, { id: cart });
     const body = res.ok ? await res.json() : null;
-    const placed = !!body?.data && body.data.cart === null && !body.errors?.length;
-    if (placed) jar.delete(PASS);
-    return placed;
+    return !!body?.data && body.data.cart === null && !body.errors?.length;
   } catch {
     return false;
   }
