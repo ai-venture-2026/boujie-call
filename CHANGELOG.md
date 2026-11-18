@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Product page: on desktop the name, price, colours, sizes and buttons scroll with the page instead of staying pinned while the photo moves.
 - Back navigation: Back to the shop, Back to home and the error page's back link return shoppers to where they were when they lead to the page visited before, and still open the page normally from a shared link. Shop filters live in the address (for example /shop?piece=the-romper), so going back from a product keeps the filter and the position, and a filtered view can be shared.
 - Availability pills: shop cards and the product page photo show a pill centred on the photo, Coming soon while a piece is a draft in Shopify and Sold out once every size of a colour is gone, so shoppers know before they click. Screen readers hear it from the card text.
 - New shop model photos: every Slip Dress and Romper colour has new front and back photos in the Boujie Set's catalog style, with plus-size and curvy models alongside slim ones, and The Boujie Set in Rose now shows a plus-size model. Backgrounds are recoloured to the site pink with soft edges. The Romper in Rose shows front and back like every other colour. The shop header and the phone menu keep their original photos under their own file names. Every shop card, the Boujie Set's included, now shows the full-length photo instead of a close crop.
