@@ -2,23 +2,30 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import { heroSlides } from "@/lib/content";
 import { productHref } from "@/lib/products";
 
 const INTERVAL = 5000;
+
+const onPageLoad = (done: () => void) => {
+  window.addEventListener("load", done);
+  return () => window.removeEventListener("load", done);
+};
 
 export function HeroCarousel({ children }: { children: ReactNode }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const slide = heroSlides[index];
   const running = !paused;
+  // Hidden slides sit in the viewport, so lazy loading would fetch them with the first; wait for the page load, and only then start advancing.
+  const loaded = useSyncExternalStore(onPageLoad, () => document.readyState === "complete", () => false);
 
   useEffect(() => {
-    if (!running || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (!running || !loaded || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setIndex((i) => (i + 1) % heroSlides.length), INTERVAL);
     return () => clearInterval(id);
-  }, [running]);
+  }, [running, loaded]);
 
   return (
     <section
@@ -37,15 +44,17 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
             aria-hidden={i !== index}
             className={`absolute inset-0 transition-opacity duration-[1200ms] ease-out motion-reduce:transition-none ${i === index ? "opacity-100" : "opacity-0"}`}
           >
-            <Image
-              src={s.src}
-              alt={s.alt}
-              fill
-              priority={i === 0}
-              sizes="(min-width: 768px) 62vw, 150vh"
-              style={{ objectPosition: s.focus }}
-              className={`object-cover transition-transform duration-[9000ms] ease-out motion-reduce:transition-none ${i === index ? "scale-100" : "scale-[1.04]"}`}
-            />
+            {(i === 0 || i === index || loaded) && (
+              <Image
+                src={s.src}
+                alt={s.alt}
+                fill
+                priority={i === 0}
+                sizes="(min-width: 768px) 62vw, 150vh"
+                style={{ objectPosition: s.focus }}
+                className={`object-cover transition-transform duration-[9000ms] ease-out motion-reduce:transition-none ${i === index ? "scale-100" : "scale-[1.04]"}`}
+              />
+            )}
           </div>
         ))}
       </div>

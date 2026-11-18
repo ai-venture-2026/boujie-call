@@ -10,9 +10,9 @@ import { pages, socials } from "@/lib/content";
 import { getOffer } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
 
+// Both tones mask the same file the header loads first, so the menu logo is cached before the menu opens.
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
-  if (tone === "pink") return <span role="img" aria-label="Boujie Call" className={`block aspect-[960/342] bg-pink [mask:url(/images/brand/logo-ink.png)_center/contain_no-repeat] ${className}`} />;
-  return <Image src={`/images/brand/logo-${tone}.png`} alt="Boujie Call" width={960} height={342} className={`w-auto ${className}`} priority />;
+  return <span role="img" aria-label="Boujie Call" className={`block aspect-[960/342] ${tone === "pink" ? "bg-pink" : "bg-[#141014]"} [mask:url(/images/brand/logo-ink.png)_center/contain_no-repeat] ${className}`} />;
 }
 
 export function SiteHeader() {
