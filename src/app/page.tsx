@@ -7,7 +7,7 @@ import { GiftButton } from "@/components/gift-button";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
-import { getProduct, type Product } from "@/lib/products";
+import { getProduct, productHref, type Product } from "@/lib/products";
 
 const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 const romper = getProduct("the-romper");
@@ -23,7 +23,7 @@ const strip = [
 function PieceCard({ product }: { product: Product }) {
   const photo = product.colorways[0].images[0];
   return (
-    <Link href={`/shop/${product.slug}`} className="group block">
+    <Link href={productHref(product.slug, product.colorways[0].name)} className="group block">
       <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
         {photo ? (
           <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
@@ -64,7 +64,7 @@ export default function Home() {
             <div className="w-full max-w-sm rise md:mt-8">
               <p className="label">The Romper · Mocha</p>
               <p className="mt-4 text-base leading-relaxed text-muted">{romper?.description}</p>
-              <Link href="/shop/the-romper" className="cta mt-8">
+              <Link href={productHref("the-romper", "Mocha")} className="cta mt-8">
                 Discover the piece
               </Link>
             </div>

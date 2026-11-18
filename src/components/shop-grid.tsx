@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useSyncExternalStore } from "react";
 import { formatPrice } from "@/lib/content";
-import { availability, colorwaySlug, type Product } from "@/lib/products";
+import { availability, productHref, type Product } from "@/lib/products";
 
 // Filters are pills at every width so they read as buttons; colours carry their dot.
 function Toggle({ on, onClick, swatch, children }: { on: boolean; onClick: () => void; swatch?: string; children: React.ReactNode }) {
@@ -93,7 +93,7 @@ export function ShopGrid({ products, routerSearch }: { products: Product[]; rout
                   const status = availability(product, colorway.name);
                   return (
                     <li key={`${product.slug}-${colorway.name}`} className="max-lg:last:odd:col-span-2 max-lg:last:odd:w-[calc(50%-0.75rem)] max-lg:last:odd:justify-self-center">
-                      <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
+                      <Link href={productHref(product.slug, colorway.name)} className="group block">
                         <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images.includes(photo) ? "contact" : ""}`}>
                           {photo ? (
                             <Image src={photo} alt="" fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />

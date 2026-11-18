@@ -273,7 +273,7 @@ describe("Hero carousel", () => {
 
   it("links the caption to the piece she wears", () => {
     render(<Home />);
-    expect(screen.getAllByRole("link", { name: "The Slip Dress · After Dark" })[0]).toHaveAttribute("href", "/shop/the-slip-dress");
+    expect(screen.getAllByRole("link", { name: "The Slip Dress · After Dark" })[0]).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
   });
 
   it("does not advance under reduced motion", () => {
@@ -514,7 +514,7 @@ describe("Home rebuild round 1", () => {
 
   it("links the detail button to The Romper", () => {
     render(<Home />);
-    expect(screen.getByRole("link", { name: "Discover the piece" })).toHaveAttribute("href", "/shop/the-romper");
+    expect(screen.getByRole("link", { name: "Discover the piece" })).toHaveAttribute("href", "/shop/the-romper?colorway=mocha");
   });
 
   it("keeps hero photos out of the strip", () => {
@@ -563,7 +563,7 @@ describe("Home rebuild round 2", () => {
   it("links each piece in the pieces grid", () => {
     render(<Home />);
     const grid = screen.getByRole("region", { name: "The pieces" });
-    expect(within(grid).getAllByRole("link").map((l) => l.getAttribute("href"))).toEqual(["/shop", "/shop/the-slip-dress", "/shop/the-romper", "/shop/the-boujie-set"]);
+    expect(within(grid).getAllByRole("link").map((l) => l.getAttribute("href"))).toEqual(["/shop", "/shop/the-slip-dress?colorway=rose", "/shop/the-romper?colorway=powder-blue", "/shop/the-boujie-set?colorway=after-dark"]);
   });
 
   it("lists the pieces as three equal cards with the unphotographed one last", () => {
