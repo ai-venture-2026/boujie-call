@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Faster first photo on phones: the top photo on Home, About and Send a Call is sized to the phone screen instead of the largest size, the hidden hero slides on Home wait until the page has loaded, the menu logo no longer loads before the menu opens, and the header logo file is smaller. Nothing looks different.
+- Faster first photo on phones: on Home the hidden hero slides wait until the page has loaded and the slideshow starts after that, the menu logo reuses the header logo file instead of downloading its own, and the header logo file is smaller. Photos stay as sharp as before and nothing looks different.
 - Checkout safety: the check that empties the bag after an order stays off until checkout launches, so nobody can make the site contact Shopify through it before then. Shoppers see no change.
 - Home cards show availability like the Shop page: a piece not on sale in Shopify shows a Coming soon pill and Coming soon in place of its price, and a piece sold out in every colour shows a Sold out pill. Pull requests from the project tooling now open against develop.
 - Home prices follow Shopify: the piece cards on Home read live data the way the Shop page does, so a price changed in Shopify shows on Home within a minute. Without Shopify they show the built-in prices as before.

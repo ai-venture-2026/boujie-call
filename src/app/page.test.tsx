@@ -694,17 +694,17 @@ describe("Sharp photos on phones", () => {
 
   it("asks for a hero photo as wide as it is drawn", async () => {
     render(await Home());
-    expect(sizesOf(screen.getAllByRole("img", { name: /The Slip Dress|The Romper/ })[0])).toBe("(min-width: 768px) 62vw, 100vh");
+    expect(sizesOf(screen.getAllByRole("img", { name: /The Slip Dress|The Romper/ })[0])).toBe("(min-width: 768px) 62vw, 150vh");
   });
 
-  it("asks for the About hero at screen height on phones", async () => {
+  it("asks for the About hero as wide as it is drawn", async () => {
     const { container } = render(await About());
-    expect(sizesOf(container.querySelector('img[src*="hero-blue-romper"]'))).toBe("(min-width: 768px) 62vw, 100vh");
+    expect(sizesOf(container.querySelector('img[src*="hero-blue-romper"]'))).toBe("(min-width: 768px) 62vw, 150vh");
   });
 
-  it("asks for the Send a Call hero at screen height on phones", async () => {
+  it("asks for the Send a Call hero as wide as it is drawn", async () => {
     const { container } = render(await SendACall());
-    expect(sizesOf(container.querySelector('img[src*="hero-rose-slip"]'))).toBe("(min-width: 768px) 62vw, 100vh");
+    expect(sizesOf(container.querySelector('img[src*="hero-rose-slip"]'))).toBe("(min-width: 768px) 62vw, 150vh");
   });
 
   it("waits for the page to load before fetching the other hero slides", async () => {
@@ -721,9 +721,34 @@ describe("Sharp photos on phones", () => {
     }
   });
 
-  it("does not preload the menu logo, which stays hidden until the menu opens", () => {
+  it("draws the menu logo from the header logo file instead of a separate download", () => {
     const { container } = render(<SiteHeader />);
-    expect(container.querySelector('img[alt="Boujie Call"]')).toHaveAttribute("loading", "lazy");
+    expect(container.querySelector('img[alt="Boujie Call"]')).toBeNull();
+    expect([...container.querySelectorAll('[role="img"][aria-label="Boujie Call"]')].map((l) => l.className.includes("logo-ink.png"))).toEqual([true, true]);
+  });
+
+  it("shows a slide picked before the page has loaded", async () => {
+    const state = vi.spyOn(document, "readyState", "get").mockReturnValue("loading");
+    try {
+      const { container } = render(await Home());
+      fireEvent.click(screen.getByRole("button", { name: "Show slide 3" }));
+      expect(container.querySelectorAll('[aria-roledescription="slide"]')[2].querySelector("img")).not.toBeNull();
+    } finally {
+      state.mockRestore();
+    }
+  });
+
+  it("does not advance the hero before the page has loaded", async () => {
+    vi.useFakeTimers();
+    const state = vi.spyOn(document, "readyState", "get").mockReturnValue("loading");
+    try {
+      render(await Home());
+      act(() => vi.advanceTimersByTime(12000));
+      expect(screen.getByRole("group", { name: `1 of ${heroSlides.length}` })).toHaveAttribute("aria-hidden", "false");
+    } finally {
+      state.mockRestore();
+      vi.useRealTimers();
+    }
   });
 
   it("asks for a closing banner as wide as it is drawn", async () => {
