@@ -896,7 +896,7 @@ describe("Live stock from Shopify", () => {
   it("shows Coming soon instead of Add to your bag", () => {
     view({ ...romper, comingSoon: true });
     expect(screen.queryByRole("button", { name: "Add to your bag" })).toBeNull();
-    expect(screen.getByText("Coming soon")).toBeInTheDocument();
+    expect(screen.getByText("Coming soon", { selector: "p" })).toBeInTheDocument();
   });
 
   it("shows Coming soon instead of the price on shop cards", () => {

@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { AvailabilityPill } from "./availability-pill";
 import Link from "next/link";
 import { useState } from "react";
 import { formatPrice } from "@/lib/content";
-import { colorwaySlug, type Product } from "@/lib/products";
+import { availability, colorwaySlug, type Product } from "@/lib/products";
 
 // Filters are pills at every width so they read as buttons; colours carry their dot.
 function Toggle({ on, onClick, swatch, children }: { on: boolean; onClick: () => void; swatch?: string; children: React.ReactNode }) {
@@ -62,6 +63,7 @@ export function ShopGrid({ products }: { products: Product[] }) {
               <ul aria-label={p.name} className="mt-6 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
                 {group.map(({ product, colorway }) => {
                   const photo = colorway.gallery?.[0].src ?? colorway.images[0];
+                  const status = availability(product, colorway.name);
                   return (
                     <li key={`${product.slug}-${colorway.name}`} className="max-lg:last:odd:col-span-2 max-lg:last:odd:w-[calc(50%-0.75rem)] max-lg:last:odd:justify-self-center">
                       <Link href={`/shop/${product.slug}?colorway=${colorwaySlug(colorway.name)}`} className="group block">
@@ -71,11 +73,14 @@ export function ShopGrid({ products }: { products: Product[] }) {
                           ) : (
                             <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
                           )}
+                          <AvailabilityPill label={status} />
                         </div>
                         <span className="label mt-4 block truncate">{product.name}</span>
                         <span className="mt-1 block">
                           <span className="label block whitespace-nowrap text-muted">{colorway.name}</span>
-                          <span className="mt-1 block text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}</span>
+                          <span className="mt-1 block text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}
+                            {status === "Sold out" && <span className="sr-only">, sold out</span>}
+                          </span>
                         </span>
                       </Link>
                     </li>

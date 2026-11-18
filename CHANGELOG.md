@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Availability pills: shop cards and the product page photo show a pill centred on the photo, Coming soon while a piece is a draft in Shopify and Sold out once every size of a colour is gone, so shoppers know before they click. Screen readers hear it from the card text.
 - New shop model photos: every Slip Dress and Romper colour has new front and back photos in the Boujie Set's catalog style, with plus-size and curvy models alongside slim ones, and The Boujie Set in Rose now shows a plus-size model. Backgrounds are recoloured to the site pink with soft edges. The Romper in Rose shows front and back like every other colour. The shop header and the phone menu keep their original photos under their own file names. Every shop card, the Boujie Set's included, now shows the full-length photo instead of a close crop.
 - Review tidy: the size guide appears only once the owner's chart covers every size on sale, the bag summary is a named Summary section screen readers can jump to, and the tests now catch any offer bar and keep product data intact. Nothing visible changes.
 - Bag tick boxes explained: a line above the bag list reads "Untick a piece to leave it out of checkout.", so shoppers know what the boxes do. It shows whenever the bag has pieces. On desktop the summary's top line sits level with the list again.
