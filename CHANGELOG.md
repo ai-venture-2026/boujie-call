@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Gift choices start empty: Send a Call buttons and the full gift form open with no Call, piece or colour chosen, and Next or Continue waits until all three are picked. Colours appear once a piece is chosen. Send as a gift on a product page still starts on that piece and colour.
 - Product links open on the colour they show: Home's Discover the piece opens the Romper in Mocha, hero slide names and bag piece names open their colour, and every product link that shows a colour is built by one helper.
 - Product page: on desktop the name, price, colours, sizes and buttons scroll with the page instead of staying pinned while the photo moves.
 - Back navigation: Back to the shop, Back to home and the error page's back link return shoppers to where they were when they lead to the page visited before, and still open the page normally from a shared link. Shop filters live in the address (for example /shop?piece=the-romper), so going back from a product keeps the filter and the position, and a filtered view can be shared.
