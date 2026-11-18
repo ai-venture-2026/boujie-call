@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { BackLink } from "@/components/back-link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -15,9 +15,9 @@ export default function ErrorPage({ reset }: { error: Error & { digest?: string 
           <button type="button" onClick={reset} className="cta cta-primary">
             Try again
           </button>
-          <Link href="/shop" className="cta">
+          <BackLink href="/shop" className="cta">
             Back to the shop
-          </Link>
+          </BackLink>
         </div>
       </main>
       <SiteFooter />

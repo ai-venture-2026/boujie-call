@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { AvailabilityPill } from "./availability-pill";
 import Link from "next/link";
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { formatPrice } from "@/lib/content";
 import { availability, colorwaySlug, type Product } from "@/lib/products";
 
@@ -17,11 +17,35 @@ function Toggle({ on, onClick, swatch, children }: { on: boolean; onClick: () =>
   );
 }
 
+// Filters live in the address (?piece=&colour=), so going back from a product restores them and a filtered view can be shared.
+const FILTERS_CHANGED = "bc-filters";
+const onFiltersChange = (notify: () => void) => {
+  window.addEventListener("popstate", notify);
+  window.addEventListener(FILTERS_CHANGED, notify);
+  return () => {
+    window.removeEventListener("popstate", notify);
+    window.removeEventListener(FILTERS_CHANGED, notify);
+  };
+};
+
+function setFilter(key: "piece" | "colour", value: string | null) {
+  const params = new URLSearchParams(window.location.search);
+  if (value) params.set(key, value);
+  else params.delete(key);
+  const query = params.toString();
+  window.history.replaceState(null, "", query ? `?${query}` : window.location.pathname);
+  window.dispatchEvent(new Event(FILTERS_CHANGED));
+}
+
 export function ShopGrid({ products }: { products: Product[] }) {
   const cards = products.flatMap((p) => p.colorways.map((c) => ({ product: p, colorway: c })));
   const colours = [...new Map(cards.map((c) => [c.colorway.name, c.colorway.swatch ?? c.colorway.hex])).entries()];
-  const [piece, setPiece] = useState<string | null>(null);
-  const [colour, setColour] = useState<string | null>(null);
+  const search = useSyncExternalStore(onFiltersChange, () => window.location.search, () => "");
+  const params = new URLSearchParams(search);
+  const piece = products.some((p) => p.slug === params.get("piece")) ? params.get("piece") : null;
+  const colour = colours.some(([name]) => name === params.get("colour")) ? params.get("colour") : null;
+  const setPiece = (slug: string | null) => setFilter("piece", slug);
+  const setColour = (name: string | null) => setFilter("colour", name);
   const shown = cards.filter((c) => (!piece || c.product.slug === piece) && (!colour || c.colorway.name === colour));
   const reset = () => {
     setPiece(null);

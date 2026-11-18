@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { rememberPage } from "@/lib/nav-memory";
 import { useEffect, useRef, useState } from "react";
 import { BAG_OPENED, bagCount, useBag, useCheckoutReturn } from "@/lib/bag";
 import { pages, socials } from "@/lib/content";
@@ -16,6 +17,7 @@ export function Logo({ tone, className }: { tone: "ink" | "pink"; className: str
 
 export function SiteHeader() {
   const pathname = usePathname();
+  useEffect(() => rememberPage(pathname), [pathname]);
   const drawer = useRef<HTMLDialogElement>(null);
   const close = () => drawer.current?.close();
   const current = (href: string) => (pathname === href ? "page" : undefined);
