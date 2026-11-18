@@ -50,6 +50,9 @@ const bloom: Colorway = {
 
 export const colorwaySlug = (name: string) => name.toLowerCase().replaceAll(" ", "-");
 
+// Every link into a product page names the colour it shows, so the page opens on it.
+export const productHref = (slug: string, colour: string) => `/shop/${slug}?colorway=${colorwaySlug(colour)}`;
+
 // Cutouts live in public/images/products as <slug>-<colorway>.webp, studio photos in studio/<slug>-<colorway>-<view>.webp.
 const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>): Colorway[] =>
   colorways.map((c) => {

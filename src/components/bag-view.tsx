@@ -6,7 +6,7 @@ import { useId, useState } from "react";
 import { bagCount, rememberCheckout, offerNote, picked, removeFromBag, setQty, setSkip, priceOf, subtotalCents, useBag, useLivePrices, MAX_QTY } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
-import { getProduct } from "@/lib/products";
+import { getProduct, productHref } from "@/lib/products";
 
 export function BagView() {
   const hint = useId();
@@ -56,7 +56,7 @@ export function BagView() {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-start justify-between gap-4 max-sm:flex-col max-sm:gap-1">
-                    <Link href={`/shop/${product.slug}`} className="font-serif text-[26px] font-medium leading-tight hover:text-rose">
+                    <Link href={productHref(product.slug, line.colorway)} className="font-serif text-[26px] font-medium leading-tight hover:text-rose">
                       {product.name}
                     </Link>
                     <span className="text-[17px] font-medium">{formatPrice(priceOf(product.slug, prices))}</span>
