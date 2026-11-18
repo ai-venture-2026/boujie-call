@@ -20,35 +20,15 @@ describe("Send a Call page", () => {
     expect(within(hero).getByRole("img").getAttribute("src")).toContain("hero-rose-slip");
   });
 
-  it("opens the gift pop-up from the hero", () => {
+  it("points its button at the waitlist form", () => {
     render(<SendACall />);
-    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
-    expect(within(hero).getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
+    expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "#waitlist");
   });
-
-  it("marks the page Coming soon while it is closed", () => {
-    render(<SendACall />);
-    const hero = screen.getByRole("heading", { level: 1 }).closest("section") as HTMLElement;
-    expect(within(hero).getByText("Send a Call, Coming soon")).toBeInTheDocument();
-  });
-
-  it("drops Coming soon once it opens", () => {
-    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
-    render(<SendACall />);
-    vi.unstubAllEnvs();
-    expect(screen.queryByText(/Coming soon/)).toBeNull();
-  });
-
-  it("never offers the waitlist", () => {
-    const { container } = render(<SendACall />);
-    expect(container.textContent).not.toMatch(/waitlist/i);
-  });
-
 
   it("lists the four steps in order", () => {
     render(<SendACall />);
     const steps = within(screen.getByRole("list", { name: "How a Call works" })).getAllByRole("heading");
-    expect(steps.map((s) => s.textContent)).toEqual(["You choose their tier", "You write your message", "They get the Call", "They pick up"]);
+    expect(steps.map((s) => s.textContent)).toEqual(["You choose her tier", "You write her message", "She gets the Call", "She picks up"]);
   });
 
   it("lists five things inside every box", () => {
@@ -58,7 +38,7 @@ describe("Send a Call page", () => {
 
   it("shows the three tier prices", () => {
     render(<SendACall />);
-    expect(["$40.00", "$55.00", "$75.00"].map((p) => within(screen.getByRole("main")).queryByText(p) !== null)).toEqual([true, true, true]);
+    expect(["$40.00", "$55.00", "$75.00"].map((p) => screen.queryByText(p) !== null)).toEqual([true, true, true]);
   });
 
   it("drops Price to come", () => {
@@ -81,9 +61,9 @@ describe("Send a Call page", () => {
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 
-  it("describes the Call as an email", () => {
+  it("describes the Call as a text message", () => {
     const { container } = render(<SendACall />);
-    expect(container.textContent).toMatch(/get an email/);
+    expect(container.textContent).toMatch(/gets a text/);
   });
 });
 
@@ -100,7 +80,7 @@ describe("Send a Call on phones", () => {
 });
 
 describe("Send a Call close", () => {
-  const close = (c: HTMLElement) => c.querySelector("section#gift") as HTMLElement;
+  const close = (c: HTMLElement) => c.querySelector("section#waitlist") as HTMLElement;
 
   it("sets the hero on ink", () => {
     render(<SendACall />);
@@ -122,20 +102,25 @@ describe("Send a Call close", () => {
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("mocha-romper-banner");
   });
 
-  it("ends on the gift button", () => {
+  it("frames the waitlist around Send a Call opening", () => {
     const { container } = render(<SendACall />);
-    expect(within(close(container)).getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
+    expect(within(close(container)).getByText("Be first when Send a Call opens.")).toBeInTheDocument();
+  });
+
+  it("keeps the waitlist form in the closing section", () => {
+    const { container } = render(<SendACall />);
+    expect(within(close(container)).getByLabelText("Email address")).toHaveAttribute("type", "email");
   });
 });
 
 describe("Call channel across pages", () => {
-  it("drops the old email wording on Home", async () => {
-    const { container } = render(await Home());
-    expect(container.textContent).not.toMatch(/name and number/);
+  it("drops the old email wording on Home", () => {
+    const { container } = render(<Home />);
+    expect(container.textContent).not.toMatch(/name and email/);
   });
 
   it("drops the old email wording on Send a Call", () => {
     const { container } = render(<SendACall />);
-    expect(container.textContent).not.toMatch(/name and number/);
+    expect(container.textContent).not.toMatch(/name and email/);
   });
 });

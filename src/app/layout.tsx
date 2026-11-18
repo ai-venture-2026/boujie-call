@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
-import { indexing, SITE_URL } from "@/lib/content";
+import { SITE_URL } from "@/lib/content";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -17,8 +17,7 @@ export const metadata: Metadata = {
   openGraph: { siteName: "Boujie Call", type: "website" },
   twitter: { card: "summary_large_image" },
   title: "Boujie Call | Luxury nightwear gift sets",
-  description: "Luxury nightwear gift sets. Curated. Personalized. Unforgettable.",
-  robots: indexing(process.env),
+  description: "Luxury nightwear gift sets. Curated. Personalized. Unforgettable. Join the waitlist before launch.",
 };
 
 // cover lets the phone quick add bar read the home bar inset.

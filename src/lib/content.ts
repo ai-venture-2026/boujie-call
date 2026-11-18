@@ -12,15 +12,15 @@ export function formatPrice(cents: number | null): string {
 export const steps = [
   {
     title: "Place the Call",
-    body: "Choose a gift tier and write them a personal message. All you need is their first name and email.",
+    body: "Choose a gift tier and write her a personal message. All you need is her first name and number.",
   },
   {
-    title: "They get the Call",
-    body: "They get an email with your message inside and a link to claim their gift.",
+    title: "She gets the Call",
+    body: "She gets a text with your message inside and a link to claim her gift.",
   },
   {
-    title: "They pick up",
-    body: "They choose their size and style, and we ship it, beautifully wrapped, to their door.",
+    title: "She picks up",
+    body: "She chooses her size and style, and we ship it, beautifully wrapped, to her door.",
   },
 ];
 
@@ -53,13 +53,6 @@ export function siteUrl(env: Record<string, string | undefined>): string {
 
 export const SITE_URL = siteUrl(process.env);
 
-// Send a Call takes gifts only once SEND_A_CALL_ENABLED is true (mapped for the browser in next.config.ts).
-export const callsOpen = () => process.env.NEXT_PUBLIC_CALLS_OPEN === "true";
-
-// Only production is open to search engines, so staging and previews are never indexed as copies.
-export const isLive = (env: Record<string, string | undefined>) => env.VERCEL_ENV === "production";
-export const indexing = (env: Record<string, string | undefined>) => (isLive(env) ? undefined : { index: false, follow: false });
-
 // Home hero photos. "text" is the type colour that reads on the photo's empty left side.
 export type HeroSlide = { src: string; alt: string; slug: string; piece: string; colorway: string; focus: string; text: "ink" | "cream" };
 
@@ -72,16 +65,16 @@ export const heroSlides: HeroSlide[] = [
 
 // Send a Call page. From the owner's prompts; add-ons stay out until confirmed.
 export const callSteps = [
-  { title: "You choose their tier", body: "Pick the gift tier that feels like them." },
-  { title: "You write your message", body: "A personal note printed on their call card inside the box." },
-  { title: "They get the Call", body: "They get an email with your note and a link to claim their gift." },
-  { title: "They pick up", body: "They open their claim link, choose their size and style, and we ship to their door." },
+  { title: "You choose her tier", body: "Pick the gift tier that feels like her." },
+  { title: "You write her message", body: "A personal note printed on her call card inside the box." },
+  { title: "She gets the Call", body: "She gets a text with your note and a link to claim her gift." },
+  { title: "She picks up", body: "She clicks her claim link, chooses her size and style, and we ship to her door." },
 ];
 
 export const boxContents = [
-  { name: "Satin sleep set", note: "The hero piece. Soft, cute, and completely theirs." },
+  { name: "Satin sleep set", note: "The hero piece. Soft, cute, and completely her." },
   { name: "Forever rose", note: "A preserved rose with a Boujie Calling branded tag." },
   { name: "Body mist", note: "A mini fragrance spray that smells like the brand." },
-  { name: "Their call card", note: "Your personal message, printed beautifully inside." },
+  { name: "Her call card", note: "Your personal message, printed beautifully inside." },
   { name: "Luxury box", note: "A blush pink rigid box with black satin ribbon and a BC wax seal." },
 ];

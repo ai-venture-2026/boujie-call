@@ -7,6 +7,3 @@ HTMLDialogElement.prototype.showModal ??= function (this: HTMLDialogElement) {
 HTMLDialogElement.prototype.close ??= function (this: HTMLDialogElement) {
   this.removeAttribute("open");
 };
-
-// Shop filters live in the address, so each test starts on a clean address.
-beforeEach(() => window.history.replaceState(null, "", "/"));

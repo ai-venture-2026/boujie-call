@@ -1,40 +1,36 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Suspense } from "react";
-import { ShopGrid, ShopGridLive } from "@/components/shop-grid";
-import { GiftButton } from "@/components/gift-button";
+import Link from "next/link";
+import { ShopGrid } from "@/components/shop-grid";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { products } from "@/lib/products";
-import { getCatalog, withLive } from "@/lib/shopify";
+import { OFFER } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "Shop | Boujie Call",
-  description: "The Slip Dress, The Boujie Set and The Romper. Nightwear pieces in sizes S to XL.",
+  description: "The Slip Dress, The Boujie Set and The Romper. Satin nightwear pieces in sizes S to XL.",
 };
 
-export const revalidate = 60;
-
-export default async function Shop() {
-  const live = withLive(products, await getCatalog());
+export default function Shop() {
   return (
     <>
       <SiteHeader />
       <main>
         <section data-nav="dark" className="grid bg-ribbon text-blush md:h-[60svh] md:min-h-[460px] md:grid-cols-[38fr_62fr]">
           <div className="relative h-[42svh] md:h-auto">
-            <Image src="/images/banners/shop-mocha-romper-lace.webp" alt="The lace neckline of The Romper in Mocha" fill priority sizes="(min-width: 768px) 38vw, 100vw" style={{ objectPosition: "50% 22%" }} className="object-cover" />
+            <Image src="/images/details/brown-romper-lace.webp" alt="A close-up of the brown lace neckline of The Romper in Mocha" fill priority sizes="(min-width: 768px) 38vw, 100vw" className="object-cover" />
           </div>
           <div className="flex flex-col items-center justify-center px-6 py-14 text-center">
             <h1 className="text-[clamp(2.25rem,5vw,4.5rem)] leading-none tracking-[0.3em] uppercase">The collection</h1>
             <p className="mt-6 font-serif text-xl italic md:text-2xl">Treat yourself. Or let someone treat you.</p>
+            <p className="label mt-3">{OFFER}</p>
           </div>
         </section>
-        <Suspense fallback={<ShopGrid products={live} />}>
-          <ShopGridLive products={live} />
-        </Suspense>
+        <ShopGrid />
         <p className="-mt-6 pb-20 text-center md:-mt-10 md:pb-28">
-          <GiftButton label="Sending it as a gift? Place a Call" className="cta" />
+          <Link href="/send-a-call" className="link inline-flex min-h-11 items-center text-base text-muted">
+            Sending it as a gift? Place a Call
+          </Link>
         </p>
       </main>
       <SiteFooter />

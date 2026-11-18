@@ -4,10 +4,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { addToBag, BAG_OPENED } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
-import { availability, colorwaySlug, getOffer, getSizeChart, stockKey, type Colorway, type Product } from "@/lib/products";
-import { GiftButton } from "./gift-button";
+import { colorwaySlug, OFFER, type Colorway, type Product } from "@/lib/products";
 import { SizeGuide } from "./size-guide";
-import { AvailabilityPill } from "./availability-pill";
 
 const views = ["front", "back", "detail"];
 
@@ -20,7 +18,6 @@ function ToCome({ label }: { label?: string }) {
 }
 
 export function ProductView({ product, intro, details }: { product: Product; intro: ReactNode; details: ReactNode }) {
-  const chart = getSizeChart();
   const fromUrl = useSyncExternalStore(
     () => () => {},
     () => new URLSearchParams(window.location.search).get("colorway"),
@@ -43,28 +40,10 @@ export function ProductView({ product, intro, details }: { product: Product; int
     io.observe(mainAdd.current);
     return () => io.disconnect();
   }, []);
-
-  // From md the other slides are hidden, so the track cannot hold the scroll position; restore it on the way back down.
-  const md = useRef<MediaQueryList | null>(null);
-  useEffect(() => {
-    const query = window.matchMedia?.("(min-width: 48rem)");
-    md.current = query ?? null;
-    if (!query) return;
-    const sync = () => {
-      if (!query.matches && track.current) track.current.scrollLeft = view * track.current.clientWidth;
-    };
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, [view]);
   const shown = chosen ?? product.colorways[0];
-  const slots = shown.gallery ?? views.map((v, i) => ({ src: shown.images[i] ?? "", view: v }));
   const [size, setSize] = useState<string | null>(null);
   const [missing, setMissing] = useState("");
   const [added, setAdded] = useState("");
-  const [cleared, setCleared] = useState("");
-  const left = (c: Colorway | null, s: string) => (c ? product.stock?.[stockKey(c.name, s)] : undefined);
-  const soldOut = (s: string) => left(chosen, s) === 0;
-  const count = size ? left(chosen, size) : undefined;
 
   function add(fromBar = false) {
     setAdded("");
@@ -91,29 +70,27 @@ export function ProductView({ product, intro, details }: { product: Product; int
         <div
           ref={track}
           onScroll={(e) => {
-            if (md.current?.matches) return;
             const { scrollLeft, clientWidth } = e.currentTarget;
-            if (clientWidth > 0) setView(Math.min(slots.length - 1, Math.max(0, Math.round(scrollLeft / clientWidth))));
+            if (clientWidth > 0) setView(Math.min(views.length - 1, Math.max(0, Math.round(scrollLeft / clientWidth))));
           }}
           className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] md:overflow-visible"
         >
-          {slots.map(({ src, view: v }, i) => (
-            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images.includes(src) ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
-              {src ? (
-                <Image src={src} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover" />
+          {views.map((v, i) => (
+            <div key={v} className={`relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-stone ${shown.images[i] ? "contact" : ""} ${i === view ? "" : "md:hidden"}`}>
+              {shown.images[i] ? (
+                <Image src={shown.images[i]} alt={`${product.name} in ${shown.name}, ${v}`} width={900} height={1200} sizes="(min-width: 768px) 34vw, 100vw" priority={i === 0} className="aspect-[3/4] w-full object-cover" />
               ) : (
                 <ToCome label={`${product.name} in ${shown.name}, ${v}`} />
               )}
-              <AvailabilityPill label={availability(product, shown.name)} />
             </div>
           ))}
         </div>
         <div className="mt-1 flex justify-center md:hidden">
-          {slots.map(({ view: v }, i) => (
+          {views.map((v, i) => (
             <button
               key={v}
               type="button"
-              aria-label={`Photo ${i + 1} of ${slots.length}`}
+              aria-label={`Photo ${i + 1} of ${views.length}`}
               aria-current={i === view}
               onClick={() => {
                 setView(i);
@@ -125,16 +102,16 @@ export function ProductView({ product, intro, details }: { product: Product; int
             </button>
           ))}
         </div>
-        <div className={`mt-3 grid gap-3 max-md:hidden ${slots.length === 4 ? "grid-cols-4" : "grid-cols-3"}`}>
-          {slots.map(({ src, view: v }, i) => (
-            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden bg-stone aria-pressed:ring-1 aria-pressed:ring-pink">
-              {src ? <Image src={src} alt="" fill sizes="120px" className="object-cover" /> : <ToCome />}
+        <div className="mt-3 grid grid-cols-3 gap-3 max-md:hidden">
+          {views.map((v, i) => (
+            <button key={v} type="button" aria-label={`Show ${v}`} aria-pressed={i === view} onClick={() => setView(i)} className="relative aspect-square overflow-hidden bg-stone aria-pressed:outline-1 aria-pressed:outline-pink">
+              {shown.images[i] ? <Image src={shown.images[i]} alt="" fill sizes="120px" className="object-cover" /> : <ToCome />}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="md:self-start">
+      <div className="md:sticky md:top-32 md:self-start">
         {intro}
         <fieldset ref={colorways} className="mt-7 scroll-mt-28 short:mt-5">
           <legend className="text-base">
@@ -145,9 +122,6 @@ export function ProductView({ product, intro, details }: { product: Product; int
               <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
                 <input type="radio" name="colorway" value={c.name} aria-label={c.name} className="sr-only" checked={chosen?.name === c.name} onChange={() => {
                     setChosen(c);
-                    const gone = !!size && left(c, size) === 0;
-                    if (gone) setSize(null);
-                    setCleared(gone ? `${size} is sold out in ${c.name}. Choose another size.` : "");
                     setView(0);
                     if (track.current) track.current.scrollLeft = 0;
                   }} />
@@ -160,31 +134,20 @@ export function ProductView({ product, intro, details }: { product: Product; int
           <legend className="float-left py-2.5 text-base">
             Size: <span className="text-muted">{size ?? "choose one"}</span>
           </legend>
-          {chart && product.sizes.every((s) => chart[s]) && <SizeGuide sizes={product.sizes} chart={chart} />}
+          <SizeGuide sizes={product.sizes} />
           <div className="clear-both mt-3 flex flex-wrap gap-2 pt-px">
             {product.sizes.map((s) => (
-              <label key={s} className={`grid h-11 min-w-14 md:min-w-12 md:pointer-fine:h-10 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2 ${soldOut(s) ? "cursor-not-allowed text-muted line-through" : "cursor-pointer hover:border-pink"}`}>
-                <input type="radio" name="size" value={s} aria-label={soldOut(s) ? `${s}, sold out` : s} disabled={soldOut(s)} className="sr-only" checked={size === s} onChange={() => {
-                  setSize(s);
-                  setCleared("");
-                }} />
+              <label key={s} className="grid h-11 min-w-14 cursor-pointer md:min-w-12 md:pointer-fine:h-10 place-items-center rounded-full border-[0.5px] border-ink/25 px-4 text-base transition-colors hover:border-pink has-checked:border-pink has-checked:bg-blush has-focus-visible:outline-2">
+                <input type="radio" name="size" value={s} className="sr-only" checked={size === s} onChange={() => setSize(s)} />
                 {s}
               </label>
             ))}
           </div>
-          <p aria-live="polite" className="mt-3 text-[15px] text-muted empty:hidden">{cleared || (!!count && count <= 2 ? (count === 1 ? "Last one" : `${count} left`) : "")}</p>
         </fieldset>
-        {product.comingSoon ? (
-          <p className="label mt-7 short:mt-5">Coming soon</p>
-        ) : (
-          <div className="mt-7 flex flex-wrap gap-3 short:mt-5">
-            <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary w-full sm:w-auto">
-              Add to your bag
-            </button>
-            <GiftButton key={chosen?.name ?? ""} label="Send as a gift" className="cta w-full sm:w-auto" start={{ slug: product.slug, colorway: (chosen ?? product.colorways[0]).name }} />
-          </div>
-        )}
-        {getOffer() && <p className="mt-3 text-base text-muted">{getOffer()}</p>}
+        <button ref={mainAdd} type="button" onClick={() => add()} className="cta cta-primary mt-7 w-full sm:w-auto short:mt-5">
+          Add to your bag
+        </button>
+        <p className="mt-3 text-base text-muted">{OFFER}</p>
         <p role="alert" className="mt-4 text-base">
           {missing}
         </p>
@@ -193,17 +156,16 @@ export function ProductView({ product, intro, details }: { product: Product; int
         </p>
         {details}
       </div>
-      {quickAdd && !product.comingSoon && (
+      {quickAdd && (
         <div
           role="region"
           aria-label="Quick add"
           data-quick-add
-          className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t-[0.5px] border-card-border bg-white/95 px-6 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden"
+          className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t-[0.5px] border-ink/10 bg-white/95 px-6 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden"
         >
           <div className="min-w-0">
             <p className="truncate font-serif text-xl">{product.name}</p>
             <p className="text-[17px] font-medium text-muted">{formatPrice(product.priceCents)}</p>
-            {chosen && <p className="truncate text-[15px] text-muted">{size ? `${chosen.name}, ${size}` : chosen.name}</p>}
           </div>
           <button type="button" onClick={() => add(true)} className="cta cta-primary shrink-0 px-6">
             Add to your bag

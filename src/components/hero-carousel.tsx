@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { heroSlides } from "@/lib/content";
-import { productHref } from "@/lib/products";
 
 const INTERVAL = 5000;
 
@@ -53,7 +52,7 @@ export function HeroCarousel({ children }: { children: ReactNode }) {
       <div data-hero-words className="flex flex-col justify-between px-6 pt-10 pb-4 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-20 max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)] max-md:pt-40 md:order-1 md:bg-ribbon md:px-12 md:pt-12 md:pb-8 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
         <div className="flex flex-1 flex-col items-start justify-center">{children}</div>
         <div className="mt-6 flex items-center justify-between gap-4 md:mt-0">
-          <Link href={productHref(slide.slug, slide.colorway)} className="label flex min-h-11 min-w-0 items-center text-blush/75 hover:text-blush md:whitespace-nowrap">
+          <Link href={`/shop/${slide.slug}`} className="label flex min-h-11 min-w-0 items-center text-blush/75 hover:text-blush md:whitespace-nowrap">
             {slide.piece} · {slide.colorway}
           </Link>
           <div className="flex items-center gap-1">
