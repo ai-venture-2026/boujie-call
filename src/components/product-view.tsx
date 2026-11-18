@@ -134,7 +134,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         </div>
       </div>
 
-      <div className="md:sticky md:top-32 md:self-start">
+      <div className="md:self-start">
         {intro}
         <fieldset ref={colorways} className="mt-7 scroll-mt-28 short:mt-5">
           <legend className="text-base">

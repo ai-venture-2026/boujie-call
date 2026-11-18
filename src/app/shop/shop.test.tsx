@@ -67,9 +67,11 @@ describe("Product page on laptops", () => {
     expect(screen.getByRole("img", { name: "The Slip Dress in Rose, front" })).toHaveClass("aspect-[3/4]");
   });
 
-  it("keeps the info column in view on desktop", async () => {
+  it("lets the info column scroll with the page on desktop", async () => {
     await renderProduct("the-slip-dress");
-    expect(screen.getByRole("heading", { level: 1 }).parentElement).toHaveClass("md:sticky", "md:top-32", "md:self-start");
+    const column = screen.getByRole("heading", { level: 1 }).parentElement;
+    expect(column?.className).not.toMatch(/(^|\s|:)(sticky|top-)/);
+    expect(column).toHaveClass("md:self-start");
   });
 
   it("narrows the image column below lg", async () => {
