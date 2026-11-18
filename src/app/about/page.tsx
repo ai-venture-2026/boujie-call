@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { GiftButton } from "@/components/gift-button";
 import { ClosingBanner } from "@/components/closing-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -78,18 +78,16 @@ export default function About() {
         <ClosingBanner
           tone="light"
           photo="/images/banners/rose-dress-banner.webp"
-          alt="A woman in a rose satin dress rests her hand on a gift box beside her"
+          alt="A woman in a rose slip dress rests her hand on a gift box beside her"
           focus="76% 20%"
           title={
             <>
               Ready to place your first Boujie <em className="text-rose-deep">Call?</em>
             </>
           }
-          line="Be first when Send a Call opens."
+          line="Choose their gift and write your note. We handle the rest."
         >
-          <Link href="/send-a-call#waitlist" className="cta cta-primary">
-            Join the waitlist
-          </Link>
+          <GiftButton label="Send a Call" />
         </ClosingBanner>
       </main>
       <SiteFooter />

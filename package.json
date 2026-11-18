@@ -10,12 +10,13 @@
     "test": "vitest run"
   },
   "engines": {
-    "node": ">=20.9"
+    "node": "24.x"
   },
   "dependencies": {
-    "next": "^16.4.3",
+    "next": "^16.4.6",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -26,7 +27,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.4.3",
+    "eslint-config-next": "^16.4.6",
     "jsdom": "^29.1.1",
     "sharp": "0.35.5",
     "tailwindcss": "^4.3.3",

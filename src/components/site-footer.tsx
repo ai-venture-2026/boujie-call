@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { pages, socials } from "@/lib/content";
+import { getHelp, helpLinks } from "@/lib/help";
 import { products } from "@/lib/products";
 
 const shop = [...products.map((p) => ({ href: `/shop/${p.slug}`, label: p.name })), { href: "/shop", label: "All pieces" }];
@@ -22,6 +23,7 @@ function Column({ title, name = title, links }: { title: string; name?: string; 
 }
 
 export function SiteFooter() {
+  const help = helpLinks(getHelp());
   return (
     <footer data-nav="dark" className="bg-ribbon text-blush">
       <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 pt-14 pb-8 md:flex-row md:items-end md:justify-between md:px-12 md:pt-16 md:pb-10">
@@ -39,9 +41,10 @@ export function SiteFooter() {
           </ul>
         </div>
         <div className="flex flex-col gap-10">
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:gap-14">
+          <div className={`grid grid-cols-2 gap-10 md:gap-14 ${help.length ? "sm:grid-cols-4" : "sm:grid-cols-3"}`}>
             <Column title="Shop" links={shop} />
             <Column title="Company" name="Footer" links={pages} />
+            {help.length > 0 && <Column title="Help" links={help} />}
             <div>
               <p className="label text-blush/75">Socials</p>
               <ul className="mt-4 flex flex-col gap-2 text-[15px] max-md:gap-0">

@@ -29,19 +29,14 @@ describe("About", () => {
     expect(dashes.some((d) => container.textContent?.includes(d))).toBe(false);
   });
 
-  it("sends the closing button to the Send a Call waitlist", () => {
+  it("opens the gift pop-up from the closing button", () => {
     render(<About />);
-    expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveAttribute("href", "/send-a-call#waitlist");
-  });
-
-  it("frames the waitlist around Send a Call opening", () => {
-    render(<About />);
-    expect(screen.getByText("Be first when Send a Call opens.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
   });
 
   it("fills the closing button in pink", () => {
     render(<About />);
-    expect(screen.getByRole("link", { name: "Join the waitlist" })).toHaveClass("cta-primary");
+    expect(screen.getByRole("button", { name: "Send a Call" })).toHaveClass("cta-primary");
   });
 
   it("keeps the ruled out words off About", () => {
@@ -51,13 +46,13 @@ describe("About", () => {
 
   it("sets the closing section on Cream Lace", () => {
     render(<About />);
-    expect(screen.getByRole("link", { name: "Join the waitlist" }).closest("section")).toHaveClass("bg-cream");
+    expect(screen.getByRole("button", { name: "Send a Call" }).closest("section")).toHaveClass("bg-cream");
   });
 
 
   it("closes on the rose dress banner", () => {
     render(<About />);
-    const close = screen.getByRole("link", { name: "Join the waitlist" }).closest("section") as HTMLElement;
+    const close = screen.getByRole("button", { name: "Send a Call" }).closest("section") as HTMLElement;
     expect(within(close).getByRole("img").getAttribute("src")).toContain("rose-dress-banner");
   });
 

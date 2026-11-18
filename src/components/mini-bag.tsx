@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { bagCount, offerNote, subtotalCents, useBag } from "@/lib/bag";
+import { bagCount, rememberCheckout, offerNote, picked, priceOf, subtotalCents, useBag, useLivePrices } from "@/lib/bag";
 import { startCheckout } from "@/lib/checkout";
 import { formatPrice } from "@/lib/content";
 import { getProduct } from "@/lib/products";
@@ -12,13 +12,19 @@ const SHOWN = 3;
 
 export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (over: boolean) => void; onNavigate: () => void }) {
   const lines = useBag();
-  const count = bagCount(lines);
+  const prices = useLivePrices();
+  const chosen = picked(lines);
+  const count = bagCount(chosen);
+  const choosing = chosen.length < lines.length;
   const [note, setNote] = useState("");
   const rest = lines.length - SHOWN;
 
   async function checkout() {
-    const result = await startCheckout(lines);
-    if (result.ok) window.location.assign(result.url);
+    const result = await startCheckout(chosen);
+    if (result.ok) {
+      rememberCheckout(result.cart, chosen);
+      window.location.assign(result.url);
+    }
     else setNote(result.message);
   }
 
@@ -38,7 +44,7 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
         </p>
       </div>
 
-      {count === 0 ? (
+      {lines.length === 0 ? (
         <div className="mt-6 flex flex-col items-start gap-6">
           <p className="text-muted">Your bag is empty</p>
           <Link href="/shop" onClick={onNavigate} className="cta">
@@ -65,26 +71,28 @@ export function MiniBag({ id, onHover, onNavigate }: { id: string; onHover: (ove
                         {line.qty > 1 && `, ${line.qty} pieces`}
                       </p>
                     </div>
-                    <span className="text-[15px] font-medium">{formatPrice(product.priceCents)}</span>
+                    <span className="text-[15px] font-medium">{formatPrice(priceOf(product.slug, prices))}</span>
                   </div>
                 </li>
               );
             })}
           </ul>
           {rest > 0 && <p className="mt-3 text-[15px] text-muted">+ {rest} more</p>}
-          <p className="mt-5 font-serif text-lg italic">{offerNote(count)}</p>
+          {offerNote(count) && <p className="mt-5 font-serif text-lg italic">{offerNote(count)}</p>}
           <div className="mt-4 flex items-baseline justify-between">
             <span className="label">Subtotal</span>
-            <span className="font-sans text-[17px] font-medium">{formatPrice(subtotalCents(lines))}</span>
+            <span className="font-sans text-[17px] font-medium">{formatPrice(subtotalCents(chosen, prices))}</span>
           </div>
-          {count >= 2 && <p className="mt-1 text-[13px] text-muted">Any 2 for $85 applied at checkout</p>}
-          <div className="mt-6 grid grid-cols-2 gap-3">
+          {choosing && <p className="mt-4 text-[15px] text-muted">Choose what to check out in your bag.</p>}
+          <div className={`mt-6 grid gap-3 ${choosing ? "" : "grid-cols-2"}`}>
             <Link href="/bag" onClick={onNavigate} className="cta px-4">
               View bag
             </Link>
-            <button type="button" onClick={checkout} className="cta cta-primary px-4">
-              Checkout
-            </button>
+            {!choosing && (
+              <button type="button" onClick={checkout} className="cta cta-primary px-4">
+                Checkout
+              </button>
+            )}
           </div>
           <p role="status" className="mt-3 text-[15px]">
             {note}

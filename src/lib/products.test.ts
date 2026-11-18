@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import { existsSync } from "node:fs";
 import { getProduct, products } from "./products";
 
@@ -44,7 +45,40 @@ describe("product photos", () => {
     expect(getProduct("the-slip-dress")?.colorways.find((c) => c.name === "Rose")?.images).toEqual(["/images/products/the-slip-dress-rose.webp"]);
   });
 
-  it("leaves The Boujie Set without photos", () => {
-    expect(getProduct("the-boujie-set")?.colorways.flatMap((c) => c.images)).toEqual([]);
+  const setViews = (name: string) => getProduct("the-boujie-set")?.colorways.find((c) => c.name === name)?.gallery?.map((g) => g.view);
+
+  it.each([
+    ["After Dark", ["front", "back", "on its own"]],
+    ["Powder Blue", ["front", "side", "on its own"]],
+    ["Rose", ["front", "back", "on its own"]],
+  ])("orders The Boujie Set in %s by its photos", (name, views) => {
+    expect(setViews(name)).toEqual(views);
+  });
+
+  it("keeps every shop photo at 3:4", async () => {
+    const fronts = products.flatMap((p) => p.colorways.map((c) => c.gallery?.[0]?.src ?? ""));
+    for (const front of fronts) {
+      const { width = 0, height = 0 } = await sharp(`public${front}`).metadata();
+      expect(Math.abs(width / height - 0.75)).toBeLessThan(0.01);
+    }
+  });
+
+    it("keeps brown off The Boujie Set", () => {
+    expect(getProduct("the-boujie-set")?.colorways.map((c) => c.name)).not.toContain("Brown");
+  });
+
+  it("orders the Rose slip dress gallery front, back, cutout", () => {
+    const rose = getProduct("the-slip-dress")?.colorways.find((c) => c.name === "Rose");
+    expect(rose?.gallery).toEqual([
+      { src: "/images/products/studio/the-slip-dress-rose-front.webp", view: "front" },
+      { src: "/images/products/studio/the-slip-dress-rose-back.webp", view: "back" },
+      { src: "/images/products/the-slip-dress-rose.webp", view: "on its own" },
+    ]);
+  });
+
+  it("points every gallery path at a file in public", () => {
+    const paths = products.flatMap((p) => p.colorways.flatMap((c) => (c.gallery ?? []).map((g) => g.src)));
+    expect(paths.length).toBe(30);
+    expect(paths.filter((p) => !existsSync(`public${p}`))).toEqual([]);
   });
 });

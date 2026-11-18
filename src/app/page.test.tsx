@@ -3,21 +3,23 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Home from "./page";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { WaitlistForm } from "@/components/waitlist-form";
 import { BAG_KEY } from "@/lib/bag";
 import { heroSlides } from "@/lib/content";
+import * as productsModule from "@/lib/products";
+
+afterEach(() => vi.restoreAllMocks());
 
 describe("Home", () => {
-  it("has one h1 with the brand promise", () => {
-    render(<Home />);
+  it("has one h1 with the brand promise", async () => {
+    render(await Home());
     const headings = screen.getAllByRole("heading", { level: 1 });
-    expect(headings.map((h) => h.textContent)).toEqual(["The gift that makes her feel like the moment."]);
+    expect(headings.map((h) => h.textContent)).toEqual(["The gift that makes them feel like the moment."]);
   });
 
-  it("lists the three steps in order", () => {
-    render(<Home />);
+  it("lists the three steps in order", async () => {
+    render(await Home());
     const steps = within(screen.getByRole("list", { name: "How it works" })).getAllByRole("heading");
-    expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "She gets the Call", "She picks up"]);
+    expect(steps.map((s) => s.textContent)).toEqual(["Place the Call", "They get the Call", "They pick up"]);
   });
 
   it("links TikTok to the placeholder handle", () => {
@@ -30,18 +32,18 @@ describe("Home", () => {
     expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/boujiecall");
   });
 
-  it("keeps Discover the piece outlined", () => {
-    render(<Home />);
+  it("keeps Discover the piece outlined", async () => {
+    render(await Home());
     expect(screen.getByRole("link", { name: "Discover the piece" })).not.toHaveClass("cta-primary");
   });
 
-  it("sets View all pieces as a text link", () => {
-    render(<Home />);
+  it("sets View all pieces as a text link", async () => {
+    render(await Home());
     expect(screen.getByRole("link", { name: "View all pieces" })).toHaveClass("link", "label", "text-ink", "min-h-11");
   });
 
-  it("drops the pill from View all pieces", () => {
-    render(<Home />);
+  it("drops the pill from View all pieces", async () => {
+    render(await Home());
     expect(screen.getByRole("link", { name: "View all pieces" })).not.toHaveClass("cta");
   });
 });
@@ -61,7 +63,9 @@ describe("SiteHeader", () => {
   });
 
   it("lists the four pages in the main nav", () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
     render(<SiteHeader />);
+    vi.unstubAllEnvs();
     expect(linkNames(screen.getByRole("navigation", { name: "Main" }))).toEqual(pages);
   });
 
@@ -98,7 +102,9 @@ describe("SiteHeader", () => {
 
 describe("SiteFooter", () => {
   it("lists the four pages", () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
     render(<SiteFooter />);
+    vi.unstubAllEnvs();
     expect(linkNames(screen.getByRole("navigation", { name: "Footer" }))).toEqual(pages);
   });
 
@@ -148,66 +154,42 @@ describe("SiteFooter", () => {
     expect(within(screen.getByRole("contentinfo")).queryByRole("textbox")).toBeNull();
   });
 
-
-  it("gives each waitlist field its own id", () => {
-    render(<><WaitlistForm /><WaitlistForm /></>);
-    const [a, b] = screen.getAllByLabelText("Email address");
-    expect(a.id).not.toBe(b.id);
-  });
 });
 
 describe("Home signup", () => {
-  it("leaves the waitlist off Home", () => {
-    const { container } = render(<Home />);
+  it("leaves the waitlist off Home", async () => {
+    const { container } = render(await Home());
     expect(container.querySelector("section#waitlist")).toBeNull();
   });
 
-  it("keeps email fields off Home", () => {
-    render(<Home />);
+  it("keeps email fields off Home", async () => {
+    render(await Home());
     expect(screen.queryByLabelText("Email address")).toBeNull();
   });
 
-  it("keeps the ruled out words off Home", () => {
-    const { container } = render(<Home />);
+  it("keeps the ruled out words off Home", async () => {
+    const { container } = render(await Home());
     expect(container.textContent).not.toMatch(/purchase|\bitems?\b|\bcart\b|\border\b|!/i);
   });
 });
 
-describe("WaitlistForm", () => {
-  it("shows the email label to everyone", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByText("Email address")).not.toHaveClass("sr-only");
+describe("Home how it works", () => {
+  it("ends on a Send a Call button that opens the gift pop-up", async () => {
+    render(await Home());
+    const how = screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
+    expect(within(how).getByRole("button", { name: "Send a Call" })).toHaveAttribute("aria-haspopup", "dialog");
+  });
+});
+
+describe("Menu while Send a Call is closed", () => {
+  it("keeps the main menu label plain", () => {
+    render(<SiteHeader />);
+    expect(within(screen.getByRole("navigation", { name: "Main" })).getByRole("link", { name: "Send a Call" })).toBeInTheDocument();
   });
 
-  it("gives the field an example address", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByLabelText("Email address")).toHaveAttribute("placeholder", "name@email.com");
-  });
-
-  it("fills the submit in pink", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByRole("button", { name: "Join the waitlist" })).toHaveClass("cta-primary");
-  });
-
-  it("draws the field as a full box", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByLabelText("Email address")).toHaveClass("border");
-  });
-
-  const submit = (email: string) => {
-    render(<WaitlistForm />);
-    fireEvent.change(screen.getByLabelText("Email address"), { target: { value: email } });
-    fireEvent.click(screen.getByRole("button", { name: "Join the waitlist" }));
-  };
-
-  it("tells a valid signup the list opens soon", () => {
-    submit("her@example.com");
-    expect(screen.getByRole("status")).toHaveTextContent("The list opens soon");
-  });
-
-  it("shows no status for an invalid email", () => {
-    submit("not-an-email");
-    expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  it("keeps the footer label plain", () => {
+    render(<SiteFooter />);
+    expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Send a Call" })).toBeInTheDocument();
   });
 });
 
@@ -222,41 +204,41 @@ describe("Bag link", () => {
 });
 
 describe("Waitlist copy", () => {
-  it("never says Join the list", () => {
-    const { container } = render(<Home />);
+  it("never says Join the list", async () => {
+    const { container } = render(await Home());
     expect(container.textContent).not.toContain("Join the list");
   });
 });
 
 describe("Home editorial redesign", () => {
-  const hero = () => screen.getByRole("region", { name: "The gift that makes her feel like the moment." });
+  const hero = () => screen.getByRole("region", { name: "The gift that makes them feel like the moment." });
 
-  it("labels the hero as luxury nightwear gifts", () => {
-    render(<Home />);
+  it("labels the hero as luxury nightwear gifts", async () => {
+    render(await Home());
     expect(within(hero()).getByText("LUXURY NIGHTWEAR GIFTS")).toBeInTheDocument();
   });
 
-  it("gives the hero a single shop link", () => {
-    render(<Home />);
+  it("gives the hero a single shop link", async () => {
+    render(await Home());
     expect(within(hero()).getAllByRole("link", { name: "Shop the collection" }).map((l) => l.getAttribute("href"))).toEqual(["/shop"]);
   });
 
-  it("shows the steps without number labels", () => {
-    render(<Home />);
+  it("shows the steps without number labels", async () => {
+    render(await Home());
     const list = screen.getByRole("list", { name: "How it works" });
     expect(within(list).queryAllByText(/^0[1-3]$/)).toEqual([]);
   });
 });
 
 describe("Home night half", () => {
-  it("sets the hero on ink", () => {
-    render(<Home />);
+  it("sets the hero on ink", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { level: 1 }).closest("[data-nav=dark]")).toHaveClass("bg-ribbon");
   });
 
 
-  it("sets the closing section on Cream Lace", () => {
-    const { container } = render(<Home />);
+  it("sets the closing section on Cream Lace", async () => {
+    const { container } = render(await Home());
     expect(container.querySelector("section#closing")).toHaveClass("bg-cream");
   });
 });
@@ -271,45 +253,45 @@ describe("Hero carousel", () => {
     vi.unstubAllGlobals();
   });
 
-  it("starts on the first of four slides", () => {
-    render(<Home />);
+  it("starts on the first of four slides", async () => {
+    render(await Home());
     expect([visible().length, current()]).toEqual([1, 1]);
   });
 
-  it("advances to the second slide after 5 seconds", () => {
-    render(<Home />);
+  it("advances to the second slide after 5 seconds", async () => {
+    render(await Home());
     act(() => vi.advanceTimersByTime(5000));
     expect(current()).toBe(2);
   });
 
-  it("stays put once paused", () => {
-    render(<Home />);
+  it("stays put once paused", async () => {
+    render(await Home());
     fireEvent.click(screen.getByRole("button", { name: "Pause slideshow" }));
     act(() => vi.advanceTimersByTime(20000));
     expect(current()).toBe(1);
   });
 
-  it("links the caption to the piece she wears", () => {
-    render(<Home />);
-    expect(screen.getAllByRole("link", { name: "The Slip Dress · After Dark" })[0]).toHaveAttribute("href", "/shop/the-slip-dress");
+  it("links the caption to the piece she wears", async () => {
+    render(await Home());
+    expect(screen.getAllByRole("link", { name: "The Slip Dress · After Dark" })[0]).toHaveAttribute("href", "/shop/the-slip-dress?colorway=after-dark");
   });
 
-  it("does not advance under reduced motion", () => {
+  it("does not advance under reduced motion", async () => {
     vi.stubGlobal("matchMedia", (q: string) => ({ matches: q.includes("reduce"), addEventListener() {}, removeEventListener() {} }));
-    render(<Home />);
+    render(await Home());
     act(() => vi.advanceTimersByTime(20000));
     expect(current()).toBe(1);
   });
 });
 
 describe("De-slop", () => {
-  it("renders no section markers", () => {
-    render(<Home />);
+  it("renders no section markers", async () => {
+    render(await Home());
     expect(screen.queryByText(/^‹ \d\d ›$/)).toBeNull();
   });
 
-  it("drops the How it works eyebrow", () => {
-    render(<Home />);
+  it("drops the How it works eyebrow", async () => {
+    render(await Home());
     const section = screen.getByRole("list", { name: "How it works" }).closest("section") as HTMLElement;
     expect(within(section).queryByText("How it works", { selector: "p" })).toBeNull();
   });
@@ -323,87 +305,87 @@ describe("De-slop", () => {
 describe("Closing section", () => {
   const close = (c: HTMLElement) => c.querySelector("section#closing") as HTMLElement;
 
-  it("sets the banner photo in the closing section", () => {
-    const { container } = render(<Home />);
+  it("sets the banner photo in the closing section", async () => {
+    const { container } = render(await Home());
     expect(within(close(container)).getByRole("img").getAttribute("src")).toContain("blue-romper-banner");
   });
 
-  it("offers an outlined Shop the collection pill in the closing section", () => {
-    const { container } = render(<Home />);
+  it("offers an outlined Shop the collection pill in the closing section", async () => {
+    const { container } = render(await Home());
     expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).not.toHaveClass("cta-primary");
   });
 
-  it("sends the closing pill to the shop", () => {
-    const { container } = render(<Home />);
+  it("sends the closing pill to the shop", async () => {
+    const { container } = render(await Home());
     expect(within(close(container)).getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
   });
 
-  it("keeps the closing headline", () => {
-    const { container } = render(<Home />);
+  it("keeps the closing headline", async () => {
+    const { container } = render(await Home());
     expect(within(close(container)).getByRole("heading", { level: 2 })).toHaveTextContent("Be first to receive a Boujie Call.");
   });
 
-  it("sets the closing words in ink over the photo", () => {
-    const { container } = render(<Home />);
+  it("sets the closing words in ink over the photo", async () => {
+    const { container } = render(await Home());
     expect(close(container).querySelector(".text-rose, .text-pink")).toBeNull();
   });
 
-  it("ends on the closing line", () => {
-    const { container } = render(<Home />);
-    expect(within(close(container)).getByText("The pieces are here. Find the one that feels like her.")).toBeInTheDocument();
+  it("ends on the closing line", async () => {
+    const { container } = render(await Home());
+    expect(within(close(container)).getByText("The pieces are here. Find the one that feels like you.")).toBeInTheDocument();
   });
 
-  it("is not a centered stack", () => {
-    const { container } = render(<Home />);
+  it("is not a centered stack", async () => {
+    const { container } = render(await Home());
     expect(close(container).querySelector(".text-center")).toBeNull();
   });
 });
 
 describe("Hero polish", () => {
-  const hero = () => screen.getByRole("region", { name: "The gift that makes her feel like the moment." });
+  const hero = () => screen.getByRole("region", { name: "The gift that makes them feel like the moment." });
 
-  it("shows no counter text", () => {
-    render(<Home />);
+  it("shows no counter text", async () => {
+    render(await Home());
     expect(within(hero()).queryByText(/\d\d \/ \d\d|Pause/)).toBeNull();
   });
 
-  it("jumps to a slide from its control", () => {
-    render(<Home />);
+  it("jumps to a slide from its control", async () => {
+    render(await Home());
     fireEvent.click(screen.getByRole("button", { name: "Show slide 3" }));
     expect(screen.getAllByRole("group", { hidden: true })[2]).toHaveAttribute("aria-hidden", "false");
   });
 
-  it("keeps sparkles out of the hero text", () => {
-    render(<Home />);
+  it("keeps sparkles out of the hero text", async () => {
+    render(await Home());
     expect(hero().textContent).not.toContain("✦");
   });
 
-  it("styles the hero CTA as a button", () => {
-    render(<Home />);
+  it("styles the hero CTA as a button", async () => {
+    render(await Home());
     expect(within(hero()).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta");
   });
 
-  it("fills the hero CTA in pink", () => {
-    render(<Home />);
+  it("fills the hero CTA in pink", async () => {
+    render(await Home());
     expect(within(hero()).getByRole("link", { name: "Shop the collection" })).toHaveClass("cta-primary");
   });
 
-  it("leaves nothing after the CTA label", () => {
-    render(<Home />);
+  it("leaves nothing after the CTA label", async () => {
+    render(await Home());
     expect(within(hero()).getByRole("link", { name: "Shop the collection" }).children).toHaveLength(0);
   });
 });
 
 describe("Strict pass", () => {
-  it("sets step body text at 16px", () => {
-    render(<Home />);
+  it("sets step body text at 16px", async () => {
+    render(await Home());
     const list = screen.getByRole("list", { name: "How it works" });
     expect(within(list).getByText(/Choose a gift tier/)).toHaveClass("text-base");
   });
 
-  it("drops the line above the closing line", () => {
-    render(<Home />);
-    expect(screen.getByText("The pieces are here. Find the one that feels like her.")).not.toHaveClass("border-t-[0.5px]");
+  it("drops the line above the closing line", async () => {
+    render(await Home());
+    expect(screen.getByText("The pieces are here. Find the one that feels like you.")).not.toHaveClass("border-t-[0.5px]");
   });
 
   it("keeps social placeholders out of the footer", () => {
@@ -413,75 +395,71 @@ describe("Strict pass", () => {
 });
 
 describe("Piece cards on phones", () => {
-  it("stacks the colorway count under the price below sm", () => {
-    render(<Home />);
+  it("stacks the colorway count under the price below sm", async () => {
+    render(await Home());
     const count = within(screen.getByRole("list", { name: "Pieces" })).getAllByText("3 colorways")[0];
     expect(count.parentElement).toHaveClass("flex-col", "sm:flex-row");
   });
 
-  it("sets the card price at body size", () => {
-    render(<Home />);
+  it("sets the card price at body size", async () => {
+    render(await Home());
     expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByText("$48.00")[0]).toHaveClass("text-base");
   });
 });
 
 describe("Typography", () => {
-  it("lets every Home label take the shared label size", () => {
-    const { container } = render(<Home />);
+  it("lets every Home label take the shared label size", async () => {
+    const { container } = render(await Home());
     expect(container.querySelectorAll('[class*="text-[10px]"], [class*="md:text-xs"]')).toHaveLength(0);
   });
 
-  it("sets piece names in Cormorant 500", () => {
-    render(<Home />);
+  it("sets piece names in Cormorant 500", async () => {
+    render(await Home());
     expect(within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Slip Dress" })).toHaveClass("font-medium");
   });
 
-  it("sets step titles in Cormorant 500", () => {
-    render(<Home />);
+  it("sets step titles in Cormorant 500", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { name: "Place the Call" })).toHaveClass("font-medium");
   });
 
-  it("sets Home prices in DM Sans 500", () => {
-    render(<Home />);
+  it("sets Home prices in DM Sans 500", async () => {
+    render(await Home());
     expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByText("$48.00")[0]).toHaveClass("font-sans", "font-medium");
   });
 
-  it("darkens the light waitlist placeholder", () => {
-    render(<WaitlistForm />);
-    expect(screen.getByLabelText("Email address")).toHaveClass("placeholder:text-ink/65");
-  });
 });
 
 describe("Colour rhythm", () => {
-  it("sets the dark section accent in pink", () => {
-    render(<Home />);
-    expect(screen.getByText("receives")).toHaveClass("text-pink");
+  it("sets the dark section accent in pink", async () => {
+    render(await Home());
+    expect(screen.getByText("receive")).toHaveClass("text-pink");
   });
 
-  it("sets the light section accent in rose", () => {
-    render(<Home />);
+  it("sets the light section accent in rose", async () => {
+    render(await Home());
     expect(screen.getByText("pieces")).toHaveClass("text-rose");
   });
 
-  it("sets the gift section on Black Ribbon", () => {
-    render(<Home />);
+  it("sets the gift section on Black Ribbon", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("bg-ribbon");
   });
 
-  it("fills only the hero pill on Home", () => {
-    const { container } = render(<Home />);
+  it("fills only the hero pill on Home", async () => {
+    const { container } = render(await Home());
     expect(container.querySelectorAll("main .cta-primary")).toHaveLength(1);
   });
 });
 
 describe("Hero split", () => {
-  it("sets the hero text on ink", () => {
-    render(<Home />);
+  it("sets the hero text on ink", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("md:bg-ribbon");
   });
 
-  it("sets the header on ink", () => {
-    render(<Home />);
+  it("sets the header on ink", async () => {
+    render(await Home());
     expect(screen.getByRole("banner")).toHaveClass("bg-ribbon");
   });
 
@@ -500,9 +478,9 @@ describe("Hero pace", () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 
-  it("keeps advancing while the mouse is over the hero", () => {
-    render(<Home />);
-    fireEvent.mouseEnter(screen.getByRole("region", { name: "The gift that makes her feel like the moment." }));
+  it("keeps advancing while the mouse is over the hero", async () => {
+    render(await Home());
+    fireEvent.mouseEnter(screen.getByRole("region", { name: "The gift that makes them feel like the moment." }));
     act(() => vi.advanceTimersByTime(5000));
     expect(screen.getByRole("button", { name: "Show slide 2" })).toHaveAttribute("aria-current", "true");
   });
@@ -524,34 +502,34 @@ describe("Hero photographs", () => {
 });
 
 describe("Home rebuild round 1", () => {
-  it("keeps the gift tiers off Home", () => {
-    render(<Home />);
+  it("keeps the gift tiers off Home", async () => {
+    render(await Home());
     expect(screen.queryByText("The Signature Call")).toBeNull();
   });
 
-  it("pairs The Romper in Mocha with a close-up of its lace", () => {
-    render(<Home />);
+  it("pairs The Romper in Mocha with a close-up of its lace", async () => {
+    render(await Home());
     expect(screen.getByRole("img", { name: /close-up of the brown lace/ })).toBeInTheDocument();
   });
 
-  it("links the detail button to The Romper", () => {
-    render(<Home />);
-    expect(screen.getByRole("link", { name: "Discover the piece" })).toHaveAttribute("href", "/shop/the-romper");
+  it("links the detail button to The Romper", async () => {
+    render(await Home());
+    expect(screen.getByRole("link", { name: "Discover the piece" })).toHaveAttribute("href", "/shop/the-romper?colorway=mocha");
   });
 
-  it("keeps hero photos out of the strip", () => {
-    const { container } = render(<Home />);
+  it("keeps hero photos out of the strip", async () => {
+    const { container } = render(await Home());
     const srcs = [...container.querySelectorAll("[data-strip] img")].map((i) => decodeURIComponent(i.getAttribute("src") ?? ""));
     expect(srcs.filter((s) => s.includes("/images/hero/"))).toEqual([]);
   });
 
-  it("shows the new close-up in section two", () => {
-    const { container } = render(<Home />);
+  it("shows the new close-up in section two", async () => {
+    const { container } = render(await Home());
     expect(container.querySelector("#detail img[alt*='hip']")?.getAttribute("src")).toContain("brown-romper-hip");
   });
 
-  it("runs a strip of five photos under the statement", () => {
-    const { container } = render(<Home />);
+  it("runs a strip of five photos under the statement", async () => {
+    const { container } = render(await Home());
     expect(container.querySelectorAll("[data-strip] img")).toHaveLength(5);
   });
 
@@ -562,40 +540,40 @@ describe("Home rebuild round 1", () => {
 });
 
 describe("Home rebuild round 2", () => {
-  it("keeps each piece name on one line", () => {
-    render(<Home />);
+  it("keeps each piece name on one line", async () => {
+    render(await Home());
     expect(within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Boujie Set" })).toHaveClass("truncate");
   });
 
-  it("centers a single last piece card on phones", () => {
-    render(<Home />);
+  it("centers a single last piece card on phones", async () => {
+    render(await Home());
     expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("listitem").at(-1)).toHaveClass("max-sm:last:odd:justify-self-center");
   });
 
-  it("keeps the moment heading in sentence case on phones", () => {
-    render(<Home />);
+  it("keeps the moment heading in sentence case on phones", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { name: /Someone places a call/ }).className.split(" ")).not.toContain("uppercase");
   });
 
-  it("sets the moment heading in capitals on desktop", () => {
-    render(<Home />);
+  it("sets the moment heading in capitals on desktop", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { name: /Someone places a call/ })).toHaveClass("md:uppercase");
   });
 
-  it("links each piece in the pieces grid", () => {
-    render(<Home />);
+  it("links each piece in the pieces grid", async () => {
+    render(await Home());
     const grid = screen.getByRole("region", { name: "The pieces" });
-    expect(within(grid).getAllByRole("link").map((l) => l.getAttribute("href"))).toEqual(["/shop", "/shop/the-slip-dress", "/shop/the-romper", "/shop/the-boujie-set"]);
+    expect(within(grid).getAllByRole("link").map((l) => l.getAttribute("href"))).toEqual(["/shop", "/shop/the-slip-dress?colorway=rose", "/shop/the-romper?colorway=powder-blue", "/shop/the-boujie-set?colorway=after-dark"]);
   });
 
-  it("lists the pieces as three equal cards with the unphotographed one last", () => {
-    render(<Home />);
+  it("lists the pieces as three equal cards with the unphotographed one last", async () => {
+    render(await Home());
     const cards = within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("heading");
     expect(cards.map((c) => c.textContent)).toEqual(["The Slip Dress", "The Romper", "The Boujie Set"]);
   });
 
-  it("accents the closing headline in deep rose", () => {
-    const { container } = render(<Home />);
+  it("accents the closing headline in deep rose", async () => {
+    const { container } = render(await Home());
     expect(container.querySelector("section#closing h2 em")).toHaveClass("text-rose-deep");
   });
 });
@@ -606,12 +584,14 @@ describe("Nav position", () => {
     expect(container.querySelector("nav[aria-label=Main]")?.parentElement).toHaveClass("md:absolute");
   });
 
-  it("opens the header with the offer bar", () => {
+  it("opens the header with the offer bar once confirmed", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     render(<SiteHeader />);
     expect(screen.getByRole("banner").firstElementChild).toHaveTextContent("Free shipping on 2 or more. Any 2 for $85.");
   });
 
   it("sets the offer bar on Dusty Rose", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     render(<SiteHeader />);
     expect(screen.getAllByText("Free shipping on 2 or more. Any 2 for $85.")[0]).toHaveClass("bg-dusty", "text-ribbon", "tracking-[0.12em]");
   });
@@ -623,61 +603,61 @@ describe("Nav position", () => {
 });
 
 describe("Home on phones", () => {
-  it("lays the pieces in two columns", () => {
-    render(<Home />);
+  it("lays the pieces in two columns", async () => {
+    render(await Home());
     expect(screen.getByRole("list", { name: "Pieces" })).toHaveClass("grid-cols-2");
   });
 
-  it("sets the hero words over the photo", () => {
-    render(<Home />);
+  it("sets the hero words over the photo", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { level: 1 }).closest("[data-hero-words]")).toHaveClass("max-md:absolute", "max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)]");
   });
 
-  it("left-aligns View all pieces under the subtitle on phones", () => {
-    render(<Home />);
+  it("left-aligns View all pieces under the subtitle on phones", async () => {
+    render(await Home());
     expect(screen.getByRole("link", { name: "View all pieces" })).toHaveClass("self-start", "md:self-auto");
   });
 
-  it("centers View all pieces on the heading row", () => {
-    render(<Home />);
+  it("centers View all pieces on the heading row", async () => {
+    render(await Home());
     expect(screen.getByRole("link", { name: "View all pieces" }).parentElement).toHaveClass("md:items-center", "md:justify-between");
   });
 
-  it("frames every piece card with a hairline", () => {
-    render(<Home />);
+  it("frames every piece card with a hairline", async () => {
+    render(await Home());
     const frames = within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("link").map((a) => a.firstElementChild);
     expect(frames.every((f) => f?.classList.contains("border-card-border"))).toBe(true);
   });
 
-  it("spaces the gift section with the fluid section token", () => {
-    render(<Home />);
+  it("spaces the gift section with the fluid section token", async () => {
+    render(await Home());
     expect(screen.getByRole("heading", { name: /Someone places a call/ }).closest("section")).toHaveClass("py-18", "md:py-section");
   });
 
-  it("spaces the pieces section with the section token", () => {
-    render(<Home />);
+  it("spaces the pieces section with the section token", async () => {
+    render(await Home());
     expect(screen.getByRole("region", { name: /pieces/i })).toHaveClass("py-18", "md:py-section");
   });
 
-  it("lays the gift strip in two columns", () => {
-    const { container } = render(<Home />);
+  it("lays the gift strip in two columns", async () => {
+    const { container } = render(await Home());
     expect(container.querySelector("[data-strip]")).toHaveClass("grid-cols-2");
   });
 });
 
 describe("Home without the brunch and night pair", () => {
-  it("leaves the pair region off Home", () => {
-    render(<Home />);
+  it("leaves the pair region off Home", async () => {
+    render(await Home());
     expect(screen.queryByRole("region", { name: "From brunch to after dark" })).toBeNull();
   });
 
-  it("leaves the brunch headline off Home", () => {
-    render(<Home />);
+  it("leaves the brunch headline off Home", async () => {
+    render(await Home());
     expect(screen.queryByRole("heading", { name: "Cute enough to open at brunch." })).toBeNull();
   });
 
-  it("leaves the night headline off Home", () => {
-    render(<Home />);
+  it("leaves the night headline off Home", async () => {
+    render(await Home());
     expect(screen.queryByRole("heading", { name: "Irresistible enough to wear that night." })).toBeNull();
   });
 });
@@ -697,7 +677,8 @@ describe("Phone menu", () => {
     expect(within(open()).getByRole("link", { name: "The collection" })).toHaveAttribute("href", "/shop");
   });
 
-  it("carries the offer line", () => {
+  it("carries the offer line once confirmed", () => {
+    vi.spyOn(productsModule, "getOffer").mockReturnValue("Free shipping on 2 or more. Any 2 for $85.");
     expect(within(open()).getByText("Free shipping on 2 or more. Any 2 for $85.")).toBeInTheDocument();
   });
 
@@ -709,18 +690,18 @@ describe("Phone menu", () => {
 describe("Sharp photos on phones", () => {
   const sizesOf = (img: Element | null) => img?.getAttribute("sizes") ?? "";
 
-  it("asks for a hero photo as wide as it is drawn", () => {
-    render(<Home />);
+  it("asks for a hero photo as wide as it is drawn", async () => {
+    render(await Home());
     expect(sizesOf(screen.getAllByRole("img", { name: /The Slip Dress|The Romper/ })[0])).toContain("150vh");
   });
 
-  it("asks for a closing banner as wide as it is drawn", () => {
-    const { container } = render(<Home />);
+  it("asks for a closing banner as wide as it is drawn", async () => {
+    const { container } = render(await Home());
     expect(sizesOf(container.querySelector("section#closing img"))).toContain("270vw");
   });
 
-  it("asks for the section two close-up as wide as it is drawn", () => {
-    const { container } = render(<Home />);
+  it("asks for the section two close-up as wide as it is drawn", async () => {
+    const { container } = render(await Home());
     expect(sizesOf(container.querySelector("#detail img[alt*='hip']"))).toContain("190vw");
   });
 });
@@ -732,8 +713,8 @@ const blendedProductPhotos = (root: Element) => {
 };
 
 describe("Home photo ground", () => {
-  it("shows home product photos without a blend", () => {
-    const { container } = render(<Home />);
+  it("shows home product photos without a blend", async () => {
+    const { container } = render(await Home());
     expect(blendedProductPhotos(container)).toEqual([]);
   });
 });

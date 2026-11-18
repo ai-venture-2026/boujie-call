@@ -3,10 +3,14 @@ import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ClosingBanner } from "@/components/closing-banner";
+import { GiftButton } from "@/components/gift-button";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
-import { getProduct, type Product } from "@/lib/products";
+import { getProduct, productHref, products, type Product } from "@/lib/products";
+import { getCatalog, withLive } from "@/lib/shopify";
+
+export const revalidate = 60;
 
 const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 const romper = getProduct("the-romper");
@@ -22,7 +26,7 @@ const strip = [
 function PieceCard({ product }: { product: Product }) {
   const photo = product.colorways[0].images[0];
   return (
-    <Link href={`/shop/${product.slug}`} className="group block">
+    <Link href={productHref(product.slug, product.colorways[0].name)} className="group block">
       <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
         {photo ? (
           <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
@@ -39,7 +43,8 @@ function PieceCard({ product }: { product: Product }) {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const live = withLive(products, await getCatalog());
   return (
     <>
       <SiteHeader />
@@ -47,7 +52,7 @@ export default function Home() {
         <HeroCarousel>
           <p className="label">LUXURY NIGHTWEAR GIFTS</p>
           <h1 id="hero-title" className="mt-4 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02] max-md:text-[2.4rem] md:mt-6">
-            The gift that makes her <em className="text-pink">feel</em> like the <em className="text-pink">moment.</em>
+            The gift that makes them <em className="text-pink">feel</em> like the <em className="text-pink">moment.</em>
           </h1>
           <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">Luxury nightwear gift sets. Curated. Personalized. Unforgettable.</p>
           <Link href="/shop" className="cta cta-primary mt-10">
@@ -63,7 +68,7 @@ export default function Home() {
             <div className="w-full max-w-sm rise md:mt-8">
               <p className="label">The Romper · Mocha</p>
               <p className="mt-4 text-base leading-relaxed text-muted">{romper?.description}</p>
-              <Link href="/shop/the-romper" className="cta mt-8">
+              <Link href={productHref("the-romper", "Mocha")} className="cta mt-8">
                 Discover the piece
               </Link>
             </div>
@@ -77,7 +82,7 @@ export default function Home() {
           <h2 className={`${wrap} text-center text-[2rem] leading-[1.05] md:text-[clamp(2.25rem,5vw,4.75rem)] md:uppercase rise`}>
             Someone places a call.
             <br />
-            She <em className="text-pink normal-case">receives</em> a moment.
+            They <em className="text-pink normal-case">receive</em> a moment.
           </h2>
           <div data-strip className="mt-14 grid grid-cols-2 gap-3 px-6 md:mt-20 md:flex md:items-start md:justify-center md:gap-6 md:px-0">
             {strip.map((s) => (
@@ -94,6 +99,9 @@ export default function Home() {
               </li>
             ))}
           </ol>
+          <div className="mt-14 flex justify-center px-6 md:mt-20">
+            <GiftButton label="Send a Call" className="cta" />
+          </div>
         </section>
 
         <section aria-labelledby="pieces-title" className="bg-cream py-18 md:py-section">
@@ -103,7 +111,7 @@ export default function Home() {
                 <h2 id="pieces-title" className="text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.04]">
                   The <em className="text-rose">pieces</em>
                 </h2>
-                <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">Satin and lace, made to be gifted. Sizes S to XL.</p>
+                <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">Made to be gifted. Sizes S to XL.</p>
               </div>
               <Link href="/shop" className="link label inline-flex min-h-11 items-center self-start text-ink md:self-auto">
                 <span>
@@ -113,7 +121,7 @@ export default function Home() {
             </div>
             <ul aria-label="Pieces" className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-6 md:mt-12 md:gap-y-12">
               {["the-slip-dress", "the-romper", "the-boujie-set"].map((slug) => {
-                const product = getProduct(slug);
+                const product = live.find((p) => p.slug === slug);
                 return product && (
                   <li key={slug} className="rise max-sm:last:odd:col-span-2 max-sm:last:odd:w-[calc(50%-0.375rem)] max-sm:last:odd:justify-self-center">
                     <PieceCard product={product} />
@@ -135,7 +143,7 @@ export default function Home() {
               Be first to receive a Boujie <em className="text-rose-deep">Call.</em>
             </>
           }
-          line="The pieces are here. Find the one that feels like her."
+          line="The pieces are here. Find the one that feels like you."
         >
           <Link href="/shop" className="cta">
             Shop the collection

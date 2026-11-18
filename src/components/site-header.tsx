@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { rememberPage } from "@/lib/nav-memory";
 import { useEffect, useRef, useState } from "react";
-import { BAG_OPENED, bagCount, useBag } from "@/lib/bag";
+import { BAG_OPENED, bagCount, useBag, useCheckoutReturn } from "@/lib/bag";
 import { pages, socials } from "@/lib/content";
-import { OFFER } from "@/lib/products";
+import { getOffer } from "@/lib/products";
 import { MiniBag } from "./mini-bag";
 
 export function Logo({ tone, className }: { tone: "ink" | "pink"; className: string }) {
@@ -16,6 +17,7 @@ export function Logo({ tone, className }: { tone: "ink" | "pink"; className: str
 
 export function SiteHeader() {
   const pathname = usePathname();
+  useEffect(() => rememberPage(pathname), [pathname]);
   const drawer = useRef<HTMLDialogElement>(null);
   const close = () => drawer.current?.close();
   const current = (href: string) => (pathname === href ? "page" : undefined);
@@ -25,6 +27,7 @@ export function SiteHeader() {
     window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
   const count = bagCount(useBag());
+  useCheckoutReturn();
   const [bagOpen, setBagOpen] = useState(false);
   const bagButton = useRef<HTMLButtonElement>(null);
   const bagPanel = useRef<HTMLDivElement>(null);
@@ -72,7 +75,7 @@ export function SiteHeader() {
 
   return (
     <header data-nav="dark" className="sticky top-0 z-40 border-b-[0.5px] border-blush/10 bg-ribbon text-blush">
-      <p className="label bg-dusty px-6 py-2 text-center leading-4 tracking-[0.12em] text-ribbon">{OFFER}</p>
+      {getOffer() && <p className="label bg-dusty px-6 py-2 text-center leading-4 tracking-[0.12em] text-ribbon">{getOffer()}</p>}
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
         <Link href="/" aria-label="Boujie Call home" onClick={(e) => toTop("/", e)} className="flex min-h-11 items-center">
           <Logo tone="pink" className="h-10 md:h-12" />
@@ -146,7 +149,7 @@ export function SiteHeader() {
         onClick={(e) => e.target === drawer.current && close()}
       >
         <div className="flex h-full flex-col overflow-y-auto">
-          <div className="flex items-center justify-between border-b-[0.5px] border-ink/10 px-6 py-4">
+          <div className="flex items-center justify-between border-b-[0.5px] border-card-border px-6 py-4">
             <Link
                 href="/"
                 aria-label="Boujie Call home"
@@ -166,7 +169,7 @@ export function SiteHeader() {
           <nav aria-label="Menu" className="px-6">
             <ul>
               {pages.map((p) => (
-                <li key={p.href} className="border-b-[0.5px] border-ink/10">
+                <li key={p.href} className="border-b-[0.5px] border-card-border">
                   <Link
                     href={p.href}
                     aria-current={current(p.href)}
@@ -185,12 +188,12 @@ export function SiteHeader() {
             </ul>
           </nav>
           <Link href="/shop" onClick={close} className="relative mx-6 mt-8 block aspect-[16/10] shrink-0 overflow-hidden">
-            <Image src="/images/hero/black-slip-studio.webp" alt="" fill sizes="100vw" style={{ objectPosition: "48% 30%" }} className="object-cover" />
+            <Image src="/images/banners/menu-black-slip-dress.webp" alt="" fill sizes="100vw" style={{ objectPosition: "50% 28%" }} className="object-cover" />
             <span className="label absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/70 to-transparent px-4 pt-12 pb-4 text-cream">The collection</span>
           </Link>
           <div className="mt-auto px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))]">
-            <p className="label text-muted">{OFFER}</p>
-            <Link href="/shop" onClick={close} className="cta cta-primary mt-4 w-full">
+            {getOffer() && <p className="label mb-4 text-muted">{getOffer()}</p>}
+            <Link href="/shop" onClick={close} className="cta cta-primary w-full">
               Shop the collection
             </Link>
             <ul className="label mt-5 flex gap-6 text-muted">

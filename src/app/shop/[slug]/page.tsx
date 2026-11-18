@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { BackLink } from "@/components/back-link";
 import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Price, ProductView } from "@/components/product-view";
 import { getProduct, products } from "@/lib/products";
+import { getCatalog, withLive } from "@/lib/shopify";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,20 +18,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return product ? { title: `${product.name} | Boujie Call`, description: product.description } : {};
 }
 
+export const revalidate = 60;
+
 export default async function ProductPage({ params }: Props) {
-  const product = getProduct((await params).slug);
-  if (!product) notFound();
+  const slug = (await params).slug;
+  if (!getProduct(slug)) notFound();
+  const product = withLive(products, await getCatalog()).find((p) => p.slug === slug)!;
 
   return (
     <>
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-6 pt-10 pb-28 md:px-12 md:pt-8 short:pt-6">
-        <Link href="/shop" className="cta group gap-3 px-6">
+        <BackLink href="/shop" className="cta group gap-3 px-6">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1" className="transition-transform group-hover:-translate-x-1">
             <path d="M15 9H3M8 4L3 9l5 5" />
           </svg>
           Back to the shop
-        </Link>
+        </BackLink>
         <div className="mt-8 md:mt-6">
           <ProductView
             product={product}
@@ -42,12 +46,22 @@ export default async function ProductPage({ params }: Props) {
               </>
             }
             details={
-              <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base">
-                <dt>Fabric</dt>
-                <dd className="text-muted">{product.fabric}</dd>
-                <dt>Care</dt>
-                <dd className="text-muted">{product.care}</dd>
-              </dl>
+              (product.fabric || product.care) && (
+                <dl className="mt-10 grid max-w-md grid-cols-[6rem_1fr] gap-y-3 border-t-[0.5px] border-card-border pt-6 text-base">
+                  {product.fabric && (
+                    <>
+                      <dt>Fabric</dt>
+                      <dd className="text-muted">{product.fabric}</dd>
+                    </>
+                  )}
+                  {product.care && (
+                    <>
+                      <dt>Care</dt>
+                      <dd className="text-muted">{product.care}</dd>
+                    </>
+                  )}
+                </dl>
+              )
             }
           />
         </div>
