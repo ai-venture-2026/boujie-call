@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { ShopGrid } from "@/components/shop-grid";
 import { ProductView } from "@/components/product-view";
 import { availability, products, stockKey, type Product } from "@/lib/products";
@@ -25,6 +25,19 @@ describe("Availability", () => {
   it("leaves a colour with some sizes left alone", () => {
     const someLeft: Product = { ...romper, stock: { ...stockFor(romper, "Mocha", 0), [stockKey("Mocha", "M")]: 2 } };
     expect(availability(someLeft, "Mocha")).toBeNull();
+  });
+
+  it("never calls a piece without sizes sold out", () => {
+    expect(availability({ ...romper, sizes: [], stock: {} }, "Mocha")).toBeNull();
+  });
+
+  it("leaves a colour alone when Shopify sends no stock at all", () => {
+    expect(availability({ ...romper, stock: undefined }, "Mocha")).toBeNull();
+  });
+
+  it("treats a size missing from the stock as in stock", () => {
+    const withoutXl = Object.fromEntries(Object.entries(stockFor(romper, "Mocha", 0)).filter(([key]) => key !== stockKey("Mocha", "XL")));
+    expect(availability({ ...romper, stock: withoutXl }, "Mocha")).toBeNull();
   });
 
   it("treats unknown counts as in stock", () => {
@@ -63,5 +76,13 @@ describe("Product photo availability pill", () => {
   it("shows Coming soon on a draft piece's photo", () => {
     render(<ProductView product={draftSet} intro={null} details={null} />);
     expect(document.querySelector("[data-pill]")).toHaveTextContent("Coming soon");
+  });
+
+  it("shows Sold out on every photo of a sold-out colour", () => {
+    render(<ProductView product={mochaGone} intro={null} details={null} />);
+    fireEvent.click(screen.getByRole("radio", { name: "Mocha" }));
+    const pills = [...document.querySelectorAll("[data-pill]")].map((p) => p.textContent);
+    expect(pills.length).toBeGreaterThan(1);
+    expect(pills.every((t) => t === "Sold out")).toBe(true);
   });
 });

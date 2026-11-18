@@ -100,7 +100,7 @@ export const products: Product[] = [
 // A colour counts as sold out only when every size is known to be at 0; unknown counts stay buyable.
 export function availability(product: Product, colour: string): "Coming soon" | "Sold out" | null {
   if (product.comingSoon) return "Coming soon";
-  return product.sizes.every((s) => product.stock?.[stockKey(colour, s)] === 0) ? "Sold out" : null;
+  return product.sizes.length > 0 && product.sizes.every((s) => product.stock?.[stockKey(colour, s)] === 0) ? "Sold out" : null;
 }
 
 export function getProduct(slug: string): Product | undefined {
