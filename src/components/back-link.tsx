@@ -10,7 +10,7 @@ export function BackLink({ href, className, children }: { href: string; classNam
       href={href}
       className={className}
       onClick={(e) => {
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || previousPage() !== href) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || window.history.length < 2 || previousPage() !== href) return;
         e.preventDefault();
         window.history.back();
       }}

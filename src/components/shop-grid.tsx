@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { AvailabilityPill } from "./availability-pill";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useSyncExternalStore } from "react";
 import { formatPrice } from "@/lib/content";
 import { availability, colorwaySlug, type Product } from "@/lib/products";
@@ -37,10 +38,12 @@ function setFilter(key: "piece" | "colour", value: string | null) {
   window.dispatchEvent(new Event(FILTERS_CHANGED));
 }
 
-export function ShopGrid({ products }: { products: Product[] }) {
+// routerSearch is the address as Next knows it, so router navigations (the header Shop link) clear the filters too; tests and the server fall back to the browser address.
+export function ShopGrid({ products, routerSearch }: { products: Product[]; routerSearch?: string }) {
   const cards = products.flatMap((p) => p.colorways.map((c) => ({ product: p, colorway: c })));
   const colours = [...new Map(cards.map((c) => [c.colorway.name, c.colorway.swatch ?? c.colorway.hex])).entries()];
-  const search = useSyncExternalStore(onFiltersChange, () => window.location.search, () => "");
+  const addressSearch = useSyncExternalStore(onFiltersChange, () => window.location.search, () => "");
+  const search = routerSearch ?? addressSearch;
   const params = new URLSearchParams(search);
   const piece = products.some((p) => p.slug === params.get("piece")) ? params.get("piece") : null;
   const colour = colours.some(([name]) => name === params.get("colour")) ? params.get("colour") : null;
@@ -126,4 +129,8 @@ export function ShopGrid({ products }: { products: Product[] }) {
       </div>
     </div>
   );
+}
+
+export function ShopGridLive({ products }: { products: Product[] }) {
+  return <ShopGrid products={products} routerSearch={useSearchParams()?.toString()} />;
 }

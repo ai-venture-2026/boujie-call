@@ -1,8 +1,8 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { BackLink } from "@/components/back-link";
 import { ShopGrid } from "@/components/shop-grid";
 import { SiteHeader } from "@/components/site-header";
-import { previousPage, rememberPage } from "@/lib/nav-memory";
+import { forgetPages, previousPage, rememberPage } from "@/lib/nav-memory";
 import { products } from "@/lib/products";
 
 let back: ReturnType<typeof vi.spyOn>;
@@ -16,7 +16,8 @@ const backToShop = () => {
 const sections = () => within(screen.getByRole("region", { name: "Collection" })).getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
 
 beforeEach(() => {
-  sessionStorage.clear();
+  forgetPages();
+  pathname = "/shop/the-romper";
   back = vi.spyOn(window.history, "back").mockImplementation(() => {});
   window.history.replaceState(null, "", "/shop");
 });
@@ -48,25 +49,39 @@ describe("Back link", () => {
   it("goes back through history when it leads to the page just visited", () => {
     rememberPage("/shop");
     rememberPage("/shop/the-romper");
+    vi.spyOn(window.history, "length", "get").mockReturnValue(2);
     fireEvent.click(backToShop());
     expect(back).toHaveBeenCalledOnce();
   });
 
-  it("opens the page normally when the shopper arrived from elsewhere", () => {
+  it("opens the page normally when the shopper came from another page", () => {
+    rememberPage("/about");
     rememberPage("/shop/the-romper");
     const link = backToShop();
     fireEvent.click(link);
     expect(back).not.toHaveBeenCalled();
+    expect(link).toHaveAttribute("href", "/shop");
   });
 
-  it("still links to the shop when storage is blocked", () => {
-    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
-      throw new Error("blocked");
-    });
-    const link = backToShop();
-    fireEvent.click(link);
+  it("opens the page normally on a fresh visit", () => {
+    rememberPage("/shop/the-romper");
+    fireEvent.click(backToShop());
     expect(back).not.toHaveBeenCalled();
-    expect(link).toHaveAttribute("href", "/shop");
+  });
+
+  it("leaves a cmd-click to the browser", () => {
+    rememberPage("/shop");
+    rememberPage("/shop/the-romper");
+    fireEvent.click(backToShop(), { metaKey: true });
+    expect(back).not.toHaveBeenCalled();
+  });
+
+  it("opens the page normally in a tab with no history to go back to", () => {
+    rememberPage("/shop");
+    rememberPage("/shop/the-romper");
+    vi.spyOn(window.history, "length", "get").mockReturnValue(1);
+    fireEvent.click(backToShop());
+    expect(back).not.toHaveBeenCalled();
   });
 });
 
@@ -92,6 +107,21 @@ describe("Shop filters in the address", () => {
   it("ignores a piece the shop does not carry", () => {
     window.history.replaceState(null, "", "/shop?piece=the-gown");
     render(<ShopGrid products={products} />);
+    expect(sections()).toEqual(products.map((p) => p.name));
+  });
+
+  it("restores the filter when the browser goes back to a filtered address", () => {
+    render(<ShopGrid products={products} />);
+    act(() => {
+      window.history.replaceState(null, "", "/shop?piece=the-romper");
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+    expect(sections()).toEqual(["The Romper"]);
+  });
+
+  it("follows the address Next reports, so a router link clears the filter", () => {
+    window.history.replaceState(null, "", "/shop?piece=the-romper");
+    render(<ShopGrid products={products} routerSearch="" />);
     expect(sections()).toEqual(products.map((p) => p.name));
   });
 });

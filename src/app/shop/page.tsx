@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ShopGrid } from "@/components/shop-grid";
+import { Suspense } from "react";
+import { ShopGrid, ShopGridLive } from "@/components/shop-grid";
 import { GiftButton } from "@/components/gift-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -29,7 +30,9 @@ export default async function Shop() {
             <p className="mt-6 font-serif text-xl italic md:text-2xl">Treat yourself. Or let someone treat you.</p>
           </div>
         </section>
-        <ShopGrid products={live} />
+        <Suspense fallback={<ShopGrid products={live} />}>
+          <ShopGridLive products={live} />
+        </Suspense>
         <p className="-mt-6 pb-20 text-center md:-mt-10 md:pb-28">
           <GiftButton label="Sending it as a gift? Place a Call" className="cta" />
         </p>

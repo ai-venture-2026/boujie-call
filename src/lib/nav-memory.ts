@@ -1,20 +1,19 @@
-// The page before the current one, per browser tab, so back links can use history instead of reloading the page at its top.
-const HERE = "bc-here";
-const PREV = "bc-prev";
+// The page before the current one, held in the running app's memory only: leaving the site, a new tab or a reload starts fresh,
+// so back links never send a shopper off the site. Paths only, which holds while no in-site page pushes a same-path entry.
+let here: string | null = null;
+let prev: string | null = null;
 
 export function rememberPage(path: string) {
-  try {
-    const here = sessionStorage.getItem(HERE);
-    if (here === path) return;
-    if (here) sessionStorage.setItem(PREV, here);
-    sessionStorage.setItem(HERE, path);
-  } catch {}
+  if (here === path) return;
+  prev = here;
+  here = path;
 }
 
 export function previousPage(): string | null {
-  try {
-    return sessionStorage.getItem(PREV);
-  } catch {
-    return null;
-  }
+  return prev;
+}
+
+export function forgetPages() {
+  here = null;
+  prev = null;
 }
