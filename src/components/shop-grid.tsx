@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { AvailabilityPill } from "./availability-pill";
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import { formatPrice } from "@/lib/content";
 import { availability, colorwaySlug, type Product } from "@/lib/products";
 
@@ -17,11 +18,37 @@ function Toggle({ on, onClick, swatch, children }: { on: boolean; onClick: () =>
   );
 }
 
-export function ShopGrid({ products }: { products: Product[] }) {
+// Filters live in the address (?piece=&colour=), so going back from a product restores them and a filtered view can be shared.
+const FILTERS_CHANGED = "bc-filters";
+const onFiltersChange = (notify: () => void) => {
+  window.addEventListener("popstate", notify);
+  window.addEventListener(FILTERS_CHANGED, notify);
+  return () => {
+    window.removeEventListener("popstate", notify);
+    window.removeEventListener(FILTERS_CHANGED, notify);
+  };
+};
+
+function setFilter(key: "piece" | "colour", value: string | null) {
+  const params = new URLSearchParams(window.location.search);
+  if (value) params.set(key, value);
+  else params.delete(key);
+  const query = params.toString();
+  window.history.replaceState(null, "", query ? `?${query}` : window.location.pathname);
+  window.dispatchEvent(new Event(FILTERS_CHANGED));
+}
+
+// routerSearch is the address as Next knows it, so router navigations (the header Shop link) clear the filters too; tests and the server fall back to the browser address.
+export function ShopGrid({ products, routerSearch }: { products: Product[]; routerSearch?: string }) {
   const cards = products.flatMap((p) => p.colorways.map((c) => ({ product: p, colorway: c })));
   const colours = [...new Map(cards.map((c) => [c.colorway.name, c.colorway.swatch ?? c.colorway.hex])).entries()];
-  const [piece, setPiece] = useState<string | null>(null);
-  const [colour, setColour] = useState<string | null>(null);
+  const addressSearch = useSyncExternalStore(onFiltersChange, () => window.location.search, () => "");
+  const search = routerSearch ?? addressSearch;
+  const params = new URLSearchParams(search);
+  const piece = products.some((p) => p.slug === params.get("piece")) ? params.get("piece") : null;
+  const colour = colours.some(([name]) => name === params.get("colour")) ? params.get("colour") : null;
+  const setPiece = (slug: string | null) => setFilter("piece", slug);
+  const setColour = (name: string | null) => setFilter("colour", name);
   const shown = cards.filter((c) => (!piece || c.product.slug === piece) && (!colour || c.colorway.name === colour));
   const reset = () => {
     setPiece(null);
@@ -102,4 +129,8 @@ export function ShopGrid({ products }: { products: Product[] }) {
       </div>
     </div>
   );
+}
+
+export function ShopGridLive({ products }: { products: Product[] }) {
+  return <ShopGrid products={products} routerSearch={useSearchParams()?.toString()} />;
 }

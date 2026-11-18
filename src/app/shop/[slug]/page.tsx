@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { BackLink } from "@/components/back-link";
 import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -29,12 +29,12 @@ export default async function ProductPage({ params }: Props) {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-6 pt-10 pb-28 md:px-12 md:pt-8 short:pt-6">
-        <Link href="/shop" className="cta group gap-3 px-6">
+        <BackLink href="/shop" className="cta group gap-3 px-6">
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1" className="transition-transform group-hover:-translate-x-1">
             <path d="M15 9H3M8 4L3 9l5 5" />
           </svg>
           Back to the shop
-        </Link>
+        </BackLink>
         <div className="mt-8 md:mt-6">
           <ProductView
             product={product}
