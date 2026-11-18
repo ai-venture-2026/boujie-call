@@ -80,23 +80,23 @@ export function ShopGrid({ products, routerSearch }: { products: Product[]; rout
       </div>
       </div>
 
-      <div role="region" aria-label="Collection" className="grid gap-16 md:gap-20">
+      <div role="region" aria-label="Collection" className="grid min-w-0 gap-16 md:gap-20">
         {products.map((p) => {
           const group = shown.filter((c) => c.product.slug === p.slug);
           if (group.length === 0) return null;
           return (
-            <section key={p.slug}>
+            <section key={p.slug} className="min-w-0">
               <h2 className="label text-ink">{p.name}</h2>
-              <ul aria-label={p.name} className="mt-6 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
+              <ul aria-label={p.name} className="mt-6 max-md:-mx-6 max-md:flex max-md:snap-x max-md:snap-mandatory max-md:scroll-px-6 max-md:gap-4 max-md:overflow-x-auto max-md:px-6 max-md:[scrollbar-width:none] md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-12 lg:grid-cols-4">
                 {group.map(({ product, colorway }) => {
                   const photo = colorway.gallery?.[0].src ?? colorway.images[0];
                   const status = availability(product, colorway.name);
                   return (
-                    <li key={`${product.slug}-${colorway.name}`} className="max-lg:last:odd:col-span-2 max-lg:last:odd:w-[calc(50%-0.75rem)] max-lg:last:odd:justify-self-center">
-                      <Link href={productHref(product.slug, colorway.name)} className="group block">
+                    <li key={`${product.slug}-${colorway.name}`} className="max-md:w-[68%] max-md:shrink-0 max-md:snap-start md:max-lg:last:odd:col-span-2 md:max-lg:last:odd:w-[calc(50%-0.75rem)] md:max-lg:last:odd:justify-self-center">
+                      <Link href={productHref(product.slug, colorway.name)} onFocus={(e) => e.currentTarget.matches(":focus-visible") && e.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest" })} className="group block">
                         <div className={`relative aspect-[3/4] overflow-hidden bg-stone ${colorway.images.includes(photo) ? "contact" : ""}`}>
                           {photo ? (
-                            <Image src={photo} alt="" fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                            <Image src={photo} alt="" fill sizes="(min-width: 1024px) 18vw, (min-width: 768px) 45vw, 60vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                           ) : (
                             <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
                           )}

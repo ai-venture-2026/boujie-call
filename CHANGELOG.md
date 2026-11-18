@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Shop on phones: each piece's colours sit in one row that scrolls sideways, with the next card peeking in, instead of two columns with a lone last card. A card scrolls fully into view when reached with Tab. Tablets and desktop keep their grid.
 - Build safety: the build runs on Node 24 instead of whichever new Node major Vercel picks, and the Shopify connection file is marked server only, so a change that pulls it into the browser fails the build. Nothing visible changes.
 - Next.js security update: next and eslint-config-next move from 16.4.3 to 16.4.6, which fixes a cache advisory (GHSA-vc7v-qv4w-wrv8) and stops the build failing on its security warning. Nothing visible changes.
 - Gift choices start empty: Send a Call buttons and the full gift form open with no Call, piece or colour chosen, and Next or Continue waits until all three are picked. Colours appear once a piece is chosen. Send as a gift on a product page still starts on that piece and colour.

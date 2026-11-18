@@ -797,7 +797,48 @@ describe("Shop cards on phones", () => {
 
   it("centers a single last card", async () => {
     render(await Shop());
-    expect(items().at(-1)).toHaveClass("max-lg:last:odd:justify-self-center");
+    expect(items().at(-1)).toHaveClass("md:max-lg:last:odd:justify-self-center");
+  });
+
+  it("scrolls each piece's cards sideways on phones", async () => {
+    render(await Shop());
+    expect(screen.getByRole("list", { name: "The Romper" })).toHaveClass("max-md:flex", "max-md:overflow-x-auto", "max-md:snap-x", "md:grid-cols-2");
+  });
+
+  const focusCard = async (keyboard: boolean) => {
+    const scrolled: Element[] = [];
+    Element.prototype.scrollIntoView = function (this: Element, opts?: boolean | ScrollIntoViewOptions) {
+      expect(opts).toEqual({ block: "nearest", inline: "nearest" });
+      scrolled.push(this);
+    };
+    const matches = Element.prototype.matches;
+    vi.spyOn(Element.prototype, "matches").mockImplementation(function (this: Element, sel: string) {
+      return sel === ":focus-visible" ? keyboard : matches.call(this, sel);
+    });
+    try {
+      render(await Shop());
+      const link = within(items()[1]).getByRole("link");
+      link.focus();
+      return { scrolled, link };
+    } finally {
+      vi.restoreAllMocks();
+      delete (Element.prototype as Partial<Element>).scrollIntoView;
+    }
+  };
+
+  it("scrolls a card fully into view when it takes keyboard focus", async () => {
+    const { scrolled, link } = await focusCard(true);
+    expect(scrolled).toEqual([link]);
+  });
+
+  it("leaves the row still when a tap or click focuses a card", async () => {
+    const { scrolled } = await focusCard(false);
+    expect(scrolled).toEqual([]);
+  });
+
+  it("sizes phone cards so the next one peeks in", async () => {
+    render(await Shop());
+    expect(items()[0]).toHaveClass("max-md:w-[68%]", "max-md:shrink-0", "max-md:snap-start");
   });
 });
 
