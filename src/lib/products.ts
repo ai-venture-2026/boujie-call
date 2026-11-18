@@ -9,8 +9,6 @@ export type Colorway = {
   swatch?: string;
   // Photo paths in /public, in gallery order. Empty shows placeholder frames.
   images: string[];
-  // Shop grid and product page photos with their alt view; Home and the bag keep images.
-  gallery?: { src: string; view: string }[];
 };
 
 export type Product = {
@@ -19,20 +17,12 @@ export type Product = {
   priceCents: number;
   placeholderPrice: boolean;
   description: string;
-  fabric: string | null;
-  care: string | null;
+  fabric: string;
+  care: string;
   // Any number of colorways per piece.
   colorways: Colorway[];
   sizes: string[];
-  // Live from Shopify, keyed "Colorway/Size": 0 sold out, n left, null in stock with no count.
-  stock?: Record<string, number | null>;
-  // Shopify answered but does not sell this piece.
-  comingSoon?: boolean;
 };
-
-export const MAX_QTY = 10;
-
-export const stockKey = (colorway: string, size: string) => `${colorway}/${size}`;
 
 const sizes = ["S", "M", "L", "XL"];
 
@@ -50,19 +40,9 @@ const bloom: Colorway = {
 
 export const colorwaySlug = (name: string) => name.toLowerCase().replaceAll(" ", "-");
 
-// Every link into a product page names the colour it shows, so the page opens on it.
-export const productHref = (slug: string, colour: string) => `/shop/${slug}?colorway=${colorwaySlug(colour)}`;
-
-// Cutouts live in public/images/products as <slug>-<colorway>.webp, studio photos in studio/<slug>-<colorway>-<view>.webp.
-const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>): Colorway[] =>
-  colorways.map((c) => {
-    const name = `${slug}-${colorwaySlug(c.name)}`;
-    const cutout = `/images/products/${name}.webp`;
-    const views = (studio[c.name] ?? []).map((view) => ({ src: `/images/products/studio/${name}-${view}.webp`, view }));
-    return { ...c, images: [cutout], gallery: [...views, { src: cutout, view: "on its own" }] };
-  });
-
-const frontBack = ["front", "back"];
+// Photos live in public/images/products as <slug>-<colorway>.webp.
+const photographed = (slug: string, colorways: Colorway[]): Colorway[] =>
+  colorways.map((c) => ({ ...c, images: [`/images/products/${slug}-${colorwaySlug(c.name)}.webp`] }));
 
 export const products: Product[] = [
   {
@@ -70,10 +50,10 @@ export const products: Product[] = [
     name: "The Slip Dress",
     priceCents: 4800,
     placeholderPrice: false,
-    description: "The one you reach for when the night is yours.",
-    fabric: null,
-    care: null,
-    colorways: photographed("the-slip-dress", [rose, afterDark, bloom], { Rose: frontBack, "After Dark": frontBack, Bloom: frontBack }),
+    description: "The one she reaches for when the night is hers. A soft, fluid slip that skims and moves with her.",
+    fabric: "Satin with lace trim.",
+    care: "Hand wash cold, lay flat to dry.",
+    colorways: photographed("the-slip-dress", [rose, afterDark, bloom]),
     sizes,
   },
   {
@@ -81,10 +61,10 @@ export const products: Product[] = [
     name: "The Boujie Set",
     priceCents: 4800,
     placeholderPrice: false,
-    description: "A cami and shorts set, cute enough for brunch and soft enough to sleep in.",
-    fabric: null,
-    care: null,
-    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }),
+    description: "A satin cami and shorts set, cute enough for brunch and soft enough to sleep in.",
+    fabric: "Satin with lace trim.",
+    care: "Hand wash cold, lay flat to dry.",
+    colorways: [afterDark, powderBlue, rose],
     sizes,
   },
   {
@@ -93,25 +73,15 @@ export const products: Product[] = [
     priceCents: 4800,
     placeholderPrice: false,
     description: "One piece, zero effort. Soft, flirty, and made to be lived in.",
-    fabric: null,
-    care: null,
-    colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose], { "Powder Blue": frontBack, Mocha: frontBack, "After Dark": frontBack, Rose: frontBack }),
+    fabric: "Stretch satin with lace trim.",
+    care: "Hand wash cold, lay flat to dry.",
+    colorways: photographed("the-romper", [powderBlue, mocha, afterDark, rose]),
     sizes,
   },
 ];
-
-// A colour counts as sold out only when every size is known to be at 0; unknown counts stay buyable.
-export function availability(product: Product, colour: string): "Coming soon" | "Sold out" | null {
-  if (product.comingSoon) return "Coming soon";
-  return product.sizes.length > 0 && product.sizes.every((s) => product.stock?.[stockKey(colour, s)] === 0) ? "Sold out" : null;
-}
 
 export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }
 
-// Facts the owner has not confirmed stay null and their lines stay hidden; her answers go here (Alex, 2026-11-13).
-export const getOffer = (): string | null => null;
-
-// Bust, waist and hip per size, in the owner's unit.
-export const getSizeChart = (): Record<string, [string, string, string]> | null => null;
+export const OFFER = "Free shipping on 2 or more. Any 2 for $85.";

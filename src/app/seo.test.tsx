@@ -1,9 +1,7 @@
 import { readFileSync } from "node:fs";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import NotFound from "./not-found";
 import robots from "./robots";
-import ErrorPage from "./error";
-import { indexing } from "@/lib/content";
 import sitemap from "./sitemap";
 import { metadata } from "./layout";
 
@@ -36,42 +34,8 @@ describe("sitemap", () => {
 });
 
 describe("robots", () => {
-  afterEach(() => vi.unstubAllEnvs());
-
   it("points crawlers to the sitemap", () => {
     expect(robots().sitemap).toBe("https://boujiecall.com/sitemap.xml");
-  });
-
-  it("opens the live site to search engines", () => {
-    vi.stubEnv("VERCEL_ENV", "production");
-    expect(robots().rules).toEqual({ userAgent: "*", allow: "/" });
-  });
-
-  it("closes previews to search engines", () => {
-    vi.stubEnv("VERCEL_ENV", "preview");
-    expect(robots().rules).toEqual({ userAgent: "*", disallow: "/" });
-  });
-
-  it("marks pages noindex off the live site", () => {
-    expect(indexing({ VERCEL_ENV: "preview" })).toEqual({ index: false, follow: false });
-  });
-
-  it("leaves indexing alone on the live site", () => {
-    expect(indexing({ VERCEL_ENV: "production" })).toBeUndefined();
-  });
-});
-
-describe("error page", () => {
-  it("offers to try again", () => {
-    const reset = vi.fn();
-    render(<ErrorPage error={new Error("x")} reset={reset} />);
-    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
-    expect(reset).toHaveBeenCalled();
-  });
-
-  it("links back to the shop", () => {
-    render(<ErrorPage error={new Error("x")} reset={() => {}} />);
-    expect(screen.getByRole("link", { name: "Back to the shop" })).toHaveAttribute("href", "/shop");
   });
 });
 

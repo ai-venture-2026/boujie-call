@@ -3,8 +3,8 @@ import Image from "next/image";
 import { ClosingBanner } from "@/components/closing-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { GiftButton } from "@/components/gift-button";
-import { boxContents, callsOpen, callSteps, formatPrice, tiers } from "@/lib/content";
+import { WaitlistForm } from "@/components/waitlist-form";
+import { boxContents, callSteps, formatPrice, tiers } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Send a Call | Boujie Call",
@@ -23,12 +23,14 @@ export default function SendACall() {
             <Image src="/images/send-a-call/hero-rose-slip.webp" alt="A woman in a pale pink slip with lace trim leans on a soft pink wall, arms raised" fill priority sizes="(min-width: 768px) 62vw, 150vh" style={{ objectPosition: "70% 25%" }} className="object-cover" />
           </div>
           <div className="flex flex-col items-start justify-center px-6 py-14 md:order-1 max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:z-10 max-md:bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-ribbon)_90%,transparent),color-mix(in_srgb,var(--color-ribbon)_75%,transparent)_calc(100%-10rem),transparent)] max-md:pt-40 max-md:pb-10 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
-            <p className="label">{callsOpen() ? "Send a Call" : "Send a Call, Coming soon"}</p>
+            <p className="label">Send a Call</p>
             <h1 className="mt-6 text-[clamp(2.75rem,4vw,4.75rem)] leading-[1.02]">
               Place your Boujie <em className="text-pink">Call.</em>
             </h1>
             <p className="mt-6 max-w-sm text-base leading-relaxed md:text-lg">The gift experience that lets you say everything without saying a word.</p>
-            <GiftButton label="Send a Call" className="cta cta-primary mt-8 md:mt-10" />
+            <a href="#waitlist" className="cta cta-primary mt-8 md:mt-10">
+              Join the waitlist
+            </a>
           </div>
         </section>
 
@@ -46,7 +48,7 @@ export default function SendACall() {
                 </li>
               ))}
             </ol>
-            <p className="mt-10 font-serif text-2xl italic rise md:mt-14">You only need their first name and email. We handle the rest, beautifully.</p>
+            <p className="mt-10 font-serif text-2xl italic rise md:mt-14">You only need her first name and number. We handle the rest, beautifully.</p>
           </div>
         </section>
 
@@ -91,7 +93,7 @@ export default function SendACall() {
         </section>
 
         <ClosingBanner
-          id="gift"
+          id="waitlist"
           tone="ink"
           photo="/images/banners/mocha-romper-banner.webp"
           alt="A woman in The Romper in Mocha smiles down at a black gift box tied in pink ribbon"
@@ -101,9 +103,10 @@ export default function SendACall() {
               The call is coming. Are you going to <em className="text-pink">pick up?</em>
             </>
           }
-          line="Choose their gift and write your note. We handle the rest."
+          line="Be first when Send a Call opens."
+          body="Join the waitlist and we will tell you the day you can send your first Call."
         >
-          <GiftButton label="Send a Call" />
+          <WaitlistForm tone="dark" />
         </ClosingBanner>
       </main>
       <SiteFooter />
