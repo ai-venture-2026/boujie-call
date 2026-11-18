@@ -1,3 +1,4 @@
+import "server-only";
 import { getProduct, stockKey, type Product } from "./products";
 
 export type Catalog = Record<string, { priceCents: number | null; stock: Record<string, number | null>; variants?: Record<string, string> }>;
