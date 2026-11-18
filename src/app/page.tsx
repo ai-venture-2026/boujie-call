@@ -7,7 +7,8 @@ import { GiftButton } from "@/components/gift-button";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
-import { getProduct, productHref, products, type Product } from "@/lib/products";
+import { AvailabilityPill } from "@/components/availability-pill";
+import { availability, getProduct, productHref, products, type Product } from "@/lib/products";
 import { getCatalog, withLive } from "@/lib/shopify";
 
 export const revalidate = 60;
@@ -25,6 +26,7 @@ const strip = [
 
 function PieceCard({ product }: { product: Product }) {
   const photo = product.colorways[0].images[0];
+  const status = product.comingSoon ? "Coming soon" : product.colorways.every((c) => availability(product, c.name) === "Sold out") ? "Sold out" : null;
   return (
     <Link href={productHref(product.slug, product.colorways[0].name)} className="group block">
       <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
@@ -33,10 +35,12 @@ function PieceCard({ product }: { product: Product }) {
         ) : (
           <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
         )}
+        <AvailabilityPill label={status} />
       </div>
       <h3 className="mt-3 truncate text-xl font-medium md:mt-5 md:text-[26px]">{product.name}</h3>
       <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-4">
-        <Price product={product} compact />
+        {product.comingSoon ? <p className="font-sans text-base font-medium">Coming soon</p> : <Price product={product} compact />}
+        {status === "Sold out" && <span className="sr-only">, sold out</span>}
         <span className="label text-muted">{product.colorways.length} colorways</span>
       </div>
     </Link>
