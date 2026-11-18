@@ -14,6 +14,7 @@ const CART = `mutation ($lines: [CartLineInput!]!) { cartCreate(input: { lines: 
 
 const ORDER = `query ($id: ID!) { cart(id: $id) { id } }`;
 const CART_ID = /^gid:\/\/shopify\/Cart\/[^\s/]{1,300}$/;
+const on = () => process.env.SHOPIFY_CHECKOUT_ENABLED === "true";
 
 const fail = (message: string): CheckoutResult => ({ ok: false, message });
 
@@ -34,7 +35,7 @@ const valid = (l: BagLine) => {
 
 // Off until SHOPIFY_CHECKOUT_ENABLED is "true" at launch; the shop keeps reading Shopify either way.
 export async function startCheckout(lines: BagLine[]): Promise<CheckoutResult> {
-  if (process.env.SHOPIFY_CHECKOUT_ENABLED !== "true") return fail(SOON);
+  if (!on()) return fail(SOON);
   if (!Array.isArray(lines) || lines.length === 0 || lines.length > MAX_LINES || !lines.every(valid)) return fail(GONE);
 
   const catalog = await getCatalog();
@@ -63,8 +64,9 @@ export async function startCheckout(lines: BagLine[]): Promise<CheckoutResult> {
 }
 
 // Shopify deletes a cart once its order is placed, so only a clean null answer counts; any doubt keeps the bag.
+// No order can exist while checkout is off, so the check never reaches Shopify before launch.
 export async function orderPlaced(cart: string): Promise<boolean> {
-  if (typeof cart !== "string" || !CART_ID.test(cart)) return false;
+  if (!on() || typeof cart !== "string" || !CART_ID.test(cart)) return false;
   try {
     const res = await storefront(ORDER, { id: cart });
     const body = res.ok ? await res.json() : null;

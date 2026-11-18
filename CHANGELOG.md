@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Checkout safety: the check that empties the bag after an order stays off until checkout launches, so nobody can make the site contact Shopify through it before then. Shoppers see no change.
 - Home cards show availability like the Shop page: a piece not on sale in Shopify shows a Coming soon pill and Coming soon in place of its price, and a piece sold out in every colour shows a Sold out pill. Pull requests from the project tooling now open against develop.
 - Home prices follow Shopify: the piece cards on Home read live data the way the Shop page does, so a price changed in Shopify shows on Home within a minute. Without Shopify they show the built-in prices as before.
 - Test reliability: the Send a Call and claim page alert tests wait for the message instead of reading the empty alert box, and the quick-add bar tests clean up after themselves. Nothing visible changes.

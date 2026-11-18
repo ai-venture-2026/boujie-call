@@ -1,5 +1,6 @@
 import { orderPlaced, startCheckout } from "./checkout";
 
+
 const node = (color: string, size: string, availableForSale = true) => ({
   id: `gid://shopify/ProductVariant/${color}-${size}`,
   availableForSale,
@@ -95,6 +96,7 @@ describe("orderPlaced", () => {
   beforeEach(() => {
     vi.stubEnv("SHOPIFY_STORE_DOMAIN", "example.myshopify.com");
     vi.stubEnv("SHOPIFY_STOREFRONT_PUBLIC_TOKEN", "test-token");
+    vi.stubEnv("SHOPIFY_CHECKOUT_ENABLED", "true");
   });
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -120,6 +122,14 @@ describe("orderPlaced", () => {
   it("reports no order when Shopify is unreachable", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
     expect(await orderPlaced(CART_ID)).toBe(false);
+  });
+
+  it("stays off without asking Shopify while checkout is switched off", async () => {
+    const fetch = answer({ data: { cart: null } });
+    vi.stubGlobal("fetch", fetch);
+    vi.stubEnv("SHOPIFY_CHECKOUT_ENABLED", "false");
+    expect(await orderPlaced(CART_ID)).toBe(false);
+    expect(fetch).not.toHaveBeenCalled();
   });
 
   it("refuses an id that is not a Shopify cart without asking Shopify", async () => {
