@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import type { BagLine } from "./bag";
 import { getProduct, MAX_QTY, stockKey } from "./products";
 import { API_VERSION, getCatalog } from "./shopify";
@@ -14,6 +15,8 @@ const CART = `mutation ($lines: [CartLineInput!]!) { cartCreate(input: { lines: 
 
 const ORDER = `query ($id: ID!) { cart(id: $id) { id } }`;
 const CART_ID = /^gid:\/\/shopify\/Cart\/[^\s/]{1,300}$/;
+const PASS = "bc_cart";
+const on = () => process.env.SHOPIFY_CHECKOUT_ENABLED === "true";
 
 const fail = (message: string): CheckoutResult => ({ ok: false, message });
 
@@ -34,7 +37,7 @@ const valid = (l: BagLine) => {
 
 // Off until SHOPIFY_CHECKOUT_ENABLED is "true" at launch; the shop keeps reading Shopify either way.
 export async function startCheckout(lines: BagLine[]): Promise<CheckoutResult> {
-  if (process.env.SHOPIFY_CHECKOUT_ENABLED !== "true") return fail(SOON);
+  if (!on()) return fail(SOON);
   if (!Array.isArray(lines) || lines.length === 0 || lines.length > MAX_LINES || !lines.every(valid)) return fail(GONE);
 
   const catalog = await getCatalog();
@@ -55,6 +58,7 @@ export async function startCheckout(lines: BagLine[]): Promise<CheckoutResult> {
     const url: unknown = result?.cart?.checkoutUrl;
     if (result?.userErrors?.length || typeof url !== "string" || !url.startsWith("https://")) return fail(RETRY);
     const id: unknown = result?.cart?.id;
+    if (typeof id === "string") (await cookies()).set(PASS, id, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 7 });
     return { ok: true, url, ...(typeof id === "string" && { cart: id }) };
   } catch (error) {
     console.error("Shopify checkout unavailable", error);
@@ -63,12 +67,17 @@ export async function startCheckout(lines: BagLine[]): Promise<CheckoutResult> {
 }
 
 // Shopify deletes a cart once its order is placed, so only a clean null answer counts; any doubt keeps the bag.
+// Only the browser holding the httpOnly pass from startCheckout may ask, so scripts cannot make the site query Shopify.
 export async function orderPlaced(cart: string): Promise<boolean> {
-  if (typeof cart !== "string" || !CART_ID.test(cart)) return false;
+  if (!on() || typeof cart !== "string" || !CART_ID.test(cart)) return false;
+  const jar = await cookies();
+  if (jar.get(PASS)?.value !== cart) return false;
   try {
     const res = await storefront(ORDER, { id: cart });
     const body = res.ok ? await res.json() : null;
-    return !!body?.data && body.data.cart === null && !body.errors?.length;
+    const placed = !!body?.data && body.data.cart === null && !body.errors?.length;
+    if (placed) jar.delete(PASS);
+    return placed;
   } catch {
     return false;
   }

@@ -1,5 +1,14 @@
 import { orderPlaced, startCheckout } from "./checkout";
 
+const jar = new Map<string, { value: string; options?: Record<string, unknown> }>();
+vi.mock("next/headers", () => ({
+  cookies: async () => ({
+    get: (name: string) => (jar.has(name) ? { name, value: jar.get(name)!.value } : undefined),
+    set: (name: string, value: string, options?: Record<string, unknown>) => void jar.set(name, { value, options }),
+    delete: (name: string) => void jar.delete(name),
+  }),
+}));
+
 const node = (color: string, size: string, availableForSale = true) => ({
   id: `gid://shopify/ProductVariant/${color}-${size}`,
   availableForSale,
@@ -45,6 +54,13 @@ describe("startCheckout", () => {
   it("returns the Shopify checkout address", async () => {
     on(shopify());
     expect(await startCheckout([rose])).toEqual({ ok: true, url: "https://shop.example/checkouts/abc", cart: CART_ID });
+  });
+
+  it("hands this browser a private pass for the cart it started", async () => {
+    jar.clear();
+    on(shopify());
+    await startCheckout([rose]);
+    expect(jar.get("bc_cart")).toEqual({ value: CART_ID, options: expect.objectContaining({ httpOnly: true, secure: true, sameSite: "lax", path: "/" }) });
   });
 
   it("sends each variant id with its quantity", async () => {
@@ -95,6 +111,9 @@ describe("orderPlaced", () => {
   beforeEach(() => {
     vi.stubEnv("SHOPIFY_STORE_DOMAIN", "example.myshopify.com");
     vi.stubEnv("SHOPIFY_STOREFRONT_PUBLIC_TOKEN", "test-token");
+    vi.stubEnv("SHOPIFY_CHECKOUT_ENABLED", "true");
+    jar.clear();
+    jar.set("bc_cart", { value: CART_ID });
   });
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -120,6 +139,42 @@ describe("orderPlaced", () => {
   it("reports no order when Shopify is unreachable", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
     expect(await orderPlaced(CART_ID)).toBe(false);
+  });
+
+  it("lets go of the pass once the order is placed", async () => {
+    vi.stubGlobal("fetch", answer({ data: { cart: null } }));
+    await orderPlaced(CART_ID);
+    expect(jar.has("bc_cart")).toBe(false);
+  });
+
+  it("keeps the pass while the order is not placed yet", async () => {
+    vi.stubGlobal("fetch", answer({ data: { cart: { id: CART_ID } } }));
+    await orderPlaced(CART_ID);
+    expect(jar.get("bc_cart")?.value).toBe(CART_ID);
+  });
+
+  it("refuses a browser without the pass without asking Shopify", async () => {
+    const fetch = answer({ data: { cart: null } });
+    vi.stubGlobal("fetch", fetch);
+    jar.clear();
+    expect(await orderPlaced(CART_ID)).toBe(false);
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("refuses a cart the browser did not start without asking Shopify", async () => {
+    const fetch = answer({ data: { cart: null } });
+    vi.stubGlobal("fetch", fetch);
+    jar.set("bc_cart", { value: "gid://shopify/Cart/someone-else?key=k2" });
+    expect(await orderPlaced(CART_ID)).toBe(false);
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("stays off without asking Shopify while checkout is switched off", async () => {
+    const fetch = answer({ data: { cart: null } });
+    vi.stubGlobal("fetch", fetch);
+    vi.stubEnv("SHOPIFY_CHECKOUT_ENABLED", "false");
+    expect(await orderPlaced(CART_ID)).toBe(false);
+    expect(fetch).not.toHaveBeenCalled();
   });
 
   it("refuses an id that is not a Shopify cart without asking Shopify", async () => {
