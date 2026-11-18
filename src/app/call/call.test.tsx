@@ -58,11 +58,11 @@ describe("Claim page", () => {
   });
 
   it("shows a refused claim as an alert", async () => {
-    vi.spyOn(claimModule, "claimCall").mockResolvedValue({ ok: false, message: "Choose your size." });
+    vi.spyOn(claimModule, "claimCall").mockImplementation(() => new Promise((done) => setTimeout(() => done({ ok: false, message: "Choose your size." }), 50)));
     await page();
     fill();
     fireEvent.click(screen.getByRole("button", { name: "Claim my gift" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("Choose your size.");
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("Choose your size."));
   });
 });
 

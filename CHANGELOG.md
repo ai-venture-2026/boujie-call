@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Test reliability: the Send a Call and claim page alert tests wait for the message instead of reading the empty alert box, and the quick-add bar tests clean up after themselves. Nothing visible changes.
 - Shop on phones: each piece's colours sit in one row that scrolls sideways, with the next card peeking in, instead of two columns with a lone last card. A card scrolls fully into view when reached with Tab. Tablets and desktop keep their grid.
 - Build safety: the build runs on Node 24 instead of whichever new Node major Vercel picks, and the Shopify connection file is marked server only, so a change that pulls it into the browser fails the build. Nothing visible changes.
 - Next.js security update: next and eslint-config-next move from 16.4.3 to 16.4.6, which fixes a cache advisory (GHSA-vc7v-qv4w-wrv8) and stops the build failing on its security warning. Nothing visible changes.
