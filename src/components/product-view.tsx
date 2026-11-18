@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { addToBag, BAG_OPENED } from "@/lib/bag";
 import { formatPrice } from "@/lib/content";
-import { colorwaySlug, getOffer, getSizeChart, stockKey, type Colorway, type Product } from "@/lib/products";
+import { availability, colorwaySlug, getOffer, getSizeChart, stockKey, type Colorway, type Product } from "@/lib/products";
 import { GiftButton } from "./gift-button";
 import { SizeGuide } from "./size-guide";
+import { AvailabilityPill } from "./availability-pill";
 
 const views = ["front", "back", "detail"];
 
@@ -103,6 +104,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
               ) : (
                 <ToCome label={`${product.name} in ${shown.name}, ${v}`} />
               )}
+              <AvailabilityPill label={availability(product, shown.name)} />
             </div>
           ))}
         </div>
