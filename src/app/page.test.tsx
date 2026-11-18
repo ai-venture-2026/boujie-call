@@ -1,6 +1,8 @@
 import { existsSync } from "node:fs";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import Home from "./page";
+import About from "./about/page";
+import SendACall from "./send-a-call/page";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { BAG_KEY } from "@/lib/bag";
@@ -692,7 +694,36 @@ describe("Sharp photos on phones", () => {
 
   it("asks for a hero photo as wide as it is drawn", async () => {
     render(await Home());
-    expect(sizesOf(screen.getAllByRole("img", { name: /The Slip Dress|The Romper/ })[0])).toContain("150vh");
+    expect(sizesOf(screen.getAllByRole("img", { name: /The Slip Dress|The Romper/ })[0])).toBe("(min-width: 768px) 62vw, 100vh");
+  });
+
+  it("asks for the About hero at screen height on phones", async () => {
+    const { container } = render(await About());
+    expect(sizesOf(container.querySelector('img[src*="hero-blue-romper"]'))).toBe("(min-width: 768px) 62vw, 100vh");
+  });
+
+  it("asks for the Send a Call hero at screen height on phones", async () => {
+    const { container } = render(await SendACall());
+    expect(sizesOf(container.querySelector('img[src*="hero-rose-slip"]'))).toBe("(min-width: 768px) 62vw, 100vh");
+  });
+
+  it("waits for the page to load before fetching the other hero slides", async () => {
+    const state = vi.spyOn(document, "readyState", "get").mockReturnValue("loading");
+    try {
+      const { container } = render(await Home());
+      const slides = () => container.querySelectorAll('[aria-roledescription="slide"] img');
+      expect(slides()).toHaveLength(1);
+      state.mockReturnValue("complete");
+      act(() => void window.dispatchEvent(new Event("load")));
+      expect(slides()).toHaveLength(heroSlides.length);
+    } finally {
+      state.mockRestore();
+    }
+  });
+
+  it("does not preload the menu logo, which stays hidden until the menu opens", () => {
+    const { container } = render(<SiteHeader />);
+    expect(container.querySelector('img[alt="Boujie Call"]')).toHaveAttribute("loading", "lazy");
   });
 
   it("asks for a closing banner as wide as it is drawn", async () => {

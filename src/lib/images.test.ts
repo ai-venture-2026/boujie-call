@@ -24,6 +24,10 @@ describe("Public images", () => {
     expect(imagePaths.filter((p) => !existsSync(`public${p}`))).toEqual([]);
   });
 
+  it("keeps the header logo mask small", async () => {
+    expect(await sharp("public/images/brand/logo-ink.png").metadata()).toMatchObject({ width: 480, height: 171 });
+  });
+
   it("keeps the logo files in brand", () => {
     expect(["logo-ink.png", "logo-pink.png", "monogram-ink.png"].filter((f) => !existsSync(`public/images/brand/${f}`))).toEqual([]);
   });
