@@ -195,8 +195,8 @@ describe("Product photos", () => {
 describe("Gender neutral gift copy", () => {
   const gendered = /\b(her|hers|she)\b/i;
 
-  it("keeps gendered pronouns off Home", () => {
-    const { container } = render(<Home />);
+  it("keeps gendered pronouns off Home", async () => {
+    const { container } = render(await Home());
     expect(container.textContent).not.toMatch(gendered);
   });
 
