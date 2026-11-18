@@ -129,8 +129,8 @@ describe("Send a Call close", () => {
 });
 
 describe("Call channel across pages", () => {
-  it("drops the old email wording on Home", () => {
-    const { container } = render(<Home />);
+  it("drops the old email wording on Home", async () => {
+    const { container } = render(await Home());
     expect(container.textContent).not.toMatch(/name and number/);
   });
 

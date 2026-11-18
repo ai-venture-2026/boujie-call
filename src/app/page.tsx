@@ -7,7 +7,10 @@ import { GiftButton } from "@/components/gift-button";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
-import { getProduct, productHref, type Product } from "@/lib/products";
+import { getProduct, productHref, products, type Product } from "@/lib/products";
+import { getCatalog, withLive } from "@/lib/shopify";
+
+export const revalidate = 60;
 
 const wrap = "mx-auto max-w-7xl px-6 md:px-12";
 const romper = getProduct("the-romper");
@@ -40,7 +43,8 @@ function PieceCard({ product }: { product: Product }) {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const live = withLive(products, await getCatalog());
   return (
     <>
       <SiteHeader />
@@ -117,7 +121,7 @@ export default function Home() {
             </div>
             <ul aria-label="Pieces" className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-6 md:mt-12 md:gap-y-12">
               {["the-slip-dress", "the-romper", "the-boujie-set"].map((slug) => {
-                const product = getProduct(slug);
+                const product = live.find((p) => p.slug === slug);
                 return product && (
                   <li key={slug} className="rise max-sm:last:odd:col-span-2 max-sm:last:odd:w-[calc(50%-0.375rem)] max-sm:last:odd:justify-self-center">
                     <PieceCard product={product} />

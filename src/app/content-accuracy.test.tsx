@@ -104,8 +104,8 @@ describe("Copy without an unconfirmed fabric", () => {
     expect(description("the-slip-dress")).toBe("The one you reach for when the night is yours.");
   });
 
-  it("introduces the pieces on Home without a fabric", () => {
-    render(<Home />);
+  it("introduces the pieces on Home without a fabric", async () => {
+    render(await Home());
     expect(screen.getByText("Made to be gifted. Sizes S to XL.")).toBeInTheDocument();
   });
 

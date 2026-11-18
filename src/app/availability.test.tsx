@@ -1,7 +1,9 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { ShopGrid } from "@/components/shop-grid";
 import { ProductView } from "@/components/product-view";
+import Home from "./page";
 import { availability, products, stockKey, type Product } from "@/lib/products";
+import * as shopifyModule from "@/lib/shopify";
 
 const romper = products.find((p) => p.slug === "the-romper")!;
 const set = products.find((p) => p.slug === "the-boujie-set")!;
@@ -84,5 +86,16 @@ describe("Product photo availability pill", () => {
     const pills = [...document.querySelectorAll("[data-pill]")].map((p) => p.textContent);
     expect(pills.length).toBeGreaterThan(1);
     expect(pills.every((t) => t === "Sold out")).toBe(true);
+  });
+});
+
+describe("Home piece cards follow Shopify", () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it("shows the price Shopify gives a piece", async () => {
+    vi.spyOn(shopifyModule, "getCatalog").mockResolvedValue({ "the-slip-dress": { priceCents: 4800, stock: {} }, "the-romper": { priceCents: 5200, stock: {} }, "the-boujie-set": { priceCents: 4800, stock: {} } });
+    render(await Home());
+    const romperCard = within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Romper" }).closest("a")!;
+    expect(romperCard).toHaveTextContent("$52.00");
   });
 });

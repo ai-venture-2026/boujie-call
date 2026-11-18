@@ -34,4 +34,4 @@ copy; fix it before it spreads), soon (costs someone time while it exists), acce
 - [soon] fabric row test restores the Slip Dress to null instead of its saved fabric and care (src/app/shop/shop.test.tsx) :: logged 2026-11-13, cycle 20261113-40c9db
 - [soon] size guide shows a blank cell when the chart lacks a listed size; type chart keys against sizes or show a dash (src/components/size-guide.tsx) :: logged 2026-11-13, cycle 20261113-40c9db
 - [soon] Home piece cards show the Boujie Set with a price while it is a draft in Shopify; Home reads the built-in product list, not live data, so it cannot show Coming soon or Sold out (src/app/page.tsx) :: logged 2026-11-18, cycle 20261118-770798
-- [soon] Next.js build reports the installed version is affected by a known security vulnerability; upgrade next (and eslint-config-next) to the latest 16.x patch (package.json) :: logged 2026-11-18, cycle 20261118-770798
+- [soon] Once Send a Call takes payment, clear the gift pop-up after a successful send so the next gift starts empty (Alex 2026-11-18: keep choices on close until then) (src/components/gift-button.tsx) :: logged 2026-11-18
