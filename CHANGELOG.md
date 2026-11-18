@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Next.js security update: next and eslint-config-next move from 16.4.3 to 16.4.6, which fixes a cache advisory (GHSA-vc7v-qv4w-wrv8) and stops the build failing on its security warning. Nothing visible changes.
 - Gift choices start empty: Send a Call buttons and the full gift form open with no Call, piece or colour chosen, and Next or Continue waits until all three are picked. Colours appear once a piece is chosen. Send as a gift on a product page still starts on that piece and colour.
 - Product links open on the colour they show: Home's Discover the piece opens the Romper in Mocha, hero slide names and bag piece names open their colour, and every product link that shows a colour is built by one helper.
 - Product page: on desktop the name, price, colours, sizes and buttons scroll with the page instead of staying pinned while the photo moves.
