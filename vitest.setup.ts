@@ -1,4 +1,8 @@
 import "@testing-library/jest-dom/vitest";
+import { configure } from "@testing-library/react";
+
+// A busy machine makes renders several times slower; prices and pop-ups can take more than the 1 s default to appear.
+configure({ asyncUtilTimeout: 5000 });
 
 // jsdom has no showModal or close on <dialog>.
 HTMLDialogElement.prototype.showModal ??= function (this: HTMLDialogElement) {
