@@ -111,6 +111,9 @@ export function availability(product: Product, colour: string): "Coming soon" | 
   return product.sizes.length > 0 && product.sizes.every((s) => product.stock?.[stockKey(colour, s)] === 0) ? "Sold out" : null;
 }
 
+// A colour that exists and is not merely announced; every path that sells or gifts checks this.
+export const forSale = (product: Product, colour: unknown) => product.colorways.some((c) => c.name === colour && !c.comingSoon);
+
 export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }

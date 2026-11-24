@@ -139,3 +139,20 @@ describe("orderPlaced", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 });
+
+describe("Coming soon colours at checkout", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+
+  it("refuses a Red Boujie Set line without asking Shopify", async () => {
+    vi.stubEnv("SHOPIFY_STORE_DOMAIN", "example.myshopify.com");
+    vi.stubEnv("SHOPIFY_STOREFRONT_PUBLIC_TOKEN", "test-token");
+    vi.stubEnv("SHOPIFY_CHECKOUT_ENABLED", "true");
+    const fetch = shopify();
+    vi.stubGlobal("fetch", fetch);
+    expect((await startCheckout([{ slug: "the-boujie-set", colorway: "Red", size: "S", qty: 1 }])).ok).toBe(false);
+    expect(fetch).not.toHaveBeenCalled();
+  });
+});

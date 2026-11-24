@@ -34,6 +34,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
   const colorways = useRef<HTMLFieldSetElement>(null);
   const sizes = useRef<HTMLFieldSetElement>(null);
   const [quickAdd, setQuickAdd] = useState(false);
+  const soonShown = !!(chosen ?? product.colorways[0]).comingSoon;
 
   // The phone quick add bar shows once the main button has scrolled up out of view.
   useEffect(() => {
@@ -42,7 +43,8 @@ export function ProductView({ product, intro, details }: { product: Product; int
     const io = new IntersectionObserver(([e]) => setQuickAdd(!e.isIntersecting && e.boundingClientRect.top < 0), { rootMargin: "0px 0px 10000% 0px" });
     io.observe(mainAdd.current);
     return () => io.disconnect();
-  }, []);
+    // The button unmounts while a coming soon colour is shown, so watch the new one when it returns.
+  }, [soonShown]);
 
   // From md the other slides are hidden, so the track cannot hold the scroll position; restore it on the way back down.
   const md = useRef<MediaQueryList | null>(null);

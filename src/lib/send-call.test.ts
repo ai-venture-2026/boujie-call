@@ -79,3 +79,9 @@ describe("startCall", () => {
     expect((await startCall(null as never)).ok).toBe(false);
   });
 });
+
+describe("Coming soon colours as gifts", () => {
+  it("refuses a Red Boujie Set gift", async () => {
+    expect(await startCall({ ...gift, slug: "the-boujie-set", colorway: "Red" })).toEqual({ ok: false, message: "Choose a colour." });
+  });
+});

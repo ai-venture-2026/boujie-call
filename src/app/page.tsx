@@ -27,7 +27,7 @@ const strip = [
 
 function PieceCard({ product }: { product: Product }) {
   const first = product.colorways[0];
-  const status = product.comingSoon ? "Coming soon" : product.colorways.every((c) => availability(product, c.name) === "Sold out") ? "Sold out" : null;
+  const status = product.comingSoon ? "Coming soon" : product.colorways.filter((c) => !c.comingSoon).every((c) => availability(product, c.name) === "Sold out") ? "Sold out" : null;
   return (
     <Link href={productHref(product.slug, first.name)} className="group block">
       <CardPhoto ghost={first.images[0]} model={first.gallery?.[0]?.src} sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone">

@@ -1,7 +1,7 @@
 "use server";
 
 import type { BagLine } from "./bag";
-import { getProduct, MAX_QTY, stockKey } from "./products";
+import { forSale, getProduct, MAX_QTY, stockKey } from "./products";
 import { API_VERSION, getCatalog } from "./shopify";
 
 export type CheckoutResult = { ok: true; url: string; cart?: string } | { ok: false; message: string };
@@ -30,7 +30,7 @@ const storefront = (query: string, variables: object) =>
 // Lines come from browser storage, so every field is checked before Shopify sees it.
 const valid = (l: BagLine) => {
   const product = typeof l === "object" && l !== null ? getProduct(l.slug) : undefined;
-  return !!product && product.colorways.some((c) => c.name === l.colorway) && product.sizes.includes(l.size) && Number.isInteger(l.qty) && l.qty >= 1 && l.qty <= MAX_QTY;
+  return !!product && forSale(product, l.colorway) && product.sizes.includes(l.size) && Number.isInteger(l.qty) && l.qty >= 1 && l.qty <= MAX_QTY;
 };
 
 // Off until SHOPIFY_CHECKOUT_ENABLED is "true" at launch; the shop keeps reading Shopify either way.

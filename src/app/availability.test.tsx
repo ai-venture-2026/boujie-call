@@ -133,9 +133,13 @@ describe("Home piece cards follow Shopify", () => {
 });
 
 describe("Red Boujie Set placeholder", () => {
-  const rosePage = () => render(<ProductView product={set} intro={null} details={null} />);
+  const setPage = () => render(<ProductView product={set} intro={null} details={null} />);
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
   const chooseRed = () => {
-    rosePage();
+    setPage();
     fireEvent.click(screen.getByRole("radio", { name: "Red" }));
   };
 
@@ -155,7 +159,7 @@ describe("Red Boujie Set placeholder", () => {
   });
 
   it("offers a Red swatch on The Boujie Set", () => {
-    rosePage();
+    setPage();
     expect(screen.getByRole("radio", { name: "Red" })).toBeInTheDocument();
   });
 
@@ -164,8 +168,46 @@ describe("Red Boujie Set placeholder", () => {
     expect(screen.queryByRole("button", { name: "Add to your bag" })).toBeNull();
   });
 
+  it("labels Red as Coming soon where the buttons sit", () => {
+    chooseRed();
+    expect(screen.getAllByText("Coming soon").some((el) => el.tagName === "P")).toBe(true);
+  });
+
+  it("offers no Send as a gift for Red", () => {
+    chooseRed();
+    expect(screen.queryByRole("button", { name: "Send as a gift" })).toBeNull();
+  });
+
+  it("calls Red coming soon", () => {
+    expect(availability(set, "Red")).toBe("Coming soon");
+  });
+
+  it("watches the Add to your bag button again after leaving Red", () => {
+    const watched: Element[] = [];
+    vi.stubGlobal("IntersectionObserver", class { observe(el: Element) { watched.push(el); } disconnect() {} });
+    chooseRed();
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(watched.at(-1)).toBe(screen.getByRole("button", { name: "Add to your bag" }));
+  });
+
+  it("starts the gift pop-up with no colour when it opens on Red", async () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ "the-boujie-set": 4800 }) }));
+    render(<GiftButton label="Send as a gift" start={{ slug: "the-boujie-set", colorway: "Red" }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
+    await screen.findByRole("radio", { name: "Rose" });
+    expect(within(screen.getByRole("radiogroup", { name: "Choose a colour" })).getByText("choose one")).toBeInTheDocument();
+  });
+
+  it("marks The Boujie Set sold out on Home once every sellable colour is gone", async () => {
+    const gone = Object.fromEntries(["After Dark", "Powder Blue", "Rose"].flatMap((c) => set.sizes.map((s) => [stockKey(c, s), 0])));
+    vi.spyOn(shopifyModule, "getCatalog").mockResolvedValue({ "the-boujie-set": { priceCents: 4800, stock: gone } });
+    render(await Home());
+    expect(within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("link").find((l) => l.textContent?.includes("The Boujie Set"))?.querySelector("[data-pill]")).toHaveTextContent("Sold out");
+  });
+
   it("keeps Add to your bag for Rose", () => {
-    rosePage();
+    setPage();
     fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
     expect(screen.getByRole("button", { name: "Add to your bag" })).toBeInTheDocument();
   });
@@ -177,8 +219,6 @@ describe("Red Boujie Set placeholder", () => {
     fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
     await screen.findByRole("radio", { name: "Rose" });
     expect(screen.queryByRole("radio", { name: "Red" })).toBeNull();
-    vi.unstubAllEnvs();
-    vi.unstubAllGlobals();
   });
 
   it("leaves Red out of the Send a Call form", () => {

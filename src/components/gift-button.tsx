@@ -25,8 +25,8 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
   const [tier, setTier] = useState("");
   const [slug, setSlug] = useState(start?.slug ?? "");
   const piece = products.find((p) => p.slug === slug);
-  const [colorway, setColorway] = useState(start?.colorway ?? "");
-  const colour = piece?.colorways.find((c) => c.name === colorway);
+  const [colorway, setColorway] = useState(start && products.find((p) => p.slug === start.slug)?.colorways.some((c) => c.name === start.colorway && !c.comingSoon) ? start.colorway : "");
+  const colour = piece?.colorways.find((c) => c.name === colorway && !c.comingSoon);
   const photo = colour?.gallery?.[0]?.src ?? colour?.images[0];
   const ready = Boolean(tier && pieces.some((p) => p.slug === slug) && colour);
   const [details, setDetails] = useState({ senderName: "", senderEmail: "", recipientName: "", recipientEmail: "", note: "" });

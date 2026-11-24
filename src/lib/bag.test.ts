@@ -154,3 +154,10 @@ describe("return from checkout", () => {
     expect(readBag()).toEqual([{ ...rose, qty: 3, skip: true }, mocha]);
   });
 });
+
+describe("Coming soon colours in the bag", () => {
+  it("drops a Red Boujie Set line read from storage", () => {
+    localStorage.setItem(BAG_KEY, JSON.stringify([{ slug: "the-boujie-set", colorway: "Red", size: "S", qty: 1 }]));
+    expect(readBag()).toEqual([]);
+  });
+});
