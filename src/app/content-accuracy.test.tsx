@@ -83,11 +83,11 @@ describe("Product details before the owner confirms them", () => {
   });
 
   it("shows no Size guide without measurements", async () => {
-    await renderProduct("the-romper");
+    await renderProduct("the-boujie-set");
     expect(screen.queryByRole("button", { name: "Size guide" })).toBeNull();
   });
 
-  it("lists the owner's measurements once they exist", async () => {
+  it("lists a chart's cells per size as given", async () => {
     vi.spyOn(productsModule, "getSizeChart").mockReturnValue({ S: ["32", "26", "36"], M: ["34", "28", "38"], L: ["36", "30", "40"], XL: ["38", "32", "42"] });
     await renderProduct("the-romper");
     fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
