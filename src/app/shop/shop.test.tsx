@@ -639,7 +639,7 @@ describe("Vendor size charts", () => {
     expect(screen.getByRole("dialog", { name: "Size guide" })).toHaveTextContent("Garment measurements in inches / cm. The fabric stretches, so each size fits a body a little larger than these numbers.");
   });
 
-  it("hides the slash between inches and cm on phones but keeps it for screen readers", async () => {
+  it("makes the cell slash screen reader only on phones", async () => {
     await renderProduct("the-romper");
     open();
     expect(within(screen.getByRole("row", { name: /^XL/ })).getAllByRole("cell")[0].querySelector("span")).toHaveClass("max-md:sr-only");
