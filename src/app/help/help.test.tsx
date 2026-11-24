@@ -1,5 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
-import HelpPage from "./page";
+import HelpPage, { metadata as helpMetadata } from "./page";
 import PrivacyPage from "../privacy/page";
 import TermsPage from "../terms/page";
 import sitemap from "../sitemap";
@@ -81,9 +81,13 @@ describe("Owner's help answers", () => {
     expect(screen.getByText("If your gift isn't claimed within 30 days, we email you a code so you can send it to someone else.")).toBeInTheDocument();
   });
 
-  it("keeps the shipping question hidden until it has an answer", () => {
+  it.each(["How long does shipping take?", "What is your returns policy?", "How do I find my size?"])("keeps %s hidden until it has an answer", (q) => {
     render(HelpPage());
-    expect(screen.queryByText("How long does shipping take?")).toBeNull();
+    expect(screen.queryByText(q)).toBeNull();
+  });
+
+  it("describes only the answered topics to search engines", () => {
+    expect(helpMetadata.description).toBe("How Send a Call works, what happens to an unclaimed gift, and how to reach us.");
   });
 });
 
