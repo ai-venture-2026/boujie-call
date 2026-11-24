@@ -9,6 +9,7 @@ import * as helpModule from "@/lib/help";
 vi.mock("next/navigation", () => ({ notFound: () => { throw new Error("NEXT_NOT_FOUND"); }, usePathname: () => "/help" }));
 
 const empty = helpModule.getHelp();
+const nothingLive = { ...empty, contactEmail: null, privacy: null, terms: null };
 const filled = {
   ...empty,
   contactEmail: "hello@boujiecall.com",
@@ -23,7 +24,8 @@ const use = (content: typeof empty) => vi.spyOn(helpModule, "getHelp").mockRetur
 afterEach(() => vi.restoreAllMocks());
 
 describe("Help page", () => {
-  it("does not exist before the owner sends a contact email", () => {
+  it("does not exist without a contact email", () => {
+    use(nothingLive);
     expect(() => HelpPage()).toThrow("NEXT_NOT_FOUND");
   });
 
@@ -63,8 +65,31 @@ describe("Policy pages", () => {
   });
 });
 
+describe("Owner's help answers", () => {
+  it("shows the owner's contact email as a link", () => {
+    render(HelpPage());
+    expect(screen.getByRole("link", { name: "BoujieCall@gmail.com" })).toHaveAttribute("href", "mailto:BoujieCall@gmail.com");
+  });
+
+  it("links to Help from the footer", () => {
+    render(<SiteFooter />);
+    expect(within(screen.getByRole("navigation", { name: "Help" })).getByRole("link", { name: "Help" })).toHaveAttribute("href", "/help");
+  });
+
+  it("explains what happens to a gift that is never claimed", () => {
+    render(HelpPage());
+    expect(screen.getByText("If your gift isn't claimed within 30 days, we email you a code so you can send it to someone else.")).toBeInTheDocument();
+  });
+
+  it("keeps the shipping question hidden until it has an answer", () => {
+    render(HelpPage());
+    expect(screen.queryByText("How long does shipping take?")).toBeNull();
+  });
+});
+
 describe("Footer Help column", () => {
   it("stays out of the footer while nothing is live", () => {
+    use(nothingLive);
     render(<SiteFooter />);
     expect(screen.queryByRole("navigation", { name: "Help" })).toBeNull();
   });

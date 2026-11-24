@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Owner answers on the site: the Help page and its footer link open with the contact email BoujieCall@gmail.com, every product page shows Fabric: 76% nylon, 24% spandex, and Help explains that an unclaimed gift gets the sender a code after 30 days.
 - Size guides: The Slip Dress and The Romper product pages have a Size guide with the vendor garment measurements in inches and cm, and say the fabric stretches. The Boujie Set gets its guide once its chart is readable.
 - Product-first listings: Shop and Home cards show each piece on its own, and the model photo fades in when a shopper hovers the card on a computer or reaches it with the keyboard. Phones show the piece on its own; product pages still open on the model.
 - New shop models: Boujie Set Rose, Slip Dress Rose and Bloom, and Romper After Dark and Powder Blue show new models in the sizes the pieces come in (S to XL), with curvy models on the Slip Dress and slim or athletic models on the Romper. Every shop photo keeps the same soft pink background.
