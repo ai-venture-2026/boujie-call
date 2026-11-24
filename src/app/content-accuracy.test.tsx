@@ -83,7 +83,7 @@ describe("Product details before the owner confirms them", () => {
   });
 
   it("shows no Size guide without measurements", async () => {
-    await renderProduct("the-romper");
+    await renderProduct("the-boujie-set");
     expect(screen.queryByRole("button", { name: "Size guide" })).toBeNull();
   });
 

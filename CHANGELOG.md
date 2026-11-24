@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Size guides: The Slip Dress and The Romper product pages have a Size guide with the vendor garment measurements in inches and cm, and say the fabric stretches. The Boujie Set gets its guide once its chart is readable.
 - Product-first listings: Shop and Home cards show each piece on its own, and the model photo fades in when a shopper hovers the card on a computer or reaches it with the keyboard. Phones show the piece on its own; product pages still open on the model.
 - New shop models: Boujie Set Rose, Slip Dress Rose and Bloom, and Romper After Dark and Powder Blue show new models in the sizes the pieces come in (S to XL), with curvy models on the Slip Dress and slim or athletic models on the Romper. Every shop photo keeps the same soft pink background.
 - Test reliability under load: each test may run for 20 seconds instead of 5, and checks that wait for something to appear look for 5 seconds instead of 1. With three full test runs at once, failures went from 9 to 16 per run to 0. Nothing visible changes.

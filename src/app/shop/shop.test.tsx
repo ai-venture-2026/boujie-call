@@ -586,10 +586,10 @@ describe("Size guide", () => {
     expect(screen.getByRole("dialog", { name: "Size guide" }).closest("fieldset")).toBeNull();
   });
 
-  it("heads the chart with bust, waist, hip", async () => {
+  it("heads the Romper chart with its garment measurements", async () => {
     await renderProduct("the-romper");
     open();
-    expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Size", "Bust", "Waist", "Hip"]);
+    expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Size", "Bust", "Waist", "Leg opening"]);
   });
 
   it("lists a row per size", async () => {
@@ -609,6 +609,40 @@ describe("Size guide", () => {
     open();
     fireEvent.click(screen.getByRole("button", { name: "Close size guide" }));
     expect(screen.queryByRole("dialog", { name: "Size guide" })).toBeNull();
+  });
+});
+
+describe("Vendor size charts", () => {
+  const open = () => fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
+  const row = (size: string) => within(screen.getByRole("row", { name: new RegExp(`^${size}`) })).getAllByRole("cell").map((c) => c.textContent);
+
+  it("heads The Slip Dress chart with its garment measurements", async () => {
+    await renderProduct("the-slip-dress");
+    open();
+    expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Size", "Bust", "Waist", "Hem", "Length"]);
+  });
+
+  it("lists the vendor measurements for The Slip Dress M", async () => {
+    await renderProduct("the-slip-dress");
+    open();
+    expect(row("M")).toEqual(["29.1 / 74", "24.3 / 61.6", "34.3 / 87", "23.7 / 60.3"]);
+  });
+
+  it("lists the vendor measurements for The Romper XL", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(row("XL")).toEqual(["27.2 / 69", "23.4 / 59.4", "19.0 / 48.2"]);
+  });
+
+  it("says the numbers are garment measurements that stretch", async () => {
+    await renderProduct("the-slip-dress");
+    open();
+    expect(screen.getByRole("dialog", { name: "Size guide" })).toHaveTextContent("Garment measurements in inches / cm. The fabric stretches, so each size fits a body a little larger than these numbers.");
+  });
+
+  it("shows no Size guide on The Boujie Set", async () => {
+    await renderProduct("the-boujie-set");
+    expect(screen.queryByRole("button", { name: "Size guide" })).toBeNull();
   });
 });
 
