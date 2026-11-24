@@ -174,7 +174,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
           </div>
           <p aria-live="polite" className="mt-3 text-[15px] text-muted empty:hidden">{cleared || (!!count && count <= 2 ? (count === 1 ? "Last one" : `${count} left`) : "")}</p>
         </fieldset>
-        {product.comingSoon ? (
+        {product.comingSoon || shown.comingSoon ? (
           <p className="label mt-7 short:mt-5">Coming soon</p>
         ) : (
           <div className="mt-7 flex flex-wrap gap-3 short:mt-5">
@@ -193,7 +193,7 @@ export function ProductView({ product, intro, details }: { product: Product; int
         </p>
         {details}
       </div>
-      {quickAdd && !product.comingSoon && (
+      {quickAdd && !product.comingSoon && !shown.comingSoon && (
         <div
           role="region"
           aria-label="Quick add"

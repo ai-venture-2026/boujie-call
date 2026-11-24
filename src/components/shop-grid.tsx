@@ -99,7 +99,7 @@ export function ShopGrid({ products, routerSearch }: { products: Product[]; rout
                         <span className="label mt-4 block truncate">{product.name}</span>
                         <span className="mt-1 block">
                           <span className="label block whitespace-nowrap text-muted">{colorway.name}</span>
-                          <span className="mt-1 block text-[17px] font-medium md:text-[15px]">{product.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}
+                          <span className="mt-1 block text-[17px] font-medium md:text-[15px]">{product.comingSoon || colorway.comingSoon ? "Coming soon" : formatPrice(product.priceCents)}
                             {status === "Sold out" && <span className="sr-only">, sold out</span>}
                           </span>
                         </span>

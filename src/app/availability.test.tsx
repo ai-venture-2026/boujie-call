@@ -1,6 +1,9 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { ShopGrid } from "@/components/shop-grid";
 import { ProductView } from "@/components/product-view";
+import { SendCallForm } from "@/components/send-call-form";
+import { GiftButton } from "@/components/gift-button";
+import { tiers } from "@/lib/content";
 import Home from "./page";
 import { availability, products, stockKey, type Product } from "@/lib/products";
 import * as shopifyModule from "@/lib/shopify";
@@ -104,7 +107,7 @@ describe("Home piece cards follow Shopify", () => {
     await showHome({ "the-slip-dress": live(), "the-romper": live() });
     const setCard = homeCard("The Boujie Set");
     expect(setCard.querySelector("[data-pill]")).toHaveTextContent("Coming soon");
-    expect(setCard).toHaveTextContent("Coming soon3 colorways");
+    expect(setCard).toHaveTextContent("Coming soon4 colorways");
     expect(setCard).not.toHaveTextContent("$48.00");
   });
 
@@ -126,5 +129,61 @@ describe("Home piece cards follow Shopify", () => {
     render(await Home());
     const romperCard = within(screen.getByRole("list", { name: "Pieces" })).getByRole("heading", { name: "The Romper" }).closest("a")!;
     expect(romperCard).toHaveTextContent("$52.00");
+  });
+});
+
+describe("Red Boujie Set placeholder", () => {
+  const rosePage = () => render(<ProductView product={set} intro={null} details={null} />);
+  const chooseRed = () => {
+    rosePage();
+    fireEvent.click(screen.getByRole("radio", { name: "Red" }));
+  };
+
+  it("shows Image to come on the Red shop card", () => {
+    render(<ShopGrid products={products} />);
+    expect(card("the-boujie-set", "red")).toHaveTextContent("Image to come");
+  });
+
+  it("puts a Coming soon pill on the Red shop card", () => {
+    render(<ShopGrid products={products} />);
+    expect(card("the-boujie-set", "red").querySelector("[data-pill]")).toHaveTextContent("Coming soon");
+  });
+
+  it("prices the Red shop card as Coming soon", () => {
+    render(<ShopGrid products={products} />);
+    expect(card("the-boujie-set", "red")).toHaveTextContent(/RedComing soon/);
+  });
+
+  it("offers a Red swatch on The Boujie Set", () => {
+    rosePage();
+    expect(screen.getByRole("radio", { name: "Red" })).toBeInTheDocument();
+  });
+
+  it("shows Coming soon instead of Add to your bag for Red", () => {
+    chooseRed();
+    expect(screen.queryByRole("button", { name: "Add to your bag" })).toBeNull();
+  });
+
+  it("keeps Add to your bag for Rose", () => {
+    rosePage();
+    fireEvent.click(screen.getByRole("radio", { name: "Rose" }));
+    expect(screen.getByRole("button", { name: "Add to your bag" })).toBeInTheDocument();
+  });
+
+  it("leaves Red out of the Send as a gift pop-up", async () => {
+    vi.stubEnv("NEXT_PUBLIC_CALLS_OPEN", "true");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ "the-boujie-set": 4800 }) }));
+    render(<GiftButton label="Send as a gift" start={{ slug: "the-boujie-set", colorway: "Rose" }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Send as a gift" }));
+    await screen.findByRole("radio", { name: "Rose" });
+    expect(screen.queryByRole("radio", { name: "Red" })).toBeNull();
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+
+  it("leaves Red out of the Send a Call form", () => {
+    render(<SendCallForm tiers={tiers} pieces={[set]} />);
+    fireEvent.click(screen.getByRole("radio", { name: "The Boujie Set" }));
+    expect(screen.queryByRole("radio", { name: "Red" })).toBeNull();
   });
 });

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Red Boujie Set announced: a Red swatch and Shop card show Image to come and Coming soon until the photos arrive. Red cannot be added to the bag or sent as a gift yet.
 - Owner answers on the site: the Help page and its footer link open with the contact email BoujieCall@gmail.com, every product page shows Fabric: 76% nylon, 24% spandex, and Help explains that an unclaimed gift gets the sender a code after 30 days.
 - Size guides: The Slip Dress and The Romper product pages have a Size guide with the vendor garment measurements in inches and cm, and say the fabric stretches. The Boujie Set gets its guide once its chart is readable.
 - Product-first listings: Shop and Home cards show each piece on its own, and the model photo fades in when a shopper hovers the card on a computer or reaches it with the keyboard. Phones show the piece on its own; product pages still open on the model.

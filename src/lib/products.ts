@@ -11,6 +11,8 @@ export type Colorway = {
   images: string[];
   // Shop grid and product page photos with their alt view; Home and the bag keep images.
   gallery?: { src: string; view: string }[];
+  // Announced before its photos and Shopify product exist: shown, never sold.
+  comingSoon?: boolean;
 };
 
 export type Product = {
@@ -41,6 +43,8 @@ const rose: Colorway = { name: "Rose", hex: "#f2a7c3", images: [] };
 const afterDark: Colorway = { name: "After Dark", hex: "#141014", images: [] };
 const powderBlue: Colorway = { name: "Powder Blue", hex: "#b9d3ea", images: [] };
 const mocha: Colorway = { name: "Mocha", hex: "#4a2c22", images: [] };
+// Christmas colour; the swatch shade is a stand-in until the owner's photos arrive (2026-11-24).
+const red: Colorway = { name: "Red", hex: "#9f1d35", images: [], comingSoon: true };
 const bloom: Colorway = {
   name: "Bloom",
   hex: "#ffffff",
@@ -56,6 +60,7 @@ export const productHref = (slug: string, colour: string) => `/shop/${slug}?colo
 // Cutouts live in public/images/products as <slug>-<colorway>.webp, studio photos in studio/<slug>-<colorway>-<view>.webp.
 const photographed = (slug: string, colorways: Colorway[], studio: Record<string, string[]>): Colorway[] =>
   colorways.map((c) => {
+    if (c.comingSoon) return c;
     const name = `${slug}-${colorwaySlug(c.name)}`;
     const cutout = `/images/products/${name}.webp`;
     const views = (studio[c.name] ?? []).map((view) => ({ src: `/images/products/studio/${name}-${view}.webp`, view }));
@@ -84,7 +89,7 @@ export const products: Product[] = [
     description: "A cami and shorts set, cute enough for brunch and soft enough to sleep in.",
     fabric: "76% nylon, 24% spandex",
     care: null,
-    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }),
+    colorways: photographed("the-boujie-set", [afterDark, powderBlue, rose, red], { "After Dark": frontBack, "Powder Blue": ["front", "side"], Rose: frontBack }),
     sizes,
   },
   {
@@ -102,7 +107,7 @@ export const products: Product[] = [
 
 // A colour counts as sold out only when every size is known to be at 0; unknown counts stay buyable.
 export function availability(product: Product, colour: string): "Coming soon" | "Sold out" | null {
-  if (product.comingSoon) return "Coming soon";
+  if (product.comingSoon || product.colorways.find((c) => c.name === colour)?.comingSoon) return "Coming soon";
   return product.sizes.length > 0 && product.sizes.every((s) => product.stock?.[stockKey(colour, s)] === 0) ? "Sold out" : null;
 }
 

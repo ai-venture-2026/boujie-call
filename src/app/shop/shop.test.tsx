@@ -340,7 +340,7 @@ describe("Shop collection", () => {
 
   it("shows one card per colorway", async () => {
     render(await Shop());
-    expect(cards()).toHaveLength(10);
+    expect(cards()).toHaveLength(11);
   });
 
   it("narrows to one piece from the sidebar", async () => {
@@ -1023,7 +1023,7 @@ describe("Live stock from Shopify", () => {
   it("shows Coming soon instead of the price on shop cards", () => {
     render(<ShopGrid products={products.map((p) => (p.slug === "the-boujie-set" ? { ...p, comingSoon: true } : p))} />);
     const setCards = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").filter((c) => c.textContent?.includes("The Boujie Set"));
-    expect(setCards).toHaveLength(3);
+    expect(setCards).toHaveLength(4);
     expect(setCards.every((c) => c.textContent?.includes("Coming soon") && !c.textContent.includes("$48.00"))).toBe(true);
   });
 });

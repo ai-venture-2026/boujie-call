@@ -107,7 +107,7 @@ export function GiftButton({ label, className = "cta cta-primary", start }: { la
                       <span className="mr-2 text-[15px]">
                         Colour: <span className="text-muted">{colorway || "choose one"}</span>
                       </span>
-                      {piece.colorways.map((c) => (
+                      {piece.colorways.filter((c) => !c.comingSoon).map((c) => (
                         <label key={c.name} className="grid size-11 cursor-pointer place-items-center rounded-full has-checked:ring-1 has-checked:ring-pink has-focus-visible:outline-2">
                           <input type="radio" name={`${title}-colour`} aria-label={c.name} className="sr-only" checked={colorway === c.name} onChange={() => setColorway(c.name)} />
                           <span aria-hidden="true" className="size-8 rounded-full border-[0.5px] border-ink/15" style={{ background: c.swatch ?? c.hex }} />
