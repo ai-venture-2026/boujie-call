@@ -463,12 +463,22 @@ describe("Studio photos", () => {
     expect(modelPhoto(shopCard("/shop/the-slip-dress?colorway=rose"), "the-slip-dress-rose-front")).toHaveClass("opacity-0", "group-hover:opacity-100");
   });
 
-  it("shows the model front photo on keyboard focus", async () => {
+  it("loads the hover photo only on devices that hover", async () => {
+    render(await Shop());
+    expect(modelPhoto(shopCard("/shop/the-slip-dress?colorway=rose"), "the-slip-dress-rose-front")).toHaveClass("hidden", "[@media(hover:hover)]:block");
+  });
+
+  it("skips the hover photo when it is the cutout itself", () => {
+    const { container } = render(<CardPhoto ghost="/images/products/the-slip-dress-rose.webp" model="/images/products/the-slip-dress-rose.webp" sizes="50vw" className="relative" />);
+    expect(container.querySelectorAll("img")).toHaveLength(1);
+  });
+
+  it("marks the model front photo to show on keyboard focus", async () => {
     render(await Shop());
     expect(modelPhoto(shopCard("/shop/the-slip-dress?colorway=rose"), "the-slip-dress-rose-front")).toHaveClass("group-focus-visible:opacity-100");
   });
 
-  it("fades the contact shadow while the model photo shows", async () => {
+  it("marks the contact shadow to fade while the model photo shows", async () => {
     render(await Shop());
     expect(shopCard("/shop/the-slip-dress?colorway=rose")?.querySelector(".contact")).toHaveClass("group-hover:after:opacity-0", "group-focus-visible:after:opacity-0");
   });
