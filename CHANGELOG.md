@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- New shop models: Boujie Set Rose, Slip Dress Rose and Bloom, and Romper After Dark and Powder Blue show new models in the sizes the pieces come in (S to XL), with curvy models on the Slip Dress and slim or athletic models on the Romper. Every shop photo keeps the same soft pink background.
 - Test reliability under load: each test may run for 20 seconds instead of 5, and checks that wait for something to appear look for 5 seconds instead of 1. With three full test runs at once, failures went from 9 to 16 per run to 0. Nothing visible changes.
 - Faster first photo on phones: on Home the hidden hero slides wait until the page has loaded and the slideshow starts after that, the menu logo reuses the header logo file instead of downloading its own, and the header logo file is smaller. Photos stay as sharp as before and nothing looks different.
 - Checkout safety: the check that empties the bag after an order stays off until checkout launches, so nobody can make the site contact Shopify through it before then. Shoppers see no change.
