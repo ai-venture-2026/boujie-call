@@ -15,7 +15,7 @@ describe("products", () => {
   });
 
   it("lists the colorways of The Boujie Set", () => {
-    expect(colorways("the-boujie-set")).toEqual(["After Dark", "Powder Blue", "Rose"]);
+    expect(colorways("the-boujie-set")).toEqual(["After Dark", "Powder Blue", "Rose", "Red"]);
   });
 
   it("lists the colorways of The Romper", () => {
@@ -56,7 +56,7 @@ describe("product photos", () => {
   });
 
   it("keeps every shop photo at 3:4", async () => {
-    const fronts = products.flatMap((p) => p.colorways.map((c) => c.gallery?.[0]?.src ?? ""));
+    const fronts = products.flatMap((p) => p.colorways.flatMap((c) => (c.gallery ? [c.gallery[0].src] : [])));
     for (const front of fronts) {
       const { width = 0, height = 0 } = await sharp(`public${front}`).metadata();
       expect(Math.abs(width / height - 0.75)).toBeLessThan(0.01);

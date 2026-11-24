@@ -23,7 +23,7 @@ export async function startCall(input: Record<string, unknown>): Promise<StartRe
   if (!tier) return fail("Choose a Call.");
   const product = typeof raw.slug === "string" ? getProduct(raw.slug) : undefined;
   if (!product) return fail("Choose a piece.");
-  const colorway = product.colorways.find((c) => c.name === raw.colorway);
+  const colorway = product.colorways.find((c) => c.name === raw.colorway && !c.comingSoon);
   if (!colorway) return fail("Choose a colour.");
 
   const one = (value: unknown, max: number) => (hasControl(value) ? null : clean(value, max));

@@ -1,6 +1,6 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { orderPlaced } from "./checkout";
-import { getOffer, getProduct, MAX_QTY } from "./products";
+import { forSale, getOffer, getProduct, MAX_QTY } from "./products";
 
 // skip marks a piece the shopper unticked: it stays in the bag but is left out of checkout and totals.
 export type BagLine = { slug: string; colorway: string; size: string; qty: number; skip?: true };
@@ -21,7 +21,7 @@ function isValid(line: unknown): line is BagLine {
   const product = typeof slug === "string" ? getProduct(slug) : undefined;
   return (
     !!product &&
-    product.colorways.some((c) => c.name === colorway) &&
+    forSale(product, colorway) &&
     product.sizes.includes(size as string) &&
     Number.isInteger(qty) &&
     (qty as number) >= 1 &&
