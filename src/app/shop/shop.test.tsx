@@ -572,7 +572,6 @@ describe("Product gallery thumbnails", () => {
 
 describe("Size guide", () => {
   const open = () => fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
-  beforeEach(confirmed);
 
   it("opens the size guide", async () => {
     await renderProduct("the-romper");
@@ -619,7 +618,7 @@ describe("Vendor size charts", () => {
   it("heads The Slip Dress chart with its garment measurements", async () => {
     await renderProduct("the-slip-dress");
     open();
-    expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Size", "Bust", "Waist", "Hem", "Length"]);
+    expect(screen.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Size", "Bust", "Waist", "Hem", "Front length"]);
   });
 
   it("lists the vendor measurements for The Slip Dress M", async () => {
@@ -638,6 +637,12 @@ describe("Vendor size charts", () => {
     await renderProduct("the-slip-dress");
     open();
     expect(screen.getByRole("dialog", { name: "Size guide" })).toHaveTextContent("Garment measurements in inches / cm. The fabric stretches, so each size fits a body a little larger than these numbers.");
+  });
+
+  it("hides the slash between inches and cm on phones but keeps it for screen readers", async () => {
+    await renderProduct("the-romper");
+    open();
+    expect(within(screen.getByRole("row", { name: /^XL/ })).getAllByRole("cell")[0].querySelector("span")).toHaveClass("max-md:sr-only");
   });
 
   it("shows no Size guide on The Boujie Set", async () => {
@@ -1079,7 +1084,6 @@ describe("Gallery scroll cost", () => {
 
 describe("Size guide drag", () => {
   const dialog = () => screen.getByRole("dialog", { name: "Size guide" });
-  beforeEach(confirmed);
 
   it("stays open when a drag ends on the backdrop", async () => {
     await renderProduct("the-romper");

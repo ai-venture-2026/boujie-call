@@ -114,10 +114,10 @@ export function getProduct(slug: string): Product | undefined {
 export const getOffer = (): string | null => null;
 
 // Vendor garment measurements in cm, laid flat, from the size chart Alex sent on 2026-11-24. The vendor lists bust,
-// waist and hem as half widths, doubled here; leg opening and length are listed whole. The Boujie Set chart was unreadable.
+// waist and hem as half widths, doubled here; leg opening and front length are listed whole. The Boujie Set chart was unreadable.
 const garment: Record<string, { columns: string[]; cm: Record<string, number[]> }> = {
   "the-slip-dress": {
-    columns: ["Bust", "Waist", "Hem", "Length"],
+    columns: ["Bust", "Waist", "Hem", "Front length"],
     cm: { S: [70, 57.6, 83, 58.5], M: [74, 61.6, 87, 60.3], L: [78, 65.6, 91, 62.1], XL: [82, 69.6, 95, 63.9] },
   },
   "the-romper": {

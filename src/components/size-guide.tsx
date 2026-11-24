@@ -47,7 +47,7 @@ export function SizeGuide({ sizes, columns, chart }: { sizes: string[]; columns:
                 <thead>
                   <tr className="border-b-[0.5px] border-card-border">
                     {["Size", ...columns].map((c) => (
-                      <th key={c} scope="col" className="label pr-3 pb-3 text-muted last:pr-0">
+                      <th key={c} scope="col" className="label pr-3 pb-3 align-bottom text-muted last:pr-0 max-md:pr-2 max-md:tracking-[0.08em]">
                         {c}
                       </th>
                     ))}
@@ -56,14 +56,14 @@ export function SizeGuide({ sizes, columns, chart }: { sizes: string[]; columns:
                 <tbody>
                   {sizes.map((s) => (
                     <tr key={s} className="border-b-[0.5px] border-card-border">
-                      <th scope="row" className="py-3 pr-3 font-normal">
+                      <th scope="row" className="py-3 pr-3 font-normal max-md:pr-2">
                         {s}
                       </th>
                       {columns.map((c, i) => {
                         // Phones stack inches over cm; the slash stays for screen readers so the pair reads as one value.
                         const [inches, cm] = (chart[s]?.[i] ?? "").split(" / ");
                         return (
-                          <td key={c} className="py-3 pr-3 whitespace-nowrap text-muted last:pr-0">
+                          <td key={c} className="py-3 pr-3 whitespace-nowrap text-muted last:pr-0 max-md:pr-2">
                             {inches}
                             {cm && (
                               <>
