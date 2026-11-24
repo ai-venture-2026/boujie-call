@@ -41,6 +41,7 @@ Gate runs: 9 (1 failed)
 - deploy gate, approval failed 1 time(s): a human must run: unslopped approve deploy
 
 ## Notes
+- 2026-11-24 recast cycle: the same-path swap needs no code change; recolour scripts belong outside the scratchpad, it gets cleared.
 - next start serves old photos from .next/cache/images after a same-path swap; clear that folder before screenshots. Vercel rebuilds its cache per deployment.
 - A test that the drop folder is empty fails on .DS_Store and on the next drop; check the README waiting list instead.
 - Alt text can name a wall colour; grep alts for colour words when backgrounds change.

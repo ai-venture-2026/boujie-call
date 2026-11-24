@@ -9,6 +9,7 @@ import * as productsModule from "@/lib/products";
 import { colorwaySlug, products, type Product } from "@/lib/products";
 import { ProductView } from "@/components/product-view";
 import { ShopGrid } from "@/components/shop-grid";
+import { CardPhoto } from "@/components/card-photo";
 import { readBag } from "@/lib/bag";
 
 const renderProduct = async (slug: string) => render(await ProductPage({ params: Promise.resolve({ slug }) }));
@@ -20,6 +21,8 @@ const confirmed = () => {
 };
 afterEach(() => vi.restoreAllMocks());
 const unphotographed: Product = { ...set, colorways: set.colorways.map((c) => ({ ...c, images: [], gallery: undefined })) };
+const shopCard = (href: string) => within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === href);
+const modelPhoto = (card: HTMLElement | undefined, name: string) => [...(card?.querySelectorAll("img") ?? [])].find((img) => new RegExp(`studio(/|%2F)${name}`).test(img.getAttribute("src") ?? ""));
 
 describe("Shop", () => {
   it("links every colorway card to its product page", async () => {
@@ -450,10 +453,39 @@ describe("Studio photos", () => {
     expect(screen.getAllByRole("button", { name: /^Show / })).toHaveLength(3);
   });
 
-  it("shows a studio photo on the shop card", async () => {
+  it("shows the product-only photo first on the shop card", async () => {
     render(await Shop());
-    const card = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.textContent?.includes("The Slip Dress") && c.querySelector("a")?.getAttribute("href")?.endsWith("colorway=rose"));
-    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-slip-dress-rose-front/);
+    expect(shopCard("/shop/the-slip-dress?colorway=rose")?.querySelector("img")?.getAttribute("src")).toMatch(/products(\/|%2F)the-slip-dress-rose\.webp/);
+  });
+
+  it("keeps the model front photo hidden on the shop card until hover", async () => {
+    render(await Shop());
+    expect(modelPhoto(shopCard("/shop/the-slip-dress?colorway=rose"), "the-slip-dress-rose-front")).toHaveClass("opacity-0", "group-hover:opacity-100");
+  });
+
+  it("loads the hover photo only on devices that hover", async () => {
+    render(await Shop());
+    expect(modelPhoto(shopCard("/shop/the-slip-dress?colorway=rose"), "the-slip-dress-rose-front")).toHaveClass("hidden", "[@media(hover:hover)]:block");
+  });
+
+  it("skips the hover photo when it is the cutout itself", () => {
+    const { container } = render(<CardPhoto ghost="/images/products/the-slip-dress-rose.webp" model="/images/products/the-slip-dress-rose.webp" sizes="50vw" className="relative" />);
+    expect(container.querySelectorAll("img")).toHaveLength(1);
+  });
+
+  it("marks the model front photo to show on keyboard focus", async () => {
+    render(await Shop());
+    expect(modelPhoto(shopCard("/shop/the-slip-dress?colorway=rose"), "the-slip-dress-rose-front")).toHaveClass("group-focus-visible:opacity-100");
+  });
+
+  it("marks the contact shadow to fade while the model photo shows", async () => {
+    render(await Shop());
+    expect(shopCard("/shop/the-slip-dress?colorway=rose")?.querySelector(".contact")).toHaveClass("group-hover:after:opacity-0", "group-focus-visible:after:opacity-0");
+  });
+
+  it("shows only the cutout for a colour without studio photos", () => {
+    const { container } = render(<CardPhoto ghost="/images/products/the-slip-dress-rose.webp" sizes="50vw" className="relative" />);
+    expect(container.querySelectorAll("img")).toHaveLength(1);
   });
 
   it("keeps three image to come frames for a piece without photos", () => {
@@ -461,16 +493,14 @@ describe("Studio photos", () => {
     expect(screen.getAllByText("Image to come")).toHaveLength(6);
   });
 
-  it("shows the full front photo on The Boujie Set shop card", async () => {
+  it("shows the full front photo on hover on The Boujie Set shop card", async () => {
     render(await Shop());
-    const card = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-boujie-set?colorway=rose");
-    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-boujie-set-rose-front/);
+    expect(modelPhoto(shopCard("/shop/the-boujie-set?colorway=rose"), "the-boujie-set-rose-front")).toHaveClass("group-hover:opacity-100");
   });
 
-  it("keeps the Romper card on its front photo", async () => {
+  it("keeps the Romper card's hover photo on its front view", async () => {
     render(await Shop());
-    const card = within(screen.getByRole("region", { name: "Collection" })).getAllByRole("listitem").find((c) => c.querySelector("a")?.getAttribute("href") === "/shop/the-romper?colorway=mocha");
-    expect(card?.querySelector("img")?.getAttribute("src")).toMatch(/studio(\/|%2F)the-romper-mocha-front/);
+    expect(modelPhoto(shopCard("/shop/the-romper?colorway=mocha"), "the-romper-mocha-front")).toHaveClass("group-hover:opacity-100");
   });
 });
 

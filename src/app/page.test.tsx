@@ -625,6 +625,13 @@ describe("Home on phones", () => {
     expect(screen.getByRole("link", { name: "View all pieces" }).parentElement).toHaveClass("md:items-center", "md:justify-between");
   });
 
+  it("shows the model front photo on hover on Home piece cards", async () => {
+    render(await Home());
+    const card = within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("link").find((a) => a.textContent?.includes("The Slip Dress"));
+    const model = [...(card?.querySelectorAll("img") ?? [])].find((img) => /studio(\/|%2F)the-slip-dress-/.test(img.getAttribute("src") ?? ""));
+    expect(model).toHaveClass("opacity-0", "group-hover:opacity-100");
+  });
+
   it("frames every piece card with a hairline", async () => {
     render(await Home());
     const frames = within(screen.getByRole("list", { name: "Pieces" })).getAllByRole("link").map((a) => a.firstElementChild);
