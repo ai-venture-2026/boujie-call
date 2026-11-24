@@ -8,6 +8,7 @@ import { HeroCarousel } from "@/components/hero-carousel";
 import { steps } from "@/lib/content";
 import { Price } from "@/components/product-view";
 import { AvailabilityPill } from "@/components/availability-pill";
+import { CardPhoto } from "@/components/card-photo";
 import { availability, getProduct, productHref, products, type Product } from "@/lib/products";
 import { getCatalog, withLive } from "@/lib/shopify";
 
@@ -25,18 +26,13 @@ const strip = [
 ];
 
 function PieceCard({ product }: { product: Product }) {
-  const photo = product.colorways[0].images[0];
+  const first = product.colorways[0];
   const status = product.comingSoon ? "Coming soon" : product.colorways.every((c) => availability(product, c.name) === "Sold out") ? "Sold out" : null;
   return (
-    <Link href={productHref(product.slug, product.colorways[0].name)} className="group block">
-      <div className={`relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone ${photo ? "contact" : ""}`}>
-        {photo ? (
-          <Image src={photo} alt="" fill sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-        ) : (
-          <span className="label absolute right-4 bottom-4 text-muted">Image to come</span>
-        )}
+    <Link href={productHref(product.slug, first.name)} className="group block">
+      <CardPhoto ghost={first.images[0]} model={first.gallery?.[0]?.src} sizes="(min-width: 1280px) 400px, (min-width: 640px) 30vw, 50vw" className="relative aspect-[4/5] overflow-hidden border-[0.5px] border-card-border bg-stone">
         <AvailabilityPill label={status} />
-      </div>
+      </CardPhoto>
       <h3 className="mt-3 truncate text-xl font-medium md:mt-5 md:text-[26px]">{product.name}</h3>
       <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-4">
         {product.comingSoon ? <p className="font-sans text-base font-medium">Coming soon</p> : <Price product={product} compact />}
