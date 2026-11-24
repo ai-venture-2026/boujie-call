@@ -31,6 +31,7 @@ describe("sitemap", () => {
       "https://boujiecall.com/shop/the-slip-dress",
       "https://boujiecall.com/shop/the-boujie-set",
       "https://boujiecall.com/shop/the-romper",
+      "https://boujiecall.com/help",
     ]);
   });
 });

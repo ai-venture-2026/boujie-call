@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getHelp } from "@/lib/help";
 
-export const metadata: Metadata = { title: "Help | Boujie Call", description: "Shipping, returns, sizing and Send a Call questions, and how to reach us." };
+export const metadata: Metadata = { title: "Help | Boujie Call", description: "How Send a Call works, what happens to an unclaimed gift, and how to reach us." };
 
 export default function HelpPage() {
   const { contactEmail, topics } = getHelp();

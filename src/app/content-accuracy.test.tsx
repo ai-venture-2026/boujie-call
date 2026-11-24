@@ -66,9 +66,9 @@ describe("Offer before the owner confirms one", () => {
 });
 
 describe("Product details before the owner confirms them", () => {
-  it("shows no Fabric row", async () => {
-    await renderProduct("the-boujie-set");
-    expect(screen.queryByText("Fabric")).toBeNull();
+  it.each(["the-slip-dress", "the-boujie-set", "the-romper"])("shows the owner's fabric blend on %s", async (slug) => {
+    await renderProduct(slug);
+    expect(screen.getByText("Fabric").nextElementSibling).toHaveTextContent("76% nylon, 24% spandex");
   });
 
   it("shows no Care row", async () => {
