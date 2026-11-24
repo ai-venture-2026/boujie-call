@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Test reliability under load: each test may run for 20 seconds instead of 5, and checks that wait for something to appear look for 5 seconds instead of 1. With three full test runs at once, failures went from 9 to 16 per run to 0. Nothing visible changes.
+
 - Faster first photo on phones: on Home the hidden hero slides wait until the page has loaded and the slideshow starts after that, the menu logo reuses the header logo file instead of downloading its own, and the header logo file is smaller. Photos stay as sharp as before and nothing looks different.
 - Checkout safety: the check that empties the bag after an order stays off until checkout launches, so nobody can make the site contact Shopify through it before then. Shoppers see no change.
 - Home cards show availability like the Shop page: a piece not on sale in Shopify shows a Coming soon pill and Coming soon in place of its price, and a piece sold out in every colour shows a Sold out pill. Pull requests from the project tooling now open against develop.
